@@ -10,6 +10,13 @@ public class Field {
     private String name;
     private int argumentId;
     private Token tokenSource;
+    private Type type;
+
+    public Field(Token tokenSource, String name, Type type) {
+        this.tokenSource = tokenSource;
+        this.name = name;
+        this.type = type;
+    }
 
     public String getName() {
         return name;
@@ -17,5 +24,9 @@ public class Field {
 
     public int getArgumentId() {
         return argumentId;
+    }
+
+    public Token getTokenSource() {
+        return tokenSource;
     }
 }

@@ -5,6 +5,7 @@ import com.flat.simplex.lexer.Token;
 import com.flat.simplex.parser.Parser;
 import com.flat.simplex.parser.logic.Block;
 import com.flat.simplex.parser.logic.Context;
+import com.flat.simplex.parser.logic.error.Error;
 
 import java.util.ArrayList;
 
@@ -40,13 +41,13 @@ public class BlockWhile extends Block {
                 tokenContentEnd = end;
                 break;
             } else {
-                context.error(token, "Unexpected token");
+                context.error(token, Error.unexpectedToken);
             }
             lToken = token;
             token = token.getNext();
         }
         if (state < 3) {
-            context.error(lToken, "Unexpected end of tokens");
+            context.error(lToken, Error.unexpectedEndOfTokens);
         }
     }
 
@@ -57,12 +58,15 @@ public class BlockWhile extends Block {
             lineCondition.read();
 
             if (lineCondition.isEmpty()) {
-                getContext().error(tokenCondition, "Condition expected");
+                getContext().error(tokenCondition, Error.whileConditionExpected);
             }
         }
         if (tokenContent != null) {
             if (commandBlock) {
                 blocks = new Parser(getContext(), this).parse(tokenContent.getChild(), tokenContent.getLastChild());
+                if (tokenContent.getLastChild() == null) {
+                    getContext().error(tokenContent, Error.missingCloser);
+                }
             } else {
                 blocks = new Parser(getContext(), this).parse(tokenContent, tokenContentEnd);
             }
@@ -76,5 +80,25 @@ public class BlockWhile extends Block {
 
     public boolean isCommandBlock() {
         return commandBlock;
+    }
+
+    public Token getTokenCondition() {
+        return tokenCondition;
+    }
+
+    public Token getTokenContent() {
+        return tokenContent;
+    }
+
+    public Token getTokenContentEnd() {
+        return tokenContentEnd;
+    }
+
+    public BlockLine getLineCondition() {
+        return lineCondition;
+    }
+
+    public ArrayList<Block> getBlocks() {
+        return blocks;
     }
 }

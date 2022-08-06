@@ -5,6 +5,7 @@ import com.flat.simplex.parser.logic.error.Error;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Context {
 
@@ -25,6 +26,10 @@ public class Context {
 
     public Field getField(String fieldName) {
         return fields.get(fieldName);
+    }
+
+    public List<String> getAllFieldNames() {
+        return fields.keySet().stream().toList();
     }
 
     public void error(Token token, String description) {

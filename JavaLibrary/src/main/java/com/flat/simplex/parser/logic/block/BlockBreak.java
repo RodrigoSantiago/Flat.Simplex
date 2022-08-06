@@ -28,7 +28,7 @@ public class BlockBreak extends Block {
         if (state < 2) {
             context.error(lToken, Error.unexpectedEndOfTokens);
         }
-        if (!isInsideLoop() && !(getParent() instanceof BlockSwitch)) {
+        if (!isInsideLoop() && !isInsideSwitch()) {
             context.error(token, Error.breakOutOfPlace);
         }
     }

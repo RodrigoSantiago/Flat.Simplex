@@ -65,4 +65,8 @@ public class BlockCase extends Block {
     public Token getTokenValueEnd() {
         return tokenValueEnd;
     }
+
+    public BlockLine getLineCondition() {
+        return lineCondition;
+    }
 }

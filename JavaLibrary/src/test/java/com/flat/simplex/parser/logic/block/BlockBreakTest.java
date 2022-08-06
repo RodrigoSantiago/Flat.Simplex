@@ -36,6 +36,18 @@ class BlockBreakTest {
     }
 
     @Test
+    public void blockBreakFor() {
+        TokenChain chain = parseChain("break;");
+
+        Context context = new Context();
+        BlockFor blockFor = getBlockFor(context);
+        BlockBreak block = new BlockBreak(context, blockFor, chain.get(), null);
+        block.read();
+
+        assertErrors(context);
+    }
+
+    @Test
     public void blockBreakWithoutLoop_Fail() {
         TokenChain chain = parseChain("break;");
 
@@ -74,6 +86,13 @@ class BlockBreakTest {
         TokenChain chain = parseChain("while(true);");
 
         return new BlockWhile(context, null, chain.get(), null);
+
+    }
+
+    private BlockFor getBlockFor(Context context) {
+        TokenChain chain = parseChain("for(;;);");
+
+        return new BlockFor(context, null, chain.get(), null);
 
     }
 

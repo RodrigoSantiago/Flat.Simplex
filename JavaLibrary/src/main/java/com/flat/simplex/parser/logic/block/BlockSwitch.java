@@ -5,6 +5,7 @@ import com.flat.simplex.lexer.Token;
 import com.flat.simplex.parser.Parser;
 import com.flat.simplex.parser.logic.Block;
 import com.flat.simplex.parser.logic.Context;
+import com.flat.simplex.parser.logic.error.Error;
 
 import java.util.ArrayList;
 
@@ -12,8 +13,6 @@ public class BlockSwitch extends Block {
 
     private Token tokenValue;
     private Token tokenContent;
-    private Token tokenContentEnd;
-    private boolean commandBlock;
 
     private BlockLine lineValue;
     private ArrayList<Block> blocks;
@@ -35,16 +34,15 @@ public class BlockSwitch extends Block {
                 tokenValue = token;
             } else if (state == 2 && token.getKey() == Key.Brace) {
                 state = 3;
-                tokenContent = token; // todo - melhorar detectar se é line e dizer quenao pode ser ao invez de so da unexpected token
-                tokenContentEnd = token.getNext();
+                tokenContent = token;
             } else {
-                context.error(token, "Unexpected token");
+                context.error(token, Error.unexpectedToken);
             }
             lToken = token;
             token = token.getNext();
         }
         if (state < 3) {
-            context.error(lToken, "Unexpected end of tokens");
+            context.error(lToken, Error.unexpectedEndOfTokens);
         }
     }
 
@@ -55,30 +53,69 @@ public class BlockSwitch extends Block {
             lineValue.read();
 
             if (lineValue.isEmpty()) {
-                getContext().error(tokenValue, "Value expected");
+                getContext().error(tokenValue, Error.switchConditionExpected);
             }
         }
         if (tokenContent != null) {
-            if (commandBlock) {
-                blocks = new Parser(getContext(), this).parse(tokenContent.getChild(), tokenContent.getLastChild());
-            } else {
-                blocks = new Parser(getContext(), this).parse(tokenContent, tokenContentEnd);
+            blocks = new Parser(getContext(), this).parse(tokenContent.getChild(), tokenContent.getLastChild());
+            if (tokenContent.getLastChild() == null) {
+                getContext().error(tokenContent, Error.missingCloser);
             }
         }
     }
 
     @Override
+    public boolean isSwitch() {
+        return true;
+    }
+
+    @Override
     public void markBlock(Block blockChild) {
         if (blockCases.size() == 0 && blockDefault == null) {
-            getContext().error(tokenValue, "Cannot have block or lines before the first Case or Default");
+            getContext().error(tokenValue, Error.switchLineBeforeCase);
         }
     }
 
     public void markCase(BlockCase blockCase) {
-
+        for (BlockCase bCase : blockCases) {
+            if (bCase.getLineCondition() != null && blockCase.getLineCondition() != null) {
+                if (bCase.getLineCondition().constantEquals(blockCase.getLineCondition())) {
+                    getContext().error(tokenValue, Error.switchRepeatedCase);
+                }
+            }
+        }
+        blockCases.add(blockCase);
     }
 
     public void markDefault(BlockDefault blockDefault) {
+        if (this.blockDefault == null) {
+            this.blockDefault = blockDefault;
+        } else {
+            getContext().error(blockDefault.getToken(), Error.switchRepeatedDefault);
+        }
+    }
 
+    public Token getTokenValue() {
+        return tokenValue;
+    }
+
+    public Token getTokenContent() {
+        return tokenContent;
+    }
+
+    public BlockLine getLineValue() {
+        return lineValue;
+    }
+
+    public ArrayList<Block> getBlocks() {
+        return blocks;
+    }
+
+    public ArrayList<BlockCase> getBlockCases() {
+        return blockCases;
+    }
+
+    public BlockDefault getBlockDefault() {
+        return blockDefault;
     }
 }

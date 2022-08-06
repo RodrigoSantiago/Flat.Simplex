@@ -1,6 +1,7 @@
 package com.flat.simplex.parser.logic.block;
 
 import com.flat.simplex.parser.logic.Context;
+import com.flat.simplex.parser.logic.error.Error;
 import com.flat.simplex.support.TokenChain;
 import org.junit.jupiter.api.Test;
 
@@ -10,18 +11,53 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class BlockScopeTest {
 
-
     @Test
     public void blockScope() {
-        TokenChain chain = parseChain("do{}");
+        TokenChain chain = parseChain("{hello = true;}");
 
         Context context = new Context();
-        BlockDo blockDo = new BlockDo(context, null, chain.get(), null);
-        blockDo.read();
+        BlockScope block = new BlockScope(context, null, chain.get(), null);
+        block.read();
 
-        assertTrue(blockDo.isCommandBlock());
-        TokenChain.assertOne("{}", blockDo.getTokenContent(), "Invalid body");
+        TokenChain.assertOne("{hello = true;}", block.getTokenContent(), "Invalid body");
 
         assertErrors(context);
+    }
+
+    @Test
+    public void blockScopeOpenBlock_Fail() {
+        TokenChain chain = parseChain("{hello = true;");
+
+        Context context = new Context();
+        BlockScope block = new BlockScope(context, null, chain.get(), null);
+        block.read();
+
+        TokenChain.assertOne("{hello = true;", block.getTokenContent(), "Invalid body");
+
+        assertErrors(context, Error.missingCloser);
+    }
+
+    @Test
+    public void blockScopeUnexpectedToken_Fail() {
+        TokenChain chain = parseChain("{hello = true;};");
+
+        Context context = new Context();
+        BlockScope block = new BlockScope(context, null, chain.get(), null);
+        block.read();
+
+        TokenChain.assertOne("{hello = true;}", block.getTokenContent(), "Invalid body");
+
+        assertErrors(context, Error.unexpectedToken);
+    }
+
+    @Test
+    public void blockScopeUnexpectedEndOfTokens_Fail() {
+        TokenChain chain = parseChain("");
+
+        Context context = new Context();
+        BlockScope block = new BlockScope(context, null, chain.get(), null);
+        block.read();
+
+        assertErrors(context, Error.unexpectedEndOfTokens);
     }
 }

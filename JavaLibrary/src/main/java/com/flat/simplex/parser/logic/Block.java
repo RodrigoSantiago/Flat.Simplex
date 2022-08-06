@@ -42,8 +42,16 @@ public class Block {
         return false;
     }
 
+    public boolean isSwitch() {
+        return false;
+    }
+
     public boolean isInsideLoop() {
         return getParent() != null && (getParent().isLoop() || getParent().isInsideLoop());
+    }
+
+    public boolean isInsideSwitch() {
+        return getParent() != null && (getParent().isSwitch() || getParent().isInsideSwitch());
     }
 
     public void buildCpp(StringBuilder cBuilder) {

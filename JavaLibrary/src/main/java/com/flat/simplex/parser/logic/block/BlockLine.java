@@ -22,4 +22,8 @@ public class BlockLine extends Block {
     public boolean isCaseConstant() {
         return true;
     }
+
+    public boolean constantEquals(BlockLine other) {
+        return false;
+    }
 }

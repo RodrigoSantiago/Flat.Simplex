@@ -44,4 +44,8 @@ public class BlockScope extends Block {
             }
         }
     }
+
+    public Token getTokenContent() {
+        return tokenContent;
+    }
 }

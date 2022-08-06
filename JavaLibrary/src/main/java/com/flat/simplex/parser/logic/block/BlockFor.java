@@ -104,16 +104,6 @@ public class BlockFor extends Block {
 
     @Override
     public void read() {
-        if (tokenContent != null) {
-            if (commandBlock) {
-                blocks = new Parser(getContext(), this).parse(tokenContent.getChild(), tokenContent.getLastChild());
-                if (tokenContent.getLastChild() == null) {
-                    getContext().error(tokenContent, Error.missingCloser);
-                }
-            } else {
-                blocks = new Parser(getContext(), this).parse(tokenContent, tokenContentEnd);
-            }
-        }
         if (tokenInit != null && tokenInit != tokenInitEnd) {
             if (tokenInit.getKey() == Key.Var) {
                 initLine = new BlockVar(getContext(), this, tokenInit, tokenInitEnd, false);
@@ -129,6 +119,16 @@ public class BlockFor extends Block {
         if (tokenLoop != null && tokenLoop != tokenLoopEnd) {
             loopLine = new BlockLine(getContext(), this, tokenLoop, tokenLoopEnd, false);
             loopLine.read();
+        }
+        if (tokenContent != null) {
+            if (commandBlock) {
+                blocks = new Parser(getContext(), this).parse(tokenContent.getChild(), tokenContent.getLastChild());
+                if (tokenContent.getLastChild() == null) {
+                    getContext().error(tokenContent, Error.missingCloser);
+                }
+            } else {
+                blocks = new Parser(getContext(), this).parse(tokenContent, tokenContentEnd);
+            }
         }
     }
 

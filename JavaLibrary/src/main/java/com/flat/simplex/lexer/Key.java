@@ -40,52 +40,59 @@ public enum Key {
     Dot("."),
     Comma(","),
     Semicolon(";"),
-    Colon(":"),
-    Quest("?"),
+    Colon(":", 12),
+    Quest("?", 12),
 
-    Add("+"),
-    Sub("-"),
-    Mul("*"),
-    Div("/"),
-    Mod("%"),
-    Sfl("<<"),
-    Sfr(">>"),
+    Add("+", 3),
+    Sub("-", 3),
+    Mul("*", 2),
+    Div("/", 2),
+    Mod("%", 2),
+    Sfl("<<", 4),
+    Sfr(">>", 4),
 
-    Inc("++"),
-    Dec("--"),
+    Inc("++", 1),
+    Dec("--", 1),
+    Not("!", 1),
+    Bnot("~", 1),
 
-    Set("="),
-    Setadd("+="),
-    Setsub("-="),
-    Setmul("*="),
-    Setdiv("/="),
-    Setmod("%="),
-    Setsfl("<<="),
-    Setsfr(">>="),
+    Set("=", 13),
+    Setadd("+=", 13),
+    Setsub("-=", 13),
+    Setmul("*=", 13),
+    Setdiv("/=", 13),
+    Setmod("%=", 13),
+    Setsfl("<<=", 13),
+    Setsfr(">>=", 13),
 
-    Eq("=="),
-    Dif("!="),
-    Gr(">"),
-    Gre(">="),
-    Ls("<"),
-    Lse("<="),
+    Eq("==", 6),
+    Dif("!=", 6),
+    Gr(">", 5),
+    Gre(">=", 5),
+    Ls("<", 5),
+    Lse("<=", 5),
 
-    And("&&"),
-    Or("||"),
-    Xor("^^"),
+    Band("&", 7),
+    Bxor("^", 8),
+    Bor("|", 9),
 
-    Not("!"),
-    Bnot("~"),
-    Band("&"),
-    Bor("|"),
-    Bxor("^"),
+    And("&&", 10),
+    Or("||", 11),
+
     Hex("#");
 
     public final String name;
+    public final int op;
     private static HashMap<Integer, Key> keys;
 
     Key(String name) {
         this.name = name;
+        this.op = 0;
+    }
+
+    Key(String name, int operatorType) {
+        this.name = name;
+        this.op = operatorType;
     }
 
     /**
