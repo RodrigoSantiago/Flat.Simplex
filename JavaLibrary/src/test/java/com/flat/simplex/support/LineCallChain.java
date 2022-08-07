@@ -9,6 +9,7 @@ import org.opentest4j.AssertionFailedError;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class LineCallChain {
 
@@ -50,7 +51,7 @@ public class LineCallChain {
                 LineChain lc = (LineChain) lineValue;
                 assertLocalLineChain(message, classes, lc);
             }
-        } else {
+        } else if (lineValue instanceof LineGroup) {
             LineGroup lc = (LineGroup) lineValue;
             assertEquals(objects.size(), lc.getLines().size(), "Invalid chain size");
             for (int i = 0; i < objects.size(); i++) {
@@ -75,6 +76,12 @@ public class LineCallChain {
                         throw new AssertionFailedError(message, "LineOp", line.getClass().getSimpleName());
                     }
                 }
+            }
+        } else {
+            if (objects.size() == 0) {
+                assertNull(lineValue, message);
+            } else {
+                throw new AssertionFailedError(message, "(Not Empty)", "(Empty)");
             }
         }
     }

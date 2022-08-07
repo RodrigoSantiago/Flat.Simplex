@@ -29,8 +29,12 @@ public class Error {
     public static String lineMissingAccessor = "Accessor expected";
     public static String lineUnexpectedCall = "Unexpected Call";
     public static String lineEmptyBlock = "Empty block";
+    public static String lineEmptyLine = "Empty line command";
     public static String lineIncorrectlyFormatted = "Malformatted value";
     public static String lineTooMuchIndexers = "The maximum dimensions are 2";
+    public static String lineRefOperator = "The operator should be used on a variable or indexer";
+    public static String lineSetOperator = "The operator should be used on a variable or indexer";
+    public static String lineTernaryIncomplete = "Incomplete ternary expression";
 
     public enum Type {
         Warning, Syntax

@@ -12,319 +12,163 @@ public class LineReader {
 
     private Block parent;
     private Context context;
+
+    private ArrayList<Line> calls = new ArrayList<>();
+    private LineCall firstCall = null;
+    private LineCall lastCall = null;
+
     private Token token;
+    private Token end;
 
     public LineReader(Block parent) {
         this.parent = parent;
         this.context = parent.getContext();
     }
 
-    public ArrayList<Line> read(Token token, Token end) {
-        this.token = token;
+    public ArrayList<Line> read(Token tokenStart, Token tokenEnd) {
+        this.token = tokenStart;
+        this.end = tokenEnd;
 
-        ArrayList<Line> calls = new ArrayList<>();
-        LineCall firstCall = null;
-        LineCall lastCall = null;
         while (token != end && token != null) {
-
             Key key = token.getKey();
-            LineCall lineCall = null;
-            LineOp lineOp = null;
-
             if (key == Key.Word || key == Key.This || key == Key.Global) {
-                if (lastCall != null) {
-                    context.error(token, Error.lineMissingAccessor);
-                }
-                lineCall = new CallField(parent, token);
-
-            } else if (key == Key.Dot) {
-                if (lastCall == null) {
-                    context.error(token, Error.unexpectedToken);
-                } else if (token.getNext() != null && token.getNext() != end) {
-                    if (token.getNext().getKey() == Key.Word) {
-                        token = token.getNext();
-                        lineCall = new CallField(parent, token);
-                    } else {
-                        context.error(token, Error.unexpectedToken);
-                    }
-                } else {
-                    context.error(token, Error.unexpectedEndOfTokens);
-                }
+                consumeField();
 
             } else if (key == Key.Number || key == Key.String || key == Key.Undefined ||
                     key == Key.True || key == Key.False) {
-                lineCall = new CallValue(parent, token);
+                consumeValue();
 
             } else if (key == Key.Function) {
-                Token fEnd = token.getNext();
-                if (fEnd != null && fEnd != end && fEnd.getKey() == Key.Param) {
-                    token = fEnd;
-                    fEnd = fEnd.getNext();
-                    if (fEnd != null && fEnd != end && fEnd.getKey() == Key.Brace) {
-                        token = fEnd;
-                        fEnd = fEnd.getNext();
-                    }
-                }
-                lineCall = new CallFunction(parent, token, fEnd);
+                consumeFunction();
+
+            } else if (key == Key.Dot) {
+                consumeDot();
 
             } else if (key == Key.Param) {
-                if (lastCall == null) {
-                    lineCall = new CallGroup(parent, token);
-                } else {
-                    lineCall = new CallMethod(parent, token);
-                }
+                consumeParam();
 
             } else if (key == Key.Index) {
-                if (lastCall == null) {
-                    lineCall = new CallArray(parent, token);
-                } else {
-                    lineCall = new CallIndexer(parent, token);
-                }
+                consumeIndex();
 
             } else if (key == Key.Brace) {
-                lineCall = new CallStruct(parent, token);
+                consumeBrace();
 
             }  else if (key.op > 0) {
-                lineOp = new LineOp(parent, token);
+                consumeOp();
 
             } else {
+                if (lastCall != null) {
+                    addLastLineChain();
+                }
                 context.error(token, Error.unexpectedToken);
-            }
-
-            if (lineCall != null) {
-                if (lastCall != null) {
-                    lastCall.setNext(lineCall);
-                } else {
-                    firstCall = lineCall;
-                }
-                lastCall = lineCall;
-            } else {
-                if (lastCall != null) {
-                    calls.add(new LineChain(firstCall));
-                }
-                lastCall = null;
-                firstCall = null;
-
-                if (lineOp != null) {
-                    calls.add(lineOp);
-                }
             }
             token = token.getNext();
         }
         if (lastCall != null) {
-            calls.add(new LineChain(firstCall));
+            addLastLineChain();
         }
-
         return calls;
     }
 
-    public LineValue load(ArrayList<Line> lines) {
-        ArrayList<Line> input = new ArrayList<>(lines);
-        for (int i = 0; i <= 13; i++) {
-            input = groupBy(input, i);
+    private void consumeField() {
+        if (lastCall != null) {
+            addLastLineChain();
+            context.error(token, Error.lineMissingAccessor);
         }
-        if (input.size() == 0) {
-            context.error(token, "Empty line command");
-            return null;
+        bindNext(new CallField(parent, token));
+    }
+
+    private void consumeValue() {
+        if (lastCall != null) {
+            addLastLineChain();
+            context.error(token, Error.lineMissingAccessor);
+        }
+        bindNext(new CallValue(parent, token));
+    }
+
+    private void consumeFunction() {
+        Token fEnd = token.getNext();
+        if (fEnd != null && fEnd != end && fEnd.getKey() == Key.Param) {
+            token = fEnd;
+            fEnd = fEnd.getNext();
+            if (fEnd != null && fEnd != end && fEnd.getKey() == Key.Brace) {
+                token = fEnd;
+                fEnd = fEnd.getNext();
+            }
+        }
+        if (lastCall != null) {
+            addLastLineChain();
+            context.error(token, Error.lineMissingAccessor);
+        }
+        bindNext(new CallFunction(parent, token, fEnd));
+    }
+
+    private void consumeDot() {
+        if (lastCall == null) {
+            context.error(token, Error.unexpectedToken);
         } else {
-            return input.get(0).getValue();
+            if (token.getNext() != null && token.getNext() != end) {
+                if (token.getNext().getKey() == Key.Word) {
+                    token = token.getNext();
+                    bindNext(new CallField(parent, token));
+                } else {
+                    addLastLineChain();
+                    context.error(token, Error.unexpectedToken);
+                }
+            } else {
+                addLastLineChain();
+                context.error(token, Error.unexpectedEndOfTokens);
+            }
         }
     }
 
-    public ArrayList<Line> groupBy(ArrayList<Line> input, int precedence) {
-
-        if (precedence == 0) {
-            // Find postfix inc
-            return groupByPostfix(input);
-
-        } else if (precedence == 1) {
-            // Find prefix
-            return groupByPrefix(input);
-
-        } else if (precedence == 12) {
-            // Find ternary
-            return groupByTernary(input);
-
-        } else if (precedence == 13) {
-            // Set [Right to Left]
-            return groupByMiddleSetter(input);
-
+    private void consumeParam() {
+        if (lastCall == null) {
+            bindNext(new CallGroup(parent, token));
         } else {
-            return groupByMiddle(input, precedence);
+            bindNext(new CallMethod(parent, token));
         }
     }
 
-    public ArrayList<Line> groupByPostfix(ArrayList<Line> input) {
-        for (int i = 0; i < input.size(); i++) {
-            LineValue line = input.get(i).getValue();
-            LineOp next = i + 1 >= input.size() ? null : input.get(i + 1).getOp();
-
-            if (line != null && next != null) {
-                if (next.getKey() == Key.Inc || next.getKey() == Key.Dec) {
-                    input.set(i, new LineGroup(line, next));
-                    input.remove(i + 1);
-                    i -= 1;
-                }
-            }
+    private void consumeIndex() {
+        if (lastCall == null) {
+            bindNext(new CallArray(parent, token));
+        } else {
+            bindNext(new CallIndexer(parent, token));
         }
-
-        return input;
     }
 
-    public ArrayList<Line> groupByPrefix(ArrayList<Line> input) {
-        for (int i = 0; i < input.size(); i++) {
-            Line prev = i == 0 ? null : input.get(i - 1);
-            LineOp line = input.get(i).getOp();
-            Line next = i + 1 >= input.size() ? null : input.get(i + 1);
-
-            if ((prev == null || prev.isOp()) && line != null && (next != null && !next.isOp())) {
-                if (line.getPrecedence() == 1 || line.getKey() == Key.Add || line.getKey() == Key.Sub) {
-                    input.set(i, new LineGroup(line, next.getValue()));
-                    input.remove(i + 1);
-                    if (prev != null) i -= 2;
-                } else {
-                    context.error(line.getToken(), Error.lineUnexpectedCall);
-                    input.remove(i);
-                    i -= 1;
-                }
-            }
+    private void consumeBrace() {
+        if (lastCall != null) {
+            addLastLineChain();
+            context.error(token, Error.lineMissingAccessor);
         }
-
-        for (int i = 0; i < input.size(); i++) {
-            LineOp line = input.get(i).getOp();
-            if (line != null && line.getPrecedence() == 1) {
-                context.error(line.getToken(), Error.lineUnexpectedCall);
-                input.remove(i);
-                i -= 1;
-            }
-        }
-
-        return input;
+        bindNext(new CallStruct(parent, token));
     }
 
-    public ArrayList<Line> groupByMiddle(ArrayList<Line> input, int precedence) {
-        for (int i = 0; i < input.size(); i++) {
-            LineValue line = input.get(i).getValue();
-            LineOp mid = i + 1 >= input.size() ? null : input.get(i + 1).getOp();
-            LineValue next = i + 2 >= input.size() ? null : input.get(i + 2).getValue();
-
-            if (line != null && mid != null && next != null && mid.getPrecedence() == precedence) {
-                input.set(i, new LineGroup(line, mid, next));
-                input.remove(i + 1);
-                input.remove(i + 1);
-                i--;
-            }
+    private void consumeOp() {
+        if (lastCall != null) {
+            addLastLineChain();
         }
-
-        for (int i = 0; i < input.size(); i++) {
-            LineOp line = input.get(i).getOp();
-            if (line != null && line.getPrecedence() == precedence) {
-                context.error(line.getToken(), Error.lineUnexpectedCall);
-                input.remove(i);
-                i --;
-            }
-        }
-
-        return input;
+        addOp(new LineOp(parent, token));
     }
 
-    public ArrayList<Line> groupByMiddleSetter(ArrayList<Line> input) {
-        for (int i = input.size() - 1; i >= 0; i--) {
-            LineValue line = input.get(i).getValue();
-            LineOp mid = i + 1 >= input.size() ? null : input.get(i + 1).getOp();
-            LineValue next = i + 2 >= input.size() ? null : input.get(i + 2).getValue();
-
-            if (line != null && mid != null && next != null && mid.getPrecedence() == 13) {
-                input.set(i, new LineGroup(line, mid, next));
-                input.remove(i + 1);
-                input.remove(i + 1);
-            }
+    private void bindNext(LineCall lineCall) {
+        if (lastCall != null) {
+            lastCall.setNext(lineCall);
+        } else {
+            firstCall = lineCall;
         }
-
-        for (int i = 0; i < input.size(); i++) {
-            LineOp line = input.get(i).getOp();
-            if (line != null && line.getPrecedence() == 13) {
-                context.error(line.getToken(), Error.lineUnexpectedCall);
-                input.remove(i);
-                i --;
-            }
-        }
-
-        return input;
+        lastCall = lineCall;
     }
 
-    public ArrayList<Line> groupByTernary(ArrayList<Line> input) {
-        while (input.size() > 0) {
-            int start = -1;
-            int end = -1;
-            for (int i = 0; i < input.size(); i++) {
-                LineOp line = input.get(i).getOp();
-                if (line != null && line.getKey() == Key.Quest) {
-                    start = i;
-                } else if (line != null && line.getKey() == Key.Colon) {
-                    end = i;
-                    break;
-                }
-            }
-            if (start != -1 || end != -1) {
-                if (start == -1) {
-                    context.error(input.get(end).getToken(), "Incomplete ternary expression");
-                } else if (end == -1) {
-                    context.error(input.get(start).getToken(), "Incomplete ternary expression");
-                } else {
-                    LineOp lineQuest = input.get(start).getOp();
-                    LineOp lineColon = input.get(end).getOp();
-                    LineValue lineStart = start < 1 ? null : input.get(start - 1).getValue();
-                    LineValue lineEnd = end + 1 >= input.size() ? null : input.get(end + 1).getValue();
-                    LineValue center = null;
-
-                    if (lineStart == null) {
-                        context.error(input.get(start).getToken(), "Incomplete ternary expression");
-                    } else if (lineEnd == null) {
-                        context.error(input.get(start).getToken(), "Incomplete ternary expression");
-                    } else if (start + 1 == end) {
-                        context.error(input.get(start).getToken(), "Incomplete ternary expression");
-                    } else if (start + 2 == end) {
-                        if (input.get(start + 1).getValue() == null) {
-                            context.error(input.get(start).getToken(), "Incomplete ternary expression");
-                        } else {
-                            center = input.get(start + 1).getValue();
-                        }
-                    } else {
-                        ArrayList<Line> innerLine = new ArrayList<>();
-                        for (int i = start + 1; i < end; i++) {
-                            innerLine.add(input.get(i));
-                        }
-                        innerLine = groupByMiddleSetter(innerLine);
-                        if (innerLine.size() != 1 || innerLine.get(0).getValue() == null) {
-                            context.error(input.get(start).getToken(), "Incomplete ternary expression");
-                        } else {
-                            center = innerLine.get(0).getValue();
-                        }
-                    }
-
-                    if (center != null) {
-                        input.subList(start - 1, end + 2).clear();
-                        input.add(start - 1, new LineGroup(lineStart, lineQuest, center, lineColon, lineEnd));
-                        continue;
-                    }
-                }
-            }
-            break;
-        }
-
-        // After errors
-        for (int i = 0; i < input.size(); i++) {
-            LineOp line = input.get(i).getOp();
-            if (line != null && line.getPrecedence() == 12) {
-                input.remove(i);
-                i --;
-            }
-        }
-        return input;
+    private void addLastLineChain() {
+        calls.add(new LineChain(firstCall));
+        lastCall = null;
+        firstCall = null;
     }
 
-    public LineValue parse(Token token, Token end) {
-        return load(read(token, end));
+    private void addOp(LineOp lineOp) {
+        calls.add(lineOp);
     }
 }

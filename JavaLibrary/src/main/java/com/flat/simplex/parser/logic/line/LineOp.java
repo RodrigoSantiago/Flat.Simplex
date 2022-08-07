@@ -6,6 +6,8 @@ import com.flat.simplex.parser.logic.Block;
 
 public class LineOp extends Line {
 
+    public static final int SetPrecedence = 13;
+
     public LineOp(Block parent, Token token) {
         super(parent, token);
     }

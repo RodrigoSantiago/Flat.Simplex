@@ -1,6 +1,5 @@
 package com.flat.simplex.parser.logic.line;
 
-import com.flat.simplex.parser.logic.line.call.CallField;
 import com.flat.simplex.parser.logic.line.call.LineCall;
 
 public class LineChain extends LineValue {
@@ -19,10 +18,12 @@ public class LineChain extends LineValue {
         }
     }
 
+    @Override
     public LineCall getFirstCall() {
         return firstCall;
     }
 
+    @Override
     public LineCall getLastCall() {
         return lastCall;
     }
@@ -40,7 +41,7 @@ public class LineChain extends LineValue {
         StringBuilder str = new StringBuilder();
         LineCall call = firstCall;
         while (call != null) {
-            if (call instanceof CallField && call != firstCall) str.append(".");
+            if (call.getType() == LineCall.Type.Field && call != firstCall) str.append(".");
             str.append(call);
             call = call.getNext();
         }

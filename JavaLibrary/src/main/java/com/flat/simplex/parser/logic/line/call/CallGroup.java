@@ -3,6 +3,7 @@ package com.flat.simplex.parser.logic.line.call;
 import com.flat.simplex.lexer.Key;
 import com.flat.simplex.lexer.Token;
 import com.flat.simplex.parser.logic.Block;
+import com.flat.simplex.parser.logic.LineParser;
 import com.flat.simplex.parser.logic.LineReader;
 import com.flat.simplex.parser.logic.error.Error;
 import com.flat.simplex.parser.logic.line.LineValue;
@@ -21,7 +22,7 @@ public class CallGroup extends LineCall {
         if (start == end) {
             getContext().error(getToken(), Error.lineEmptyBlock);
         } else {
-            lineValue = new LineReader(getParent()).parse(start, end);
+            lineValue = new LineParser(getParent(), start, end).parse();
 
             if (end == null) {
                 getContext().error(start, Error.missingCloser);

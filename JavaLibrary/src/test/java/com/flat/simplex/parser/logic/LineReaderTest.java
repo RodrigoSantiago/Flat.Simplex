@@ -567,8 +567,9 @@ class LineReaderTest {
         LineReader reader = new LineReader(block);
         var lines = reader.read(chain.get(), null);
 
-        assertLines(lines, 1);
-        assertLine(lines, 0, CallField.class, CallField.class);
+        assertLines(lines, 2);
+        assertLine(lines, 0, CallField.class);
+        assertLine(lines, 1, CallField.class);
         assertErrors(context, Error.lineMissingAccessor);
     }
 
@@ -581,8 +582,54 @@ class LineReaderTest {
         LineReader reader = new LineReader(block);
         var lines = reader.read(chain.get(), null);
 
-        assertLines(lines, 1);
-        assertLine(lines, 0, CallField.class, CallMethod.class, CallField.class);
+        assertLines(lines, 2);
+        assertLine(lines, 0, CallField.class, CallMethod.class);
+        assertLine(lines, 1, CallField.class);
+        assertErrors(context, Error.lineMissingAccessor);
+    }
+
+    @Test
+    public void readNumberAfterField_Fail() {
+        TokenChain chain = parseChain("hello 123");
+
+        Context context = new Context();
+        BlockIf block = getBlock(context);
+        LineReader reader = new LineReader(block);
+        var lines = reader.read(chain.get(), null);
+
+        assertLines(lines, 2);
+        assertLine(lines, 0, CallField.class);
+        assertLine(lines, 1, CallValue.class);
+        assertErrors(context, Error.lineMissingAccessor);
+    }
+
+    @Test
+    public void readStructAfterField_Fail() {
+        TokenChain chain = parseChain("hello { a : b }");
+
+        Context context = new Context();
+        BlockIf block = getBlock(context);
+        LineReader reader = new LineReader(block);
+        var lines = reader.read(chain.get(), null);
+
+        assertLines(lines, 2);
+        assertLine(lines, 0, CallField.class);
+        assertLine(lines, 1, CallStruct.class);
+        assertErrors(context, Error.lineMissingAccessor);
+    }
+
+    @Test
+    public void readFunctionAfterField_Fail() {
+        TokenChain chain = parseChain("hello function(){ a = b; }");
+
+        Context context = new Context();
+        BlockIf block = getBlock(context);
+        LineReader reader = new LineReader(block);
+        var lines = reader.read(chain.get(), null);
+
+        assertLines(lines, 2);
+        assertLine(lines, 0, CallField.class);
+        assertLine(lines, 1, CallFunction.class);
         assertErrors(context, Error.lineMissingAccessor);
     }
 
@@ -600,207 +647,6 @@ class LineReaderTest {
         assertLineOp(lines, 1, Key.Add);
         assertLine(lines, 2, CallField.class);
         assertErrors(context, Error.unexpectedToken);
-    }
-
-    @Test
-    public void load() {
-        TokenChain chain = parseChain("a.b.c");
-
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
-        var lines = reader.read(chain.get(), null);
-        var eLines = reader.load(lines);
-
-        LineCallChain callChain = lChain(CallField.class, CallField.class, CallField.class);
-        callChain.assertChain(eLines, "Invalid line chain");
-        assertErrors(context);
-    }
-
-    @Test
-    public void loadLineOperation() {
-        TokenChain chain = parseChain("a+d");
-
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
-        var lines = reader.read(chain.get(), null);
-        var eLines = reader.load(lines);
-
-        LineCallChain callChain = lChain(CallField.class).add(Key.Add).add(CallField.class);
-        callChain.assertChain(eLines, "Invalid line chain");
-        assertErrors(context);
-    }
-
-    @Test
-    public void loadLineDoubleOperation() {
-        TokenChain chain = parseChain("a+d+e");
-
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
-        var lines = reader.read(chain.get(), null);
-        var eLines = reader.load(lines);
-
-        LineCallChain callChain = lChain(lChain(CallField.class).add(Key.Add).add(CallField.class)).add(Key.Add).add(CallField.class);
-        callChain.assertChain(eLines, "Invalid line chain");
-        assertErrors(context);
-    }
-
-    @Test
-    public void loadLineDifferentOperation() {
-        TokenChain chain = parseChain("a+d*e");
-
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
-        var lines = reader.read(chain.get(), null);
-        var eLines = reader.load(lines);
-
-        LineCallChain callChain = lChain(CallField.class).add(Key.Add).add(lChain(CallField.class).add(Key.Mul).add(CallField.class));
-        callChain.assertChain(eLines, "Invalid line chain");
-        assertErrors(context);
-    }
-
-    @Test
-    public void loadLineSetOperation() {
-        TokenChain chain = parseChain("a = e");
-
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
-        var lines = reader.read(chain.get(), null);
-        var eLines = reader.load(lines);
-
-        LineCallChain callChain = lChain(CallField.class).add(Key.Set).add(CallField.class);
-        callChain.assertChain(eLines, "Invalid line chain");
-        assertErrors(context);
-    }
-
-    @Test
-    public void loadLineDoubleSetOperation() {
-        TokenChain chain = parseChain("a = b = c");
-
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
-        var lines = reader.read(chain.get(), null);
-        var eLines = reader.load(lines);
-
-        LineCallChain callChain = lChain(CallField.class).add(Key.Set).add(lChain(CallField.class).add(Key.Set).add(CallField.class));
-        callChain.assertChain(eLines, "Invalid line chain");
-        assertErrors(context);
-    }
-
-    @Test
-    public void loadLineUnaryOperation() {
-        TokenChain chain = parseChain("!a");
-
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
-        var lines = reader.read(chain.get(), null);
-        var eLines = reader.load(lines);
-
-        LineCallChain callChain = lChain(Key.Not).add(CallField.class);
-        callChain.assertChain(eLines, "Invalid line chain");
-        assertErrors(context);
-    }
-
-    @Test
-    public void loadLineAddUnaryOperation() {
-        TokenChain chain = parseChain("b + +a");
-
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
-        var lines = reader.read(chain.get(), null);
-        var eLines = reader.load(lines);
-
-        LineCallChain callChain = lChain(CallField.class).add(Key.Add).add(lChain(Key.Add).add(CallField.class));
-        callChain.assertChain(eLines, "Invalid line chain");
-        assertErrors(context);
-    }
-
-    @Test
-    public void loadLinePostfixOperation() {
-        TokenChain chain = parseChain("b++ + a");
-
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
-        var lines = reader.read(chain.get(), null);
-        var eLines = reader.load(lines);
-
-        LineCallChain callChain = lChain(lChain(CallField.class).add(Key.Inc)).add(Key.Add).add(CallField.class);
-        callChain.assertChain(eLines, "Invalid line chain");
-        assertErrors(context);
-    }
-
-    @Test
-    public void loadLineTernaryOperation() {
-        TokenChain chain = parseChain("a ? b : c");
-
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
-        var lines = reader.read(chain.get(), null);
-        var eLines = reader.load(lines);
-
-        LineCallChain callChain = lChain(CallField.class).add(Key.Quest).add(CallField.class).add(Key.Colon).add(CallField.class);
-        callChain.assertChain(eLines, "Invalid line chain");
-        assertErrors(context);
-    }
-
-    @Test
-    public void loadLineInnerTernaryOperation() {
-        TokenChain chain = parseChain("a ? a ? b : c : c");
-
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
-        var lines = reader.read(chain.get(), null);
-        var eLines = reader.load(lines);
-
-        LineCallChain callChain = lChain(CallField.class).add(Key.Quest)
-                .add(lChain(CallField.class).add(Key.Quest).add(CallField.class).add(Key.Colon).add(CallField.class))
-                .add(Key.Colon).add(CallField.class);
-        callChain.assertChain(eLines, "Invalid line chain");
-        assertErrors(context);
-    }
-
-    @Test
-    public void loadLineInnerTernarySetOperation() {
-        TokenChain chain = parseChain("a ? b = d : c");
-
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
-        var lines = reader.read(chain.get(), null);
-        var eLines = reader.load(lines);
-
-        LineCallChain callChain = lChain(CallField.class).add(Key.Quest)
-                .add(lChain(CallField.class).add(Key.Set).add(CallField.class))
-                .add(Key.Colon).add(CallField.class);
-        callChain.assertChain(eLines, "Invalid line chain");
-        // assertErrors(context); some errors can happen
-    }
-
-    @Test
-    public void loadLineComplexOperation() {
-        TokenChain chain = parseChain("e = a + b * c + d");
-
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
-        var lines = reader.read(chain.get(), null);
-        var eLines = reader.load(lines);
-
-        LineCallChain callChain = lChain(CallField.class).add(Key.Set)
-                .add(lChain(lChain(CallField.class).add(Key.Add)
-                        .add(lChain(CallField.class).add(Key.Mul).add(CallField.class))).add(Key.Add).add(CallField.class));
-        callChain.assertChain(eLines, "Invalid line chain");
-        assertErrors(context);
     }
 
     private void assertLineOp(ArrayList<Line> lines, int pos, Key key) {

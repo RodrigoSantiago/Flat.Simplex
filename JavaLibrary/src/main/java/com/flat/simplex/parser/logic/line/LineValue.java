@@ -2,6 +2,7 @@ package com.flat.simplex.parser.logic.line;
 
 import com.flat.simplex.lexer.Token;
 import com.flat.simplex.parser.logic.Block;
+import com.flat.simplex.parser.logic.line.call.LineCall;
 
 public class LineValue extends Line {
 
@@ -15,6 +16,14 @@ public class LineValue extends Line {
 
     public ReturnType getReturnType() {
         return ReturnType.Object;
+    }
+
+    public LineCall getFirstCall() {
+        return null;
+    }
+
+    public LineCall getLastCall() {
+        return null;
     }
 
     @Override

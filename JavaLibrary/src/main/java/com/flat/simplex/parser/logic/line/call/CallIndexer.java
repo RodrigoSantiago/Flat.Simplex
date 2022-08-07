@@ -3,6 +3,7 @@ package com.flat.simplex.parser.logic.line.call;
 import com.flat.simplex.lexer.Key;
 import com.flat.simplex.lexer.Token;
 import com.flat.simplex.parser.logic.Block;
+import com.flat.simplex.parser.logic.LineParser;
 import com.flat.simplex.parser.logic.LineReader;
 import com.flat.simplex.parser.logic.error.Error;
 import com.flat.simplex.parser.logic.line.LineValue;
@@ -40,7 +41,7 @@ public class CallIndexer extends LineCall {
 
             } else if (state == 1 && token.getKey() == Key.Semicolon) {
                 state = 2;
-                LineValue lineValue = new LineReader(getParent()).parse(init, initEnd);
+                LineValue lineValue = new LineParser(getParent(), init, initEnd).parse();
                 if (lineValue != null) {
                     lines.add(lineValue);
                 }
@@ -53,7 +54,7 @@ public class CallIndexer extends LineCall {
             token = token.getNext();
         }
         if (state == 1) {
-            LineValue lineValue = new LineReader(getParent()).parse(init, initEnd);
+            LineValue lineValue = new LineParser(getParent(), init, initEnd).parse();
             if (lineValue != null) {
                 lines.add(lineValue);
             }

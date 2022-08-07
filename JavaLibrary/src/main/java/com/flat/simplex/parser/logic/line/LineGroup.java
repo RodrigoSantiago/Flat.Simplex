@@ -4,6 +4,8 @@ import com.flat.simplex.lexer.Key;
 import com.flat.simplex.lexer.Token;
 import com.flat.simplex.parser.logic.Block;
 import com.flat.simplex.parser.logic.Context;
+import com.flat.simplex.parser.logic.error.Error;
+import com.flat.simplex.parser.logic.line.call.LineCall;
 
 import java.util.ArrayList;
 
@@ -35,6 +37,13 @@ public class LineGroup extends LineValue {
         this.type = Type.Prefix;
         lines.add(lineOp);
         lines.add(lineOne);
+
+        if (leftOp.getKey() == Key.Inc || leftOp.getKey() == Key.Dec) {
+            if (line.getLastCall() == null || (line.getLastCall().getType() != LineCall.Type.Field &&
+                    line.getLastCall().getType() != LineCall.Type.IndexCall)) {
+                getContext().error(leftOp.getToken(), Error.lineRefOperator);
+            }
+        }
     }
 
     public LineGroup(LineValue line, LineOp rightOp) {
@@ -44,6 +53,13 @@ public class LineGroup extends LineValue {
         this.type = Type.Postfix;
         lines.add(lineOne);
         lines.add(lineOp);
+
+        if (rightOp.getKey() == Key.Inc || rightOp.getKey() == Key.Dec) {
+            if (line.getLastCall() == null || (line.getLastCall().getType() != LineCall.Type.Field &&
+                    line.getLastCall().getType() != LineCall.Type.IndexCall)) {
+                getContext().error(rightOp.getToken(), Error.lineRefOperator);
+            }
+        }
     }
 
     public LineGroup(LineValue leftLine, LineOp lineOp, LineValue rightLine) {
@@ -55,6 +71,13 @@ public class LineGroup extends LineValue {
         lines.add(lineOne);
         lines.add(lineOp);
         lines.add(lineTwo);
+
+        if (lineOp.getKey().op == LineOp.SetPrecedence) {
+            if (leftLine.getLastCall() == null || (leftLine.getLastCall().getType() != LineCall.Type.Field &&
+                    leftLine.getLastCall().getType() != LineCall.Type.IndexCall)) {
+                getContext().error(lineOp.getToken(), Error.lineSetOperator);
+            }
+        }
     }
 
     public LineGroup(LineValue leftLine, LineOp lineOp, LineValue rightLine, LineOp lineElse, LineValue lineTree) {
