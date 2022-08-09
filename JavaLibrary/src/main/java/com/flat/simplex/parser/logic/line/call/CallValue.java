@@ -10,6 +10,7 @@ public class CallValue extends LineCall {
 
     private Double doubleValue;
     private String strValue;
+    private Boolean boolValue;
 
     public CallValue(Block parent, Token token) {
         super(parent, token, Type.Value);
@@ -19,19 +20,51 @@ public class CallValue extends LineCall {
     public void load() {
         if (getToken().getKey() == Key.String) {
             String string = getToken().getString();
-            if (!string.endsWith(string.substring(0, 1))) {
-                strValue = string.substring(1);
+            int chr;
+            int init = 0;
+            boolean endOk = false;
+            boolean invert = false;
+            for (int i = 0; i < string.length(); i += Character.charCount(chr)) {
+                chr = string.codePointAt(i);
+                if (endOk) {
+                    endOk = false;
+                    break;
+                } else if (i == 0) {
+                    init = chr;
+                } else if (chr == '\\') {
+                    invert = !invert;
+                } else if (chr == init && !invert) {
+                    endOk = true;
+                }
+            }
+
+            if (!endOk) {
+                strValue = "";
                 getContext().error(getToken(), Error.lineIncorrectlyFormatted);
             } else {
                 strValue = string.substring(1, string.length() - 1);
             }
         } else if (getToken().getKey() == Key.Number) {
+            doubleValue = 0.0d;
             try {
-                doubleValue = Double.parseDouble(getToken().getString());
+                if (getToken().getString().startsWith("#")) { // # 12 34 56 78
+                    if (getToken().getLength() <= 9) {
+                        doubleValue = Double.longBitsToDouble(Long.parseLong(getToken().getString().substring(1), 16));
+                    } else {
+                        getContext().error(getToken(), Error.lineIncorrectlyFormatted);
+                    }
+                } else {
+                    doubleValue = Double.parseDouble(getToken().getString());
+                }
             } catch (Exception e) {
-                doubleValue = 0.0d;
                 getContext().error(getToken(), Error.lineIncorrectlyFormatted);
             }
+        } else if (getToken().getKey() == Key.True) {
+            boolValue = Boolean.TRUE;
+        } else if (getToken().getKey() == Key.False) {
+            boolValue = Boolean.FALSE;
+        } else if (getToken().getKey() == Key.Undefined) {
+            doubleValue = Double.NaN;
         }
     }
 
@@ -41,6 +74,10 @@ public class CallValue extends LineCall {
 
     public String getStrValue() {
         return strValue;
+    }
+
+    public Boolean getBoolValue() {
+        return boolValue;
     }
 
     @Override

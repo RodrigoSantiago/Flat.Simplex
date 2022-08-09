@@ -20,7 +20,11 @@ public class CallGroup extends LineCall {
         Token start = getToken().getChild();
         Token end = getToken().getLastChild();
         if (start == end) {
-            getContext().error(getToken(), Error.lineEmptyBlock);
+            if (end == null) {
+                getContext().error(getToken(), Error.missingCloser);
+            }
+
+            getContext().error(getToken(), Error.lineEmptyLine);
         } else {
             lineValue = new LineParser(getParent(), start, end).parse();
 

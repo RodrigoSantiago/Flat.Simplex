@@ -6,6 +6,9 @@ import com.flat.simplex.parser.logic.block.BlockIf;
 import com.flat.simplex.parser.logic.error.Error;
 import com.flat.simplex.parser.logic.line.LineValue;
 import com.flat.simplex.parser.logic.line.call.CallField;
+import com.flat.simplex.parser.logic.line.call.CallIndexer;
+import com.flat.simplex.parser.logic.line.call.CallMethod;
+import com.flat.simplex.parser.logic.line.call.CallValue;
 import com.flat.simplex.support.LineCallChain;
 import com.flat.simplex.support.TokenChain;
 import org.junit.jupiter.api.Test;
@@ -406,6 +409,71 @@ class LineBinderTest {
         LineCallChain callChain = lChain(CallField.class).add(Key.Set).add(CallField.class);
         callChain.assertChain(line, "Invalid line chain");
         assertErrors(context, Error.lineTernaryIncomplete);
+    }
+
+    @Test
+    public void loadSetAfterIncrement_Fail() {
+        TokenChain chain = parseChain("++indexer = 10");
+
+        Context context = new Context();
+        BlockIf block = getBlock(context);
+        LineValue line = bind(block, chain.get(), null);
+
+        LineCallChain callChain = lChain(lChain(Key.Inc).add(CallField.class)).add(Key.Set).add(CallValue.class);
+        callChain.assertChain(line, "Invalid line chain");
+        assertErrors(context, Error.lineSetOperator);
+    }
+
+    @Test
+    public void loadSetIndexer() {
+        TokenChain chain = parseChain("indexer[5] = 10");
+
+        Context context = new Context();
+        BlockIf block = getBlock(context);
+        LineValue line = bind(block, chain.get(), null);
+
+        LineCallChain callChain = lChain(CallField.class, CallIndexer.class).add(Key.Set).add(CallValue.class);
+        callChain.assertChain(line, "Invalid line chain");
+        assertErrors(context);
+    }
+
+    @Test
+    public void loadSetAfterIndexerIncrement_Fail() {
+        TokenChain chain = parseChain("++indexer[5] = 10");
+
+        Context context = new Context();
+        BlockIf block = getBlock(context);
+        LineValue line = bind(block, chain.get(), null);
+
+        LineCallChain callChain = lChain(lChain(Key.Inc).add(CallField.class, CallIndexer.class)).add(Key.Set).add(CallValue.class);
+        callChain.assertChain(line, "Invalid line chain");
+        assertErrors(context, Error.lineSetOperator);
+    }
+
+    @Test
+    public void loadSetMethod_Fail() {
+        TokenChain chain = parseChain("method() = 10");
+
+        Context context = new Context();
+        BlockIf block = getBlock(context);
+        LineValue line = bind(block, chain.get(), null);
+
+        LineCallChain callChain = lChain(CallField.class, CallMethod.class).add(Key.Set).add(CallValue.class);
+        callChain.assertChain(line, "Invalid line chain");
+        assertErrors(context, Error.lineSetOperator);
+    }
+
+    @Test
+    public void loadSetValue_Fail() {
+        TokenChain chain = parseChain("20 = 10");
+
+        Context context = new Context();
+        BlockIf block = getBlock(context);
+        LineValue line = bind(block, chain.get(), null);
+
+        LineCallChain callChain = lChain(CallValue.class).add(Key.Set).add(CallValue.class);
+        callChain.assertChain(line, "Invalid line chain");
+        assertErrors(context, Error.lineSetOperator);
     }
 
     @Test

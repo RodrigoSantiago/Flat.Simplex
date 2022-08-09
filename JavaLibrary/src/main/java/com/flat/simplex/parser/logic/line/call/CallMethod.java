@@ -32,14 +32,14 @@ public class CallMethod extends LineCall {
         Token lToken = start;
         int state = 0;
         while (token != end && token != null) {
-            if ((state == 0 || state == 2) && token.getKey() != Key.Semicolon) {
+            if ((state == 0 || state == 2) && token.getKey() != Key.Comma) {
                 state = 1;
                 init = token;
                 initEnd = token.getNext();
-            } else if (state == 1 && token.getKey() != Key.Semicolon) {
+            } else if (state == 1 && token.getKey() != Key.Comma) {
                 initEnd = token.getNext();
 
-            } else if (state == 1 && token.getKey() == Key.Semicolon) {
+            } else if (state == 1 && token.getKey() == Key.Comma) {
                 state = 2;
                 LineValue lineValue = new LineParser(getParent(), init, initEnd).parse();
                 if (lineValue != null) {

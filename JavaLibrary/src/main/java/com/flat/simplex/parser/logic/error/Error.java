@@ -31,9 +31,10 @@ public class Error {
     public static String lineEmptyBlock = "Empty block";
     public static String lineEmptyLine = "Empty line command";
     public static String lineIncorrectlyFormatted = "Malformatted value";
+    public static String lineMissingIndexers = "The minimum dimensions are 1";
     public static String lineTooMuchIndexers = "The maximum dimensions are 2";
-    public static String lineRefOperator = "The operator should be used on a variable or indexer";
-    public static String lineSetOperator = "The operator should be used on a variable or indexer";
+    public static String lineRefOperator = "The increment/decrement operator should be used directly on a variable or indexer";
+    public static String lineSetOperator = "The operator should be used directly on a variable or indexer";
     public static String lineTernaryIncomplete = "Incomplete ternary expression";
 
     public enum Type {
