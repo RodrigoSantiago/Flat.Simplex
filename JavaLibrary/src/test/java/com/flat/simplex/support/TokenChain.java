@@ -10,7 +10,7 @@ public class TokenChain {
     private Token start;
     private Token end;
 
-    public static TokenChain parseChain(String content) {
+    public static TokenChain readChain(String content) {
         TokenChain chain = new TokenChain();
         chain.start = new Lexer(content).read();
         Token token = chain.start;
@@ -78,7 +78,7 @@ public class TokenChain {
     }
 
     private Token cloneToken(Token token) {
-        Token clone = new Token(token.getSource(), 0, token.getLength(), token.getKey());
+        Token clone = new Token(token.getString(), 0, token.getLength(), token.getKey());
         if (token.getChild() != null) {
             clone.setChild(cloneToken(token.getChild()));
             if (token.getLastChild() != null) {
@@ -127,7 +127,7 @@ public class TokenChain {
     }
 
     public static void assertOne(String expected, Token actual, String message) {
-        TokenChain chain = parseChain(expected);
+        TokenChain chain = readChain(expected);
         assertOne(chain.get(), actual, message);
     }
 
@@ -146,7 +146,7 @@ public class TokenChain {
     }
 
     public static void assertChain(String expected, Token actual, Token end, String message) {
-        TokenChain chain = parseChain(expected);
+        TokenChain chain = readChain(expected);
         assertChain(chain.get(), null, actual, end, message);
     }
 

@@ -35,4 +35,8 @@ public class LineValue extends Line {
     public LineValue getValue() {
         return this;
     }
+
+    public boolean isContainer() {
+        return false;
+    }
 }

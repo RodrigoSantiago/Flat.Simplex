@@ -1,26 +1,20 @@
 package com.flat.simplex.parser.logic.block;
 
-import com.flat.simplex.lexer.Key;
-import com.flat.simplex.parser.Parser;
-import com.flat.simplex.parser.logic.Block;
 import com.flat.simplex.parser.logic.Context;
 import com.flat.simplex.parser.logic.error.Error;
 import com.flat.simplex.support.TokenChain;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
 
 import static com.flat.simplex.support.ContextSupport.assertErrors;
 import static com.flat.simplex.support.TokenChain.mChain;
-import static com.flat.simplex.support.TokenChain.parseChain;
+import static com.flat.simplex.support.TokenChain.readChain;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BlockIfTest {
 
     @Test
     public void block() {
-        TokenChain chain = parseChain("if (true) hello = true;");
+        TokenChain chain = readChain("if (true) hello = true;");
 
         Context context = new Context();
         BlockIf block = new BlockIf(context, null, chain.get(), null);
@@ -35,7 +29,7 @@ class BlockIfTest {
 
     @Test
     public void blockIfBlock() {
-        TokenChain chain = parseChain("if (true) {}");
+        TokenChain chain = readChain("if (true) {}");
 
         Context context = new Context();
         BlockIf block = new BlockIf(context, null, chain.get(), null);
@@ -50,7 +44,7 @@ class BlockIfTest {
 
     @Test
     public void blockIfUnexpectedToken_Fail() {
-        TokenChain chain = parseChain("if a (true) {}");
+        TokenChain chain = readChain("if a (true) {}");
 
         Context context = new Context();
         BlockIf block = new BlockIf(context, null, chain.get(), null);
@@ -65,7 +59,7 @@ class BlockIfTest {
 
     @Test
     public void blockIfUnexpectedEndOfTokens_Fail() {
-        TokenChain chain = parseChain("if (true)");
+        TokenChain chain = readChain("if (true)");
 
         Context context = new Context();
         BlockIf block = new BlockIf(context, null, chain.get(), null);
@@ -79,7 +73,7 @@ class BlockIfTest {
 
     @Test
     public void blockIfMissingCondition_Fail() {
-        TokenChain chain = parseChain("if () hello = true;");
+        TokenChain chain = readChain("if () hello = true;");
 
         Context context = new Context();
         BlockIf block = new BlockIf(context, null, chain.get(), null);
@@ -94,7 +88,7 @@ class BlockIfTest {
 
     @Test
     public void blockIfMissingCloser_Fail() {
-        TokenChain chain = parseChain("if (true) {");
+        TokenChain chain = readChain("if (true) {");
 
         Context context = new Context();
         BlockIf block = new BlockIf(context, null, chain.get(), null);

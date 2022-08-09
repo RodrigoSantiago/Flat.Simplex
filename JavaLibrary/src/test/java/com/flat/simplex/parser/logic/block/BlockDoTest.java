@@ -1,6 +1,5 @@
 package com.flat.simplex.parser.logic.block;
 
-import com.flat.simplex.lexer.Key;
 import com.flat.simplex.parser.logic.Context;
 import com.flat.simplex.parser.logic.error.Error;
 import com.flat.simplex.support.TokenChain;
@@ -8,14 +7,14 @@ import org.junit.jupiter.api.Test;
 
 import static com.flat.simplex.support.ContextSupport.assertErrors;
 import static com.flat.simplex.support.TokenChain.mChain;
-import static com.flat.simplex.support.TokenChain.parseChain;
+import static com.flat.simplex.support.TokenChain.readChain;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BlockDoTest {
 
     @Test
     public void block() {
-        TokenChain chain = parseChain("do hello();");
+        TokenChain chain = readChain("do hello();");
 
         Context context = new Context();
         BlockDo block = new BlockDo(context, null, chain.get(), null);
@@ -30,7 +29,7 @@ class BlockDoTest {
 
     @Test
         public void blockDoBlock() {
-        TokenChain chain = parseChain("do{}");
+        TokenChain chain = readChain("do{}");
 
         Context context = new Context();
         BlockDo block = new BlockDo(context, null, chain.get(), null);
@@ -44,7 +43,7 @@ class BlockDoTest {
 
     @Test
     public void blockDoMarkWhile() {
-        TokenChain chain = parseChain("do hello();");
+        TokenChain chain = readChain("do hello();");
 
         Context context = new Context();
         BlockDo block = new BlockDo(context, null, chain.get(), null);
@@ -62,7 +61,7 @@ class BlockDoTest {
 
     @Test
     public void blockDoMarkWhileBlock_Fail() {
-        TokenChain chain = parseChain("do hello();");
+        TokenChain chain = readChain("do hello();");
 
         Context context = new Context();
         BlockDo block = new BlockDo(context, null, chain.get(), null);
@@ -79,7 +78,7 @@ class BlockDoTest {
 
     @Test
     public void blockDoMarkNoWhile_Fail() {
-        TokenChain chain = parseChain("do hello();");
+        TokenChain chain = readChain("do hello();");
 
         Context context = new Context();
         BlockDo block = new BlockDo(context, null, chain.get(), null);
@@ -94,7 +93,7 @@ class BlockDoTest {
 
     @Test
     public void blockDoUnexpectedToken_Fail() {
-        TokenChain chain = parseChain("do {};");
+        TokenChain chain = readChain("do {};");
 
         Context context = new Context();
         BlockDo block = new BlockDo(context, null, chain.get(), null);
@@ -108,7 +107,7 @@ class BlockDoTest {
 
     @Test
     public void blockDoUnexpectedEndOfTokens_Fail() {
-        TokenChain chain = parseChain("do");
+        TokenChain chain = readChain("do");
 
         Context context = new Context();
         BlockDo block = new BlockDo(context, null, chain.get(), null);
@@ -120,7 +119,7 @@ class BlockDoTest {
 
     @Test
     public void blockDoOpenBlock_Fail() {
-        TokenChain chain = parseChain("do{");
+        TokenChain chain = readChain("do{");
 
         Context context = new Context();
         BlockDo block = new BlockDo(context, null, chain.get(), null);
@@ -133,13 +132,13 @@ class BlockDoTest {
     }
 
     private BlockWhile getBlockWhile(Context context) {
-        TokenChain chain = parseChain("while(true);");
+        TokenChain chain = readChain("while(true);");
 
         return new BlockWhile(context, null, chain.get(), null);
     }
 
     private BlockWhile getBlockWhileBlock(Context context) {
-        TokenChain chain = parseChain("while(true){}");
+        TokenChain chain = readChain("while(true){}");
 
         return new BlockWhile(context, null, chain.get(), null);
     }

@@ -1,6 +1,5 @@
 package com.flat.simplex.parser.logic.block;
 
-import com.flat.simplex.lexer.Key;
 import com.flat.simplex.parser.logic.Context;
 import com.flat.simplex.parser.logic.error.Error;
 import com.flat.simplex.support.TokenChain;
@@ -8,14 +7,14 @@ import org.junit.jupiter.api.Test;
 
 import static com.flat.simplex.support.ContextSupport.assertErrors;
 import static com.flat.simplex.support.TokenChain.mChain;
-import static com.flat.simplex.support.TokenChain.parseChain;
+import static com.flat.simplex.support.TokenChain.readChain;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BlockForTest {
 
     @Test
     public void block() {
-        TokenChain chain = parseChain("for(var hello; hello < 10; hello++) hello = true;");
+        TokenChain chain = readChain("for(var hello; hello < 10; hello++) hello = true;");
 
         Context context = new Context();
         BlockFor block = new BlockFor(context, null, chain.get(), null);
@@ -34,7 +33,7 @@ class BlockForTest {
 
     @Test
     public void blockForEmpty() {
-        TokenChain chain = parseChain("for(;;) hello = true;");
+        TokenChain chain = readChain("for(;;) hello = true;");
 
         Context context = new Context();
         BlockFor block = new BlockFor(context, null, chain.get(), null);
@@ -52,7 +51,7 @@ class BlockForTest {
 
     @Test
     public void blockForInitOnly() {
-        TokenChain chain = parseChain("for(hello = 10;;) hello = true;");
+        TokenChain chain = readChain("for(hello = 10;;) hello = true;");
 
         Context context = new Context();
         BlockFor block = new BlockFor(context, null, chain.get(), null);
@@ -70,7 +69,7 @@ class BlockForTest {
 
     @Test
     public void blockForConditionOnly() {
-        TokenChain chain = parseChain("for(;hello < 10;) hello = true;");
+        TokenChain chain = readChain("for(;hello < 10;) hello = true;");
 
         Context context = new Context();
         BlockFor block = new BlockFor(context, null, chain.get(), null);
@@ -88,7 +87,7 @@ class BlockForTest {
 
     @Test
     public void blockForLoopOnly() {
-        TokenChain chain = parseChain("for(;;hello++) hello = true;");
+        TokenChain chain = readChain("for(;;hello++) hello = true;");
 
         Context context = new Context();
         BlockFor block = new BlockFor(context, null, chain.get(), null);
@@ -106,7 +105,7 @@ class BlockForTest {
 
     @Test
     public void blockForTooMuchSemicolons_Fail() {
-        TokenChain chain = parseChain("for(;;;) hello = true;");
+        TokenChain chain = readChain("for(;;;) hello = true;");
 
         Context context = new Context();
         BlockFor block = new BlockFor(context, null, chain.get(), null);
@@ -124,7 +123,7 @@ class BlockForTest {
 
     @Test
     public void blockForInitOnlyMissingSemicolon_Fail() {
-        TokenChain chain = parseChain("for(var hello = 10) hello = true;");
+        TokenChain chain = readChain("for(var hello = 10) hello = true;");
 
         Context context = new Context();
         BlockFor block = new BlockFor(context, null, chain.get(), null);
@@ -142,7 +141,7 @@ class BlockForTest {
 
     @Test
     public void blockForBlock() {
-        TokenChain chain = parseChain("for(;;) {}");
+        TokenChain chain = readChain("for(;;) {}");
 
         Context context = new Context();
         BlockFor block = new BlockFor(context, null, chain.get(), null);
@@ -160,7 +159,7 @@ class BlockForTest {
 
     @Test
     public void blockForOpenBlock_Fail() {
-        TokenChain chain = parseChain("for(;;) {");
+        TokenChain chain = readChain("for(;;) {");
 
         Context context = new Context();
         BlockFor block = new BlockFor(context, null, chain.get(), null);
@@ -178,7 +177,7 @@ class BlockForTest {
 
     @Test
     public void blockForUnexpectedToken_Fail() {
-        TokenChain chain = parseChain("for true(;;) hello = true;");
+        TokenChain chain = readChain("for true(;;) hello = true;");
 
         Context context = new Context();
         BlockFor block = new BlockFor(context, null, chain.get(), null);
@@ -196,7 +195,7 @@ class BlockForTest {
 
     @Test
     public void blockForUnexpectedEndOfTokens_Fail() {
-        TokenChain chain = parseChain("for(;;)");
+        TokenChain chain = readChain("for(;;)");
 
         Context context = new Context();
         BlockFor block = new BlockFor(context, null, chain.get(), null);

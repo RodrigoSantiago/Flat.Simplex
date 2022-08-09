@@ -37,6 +37,14 @@ public class LineChain extends LineValue {
     }
 
     @Override
+    public boolean isContainer() {
+        if (firstCall == lastCall && firstCall != null) {
+            return firstCall.getType() == LineCall.Type.Array;
+        }
+        return false;
+    }
+
+    @Override
     public String toString() {
         StringBuilder str = new StringBuilder();
         LineCall call = firstCall;

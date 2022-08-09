@@ -1,6 +1,5 @@
 package com.flat.simplex.parser.logic.block;
 
-import com.flat.simplex.lexer.Token;
 import com.flat.simplex.lexer.TokenGroup;
 import com.flat.simplex.parser.logic.Context;
 import com.flat.simplex.parser.logic.Field;
@@ -9,21 +8,19 @@ import com.flat.simplex.support.TokenChain;
 import org.junit.jupiter.api.Test;
 import org.opentest4j.AssertionFailedError;
 
-import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 
 import static com.flat.simplex.support.ContextSupport.assertErrors;
 import static com.flat.simplex.support.ContextSupport.assertFields;
 import static com.flat.simplex.support.TokenChain.mChain;
-import static com.flat.simplex.support.TokenChain.parseChain;
+import static com.flat.simplex.support.TokenChain.readChain;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BlockVarTest {
 
     @Test
     public void varSemicolon() {
-        TokenChain chain = parseChain("var a;");
+        TokenChain chain = readChain("var a;");
 
         Context context = new Context();
         BlockVar block = new BlockVar(context, null, chain.get(), null, true);
@@ -35,7 +32,7 @@ class BlockVarTest {
 
     @Test
     public void varNoSemicolon() {
-        TokenChain chain = parseChain("var a");
+        TokenChain chain = readChain("var a");
 
         Context context = new Context();
         BlockVar block = new BlockVar(context, null, chain.get(), null, false);
@@ -47,7 +44,7 @@ class BlockVarTest {
 
     @Test
     public void varMultiple() {
-        TokenChain chain = parseChain("var a,b;");
+        TokenChain chain = readChain("var a,b;");
 
         Context context = new Context();
         BlockVar block = new BlockVar(context, null, chain.get(), null, true);
@@ -59,7 +56,7 @@ class BlockVarTest {
 
     @Test
     public void varMultipleNoSemicolon() {
-        TokenChain chain = parseChain("var a,b");
+        TokenChain chain = readChain("var a,b");
 
         Context context = new Context();
         BlockVar block = new BlockVar(context, null, chain.get(), null, false);
@@ -71,7 +68,7 @@ class BlockVarTest {
 
     @Test
     public void varSingleInit() {
-        TokenChain chain = parseChain("var a = 1;");
+        TokenChain chain = readChain("var a = 1;");
 
         Context context = new Context();
         BlockVar block = new BlockVar(context, null, chain.get(), null, true);
@@ -84,7 +81,7 @@ class BlockVarTest {
 
     @Test
     public void varSingleInitNoSemicolon() {
-        TokenChain chain = parseChain("var a = 1");
+        TokenChain chain = readChain("var a = 1");
 
         Context context = new Context();
         BlockVar block = new BlockVar(context, null, chain.get(), null, false);
@@ -97,7 +94,7 @@ class BlockVarTest {
 
     @Test
     public void varMultipleSingleInit() {
-        TokenChain chain = parseChain("var a = 1, b;");
+        TokenChain chain = readChain("var a = 1, b;");
 
         Context context = new Context();
         BlockVar block = new BlockVar(context, null, chain.get(), null, true);
@@ -110,7 +107,7 @@ class BlockVarTest {
 
     @Test
     public void varMultipleSingleInitNoSemicolon() {
-        TokenChain chain = parseChain("var a = 1, b");
+        TokenChain chain = readChain("var a = 1, b");
 
         Context context = new Context();
         BlockVar block = new BlockVar(context, null, chain.get(), null, false);
@@ -123,7 +120,7 @@ class BlockVarTest {
 
     @Test
     public void varMultipleSingleInitAfter() {
-        TokenChain chain = parseChain("var a, b = 1;");
+        TokenChain chain = readChain("var a, b = 1;");
 
         Context context = new Context();
         BlockVar block = new BlockVar(context, null, chain.get(), null, true);
@@ -136,7 +133,7 @@ class BlockVarTest {
 
     @Test
     public void varMultipleSingleInitAfterNoSemicolon() {
-        TokenChain chain = parseChain("var a, b = 1");
+        TokenChain chain = readChain("var a, b = 1");
 
         Context context = new Context();
         BlockVar block = new BlockVar(context, null, chain.get(), null, false);
@@ -149,7 +146,7 @@ class BlockVarTest {
 
     @Test
     public void varMultipleInit() {
-        TokenChain chain = parseChain("var a = 1, b = 2;");
+        TokenChain chain = readChain("var a = 1, b = 2;");
 
         Context context = new Context();
         BlockVar block = new BlockVar(context, null, chain.get(), null, true);
@@ -162,7 +159,7 @@ class BlockVarTest {
 
     @Test
     public void varMultipleInitNoSemicolon() {
-        TokenChain chain = parseChain("var a = 1, b = 2");
+        TokenChain chain = readChain("var a = 1, b = 2");
 
         Context context = new Context();
         BlockVar block = new BlockVar(context, null, chain.get(), null, false);
@@ -175,7 +172,7 @@ class BlockVarTest {
 
     @Test
     public void varSemicolonExpected_Fail() {
-        TokenChain chain = parseChain("var a = 1, b = 2");
+        TokenChain chain = readChain("var a = 1, b = 2");
 
         Context context = new Context();
         BlockVar block = new BlockVar(context, null, chain.get(), null, true);
@@ -188,7 +185,7 @@ class BlockVarTest {
 
     @Test
     public void varSemicolonUnexpected_Fail() {
-        TokenChain chain = parseChain("var a = 1, b = 2;");
+        TokenChain chain = readChain("var a = 1, b = 2;");
 
         Context context = new Context();
         BlockVar block = new BlockVar(context, null, chain.get(), null, false);
@@ -201,7 +198,7 @@ class BlockVarTest {
 
     @Test
     public void varSemicolonEarly_Fail() {
-        TokenChain chain = parseChain("var a = 1; b, c");
+        TokenChain chain = readChain("var a = 1; b, c");
 
         Context context = new Context();
         BlockVar block = new BlockVar(context, null, chain.get(), null, true);
@@ -214,7 +211,7 @@ class BlockVarTest {
 
     @Test
     public void varSemicolonEarlyNoSemicolon_Fail() {
-        TokenChain chain = parseChain("var a = 1; b, c");
+        TokenChain chain = readChain("var a = 1; b, c");
 
         Context context = new Context();
         BlockVar block = new BlockVar(context, null, chain.get(), null, false);
@@ -227,7 +224,7 @@ class BlockVarTest {
 
     @Test
     public void varUnexpectedEndOfTokens_Fail() {
-        TokenChain chain = parseChain("var");
+        TokenChain chain = readChain("var");
 
         Context context = new Context();
         BlockVar block = new BlockVar(context, null, chain.get(), null, true);
@@ -240,7 +237,7 @@ class BlockVarTest {
 
     @Test
     public void varUnexpectedEndOfTokensNoSemicolon_Fail() {
-        TokenChain chain = parseChain("var");
+        TokenChain chain = readChain("var");
 
         Context context = new Context();
         BlockVar block = new BlockVar(context, null, chain.get(), null, false);
@@ -253,7 +250,7 @@ class BlockVarTest {
 
     @Test
     public void varInitExpected_Fail() {
-        TokenChain chain = parseChain("var a =, b = 1;");
+        TokenChain chain = readChain("var a =, b = 1;");
 
         Context context = new Context();
         BlockVar block = new BlockVar(context, null, chain.get(), null, true);
@@ -266,7 +263,7 @@ class BlockVarTest {
 
     @Test
     public void varLastInitExpectedNoSemicolon_Fail() {
-        TokenChain chain = parseChain("var a = 1, b =");
+        TokenChain chain = readChain("var a = 1, b =");
 
         Context context = new Context();
         BlockVar block = new BlockVar(context, null, chain.get(), null, false);
@@ -279,7 +276,7 @@ class BlockVarTest {
 
     @Test
     public void varLastInitExpected_Fail() {
-        TokenChain chain = parseChain("var a = 1, b =;");
+        TokenChain chain = readChain("var a = 1, b =;");
 
         Context context = new Context();
         BlockVar block = new BlockVar(context, null, chain.get(), null, true);
@@ -292,7 +289,7 @@ class BlockVarTest {
 
     @Test
     public void varLastInitExpectedNeededSemicolon_Fail() {
-        TokenChain chain = parseChain("var a = 1, b =");
+        TokenChain chain = readChain("var a = 1, b =");
 
         Context context = new Context();
         BlockVar block = new BlockVar(context, null, chain.get(), null, true);
@@ -305,7 +302,7 @@ class BlockVarTest {
 
     @Test
     public void varInitExpectedNoSemicolon_Fail() {
-        TokenChain chain = parseChain("var a =, b = 1");
+        TokenChain chain = readChain("var a =, b = 1");
 
         Context context = new Context();
         BlockVar block = new BlockVar(context, null, chain.get(), null, false);
@@ -318,7 +315,7 @@ class BlockVarTest {
 
     @Test
     public void varDoubleComma_Fail() {
-        TokenChain chain = parseChain("var a = 1, ,b = 2;");
+        TokenChain chain = readChain("var a = 1, ,b = 2;");
 
         Context context = new Context();
         BlockVar block = new BlockVar(context, null, chain.get(), null, true);
@@ -331,7 +328,7 @@ class BlockVarTest {
 
     @Test
     public void varDoubleCommaNoSemicolon_Fail() {
-        TokenChain chain = parseChain("var a = 1, ,b = 2");
+        TokenChain chain = readChain("var a = 1, ,b = 2");
 
         Context context = new Context();
         BlockVar block = new BlockVar(context, null, chain.get(), null, false);
@@ -344,7 +341,7 @@ class BlockVarTest {
 
     @Test
     public void varRepeatedName() {
-        TokenChain chain = parseChain("var a;");
+        TokenChain chain = readChain("var a;");
 
         Context context = new Context();
         context.addField(new Field(mChain("a").get(), "a", Field.Type.Local));
@@ -357,7 +354,7 @@ class BlockVarTest {
 
     @Test
     public void varParentRepeatedName() {
-        TokenChain chain = parseChain("var a;");
+        TokenChain chain = readChain("var a;");
 
         Context context = new Context();
         BlockIf blockIf = getBlockIf(context);
@@ -372,7 +369,7 @@ class BlockVarTest {
 
     @Test
     public void varInsideSwitch_Fail() {
-        TokenChain chain = parseChain("var a;");
+        TokenChain chain = readChain("var a;");
 
         Context context = new Context();
         BlockSwitch blockSwitch = getBlockSwitch(context);
@@ -395,20 +392,20 @@ class BlockVarTest {
             } else if ((inits[i] != null && !inits[i].equals("")) && varInits.get(i) == null) {
                 throw new AssertionFailedError("Incorrect init tokens", inits[i], varInits.get(i));
             } else {
-                TokenChain.assertChain(parseChain(inits[i]).get(), null,
+                TokenChain.assertChain(readChain(inits[i]).get(), null,
                         varInits.get(i).getStart(), varInits.get(i).getEnd(), "Incorrect init tokens");
             }
         }
     }
 
     private BlockIf getBlockIf(Context context) {
-        TokenChain chain = parseChain("if(true);");
+        TokenChain chain = readChain("if(true);");
 
         return new BlockIf(context, null, chain.get(), null);
     }
 
     private BlockSwitch getBlockSwitch(Context context) {
-        TokenChain chain = parseChain("switch(hello){}");
+        TokenChain chain = readChain("switch(hello){}");
 
         return new BlockSwitch(context, null, chain.get(), null);
     }

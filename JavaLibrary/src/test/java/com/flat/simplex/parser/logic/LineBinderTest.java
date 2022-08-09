@@ -15,8 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import static com.flat.simplex.support.ContextSupport.assertErrors;
 import static com.flat.simplex.support.LineCallChain.lChain;
-import static com.flat.simplex.support.TokenChain.parseChain;
-import static org.junit.jupiter.api.Assertions.*;
+import static com.flat.simplex.support.TokenChain.readChain;
 
 class LineBinderTest {
 
@@ -29,7 +28,7 @@ class LineBinderTest {
 
     @Test
     public void load() {
-        TokenChain chain = parseChain("a.b.c");
+        TokenChain chain = readChain("a.b.c");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -42,7 +41,7 @@ class LineBinderTest {
 
     @Test
     public void loadLineOperation() {
-        TokenChain chain = parseChain("a + d");
+        TokenChain chain = readChain("a + d");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -55,7 +54,7 @@ class LineBinderTest {
 
     @Test
     public void loadLineDoubleOperation() {
-        TokenChain chain = parseChain("a + d + e");
+        TokenChain chain = readChain("a + d + e");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -68,7 +67,7 @@ class LineBinderTest {
 
     @Test
     public void loadLineDifferentOperation() {
-        TokenChain chain = parseChain("a+d*e");
+        TokenChain chain = readChain("a+d*e");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -81,7 +80,7 @@ class LineBinderTest {
 
     @Test
     public void loadLineSetOperation() {
-        TokenChain chain = parseChain("a = e");
+        TokenChain chain = readChain("a = e");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -94,7 +93,7 @@ class LineBinderTest {
 
     @Test
     public void loadLineDoubleSetOperation() {
-        TokenChain chain = parseChain("a = b = c");
+        TokenChain chain = readChain("a = b = c");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -107,7 +106,7 @@ class LineBinderTest {
 
     @Test
     public void loadLineUnaryOperation() {
-        TokenChain chain = parseChain("!a");
+        TokenChain chain = readChain("!a");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -120,7 +119,7 @@ class LineBinderTest {
 
     @Test
     public void loadLineAddUnaryOperation() {
-        TokenChain chain = parseChain("b + +a");
+        TokenChain chain = readChain("b + +a");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -133,7 +132,7 @@ class LineBinderTest {
 
     @Test
     public void loadLinePostfixOperation() {
-        TokenChain chain = parseChain("b++ + a");
+        TokenChain chain = readChain("b++ + a");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -146,7 +145,7 @@ class LineBinderTest {
 
     @Test
     public void loadLineTernaryOperation() {
-        TokenChain chain = parseChain("a ? b : c");
+        TokenChain chain = readChain("a ? b : c");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -159,7 +158,7 @@ class LineBinderTest {
 
     @Test
     public void loadLineInnerTernaryOperation() {
-        TokenChain chain = parseChain("a ? a ? b : c : c");
+        TokenChain chain = readChain("a ? a ? b : c : c");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -174,7 +173,7 @@ class LineBinderTest {
 
     @Test
     public void loadLineOutTernaryOperation() {
-        TokenChain chain = parseChain("a ? b : c ? d : e");
+        TokenChain chain = readChain("a ? b : c ? d : e");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -188,7 +187,7 @@ class LineBinderTest {
 
     @Test
     public void loadLineInnerTernarySetOperation() {
-        TokenChain chain = parseChain("a ? b = d : c");
+        TokenChain chain = readChain("a ? b = d : c");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -203,7 +202,7 @@ class LineBinderTest {
 
     @Test
     public void loadLineComplexOperation() {
-        TokenChain chain = parseChain("e = a + b * c + d");
+        TokenChain chain = readChain("e = a + b * c + d");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -218,7 +217,7 @@ class LineBinderTest {
 
     @Test
     public void loadLineMissingOperator_Fail() {
-        TokenChain chain = parseChain("a + * d");
+        TokenChain chain = readChain("a + * d");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -231,7 +230,7 @@ class LineBinderTest {
 
     @Test
     public void loadLineTooMuchOperator_Fail() {
-        TokenChain chain = parseChain("a * | & % d");
+        TokenChain chain = readChain("a * | & % d");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -244,7 +243,7 @@ class LineBinderTest {
 
     @Test
     public void loadLineMissingOperatorMiddle_Fail() {
-        TokenChain chain = parseChain("a * d *");
+        TokenChain chain = readChain("a * d *");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -257,7 +256,7 @@ class LineBinderTest {
 
     @Test
     public void loadLineMissingOperatorSet_Fail() {
-        TokenChain chain = parseChain("a = = d =");
+        TokenChain chain = readChain("a = = d =");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -270,7 +269,7 @@ class LineBinderTest {
 
     @Test
     public void loadLineNoOperator_Fail() {
-        TokenChain chain = parseChain("a !b");
+        TokenChain chain = readChain("a !b");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -283,7 +282,7 @@ class LineBinderTest {
 
     @Test
     public void loadLineDoubleOperator_Fail() {
-        TokenChain chain = parseChain("a + +");
+        TokenChain chain = readChain("a + +");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -296,7 +295,7 @@ class LineBinderTest {
 
     @Test
     public void loadIncompleteTernaryMissingLeft_Fail() {
-        TokenChain chain = parseChain(" ? a : b");
+        TokenChain chain = readChain(" ? a : b");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -309,7 +308,7 @@ class LineBinderTest {
 
     @Test
     public void loadIncompleteTernaryMissingQuest_Fail() {
-        TokenChain chain = parseChain("a : b");
+        TokenChain chain = readChain("a : b");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -322,7 +321,7 @@ class LineBinderTest {
 
     @Test
     public void loadIncompleteTernaryMissingColon_Fail() {
-        TokenChain chain = parseChain("a ? b");
+        TokenChain chain = readChain("a ? b");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -335,7 +334,7 @@ class LineBinderTest {
 
     @Test
     public void loadIncompleteTernaryMissingEnd_Fail() {
-        TokenChain chain = parseChain("a ? b :");
+        TokenChain chain = readChain("a ? b :");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -348,7 +347,7 @@ class LineBinderTest {
 
     @Test
     public void loadIncompleteTernaryMissingMiddle_Fail() {
-        TokenChain chain = parseChain("a ? : b");
+        TokenChain chain = readChain("a ? : b");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -361,7 +360,7 @@ class LineBinderTest {
 
     @Test
     public void loadAfterTernaryOperator_Fail() {
-        TokenChain chain = parseChain("a ? b : : d");
+        TokenChain chain = readChain("a ? b : : d");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -374,7 +373,7 @@ class LineBinderTest {
 
     @Test
     public void loadTernaryEmptyResultInside_Fail() {
-        TokenChain chain = parseChain("a ? * : d");
+        TokenChain chain = readChain("a ? * : d");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -387,7 +386,7 @@ class LineBinderTest {
 
     @Test
     public void loadTernaryDoubleResultInside_Fail() {
-        TokenChain chain = parseChain("a ? b c : d");
+        TokenChain chain = readChain("a ? b c : d");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -400,7 +399,7 @@ class LineBinderTest {
 
     @Test
     public void loadTernarySetterInside_Fail() {
-        TokenChain chain = parseChain("a ? = : d");
+        TokenChain chain = readChain("a ? = : d");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -413,7 +412,7 @@ class LineBinderTest {
 
     @Test
     public void loadSetAfterIncrement_Fail() {
-        TokenChain chain = parseChain("++indexer = 10");
+        TokenChain chain = readChain("++indexer = 10");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -426,7 +425,7 @@ class LineBinderTest {
 
     @Test
     public void loadSetIndexer() {
-        TokenChain chain = parseChain("indexer[5] = 10");
+        TokenChain chain = readChain("indexer[5] = 10");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -439,7 +438,7 @@ class LineBinderTest {
 
     @Test
     public void loadSetAfterIndexerIncrement_Fail() {
-        TokenChain chain = parseChain("++indexer[5] = 10");
+        TokenChain chain = readChain("++indexer[5] = 10");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -452,7 +451,7 @@ class LineBinderTest {
 
     @Test
     public void loadSetMethod_Fail() {
-        TokenChain chain = parseChain("method() = 10");
+        TokenChain chain = readChain("method() = 10");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -465,7 +464,7 @@ class LineBinderTest {
 
     @Test
     public void loadSetValue_Fail() {
-        TokenChain chain = parseChain("20 = 10");
+        TokenChain chain = readChain("20 = 10");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -478,7 +477,7 @@ class LineBinderTest {
 
     @Test
     public void loadMultiplyNothing_Fail() {
-        TokenChain chain = parseChain("a *");
+        TokenChain chain = readChain("a *");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -491,7 +490,7 @@ class LineBinderTest {
 
     @Test
     public void loadMultiplyAlone_Fail() {
-        TokenChain chain = parseChain("*");
+        TokenChain chain = readChain("*");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -504,7 +503,7 @@ class LineBinderTest {
 
     @Test
     public void loadEmptyFromReader_Fail() {
-        TokenChain chain = parseChain("$");
+        TokenChain chain = readChain("$");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -516,7 +515,7 @@ class LineBinderTest {
     }
 
     private BlockIf getBlock(Context context) {
-        TokenChain chain = parseChain("if(true);");
+        TokenChain chain = readChain("if(true);");
 
         return new BlockIf(context, null, chain.get(), null);
 

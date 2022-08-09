@@ -6,14 +6,13 @@ import com.flat.simplex.support.TokenChain;
 import org.junit.jupiter.api.Test;
 
 import static com.flat.simplex.support.ContextSupport.assertErrors;
-import static com.flat.simplex.support.TokenChain.parseChain;
-import static org.junit.jupiter.api.Assertions.*;
+import static com.flat.simplex.support.TokenChain.readChain;
 
 class BlockBreakTest {
 
     @Test
     public void block() {
-        TokenChain chain = parseChain("break;");
+        TokenChain chain = readChain("break;");
 
         Context context = new Context();
         BlockWhile blockWhile = getBlockWhile(context);
@@ -25,7 +24,7 @@ class BlockBreakTest {
 
     @Test
     public void blockBreakSwitch() {
-        TokenChain chain = parseChain("break;");
+        TokenChain chain = readChain("break;");
 
         Context context = new Context();
         BlockSwitch blockSwitch = getBlockSwitch(context);
@@ -37,7 +36,7 @@ class BlockBreakTest {
 
     @Test
     public void blockBreakFor() {
-        TokenChain chain = parseChain("break;");
+        TokenChain chain = readChain("break;");
 
         Context context = new Context();
         BlockFor blockFor = getBlockFor(context);
@@ -49,7 +48,7 @@ class BlockBreakTest {
 
     @Test
     public void blockBreakWithoutLoop_Fail() {
-        TokenChain chain = parseChain("break;");
+        TokenChain chain = readChain("break;");
 
         Context context = new Context();
         BlockBreak block = new BlockBreak(context, null, chain.get(), null);
@@ -60,7 +59,7 @@ class BlockBreakTest {
 
     @Test
     public void blockBreakUnexpectedToken_Fail() {
-        TokenChain chain = parseChain("break hello;");
+        TokenChain chain = readChain("break hello;");
 
         Context context = new Context();
         BlockWhile blockWhile = getBlockWhile(context);
@@ -72,7 +71,7 @@ class BlockBreakTest {
 
     @Test
     public void blockBreakUnexpectedEndOfTokens_Fail() {
-        TokenChain chain = parseChain("break");
+        TokenChain chain = readChain("break");
 
         Context context = new Context();
         BlockWhile blockWhile = getBlockWhile(context);
@@ -83,21 +82,21 @@ class BlockBreakTest {
     }
 
     private BlockWhile getBlockWhile(Context context) {
-        TokenChain chain = parseChain("while(true);");
+        TokenChain chain = readChain("while(true);");
 
         return new BlockWhile(context, null, chain.get(), null);
 
     }
 
     private BlockFor getBlockFor(Context context) {
-        TokenChain chain = parseChain("for(;;);");
+        TokenChain chain = readChain("for(;;);");
 
         return new BlockFor(context, null, chain.get(), null);
 
     }
 
     private BlockSwitch getBlockSwitch(Context context) {
-        TokenChain chain = parseChain("switch(value){}");
+        TokenChain chain = readChain("switch(value){}");
 
         return new BlockSwitch(context, null, chain.get(), null);
     }

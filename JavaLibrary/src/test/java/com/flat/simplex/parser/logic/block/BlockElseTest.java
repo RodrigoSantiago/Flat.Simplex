@@ -1,20 +1,19 @@
 package com.flat.simplex.parser.logic.block;
 
-import com.flat.simplex.lexer.Key;
 import com.flat.simplex.parser.logic.Context;
 import com.flat.simplex.parser.logic.error.Error;
 import com.flat.simplex.support.TokenChain;
 import org.junit.jupiter.api.Test;
 
 import static com.flat.simplex.support.ContextSupport.assertErrors;
-import static com.flat.simplex.support.TokenChain.parseChain;
+import static com.flat.simplex.support.TokenChain.readChain;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BlockElseTest {
 
     @Test
     public void block() {
-        TokenChain chain = parseChain("else hello = true;");
+        TokenChain chain = readChain("else hello = true;");
 
         Context context = new Context();
         BlockIf blockIf = getBlockIf(context);
@@ -30,7 +29,7 @@ class BlockElseTest {
 
     @Test
     public void blockElseBlock() {
-        TokenChain chain = parseChain("else {}");
+        TokenChain chain = readChain("else {}");
 
         Context context = new Context();
         BlockIf blockIf = getBlockIf(context);
@@ -46,7 +45,7 @@ class BlockElseTest {
 
     @Test
     public void blockElseOpenBlock_Fail() {
-        TokenChain chain = parseChain("else {");
+        TokenChain chain = readChain("else {");
 
         Context context = new Context();
         BlockIf blockIf = getBlockIf(context);
@@ -62,7 +61,7 @@ class BlockElseTest {
 
     @Test
     public void blockElseWithElseIf() {
-        TokenChain chain = parseChain("else hello = true;");
+        TokenChain chain = readChain("else hello = true;");
 
         Context context = new Context();
         BlockElseIf blockElseIf = getBlockElseIf(context);
@@ -78,7 +77,7 @@ class BlockElseTest {
 
     @Test
     public void blockElseWithoutIf_Fail() {
-        TokenChain chain = parseChain("else hello = true;");
+        TokenChain chain = readChain("else hello = true;");
 
         Context context = new Context();
         BlockWhile blockWhile = getBlockWhile(context);
@@ -94,7 +93,7 @@ class BlockElseTest {
 
     @Test
     public void blockElseUnexpectedToken_Fail() {
-        TokenChain chain = parseChain("else {};");
+        TokenChain chain = readChain("else {};");
 
         Context context = new Context();
         BlockIf blockIf = getBlockIf(context);
@@ -110,7 +109,7 @@ class BlockElseTest {
 
     @Test
     public void blockElseUnexpectedEndOfTokens_Fail() {
-        TokenChain chain = parseChain("else");
+        TokenChain chain = readChain("else");
 
         Context context = new Context();
         BlockIf blockIf = getBlockIf(context);
@@ -124,19 +123,19 @@ class BlockElseTest {
     }
 
     private BlockIf getBlockIf(Context context) {
-        TokenChain chain = parseChain("if(true);");
+        TokenChain chain = readChain("if(true);");
 
         return new BlockIf(context, null, chain.get(), null);
     }
 
     private BlockElseIf getBlockElseIf(Context context) {
-        TokenChain chain = parseChain("else if(true);");
+        TokenChain chain = readChain("else if(true);");
 
         return new BlockElseIf(context, null, chain.get(), null);
     }
 
     private BlockWhile getBlockWhile(Context context) {
-        TokenChain chain = parseChain("while(true);");
+        TokenChain chain = readChain("while(true);");
 
         return new BlockWhile(context, null, chain.get(), null);
     }

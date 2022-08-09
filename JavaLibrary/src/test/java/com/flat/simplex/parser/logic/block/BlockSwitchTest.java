@@ -6,14 +6,14 @@ import com.flat.simplex.support.TokenChain;
 import org.junit.jupiter.api.Test;
 
 import static com.flat.simplex.support.ContextSupport.assertErrors;
-import static com.flat.simplex.support.TokenChain.parseChain;
+import static com.flat.simplex.support.TokenChain.readChain;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BlockSwitchTest {
 
     @Test
     public void blockSwitchBlock() {
-        TokenChain chain = parseChain("switch (hello) {}");
+        TokenChain chain = readChain("switch (hello) {}");
 
         Context context = new Context();
         BlockSwitch block = new BlockSwitch(context, null, chain.get(), null);
@@ -27,7 +27,7 @@ class BlockSwitchTest {
 
     @Test
     public void blockSwitchUnexpectedToken_Fail() {
-        TokenChain chain = parseChain("switch a (hello) {}");
+        TokenChain chain = readChain("switch a (hello) {}");
 
         Context context = new Context();
         BlockSwitch block = new BlockSwitch(context, null, chain.get(), null);
@@ -41,7 +41,7 @@ class BlockSwitchTest {
 
     @Test
     public void blockSwitchUnexpectedEndOfTokens_Fail() {
-        TokenChain chain = parseChain("switch (hello)");
+        TokenChain chain = readChain("switch (hello)");
 
         Context context = new Context();
         BlockSwitch block = new BlockSwitch(context, null, chain.get(), null);
@@ -54,7 +54,7 @@ class BlockSwitchTest {
 
     @Test
     public void blockSwitchMissingValue_Fail() {
-        TokenChain chain = parseChain("switch () {}");
+        TokenChain chain = readChain("switch () {}");
 
         Context context = new Context();
         BlockSwitch block = new BlockSwitch(context, null, chain.get(), null);
@@ -68,7 +68,7 @@ class BlockSwitchTest {
 
     @Test
     public void blockSwitchMissingCloser_Fail() {
-        TokenChain chain = parseChain("switch (hello) {");
+        TokenChain chain = readChain("switch (hello) {");
 
         Context context = new Context();
         BlockSwitch block = new BlockSwitch(context, null, chain.get(), null);
@@ -82,7 +82,7 @@ class BlockSwitchTest {
 
     @Test
     public void blockSwitchCase() {
-        TokenChain chain = parseChain("switch (hello) { case 1: break; case 2: break; }");
+        TokenChain chain = readChain("switch (hello) { case 1: break; case 2: break; }");
 
         Context context = new Context();
         BlockSwitch block = new BlockSwitch(context, null, chain.get(), null);
@@ -98,7 +98,7 @@ class BlockSwitchTest {
 
     @Test
     public void blockSwitchBlockBeforeCase() {
-        TokenChain chain = parseChain("switch (hello) { break; case 1: break; }");
+        TokenChain chain = readChain("switch (hello) { break; case 1: break; }");
 
         Context context = new Context();
         BlockSwitch block = new BlockSwitch(context, null, chain.get(), null);
@@ -114,7 +114,7 @@ class BlockSwitchTest {
 
     @Test
     public void blockSwitchDefault() {
-        TokenChain chain = parseChain("switch (hello) { default: break; }");
+        TokenChain chain = readChain("switch (hello) { default: break; }");
 
         Context context = new Context();
         BlockSwitch block = new BlockSwitch(context, null, chain.get(), null);
@@ -130,7 +130,7 @@ class BlockSwitchTest {
 
     @Test
     public void blockSwitchMultipleDefault_Fail() {
-        TokenChain chain = parseChain("switch (hello) { default: break; default: break; }");
+        TokenChain chain = readChain("switch (hello) { default: break; default: break; }");
 
         Context context = new Context();
         BlockSwitch block = new BlockSwitch(context, null, chain.get(), null);

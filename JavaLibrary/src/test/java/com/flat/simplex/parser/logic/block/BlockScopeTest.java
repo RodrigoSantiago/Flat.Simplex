@@ -6,14 +6,13 @@ import com.flat.simplex.support.TokenChain;
 import org.junit.jupiter.api.Test;
 
 import static com.flat.simplex.support.ContextSupport.assertErrors;
-import static com.flat.simplex.support.TokenChain.parseChain;
-import static org.junit.jupiter.api.Assertions.*;
+import static com.flat.simplex.support.TokenChain.readChain;
 
 class BlockScopeTest {
 
     @Test
     public void blockScope() {
-        TokenChain chain = parseChain("{hello = true;}");
+        TokenChain chain = readChain("{hello = true;}");
 
         Context context = new Context();
         BlockScope block = new BlockScope(context, null, chain.get(), null);
@@ -26,7 +25,7 @@ class BlockScopeTest {
 
     @Test
     public void blockScopeOpenBlock_Fail() {
-        TokenChain chain = parseChain("{hello = true;");
+        TokenChain chain = readChain("{hello = true;");
 
         Context context = new Context();
         BlockScope block = new BlockScope(context, null, chain.get(), null);
@@ -39,7 +38,7 @@ class BlockScopeTest {
 
     @Test
     public void blockScopeUnexpectedToken_Fail() {
-        TokenChain chain = parseChain("{hello = true;};");
+        TokenChain chain = readChain("{hello = true;};");
 
         Context context = new Context();
         BlockScope block = new BlockScope(context, null, chain.get(), null);
@@ -52,7 +51,7 @@ class BlockScopeTest {
 
     @Test
     public void blockScopeUnexpectedEndOfTokens_Fail() {
-        TokenChain chain = parseChain("");
+        TokenChain chain = readChain("");
 
         Context context = new Context();
         BlockScope block = new BlockScope(context, null, chain.get(), null);

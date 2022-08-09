@@ -1,20 +1,18 @@
 package com.flat.simplex.parser.logic.block;
 
-import com.flat.simplex.lexer.Key;
 import com.flat.simplex.parser.logic.Context;
 import com.flat.simplex.parser.logic.error.Error;
 import com.flat.simplex.support.TokenChain;
 import org.junit.jupiter.api.Test;
 
 import static com.flat.simplex.support.ContextSupport.assertErrors;
-import static com.flat.simplex.support.TokenChain.parseChain;
-import static org.junit.jupiter.api.Assertions.*;
+import static com.flat.simplex.support.TokenChain.readChain;
 
 class BlockContinueTest {
 
     @Test
     public void blockContinue() {
-        TokenChain chain = parseChain("continue;");
+        TokenChain chain = readChain("continue;");
 
         Context context = new Context();
         BlockWhile blockWhile = getBlockWhile(context);
@@ -26,7 +24,7 @@ class BlockContinueTest {
 
     @Test
     public void blockContinueWithoutLoop_Fail() {
-        TokenChain chain = parseChain("continue;");
+        TokenChain chain = readChain("continue;");
 
         Context context = new Context();
         BlockContinue blockContinue = new BlockContinue(context, null, chain.get(), null);
@@ -37,7 +35,7 @@ class BlockContinueTest {
 
     @Test
     public void blockContinueUnexpectedToken_Fail() {
-        TokenChain chain = parseChain("continue hello;");
+        TokenChain chain = readChain("continue hello;");
 
         Context context = new Context();
         BlockWhile blockWhile = getBlockWhile(context);
@@ -49,7 +47,7 @@ class BlockContinueTest {
 
     @Test
     public void blockContinueUnexpectedEndOfTokens_Fail() {
-        TokenChain chain = parseChain("continue");
+        TokenChain chain = readChain("continue");
 
         Context context = new Context();
         BlockWhile blockWhile = getBlockWhile(context);
@@ -60,7 +58,7 @@ class BlockContinueTest {
     }
 
     private BlockWhile getBlockWhile(Context context) {
-        TokenChain chain = parseChain("while(true);");
+        TokenChain chain = readChain("while(true);");
 
         return new BlockWhile(context, null, chain.get(), null);
 

@@ -7,14 +7,14 @@ import com.flat.simplex.support.TokenChain;
 import org.junit.jupiter.api.Test;
 
 import static com.flat.simplex.support.ContextSupport.assertErrors;
-import static com.flat.simplex.support.TokenChain.parseChain;
+import static com.flat.simplex.support.TokenChain.readChain;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CallValueTest {
 
     @Test
     public void loadNumber() {
-        TokenChain chain = parseChain("123");
+        TokenChain chain = readChain("123");
         Context context = new Context();
         BlockIf blockIf = getBlock(context);
         CallValue value = new CallValue(blockIf, chain.get());
@@ -29,7 +29,7 @@ class CallValueTest {
 
     @Test
     public void loadString() {
-        TokenChain chain = parseChain("\"hello\"");
+        TokenChain chain = readChain("\"hello\"");
         Context context = new Context();
         BlockIf blockIf = getBlock(context);
         CallValue value = new CallValue(blockIf, chain.get());
@@ -44,7 +44,7 @@ class CallValueTest {
 
     @Test
     public void loadTrue() {
-        TokenChain chain = parseChain("true");
+        TokenChain chain = readChain("true");
         Context context = new Context();
         BlockIf blockIf = getBlock(context);
         CallValue value = new CallValue(blockIf, chain.get());
@@ -59,7 +59,7 @@ class CallValueTest {
 
     @Test
     public void loadFalse() {
-        TokenChain chain = parseChain("false");
+        TokenChain chain = readChain("false");
         Context context = new Context();
         BlockIf blockIf = getBlock(context);
         CallValue value = new CallValue(blockIf, chain.get());
@@ -74,7 +74,7 @@ class CallValueTest {
 
     @Test
     public void loadHex() {
-        TokenChain chain = parseChain("#AABBCC");
+        TokenChain chain = readChain("#AABBCC");
         Context context = new Context();
         BlockIf blockIf = getBlock(context);
         CallValue value = new CallValue(blockIf, chain.get());
@@ -90,7 +90,7 @@ class CallValueTest {
 
     @Test
     public void loadComplex() {
-        TokenChain chain = parseChain("123.456e+2");
+        TokenChain chain = readChain("123.456e+2");
         Context context = new Context();
         BlockIf blockIf = getBlock(context);
         CallValue value = new CallValue(blockIf, chain.get());
@@ -105,7 +105,7 @@ class CallValueTest {
 
     @Test
     public void loadUndefined() {
-        TokenChain chain = parseChain("undefined");
+        TokenChain chain = readChain("undefined");
         Context context = new Context();
         BlockIf blockIf = getBlock(context);
         CallValue value = new CallValue(blockIf, chain.get());
@@ -120,7 +120,7 @@ class CallValueTest {
 
     @Test
     public void loadIncorrectDouble_Fail() {
-        TokenChain chain = parseChain("123.123ee2");
+        TokenChain chain = readChain("123.123ee2");
         Context context = new Context();
         BlockIf blockIf = getBlock(context);
         CallValue value = new CallValue(blockIf, chain.get());
@@ -135,7 +135,7 @@ class CallValueTest {
 
     @Test
     public void loadHexTooBig_Fail() {
-        TokenChain chain = parseChain("#AABBCCDDEE");
+        TokenChain chain = readChain("#AABBCCDDEE");
         Context context = new Context();
         BlockIf blockIf = getBlock(context);
         CallValue value = new CallValue(blockIf, chain.get());
@@ -150,7 +150,7 @@ class CallValueTest {
 
     @Test
     public void loadOpenString_Fail() {
-        TokenChain chain = parseChain("\"hello");
+        TokenChain chain = readChain("\"hello");
         Context context = new Context();
         BlockIf blockIf = getBlock(context);
         CallValue value = new CallValue(blockIf, chain.get());
@@ -165,7 +165,7 @@ class CallValueTest {
 
     @Test
     public void loadOpenStringFakeEnd_Fail() {
-        TokenChain chain = parseChain("\"hello\\\"");
+        TokenChain chain = readChain("\"hello\\\"");
         Context context = new Context();
         BlockIf blockIf = getBlock(context);
         CallValue value = new CallValue(blockIf, chain.get());
@@ -179,7 +179,7 @@ class CallValueTest {
     }
 
     private BlockIf getBlock(Context context) {
-        TokenChain chain = parseChain("if(true);");
+        TokenChain chain = readChain("if(true);");
 
         return new BlockIf(context, null, chain.get(), null);
 

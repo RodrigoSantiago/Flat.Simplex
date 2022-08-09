@@ -7,14 +7,14 @@ import com.flat.simplex.support.TokenChain;
 import org.junit.jupiter.api.Test;
 
 import static com.flat.simplex.support.ContextSupport.assertErrors;
-import static com.flat.simplex.support.TokenChain.parseChain;
+import static com.flat.simplex.support.TokenChain.readChain;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CallGroupTest {
 
     @Test
     public void loadGroup() {
-        TokenChain chain = parseChain("(a)");
+        TokenChain chain = readChain("(a)");
         Context context = new Context();
         BlockIf blockIf = getBlock(context);
         CallGroup call = new CallGroup(blockIf, chain.get());
@@ -27,7 +27,7 @@ class CallGroupTest {
 
     @Test
     public void loadEmpty_Fail() {
-        TokenChain chain = parseChain("()");
+        TokenChain chain = readChain("()");
         Context context = new Context();
         BlockIf blockIf = getBlock(context);
         CallGroup call = new CallGroup(blockIf, chain.get());
@@ -40,7 +40,7 @@ class CallGroupTest {
 
     @Test
     public void loadMissingCloser_Fail() {
-        TokenChain chain = parseChain("(a");
+        TokenChain chain = readChain("(a");
         Context context = new Context();
         BlockIf blockIf = getBlock(context);
         CallGroup call = new CallGroup(blockIf, chain.get());
@@ -53,7 +53,7 @@ class CallGroupTest {
 
     @Test
     public void loadEmptyMissingCloser_Fail() {
-        TokenChain chain = parseChain("(");
+        TokenChain chain = readChain("(");
         Context context = new Context();
         BlockIf blockIf = getBlock(context);
         CallGroup call = new CallGroup(blockIf, chain.get());
@@ -65,7 +65,7 @@ class CallGroupTest {
     }
 
     private BlockIf getBlock(Context context) {
-        TokenChain chain = parseChain("if(true);");
+        TokenChain chain = readChain("if(true);");
 
         return new BlockIf(context, null, chain.get(), null);
 

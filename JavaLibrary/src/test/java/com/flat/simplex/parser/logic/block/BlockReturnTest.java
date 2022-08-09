@@ -1,6 +1,5 @@
 package com.flat.simplex.parser.logic.block;
 
-import com.flat.simplex.lexer.Key;
 import com.flat.simplex.parser.logic.Context;
 import com.flat.simplex.parser.logic.error.Error;
 import com.flat.simplex.support.TokenChain;
@@ -8,14 +7,14 @@ import org.junit.jupiter.api.Test;
 
 import static com.flat.simplex.support.ContextSupport.assertErrors;
 import static com.flat.simplex.support.TokenChain.mChain;
-import static com.flat.simplex.support.TokenChain.parseChain;
+import static com.flat.simplex.support.TokenChain.readChain;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BlockReturnTest {
 
     @Test
     public void blockBreak() {
-        TokenChain chain = parseChain("return;");
+        TokenChain chain = readChain("return;");
 
         Context context = new Context();
         BlockReturn block = new BlockReturn(context, null, chain.get(), null);
@@ -29,7 +28,7 @@ class BlockReturnTest {
 
     @Test
     public void blockBreakContent() {
-        TokenChain chain = parseChain("return hello;");
+        TokenChain chain = readChain("return hello;");
 
         Context context = new Context();
         BlockReturn block = new BlockReturn(context, null, chain.get(), null);
@@ -42,7 +41,7 @@ class BlockReturnTest {
 
     @Test
     public void blockBreakUnexpectedToken_Fail() {
-        TokenChain chain = parseChain("return;;");
+        TokenChain chain = readChain("return;;");
 
         Context context = new Context();
         BlockReturn block = new BlockReturn(context, null, chain.get(), null);
@@ -56,7 +55,7 @@ class BlockReturnTest {
 
     @Test
     public void blockBreakUnexpectedEndOfTokens_Fail() {
-        TokenChain chain = parseChain("return");
+        TokenChain chain = readChain("return");
 
         Context context = new Context();
         BlockReturn block = new BlockReturn(context, null, chain.get(), null);

@@ -9,14 +9,13 @@ import org.junit.jupiter.api.Test;
 
 import static com.flat.simplex.support.ContextSupport.assertErrors;
 import static com.flat.simplex.support.LineCallChain.lChain;
-import static com.flat.simplex.support.TokenChain.parseChain;
-import static org.junit.jupiter.api.Assertions.*;
+import static com.flat.simplex.support.TokenChain.readChain;
 
 class LineParserTest {
 
     @Test
     void parse() {
-        TokenChain chain = parseChain("a.b.c");
+        TokenChain chain = readChain("a.b.c");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -28,7 +27,7 @@ class LineParserTest {
     }
 
     private BlockIf getBlock(Context context) {
-        TokenChain chain = parseChain("if(true);");
+        TokenChain chain = readChain("if(true);");
 
         return new BlockIf(context, null, chain.get(), null);
 

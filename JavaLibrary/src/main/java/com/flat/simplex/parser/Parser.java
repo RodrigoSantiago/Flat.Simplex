@@ -14,6 +14,9 @@ public class Parser {
     private Context context;
     private Block block;
 
+    private Token tokenStart;
+    private Token tokenEnd;
+
     public Parser(Context context, Block block) {
         this.context = context == null ? block.getContext() : context;
         this.block = block;
@@ -24,19 +27,25 @@ public class Parser {
     }
 
     public ArrayList<TokenGroup> read(Token start, Token end) {
+        this.tokenStart = start;
+        this.tokenEnd = end;
+
         ArrayList<TokenGroup> groups = new ArrayList<>();
         Token token = start;
-        while (token != null && token != end) {
+        while (isNotLast(token)) {
             Key key = token.getKey();
 
             Token next;
             if (key == Key.Case || key == Key.Default) {
                 next = consumeCase(token);
+
             } else if (key == Key.Else || key == Key.Do || key == Key.For || key == Key.If || key == Key.Switch ||
                     key == Key.While || key == Key.With) {
                 next = consumeBlock(token);
-            } else if (isBraceBlock(token)) {
+
+            } else if (key == Key.Brace) {
                 next = token.getNext();
+
             } else {
                 next = consumeLine(token);
             }
@@ -75,7 +84,7 @@ public class Parser {
                 cBlock = new BlockWhile(context, block, group.getStart(), group.getEnd());
             } else if (key == Key.With) {
                 cBlock = new BlockWith(context, block, group.getStart(), group.getEnd());
-            } else if (isBraceBlock(group.getStart())) {
+            } else if (key == Key.Brace) {
                 cBlock = new BlockScope(context, block, group.getStart(), group.getEnd());
             } else if (key == Key.Continue) {
                 cBlock = new BlockContinue(context, block, group.getStart(), group.getEnd());
@@ -109,26 +118,37 @@ public class Parser {
     }
 
     private Token consumeBlock(Token start) {
-        Token token = start.getNext();
-        while (token != null) {
+        Token token = start;
+        while (isNotLast(token)) {
             if (token.getKey() == Key.Function
-                    && token.getNext() != null && token.getNext().getKey() == Key.Param
-                    && token.getNext().getNext() != null && token.getNext().getNext().getKey() == Key.Brace) {
+                    && isNotLast(token.getNext()) && token.getNext().getKey() == Key.Param
+                    && isNotLast(token.getNext().getNext()) && token.getNext().getNext().getKey() == Key.Brace) {
                 token = token.getNext().getNext();
-            } else if (isBraceBlock(token) || token.getKey() == Key.Semicolon) {
+
+            } else if (isParamBraceKey(token.getKey())
+                    && isNotLast(token.getNext()) && token.getNext().getKey() == Key.Param
+                    && isNotLast(token.getNext().getNext()) && token.getNext().getNext().getKey() == Key.Brace) {
+
+                return token.getNext().getNext().getNext();
+            } else if (isBraceKey(token.getKey())
+                    && isNotLast(token.getNext()) && token.getNext().getKey() == Key.Brace) {
+
+                return token.getNext().getNext();
+            } else if (token.getKey() == Key.Semicolon) {
+
                 return token.getNext();
             }
             token =  token.getNext();
         }
-        return null;
+        return token;
     }
 
     private Token consumeLine(Token start) {
         Token token = start.getNext();
-        while (token != null) {
+        while (isNotLast(token)) {
             if (token.getKey() == Key.Function
-                    && token.getNext() != null && token.getNext().getKey() == Key.Param
-                    && token.getNext().getNext() != null && token.getNext().getNext().getKey() == Key.Brace) {
+                    && isNotLast(token.getNext()) && token.getNext().getKey() == Key.Param
+                    && isNotLast(token.getNext().getNext()) && token.getNext().getNext().getKey() == Key.Brace) {
                 token = token.getNext().getNext();
             } else if (token.getKey() == Key.Semicolon) {
                 return token.getNext();
@@ -137,12 +157,12 @@ public class Parser {
             }
             token =  token.getNext();
         }
-        return null;
+        return token;
     }
 
     private Token consumeCase(Token start) {
         Token token = start.getNext();
-        while (token != null) {
+        while (isNotLast(token)) {
             if (token.getKey() == Key.Colon) {
                 return token.getNext();
             } else if (isBlockKey(token.getKey()) || token.getKey() == Key.Brace) {
@@ -150,24 +170,24 @@ public class Parser {
             }
             token =  token.getNext();
         }
-        return null;
-    }
-
-    private boolean isBraceBlock(Token parent) {
-        if (parent.getKey() != Key.Brace) return false;
-        if (parent.getChild() != null && parent.getChild().getNext() != null) {
-            if (parent.getChild().getKey() == Key.Colon && parent.getChild().getNext().getKey() == Key.CBrace) {
-                return false;
-            } else if (parent.getChild().getKey() == Key.Word && parent.getChild().getNext().getKey() == Key.Colon) {
-                return false;
-            }
-        }
-        return true;
+        return token;
     }
 
     private boolean isBlockKey(Key key) {
         return key == Key.If || key == Key.Else || key == Key.Switch || key == Key.Case || key == Key.Default
                 || key == Key.While || key == Key.For || key == Key.Do || key == Key.Break
                 || key == Key.Continue || key == Key.Return || key == Key.With || key == Key.Var;
+    }
+
+    private boolean isParamBraceKey(Key key) {
+        return key == Key.If || key == Key.Switch || key == Key.While || key == Key.For || key == Key.With;
+    }
+
+    private boolean isBraceKey(Key key) {
+        return key == Key.Else || key == Key.Do;
+    }
+
+    private boolean isNotLast(Token token) {
+        return token != null && token != tokenEnd;
     }
 }

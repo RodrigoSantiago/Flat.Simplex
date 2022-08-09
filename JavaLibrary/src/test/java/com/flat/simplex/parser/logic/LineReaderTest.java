@@ -7,7 +7,6 @@ import com.flat.simplex.parser.logic.line.Line;
 import com.flat.simplex.parser.logic.line.call.LineCall;
 import com.flat.simplex.parser.logic.line.LineChain;
 import com.flat.simplex.parser.logic.line.call.*;
-import com.flat.simplex.support.LineCallChain;
 import com.flat.simplex.support.TokenChain;
 import org.junit.jupiter.api.Test;
 import org.opentest4j.AssertionFailedError;
@@ -16,14 +15,14 @@ import java.util.ArrayList;
 
 import static com.flat.simplex.support.ContextSupport.assertErrors;
 import static com.flat.simplex.support.LineCallChain.lChain;
-import static com.flat.simplex.support.TokenChain.parseChain;
+import static com.flat.simplex.support.TokenChain.readChain;
 import static org.junit.jupiter.api.Assertions.*;
 
 class LineReaderTest {
 
     @Test
     public void readValue() {
-        TokenChain chain = parseChain("1234 + true + false + undefined + \"string\"");
+        TokenChain chain = readChain("1234 + true + false + undefined + \"string\"");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -45,7 +44,7 @@ class LineReaderTest {
 
     @Test
     public void readField() {
-        TokenChain chain = parseChain("hello");
+        TokenChain chain = readChain("hello");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -59,7 +58,7 @@ class LineReaderTest {
 
     @Test
     public void readOperator() {
-        TokenChain chain = parseChain("a + b");
+        TokenChain chain = readChain("a + b");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -75,7 +74,7 @@ class LineReaderTest {
 
     @Test
     public void readOperators() {
-        TokenChain chain = parseChain("!a + ++b * c");
+        TokenChain chain = readChain("!a + ++b * c");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -95,7 +94,7 @@ class LineReaderTest {
 
     @Test
     public void readFunction() {
-        TokenChain chain = parseChain("function(){ a = b;}");
+        TokenChain chain = readChain("function(){ a = b;}");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -108,7 +107,7 @@ class LineReaderTest {
 
     @Test
     public void readGroup() {
-        TokenChain chain = parseChain("(hello)");
+        TokenChain chain = readChain("(hello)");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -122,7 +121,7 @@ class LineReaderTest {
 
     @Test
     public void readOperatorGroup() {
-        TokenChain chain = parseChain("a+(b)");
+        TokenChain chain = readChain("a+(b)");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -138,7 +137,7 @@ class LineReaderTest {
 
     @Test
     public void readArray() {
-        TokenChain chain = parseChain("[hello]");
+        TokenChain chain = readChain("[hello]");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -152,7 +151,7 @@ class LineReaderTest {
 
     @Test
     public void readOperatorArray() {
-        TokenChain chain = parseChain("a = [b]");
+        TokenChain chain = readChain("a = [b]");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -168,7 +167,7 @@ class LineReaderTest {
 
     @Test
     public void readStruct() {
-        TokenChain chain = parseChain("{a : b}");
+        TokenChain chain = readChain("{a : b}");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -182,7 +181,7 @@ class LineReaderTest {
 
     @Test
     public void readOperatorStruct() {
-        TokenChain chain = parseChain("a = {a : b}");
+        TokenChain chain = readChain("a = {a : b}");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -198,7 +197,7 @@ class LineReaderTest {
 
     @Test
     public void readMethod() {
-        TokenChain chain = parseChain("hello()");
+        TokenChain chain = readChain("hello()");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -212,7 +211,7 @@ class LineReaderTest {
 
     @Test
     public void readMethodMethod() {
-        TokenChain chain = parseChain("hello()()");
+        TokenChain chain = readChain("hello()()");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -226,7 +225,7 @@ class LineReaderTest {
 
     @Test
     public void readIndexerMethod() {
-        TokenChain chain = parseChain("hello[0]()");
+        TokenChain chain = readChain("hello[0]()");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -240,7 +239,7 @@ class LineReaderTest {
 
     @Test
     public void readGroupMethod() {
-        TokenChain chain = parseChain("(func)()");
+        TokenChain chain = readChain("(func)()");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -254,7 +253,7 @@ class LineReaderTest {
 
     @Test
     public void readArrayMethod() {
-        TokenChain chain = parseChain("[func]()");
+        TokenChain chain = readChain("[func]()");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -268,7 +267,7 @@ class LineReaderTest {
 
     @Test
     public void readStructMethod() {
-        TokenChain chain = parseChain("{a : b}()");
+        TokenChain chain = readChain("{a : b}()");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -282,7 +281,7 @@ class LineReaderTest {
 
     @Test
     public void readFunctionMethod() {
-        TokenChain chain = parseChain("function(){ return a;}()");
+        TokenChain chain = readChain("function(){ return a;}()");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -296,7 +295,7 @@ class LineReaderTest {
 
     @Test
     public void readIndexer() {
-        TokenChain chain = parseChain("hello[0]");
+        TokenChain chain = readChain("hello[0]");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -310,7 +309,7 @@ class LineReaderTest {
 
     @Test
     public void readGroupIndexer() {
-        TokenChain chain = parseChain("(func)[0]");
+        TokenChain chain = readChain("(func)[0]");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -324,7 +323,7 @@ class LineReaderTest {
 
     @Test
     public void readArrayIndexer() {
-        TokenChain chain = parseChain("[func][0]");
+        TokenChain chain = readChain("[func][0]");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -338,7 +337,7 @@ class LineReaderTest {
 
     @Test
     public void readStructIndexer() {
-        TokenChain chain = parseChain("{a : b}[0]");
+        TokenChain chain = readChain("{a : b}[0]");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -352,7 +351,7 @@ class LineReaderTest {
 
     @Test
     public void readMethodIndexer() {
-        TokenChain chain = parseChain("hello()[0]");
+        TokenChain chain = readChain("hello()[0]");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -366,7 +365,7 @@ class LineReaderTest {
 
     @Test
     public void readIndexerIndexer() {
-        TokenChain chain = parseChain("hello[0][0]");
+        TokenChain chain = readChain("hello[0][0]");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -380,7 +379,7 @@ class LineReaderTest {
 
     @Test
     public void readFunctionIndexer() {
-        TokenChain chain = parseChain("function(){ return a;}[0]");
+        TokenChain chain = readChain("function(){ return a;}[0]");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -394,7 +393,7 @@ class LineReaderTest {
 
     @Test
     public void readFieldFieldAccess() {
-        TokenChain chain = parseChain("hello.word");
+        TokenChain chain = readChain("hello.word");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -407,7 +406,7 @@ class LineReaderTest {
 
     @Test
     public void readGroupFieldAccess() {
-        TokenChain chain = parseChain("(hello).word");
+        TokenChain chain = readChain("(hello).word");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -420,7 +419,7 @@ class LineReaderTest {
 
     @Test
     public void readArrayFieldAccess() {
-        TokenChain chain = parseChain("[hello].word");
+        TokenChain chain = readChain("[hello].word");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -433,7 +432,7 @@ class LineReaderTest {
 
     @Test
     public void readStructFieldAccess() {
-        TokenChain chain = parseChain("{a : b}.word");
+        TokenChain chain = readChain("{a : b}.word");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -446,7 +445,7 @@ class LineReaderTest {
 
     @Test
     public void readMethodFieldAccess() {
-        TokenChain chain = parseChain("method().word");
+        TokenChain chain = readChain("method().word");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -459,7 +458,7 @@ class LineReaderTest {
 
     @Test
     public void readIndexerFieldAccess() {
-        TokenChain chain = parseChain("indexer[0].word");
+        TokenChain chain = readChain("indexer[0].word");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -472,7 +471,7 @@ class LineReaderTest {
 
     @Test
     public void readFunctionField() {
-        TokenChain chain = parseChain("function(){ return a;}.word");
+        TokenChain chain = readChain("function(){ return a;}.word");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -486,7 +485,7 @@ class LineReaderTest {
 
     @Test
     public void readDotNothing_Fail() {
-        TokenChain chain = parseChain("hello.");
+        TokenChain chain = readChain("hello.");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -500,7 +499,7 @@ class LineReaderTest {
 
     @Test
     public void readDotOperator_Fail() {
-        TokenChain chain = parseChain("hello. +");
+        TokenChain chain = readChain("hello. +");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -515,7 +514,7 @@ class LineReaderTest {
 
     @Test
     public void readDoubleDots_Fail() {
-        TokenChain chain = parseChain("hello..word");
+        TokenChain chain = readChain("hello..word");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -530,7 +529,7 @@ class LineReaderTest {
 
     @Test
     public void readNothingDot_Fail() {
-        TokenChain chain = parseChain(".word");
+        TokenChain chain = readChain(".word");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -544,7 +543,7 @@ class LineReaderTest {
 
     @Test
     public void readOperatorDot_Fail() {
-        TokenChain chain = parseChain("a + .word");
+        TokenChain chain = readChain("a + .word");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -560,7 +559,7 @@ class LineReaderTest {
 
     @Test
     public void readFieldWithoutDot_Fail() {
-        TokenChain chain = parseChain("hello word");
+        TokenChain chain = readChain("hello word");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -575,7 +574,7 @@ class LineReaderTest {
 
     @Test
     public void readMethodFieldWithoutDot_Fail() {
-        TokenChain chain = parseChain("hello()word");
+        TokenChain chain = readChain("hello()word");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -590,7 +589,7 @@ class LineReaderTest {
 
     @Test
     public void readNumberAfterField_Fail() {
-        TokenChain chain = parseChain("hello 123");
+        TokenChain chain = readChain("hello 123");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -605,7 +604,7 @@ class LineReaderTest {
 
     @Test
     public void readStructAfterField_Fail() {
-        TokenChain chain = parseChain("hello { a : b }");
+        TokenChain chain = readChain("hello { a : b }");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -620,7 +619,7 @@ class LineReaderTest {
 
     @Test
     public void readFunctionAfterField_Fail() {
-        TokenChain chain = parseChain("hello function(){ a = b; }");
+        TokenChain chain = readChain("hello function(){ a = b; }");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -635,7 +634,7 @@ class LineReaderTest {
 
     @Test
     public void readInvalid_Fail() {
-        TokenChain chain = parseChain("hello + $ word");
+        TokenChain chain = readChain("hello + $ word");
 
         Context context = new Context();
         BlockIf block = getBlock(context);
@@ -684,7 +683,7 @@ class LineReaderTest {
     }
 
     private BlockIf getBlock(Context context) {
-        TokenChain chain = parseChain("if(true);");
+        TokenChain chain = readChain("if(true);");
 
         return new BlockIf(context, null, chain.get(), null);
 

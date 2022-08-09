@@ -7,14 +7,14 @@ import com.flat.simplex.support.TokenChain;
 import org.junit.jupiter.api.Test;
 
 import static com.flat.simplex.support.ContextSupport.assertErrors;
-import static com.flat.simplex.support.TokenChain.parseChain;
+import static com.flat.simplex.support.TokenChain.readChain;
 import static org.junit.jupiter.api.Assertions.*;
 
 class CallMethodTest {
 
     @Test
     public void loadEmptyMethod() {
-        TokenChain chain = parseChain("()");
+        TokenChain chain = readChain("()");
         Context context = new Context();
         BlockIf blockIf = getBlock(context);
         CallMethod call = new CallMethod(blockIf, chain.get());
@@ -27,7 +27,7 @@ class CallMethodTest {
 
     @Test
     public void loadSingleParameterMethod() {
-        TokenChain chain = parseChain("(a)");
+        TokenChain chain = readChain("(a)");
         Context context = new Context();
         BlockIf blockIf = getBlock(context);
         CallMethod call = new CallMethod(blockIf, chain.get());
@@ -40,7 +40,7 @@ class CallMethodTest {
 
     @Test
     public void loadMultipleParameterMethod() {
-        TokenChain chain = parseChain("(a,b,c)");
+        TokenChain chain = readChain("(a,b,c)");
         Context context = new Context();
         BlockIf blockIf = getBlock(context);
         CallMethod call = new CallMethod(blockIf, chain.get());
@@ -53,7 +53,7 @@ class CallMethodTest {
 
     @Test
     public void loadComplexParameterMethod() {
-        TokenChain chain = parseChain("(a + b)");
+        TokenChain chain = readChain("(a + b)");
         Context context = new Context();
         BlockIf blockIf = getBlock(context);
         CallMethod call = new CallMethod(blockIf, chain.get());
@@ -66,7 +66,7 @@ class CallMethodTest {
 
     @Test
     public void loadEmptyMissingCloser_Fail() {
-        TokenChain chain = parseChain("(");
+        TokenChain chain = readChain("(");
         Context context = new Context();
         BlockIf blockIf = getBlock(context);
         CallMethod call = new CallMethod(blockIf, chain.get());
@@ -79,7 +79,7 @@ class CallMethodTest {
 
     @Test
     public void loadSingleMissingCloser_Fail() {
-        TokenChain chain = parseChain("(a");
+        TokenChain chain = readChain("(a");
         Context context = new Context();
         BlockIf blockIf = getBlock(context);
         CallMethod call = new CallMethod(blockIf, chain.get());
@@ -92,7 +92,7 @@ class CallMethodTest {
 
     @Test
     public void loadMultipleMissingCloser_Fail() {
-        TokenChain chain = parseChain("(a,b,c");
+        TokenChain chain = readChain("(a,b,c");
         Context context = new Context();
         BlockIf blockIf = getBlock(context);
         CallMethod call = new CallMethod(blockIf, chain.get());
@@ -105,7 +105,7 @@ class CallMethodTest {
 
     @Test
     public void loadSingleEndComma_Fail() {
-        TokenChain chain = parseChain("(a,)");
+        TokenChain chain = readChain("(a,)");
         Context context = new Context();
         BlockIf blockIf = getBlock(context);
         CallMethod call = new CallMethod(blockIf, chain.get());
@@ -118,7 +118,7 @@ class CallMethodTest {
 
     @Test
     public void loadMultipleEndComma_Fail() {
-        TokenChain chain = parseChain("(a,b,)");
+        TokenChain chain = readChain("(a,b,)");
         Context context = new Context();
         BlockIf blockIf = getBlock(context);
         CallMethod call = new CallMethod(blockIf, chain.get());
@@ -131,7 +131,7 @@ class CallMethodTest {
 
     @Test
     public void loadDoubleComma_Fail() {
-        TokenChain chain = parseChain("(a,,b)");
+        TokenChain chain = readChain("(a,,b)");
         Context context = new Context();
         BlockIf blockIf = getBlock(context);
         CallMethod call = new CallMethod(blockIf, chain.get());
@@ -144,7 +144,7 @@ class CallMethodTest {
 
     @Test
     public void loadOnlyComma_Fail() {
-        TokenChain chain = parseChain("(,)");
+        TokenChain chain = readChain("(,)");
         Context context = new Context();
         BlockIf blockIf = getBlock(context);
         CallMethod call = new CallMethod(blockIf, chain.get());
@@ -157,7 +157,7 @@ class CallMethodTest {
 
     @Test
     public void loadOnlyDoubleComma_Fail() {
-        TokenChain chain = parseChain("(,,)");
+        TokenChain chain = readChain("(,,)");
         Context context = new Context();
         BlockIf blockIf = getBlock(context);
         CallMethod call = new CallMethod(blockIf, chain.get());
@@ -170,7 +170,7 @@ class CallMethodTest {
 
     @Test
     public void loadOpenComma_Fail() {
-        TokenChain chain = parseChain("(,");
+        TokenChain chain = readChain("(,");
         Context context = new Context();
         BlockIf blockIf = getBlock(context);
         CallMethod call = new CallMethod(blockIf, chain.get());
@@ -182,7 +182,7 @@ class CallMethodTest {
     }
 
     private BlockIf getBlock(Context context) {
-        TokenChain chain = parseChain("if(true);");
+        TokenChain chain = readChain("if(true);");
 
         return new BlockIf(context, null, chain.get(), null);
 

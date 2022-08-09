@@ -6,14 +6,14 @@ import com.flat.simplex.support.TokenChain;
 import org.junit.jupiter.api.Test;
 
 import static com.flat.simplex.support.ContextSupport.assertErrors;
-import static com.flat.simplex.support.TokenChain.parseChain;
+import static com.flat.simplex.support.TokenChain.readChain;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BlockWhileTest {
 
     @Test
     public void block() {
-        TokenChain chain = parseChain("while (true) hello = true;");
+        TokenChain chain = readChain("while (true) hello = true;");
 
         Context context = new Context();
         BlockWhile block = new BlockWhile(context, null, chain.get(), null);
@@ -29,7 +29,7 @@ class BlockWhileTest {
 
     @Test
     public void blockWhileBlock() {
-        TokenChain chain = parseChain("while (true) {}");
+        TokenChain chain = readChain("while (true) {}");
 
         Context context = new Context();
         BlockWhile block = new BlockWhile(context, null, chain.get(), null);
@@ -44,7 +44,7 @@ class BlockWhileTest {
 
     @Test
     public void blockWhileUnexpectedToken_Fail() {
-        TokenChain chain = parseChain("while a (true) {}");
+        TokenChain chain = readChain("while a (true) {}");
 
         Context context = new Context();
         BlockWhile block = new BlockWhile(context, null, chain.get(), null);
@@ -59,7 +59,7 @@ class BlockWhileTest {
 
     @Test
     public void blockWhileUnexpectedEndOfTokens_Fail() {
-        TokenChain chain = parseChain("while (true)");
+        TokenChain chain = readChain("while (true)");
 
         Context context = new Context();
         BlockWhile block = new BlockWhile(context, null, chain.get(), null);
@@ -73,7 +73,7 @@ class BlockWhileTest {
 
     @Test
     public void blockWhileMissingCondition_Fail() {
-        TokenChain chain = parseChain("while () hello = true;");
+        TokenChain chain = readChain("while () hello = true;");
 
         Context context = new Context();
         BlockWhile block = new BlockWhile(context, null, chain.get(), null);
@@ -88,7 +88,7 @@ class BlockWhileTest {
 
     @Test
     public void blockWhileMissingCloser_Fail() {
-        TokenChain chain = parseChain("while (true) {");
+        TokenChain chain = readChain("while (true) {");
 
         Context context = new Context();
         BlockWhile block = new BlockWhile(context, null, chain.get(), null);

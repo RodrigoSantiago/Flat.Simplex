@@ -1,6 +1,5 @@
 package com.flat.simplex.parser.logic.block;
 
-import com.flat.simplex.lexer.Key;
 import com.flat.simplex.parser.logic.Context;
 import com.flat.simplex.parser.logic.error.Error;
 import com.flat.simplex.support.TokenChain;
@@ -8,14 +7,13 @@ import org.junit.jupiter.api.Test;
 
 import static com.flat.simplex.support.ContextSupport.assertErrors;
 import static com.flat.simplex.support.TokenChain.mChain;
-import static com.flat.simplex.support.TokenChain.parseChain;
-import static org.junit.jupiter.api.Assertions.*;
+import static com.flat.simplex.support.TokenChain.readChain;
 
 class BlockDefaultTest {
 
     @Test
     public void blockDefault() {
-        TokenChain chain = parseChain("default:");
+        TokenChain chain = readChain("default:");
 
         Context context = new Context();
         BlockSwitch blockSwitch = getBlockSwitch(context);
@@ -27,7 +25,7 @@ class BlockDefaultTest {
 
     @Test
     public void blockDefaultWithoutSwitch_Fail() {
-        TokenChain chain = parseChain("default:");
+        TokenChain chain = readChain("default:");
 
         Context context = new Context();
         BlockDefault blockDefault = new BlockDefault(context, null, chain.get(), null);
@@ -37,7 +35,7 @@ class BlockDefaultTest {
 
     @Test
     public void blockDefaultUnexpectedToken_Fail() {
-        TokenChain chain = parseChain("default hello:");
+        TokenChain chain = readChain("default hello:");
 
         Context context = new Context();
         BlockSwitch blockSwitch = getBlockSwitch(context);
@@ -49,7 +47,7 @@ class BlockDefaultTest {
 
     @Test
     public void blockDefaultUnexpectedEndOfTokens_Fail() {
-        TokenChain chain = parseChain("default");
+        TokenChain chain = readChain("default");
 
         Context context = new Context();
         BlockSwitch blockSwitch = getBlockSwitch(context);
@@ -60,7 +58,7 @@ class BlockDefaultTest {
     }
 
     private BlockSwitch getBlockSwitch(Context context) {
-        TokenChain chain = parseChain("switch(value){}");
+        TokenChain chain = readChain("switch(value){}");
 
         return new BlockSwitch(context, null, chain.get(), null);
     }

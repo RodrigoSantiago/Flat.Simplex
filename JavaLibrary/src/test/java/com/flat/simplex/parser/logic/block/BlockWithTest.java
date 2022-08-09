@@ -6,14 +6,14 @@ import com.flat.simplex.support.TokenChain;
 import org.junit.jupiter.api.Test;
 
 import static com.flat.simplex.support.ContextSupport.assertErrors;
-import static com.flat.simplex.support.TokenChain.parseChain;
+import static com.flat.simplex.support.TokenChain.readChain;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BlockWithTest {
 
     @Test
     public void block() {
-        TokenChain chain = parseChain("with (true) hello = true;");
+        TokenChain chain = readChain("with (true) hello = true;");
 
         Context context = new Context();
         BlockWith block = new BlockWith(context, null, chain.get(), null);
@@ -28,7 +28,7 @@ class BlockWithTest {
 
     @Test
     public void blockWithBlock() {
-        TokenChain chain = parseChain("with (true) {}");
+        TokenChain chain = readChain("with (true) {}");
 
         Context context = new Context();
         BlockWith block = new BlockWith(context, null, chain.get(), null);
@@ -43,7 +43,7 @@ class BlockWithTest {
 
     @Test
     public void blockWithUnexpectedToken_Fail() {
-        TokenChain chain = parseChain("with a (true) {}");
+        TokenChain chain = readChain("with a (true) {}");
 
         Context context = new Context();
         BlockWith block = new BlockWith(context, null, chain.get(), null);
@@ -58,7 +58,7 @@ class BlockWithTest {
 
     @Test
     public void blockWithUnexpectedEndOfTokens_Fail() {
-        TokenChain chain = parseChain("with (true)");
+        TokenChain chain = readChain("with (true)");
 
         Context context = new Context();
         BlockWith block = new BlockWith(context, null, chain.get(), null);
@@ -72,7 +72,7 @@ class BlockWithTest {
 
     @Test
     public void blockWithMissingCondition_Fail() {
-        TokenChain chain = parseChain("with () hello = true;");
+        TokenChain chain = readChain("with () hello = true;");
 
         Context context = new Context();
         BlockWith block = new BlockWith(context, null, chain.get(), null);
@@ -87,7 +87,7 @@ class BlockWithTest {
 
     @Test
     public void blockWithMissingCloser_Fail() {
-        TokenChain chain = parseChain("with (true) {");
+        TokenChain chain = readChain("with (true) {");
 
         Context context = new Context();
         BlockWith block = new BlockWith(context, null, chain.get(), null);

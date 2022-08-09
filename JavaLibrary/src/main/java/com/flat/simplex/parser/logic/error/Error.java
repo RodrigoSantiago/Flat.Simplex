@@ -36,7 +36,10 @@ public class Error {
     public static String lineRefOperator = "The increment/decrement operator should be used directly on a variable or indexer";
     public static String lineSetOperator = "The operator should be used directly on a variable or indexer";
     public static String lineTernaryIncomplete = "Incomplete ternary expression";
+    public static String structDoNotUseString = "String are not allowed as names";
+    public static String arrayMixingTypes = "Unable to mix Array, Map and Grid fields types";
 
+    public static String arrayContainer = "A container cannot contain another container(Array, Map and Grid)";
     public enum Type {
         Warning, Syntax
     }
