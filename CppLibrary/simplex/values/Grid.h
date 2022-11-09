@@ -17,9 +17,13 @@ public:
     Pointer* pointers;
 
     Grid();
+
     Grid(const Grid& copy) = delete;
+
     explicit Grid(const Pointer& width, const Pointer& height);
+
     explicit Grid(long width, long size, Pointer* pointers);
+
     ~Grid() override;
 
     VariableType::VariableType getType() const final;

@@ -38,10 +38,6 @@ Pointer simplex::ex_container_value(Pointer index) {
     throw throwException(Pointer(s("A container cant have a container as member [") + index + s("]")));
 }
 
-Pointer simplex::ex_missing_key(Pointer fieldName) {
-    throw throwException(Pointer(s("Key not find [") + fieldName + s("]")));
-}
-
 Pointer simplex::ex_array_invalid_length(Pointer length) {
     throw throwException(Pointer(s("Invalid array length [") + length + s("]")));
 }

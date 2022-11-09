@@ -3,9 +3,19 @@
 //
 
 #include "Simplex.h"
+#include "Base.h"
+
 #include <cstring>
 #include <cstdio>
 #include <iostream>
+
+void * operator new(decltype(sizeof(0)) n) noexcept(false) {
+    return malloc(n);
+}
+
+void operator delete(void * p) noexcept {
+    free(p);
+}
 
 void * operator new[](decltype(sizeof(0)) n) noexcept(false) {
     return malloc(n);
@@ -15,7 +25,9 @@ void operator delete[](void * p) noexcept {
     free(p);
 }
 
-char* strValue = new char[255];
+char* strValueA = new char[255];
+char* strValueB = new char[255];
+int str = 1;
 
 const char* VariableType::str(VariableType type)  {
     switch (type) {
@@ -34,14 +46,40 @@ const char* VariableType::str(VariableType type)  {
 }
 
 char *simplex::string(const Double value) {
+    char* strValue = str ? strValueA : strValueB;
+    str = -str;
     if (IS_ANY(value)) {
         strcpy(strValue, "undefined");
     } else if (value.value == INF) {
-        strcpy(strValue, "infinite");
+        strcpy(strValue, "Infinity");
     } else if (value.value == NEG_INF) {
-        strcpy(strValue, "-infinite");
+        strcpy(strValue, "-Infinity");
     } else {
         sprintf(strValue, "%lg", value.value);
     }
     return strValue;
+}
+
+Double simplex::number(const char *value) {
+    if (value == nullptr) return make_nan().number;
+
+    char* err = nullptr;
+    Double val = std::strtod(value, &err);
+    if ((*err) == 0) {
+        if (val.value == INF || val.value == NEG_INF) {
+            err = strstr(value, "Infinity");
+            if (!err) return make_nan().number;
+        }
+        return val;
+    } else {
+        return make_nan().number;
+    }
+}
+
+void *simplex::alloc(decltype(sizeof(0)) size) {
+    return malloc(size);
+}
+
+void simplex::dealloc(void* ptr) {
+    free(ptr);
 }

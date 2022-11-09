@@ -15,7 +15,7 @@ Array::Array(const Pointer& length) : count(0) {
         throw simplex::ex_array_invalid_length(length);
     }
 
-    this->size = simplex::to_int(length.getNumber().value);
+    this->size = simplex::round(length.getNumber().value);
     if (this->size < 0) {
 
         throw simplex::ex_array_invalid_length(length);
@@ -76,7 +76,7 @@ Pointer& Array::index(const Pointer &index) {
 }
 
 Pointer& Array::indexNum(Double index) {
-    long long i = simplex::to_int(index);
+    long long i = simplex::round(index);
     if (i >= 0 && i < size) {
         return pointers[i];
     } else {

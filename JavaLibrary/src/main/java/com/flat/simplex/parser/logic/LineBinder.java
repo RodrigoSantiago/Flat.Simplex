@@ -187,9 +187,9 @@ public class LineBinder {
             }
             if (start != -1 || end != -1) {
                 if (start == -1) {
-                    context.error(input.get(end).getToken(), "Incomplete ternary expression");
+                    context.error(input.get(end).getToken(), Error.lineTernaryIncomplete);
                 } else if (end == -1) {
-                    context.error(input.get(start).getToken(), "Incomplete ternary expression");
+                    context.error(input.get(start).getToken(), Error.lineTernaryIncomplete);
                 } else {
                     LineOp lineQuest = input.get(start).getOp();
                     LineOp lineColon = input.get(end).getOp();

@@ -24,5 +24,4 @@ public:
     virtual Pointer& refField(long hashName);
 };
 
-
 #endif //SIMPLEX_ASSET_H

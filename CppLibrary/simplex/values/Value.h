@@ -23,8 +23,6 @@ public:
 
     virtual Double getBool();
 
-    virtual DoublePointer getPointer();
-
     virtual Value* reference();
 
     virtual void deference();
@@ -51,7 +49,7 @@ public:
 
     virtual Pointer& setIndexGrid(const Pointer& x, const Pointer& y, const Pointer& value);
 
-    virtual Pointer execute(const Pointer& args);
+    virtual Pointer execute(const Pointer& self, const Pointer& args);
 };
 
 #endif //SIMPLEX_VALUE_H

@@ -16,9 +16,13 @@ public:
     Pointer* pointers;
 
     Array();
+
     Array(const Array& copy) = delete;
+
     explicit Array(const Pointer& length);
+
     explicit Array(long long size, Pointer* pointers);
+
     ~Array() override;
 
     VariableType::VariableType getType() const final;

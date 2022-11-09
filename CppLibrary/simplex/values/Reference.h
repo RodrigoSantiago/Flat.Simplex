@@ -14,8 +14,11 @@ public:
     Asset* asset;
 
     Reference();
+
     Reference(const Reference& copy) = delete;
+
     Reference(Asset* asset);
+
     ~Reference() override;
 
     VariableType::VariableType getType() const final;
@@ -27,8 +30,6 @@ public:
     Double getNumber() const final;
 
     Double getBool() final;
-
-    DoublePointer getPointer() final;
 
     Value* reference() final;
 

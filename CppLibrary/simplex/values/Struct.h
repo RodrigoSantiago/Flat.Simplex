@@ -20,8 +20,11 @@ public:
     void* variables;
 
     Struct();
+
     Struct(const Struct& copy);
+
     explicit Struct(long size, const StructInit* initList);
+
     ~Struct() override;
 
     VariableType::VariableType getType() const final;
@@ -41,8 +44,11 @@ public:
     Pointer& refField(long hashName) final;
 };
 
+inline Pointer o(const StructInit (& initList) [0]) {
+    return Pointer(new Struct());
+}
 template <long N>
-Pointer o(const StructInit (& initList) [N]) {
+inline Pointer o(const StructInit (& initList) [N]) {
     return Pointer(new Struct(N, initList));
 }
 

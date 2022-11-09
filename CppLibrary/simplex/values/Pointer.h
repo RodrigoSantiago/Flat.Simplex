@@ -14,19 +14,24 @@ public:
     Pointer();
 
     explicit Pointer(Struct* value);
+
+    explicit Pointer(Arguments* value);
+
     Pointer(Value* value);
+
     Pointer(const Pointer& copy);
+
     Pointer(Double d);
+
     Pointer(const Chars& str);
 
     Pointer& operator=(Value* value);
+
     Pointer& operator=(const Pointer& copy);
+
     Pointer& operator=(Double d);
+
     Pointer& operator=(const Chars& str);
-
-    void set(Value* value);
-
-    operator bool() const;
 
     ~Pointer();
 
@@ -36,11 +41,11 @@ public:
 
     Double getNumber() const;
 
+    Double asNumber() const;
+
     Pointer getString() const;
 
     Double getBool() const;
-
-    DoublePointer getPointer() const;
 
     bool isUndefined() const;
 

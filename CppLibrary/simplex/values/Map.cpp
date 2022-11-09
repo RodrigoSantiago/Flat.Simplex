@@ -73,7 +73,7 @@ Pointer& Map::index(const Pointer &index) {
 }
 
 Pointer& Map::indexNum(Double index) {
-    long long key = simplex::to_int(index);
+    long long key = simplex::round(index);
     auto find = MAPD.find(key);
     if (find == MAPD.end()) {
         return MAPD[key] = Pointer();

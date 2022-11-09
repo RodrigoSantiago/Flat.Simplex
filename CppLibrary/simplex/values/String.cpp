@@ -6,7 +6,9 @@
 #include "../Simplex.h"
 #include <cstring>
 
-String::String() : chars(nullptr), length(0), count(0) {
+String::String() : length(0), count(0) {
+    chars = new char[length + 1];
+    chars[length] = '\0';
 
 }
 

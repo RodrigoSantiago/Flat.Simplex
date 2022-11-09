@@ -17,7 +17,6 @@ namespace simplex {
     Pointer ex_array_invalid_length(Pointer length);
     Pointer ex_grid_invalid_size(Pointer width, Pointer height);
     Pointer ex_grid_out_of_bounds(Pointer width, Pointer height);
-    Pointer ex_missing_key(Pointer fieldName);
     Pointer ex_container_value(Pointer index);
 }
 

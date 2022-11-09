@@ -11,13 +11,14 @@
 
 class Function : public Value {
 public:
-    Pointer (*function)(Pointer);
+    long args;
+    Pointer (*function)(const Pointer&, const Pointer&);
 
     Function();
 
     Function(const Function& copy);
 
-    explicit Function(Pointer (*function)(Pointer));
+    explicit Function(long args, Pointer (*function)(const Pointer&, const Pointer&));
 
     ~Function() override;
 
@@ -31,11 +32,11 @@ public:
 
     void deference() final;
 
-    Pointer execute(const Pointer& args) final;
+    Pointer execute(const Pointer& self, const Pointer& args) final;
 };
 
-inline Pointer f(Pointer (*function)(Pointer)) {
-    return Pointer(new Function(function));
+inline Pointer f(long args, Pointer (*function)(const Pointer&, const Pointer&)) {
+    return Pointer(new Function(args, function));
 }
 
 #endif //SIMPLEX_FUNCTION_H

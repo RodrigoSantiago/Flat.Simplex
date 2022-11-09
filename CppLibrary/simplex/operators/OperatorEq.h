@@ -17,9 +17,9 @@ inline Double operator==(const Pointer& a, const Pointer& b) {
             case VariableType::Number:
                 return a.getNumber() == b.getNumber();
             case VariableType::String:
-                return simplex::strcmp(AS_STRING(a.getString()).chars, AS_STRING(b.getString()).chars) == 0 ? 1.0_d : 0.0_d;
+                return simplex::strcmp(AS_STRING(a).chars, AS_STRING(b).chars) == 0 ? 1.0_d : 0.0_d;
             default:
-                return a.getPointer().bits == b.getPointer().bits ? 1.0_d : 0.0_d;
+                return a.data.bits == b.data.bits ? 1.0_d : 0.0_d;
         }
     }
     return 0.0_d;
@@ -41,12 +41,16 @@ inline Double operator==(const Pointer& a, const Chars& b) {
     return a.isString() && simplex::strcmp(AS_STRING(a.getString()).chars, b.chars) == 0 ? 1.0_d : 0.0_d;
 }
 
-inline Double operator==(const Chars& a, Double b) {
+inline Double operator==(const Chars& a, const Pointer& b) {
+    return b.isString() && simplex::strcmp(a.chars, AS_STRING(b.getString()).chars) == 0 ? 1.0_d : 0.0_d;
+}
+
+inline Double operator==(Double a, const Chars& b) {
     return 0.0_d;
 }
 
-inline Double operator==(const Chars& a, const Pointer& b) {
-    return b.isString() && simplex::strcmp(a.chars, AS_STRING(b.getString()).chars) == 0 ? 1.0_d : 0.0_d;
+inline Double operator==(const Chars& a, Double b) {
+    return 0.0_d;
 }
 
 #endif //SIMPLEX_OPERATOREQ_H

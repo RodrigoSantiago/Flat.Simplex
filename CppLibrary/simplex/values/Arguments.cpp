@@ -6,25 +6,39 @@
 #include "../Simplex.h"
 #include <unordered_map>
 
-#define MAP (*static_cast<std::unordered_map<long, Pointer>*>(args))
-
-Arguments::Arguments() {
-    args = new std::unordered_map<long, Pointer>();
+Arguments::Arguments() : length(0), request(0) {
+    args = nullptr;
+    extras = nullptr;
 }
 
-Arguments::Arguments(const Arguments &copy) {
-    args = new std::unordered_map<long, Pointer>(*static_cast<std::unordered_map<long, Pointer>*>(copy.args));
-}
+Arguments::Arguments(const Arguments &copy) : length(copy.length), request(copy.request) {
+    if (copy.args != nullptr) {
+        args = new Pointer[copy.length];
+        for (long i = 0; i < length; ++i) {
+            args[i] = copy.args[i];
+        }
+    } else {
+        args = nullptr;
+    }
 
-Arguments::Arguments(long size, const ArgumentsInit *initList) {
-    args = new std::unordered_map<long, Pointer>();
-    for (long long x = 0; x < size; ++x) {
-        MAP[initList[x].index] = initList[x].value;
+    if (copy.extras != nullptr) {
+        long eSize = copy.request - copy.length;
+        extras = new Pointer[eSize];
+        for (long i = 0; i < eSize; ++i) {
+            extras[i] = copy.extras[i];
+        }
+    } else {
+        extras = nullptr;
     }
 }
 
+Arguments::Arguments(long size, Pointer *initList) : length(size), args(initList), request(0), extras(nullptr) {
+
+}
+
 Arguments::~Arguments() {
-    delete static_cast<std::unordered_map<long, Pointer>*>(args);
+    delete[] args;
+    delete[] extras;
 }
 
 VariableType::VariableType Arguments::getType() const {
@@ -48,28 +62,20 @@ void Arguments::deference() {
 }
 
 Pointer& Arguments::getField(long hashName) {
-    auto find = MAP.find(hashName);
-    if (find == MAP.end()) {
-        return Value::getField(hashName);
-    } else {
-        return find->second;
-    }
+    return hashName < length ? args[hashName] : extras[hashName - length];
 }
 
 Pointer& Arguments::setField(long hashName, const Pointer& value) {
-    auto find = MAP.find(hashName);
-    if (find == MAP.end()) {
-        return MAP[hashName] = value;
-    } else {
-        return find->second = value;
-    }
+    return hashName < length ? args[hashName] : extras[hashName - length];
 }
 
 Pointer &Arguments::refField(long hashName) {
-    auto find = MAP.find(hashName);
-    if (find == MAP.end()) {
-        return Value::refField(hashName);
-    } else {
-        return find->second;
+    return hashName < length ? args[hashName] : extras[hashName - length];
+}
+
+void Arguments::reserve(long requestLength) {
+    if (requestLength > this->length) {
+        request = requestLength;
+        extras = new Pointer[request - this->length];
     }
 }

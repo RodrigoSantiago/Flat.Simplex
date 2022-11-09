@@ -8,31 +8,35 @@
 #include "../Classes.h"
 
 inline Pointer operator*(const Pointer& a, const Pointer& b) {
-    return Pointer(a.getNumber() * b.getNumber());
+    return a.asNumber() * b.asNumber();
 }
 
 inline Pointer operator*(const Chars& a, const Chars& b) {
-    return Pointer();
+    return simplex::number(a.chars) * simplex::number(b.chars);
 }
 
 inline Pointer operator*(const Pointer& a, Double b) {
-    return Pointer(a.getNumber() * b);
+    return a.asNumber() * b;
 }
 
 inline Pointer operator*(Double a, const Pointer& b) {
-    return Pointer(a * b.getNumber());
+    return a * b.asNumber();
 }
 
 inline Pointer operator*(const Pointer& a, const Chars& b) {
-    return Pointer();
-}
-
-inline Pointer operator*(const Chars& a, Double b) {
-    return Pointer();
+    return a.asNumber() * simplex::number(b.chars);
 }
 
 inline Pointer operator*(const Chars& a, const Pointer& b) {
-    return Pointer();
+    return simplex::number(a.chars) * b.asNumber();
+}
+
+inline Pointer operator*(const Chars& a, Double b) {
+    return simplex::number(a.chars) * b;
+}
+
+inline Pointer operator*(Double a, const Chars& b) {
+    return a * simplex::number(b.chars);
 }
 
 #endif //SIMPLEX_OPERATORMUL_H

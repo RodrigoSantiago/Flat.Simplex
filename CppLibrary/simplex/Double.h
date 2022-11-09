@@ -5,9 +5,7 @@
 #ifndef SIMPLEX_DOUBLE_H
 #define SIMPLEX_DOUBLE_H
 
-#include <cmath>
-
-#define EPSILON 0.0000001
+#define EPSILON  0.0000001
 
 union DoubleToLong {
     double real;
@@ -18,6 +16,18 @@ union DoubleToBits {
     double real;
     unsigned long long bits;
 };
+
+namespace simplex {
+    inline double abs(const double x) {
+        unsigned long long i = reinterpret_cast<const unsigned long long &>(x);
+        i &= 0x7FFFFFFFFFFFFFFFULL;
+        return reinterpret_cast<const double &>(i);
+    }
+
+    inline long long round(const double x) {
+        return static_cast<long long>(x + 0.5 - (x < 0));
+    }
+}
 
 class Double {
 public:
@@ -32,9 +42,7 @@ public:
     Double(bool value) : value(value ? 1.0 : 0.0) {
     }
 
-    // operator double() const { return value; }
-
-    operator bool() const { return value >= 0.5; }
+    operator bool() const { return value == 1.0; }
 
     Double& operator++(){
         ++value;
@@ -64,15 +72,15 @@ public:
     }
 
     Double operator%(const Double& b) {
-        return std::fmod(value, b.value);
+        return !b.value ? value : value - b.value * static_cast<long long>(value / b.value);
     }
 
     Double operator==(const Double& b) {
-        return DoubleToBits{.real = value}.bits == DoubleToBits{.real = b.value}.bits || std::abs(value - b.value) <= EPSILON;
+        return DoubleToBits{.real = value}.bits == DoubleToBits{.real = b.value}.bits;
     }
 
     Double operator!=(const Double& b) {
-        return DoubleToBits{.real = value}.bits != DoubleToBits{.real = b.value}.bits && std::abs(value - b.value) > EPSILON;
+        return DoubleToBits{.real = value}.bits != DoubleToBits{.real = b.value}.bits;
     }
 
     Double operator<(const Double& b) {
@@ -120,7 +128,7 @@ public:
     }
 
     Double operator!() const {
-        return value >= 0.5 ? 0.0 : 1.0;
+        return value != 1 ? 1.0 : 0.0;
     }
 
     Double operator~() const {
@@ -156,14 +164,14 @@ public:
 
     Double operator>>(const Double& b) {
         DoubleToLong dL{.real = value};
-        dL.bits[0] >>= static_cast<unsigned long long>(round(b.value));
+        dL.bits[0] >>= static_cast<unsigned long long>(simplex::round(b.value));
         dL.bits[1] = 0;
         return dL.real;
     }
 
     Double operator<<(const Double& b) {
         DoubleToLong dL{.real = value};
-        dL.bits[0] <<= static_cast<unsigned long long>(round(b.value));
+        dL.bits[0] <<= static_cast<unsigned long long>(simplex::round(b.value));
         dL.bits[1] = 0;
         return dL.real;
     }
@@ -189,8 +197,70 @@ public:
     }
 };
 
-inline Double operator>=(const Double& a, const Double& b) {
+inline Double operator+(const Double&a, const Double& b) {
+    return a.value + b.value;
+}
+
+inline Double operator-(const Double&a, const Double& b) {
+    return a.value - b.value;
+}
+
+inline Double operator*(const Double&a, const Double& b) {
+    return a.value * b.value;
+}
+
+inline Double operator/(const Double&a, const Double& b) {
+    return a.value / b.value;
+}
+
+inline Double operator%(const Double&a, const Double& b) {
+    return !b.value ? a.value : a.value - b.value * static_cast<long long>(a.value / b.value);
+}
+
+inline Double operator==(const Double&a, const Double& b) {
+    return DoubleToBits{.real = a.value}.bits == DoubleToBits{.real = b.value}.bits;
+}
+
+inline Double operator!=(const Double&a, const Double& b) {
+    return DoubleToBits{.real = a.value}.bits != DoubleToBits{.real = b.value}.bits;
+}
+
+inline Double operator<(const Double&a, const Double& b) {
+    return a.value < b.value;
+}
+
+inline Double operator<=(const Double&a, const Double& b) {
+    return a.value <= b.value;
+}
+
+inline Double operator>(const Double&a, const Double& b) {
     return a.value > b.value;
+}
+
+inline Double operator>=(const Double&a, const Double& b) {
+    return a.value > b.value;
+}
+
+inline Double operator^(const Double&a, const Double& b) {
+    DoubleToLong dL{.real = a.value};
+    DoubleToLong dLb{.real = b.value};
+    dL.bits[0] ^= dLb.bits[0];
+    dL.bits[1] = 0;
+    return dL.real;
+}
+
+inline Double operator>>(const Double&a, const Double& b) {
+    DoubleToLong dL{.real = a.value};
+    dL.bits[0] >>= static_cast<unsigned long long>(simplex::round(b.value));
+    dL.bits[1] = 0;
+    return dL.real;
+}
+
+inline Double operator<<(const Double&a, const Double& b) {
+    DoubleToLong dL{.real = a.value};
+    dL.bits[0] <<= static_cast<unsigned long long>(simplex::round(b.value));
+    dL.bits[1] = 0;
+    return dL.real;
 }
 
 inline Double operator "" _d(long double value) {
@@ -202,7 +272,7 @@ inline Double b(const bool& b) {
 }
 
 inline bool b(const Double& d) {
-    return d.value >= 0.5;
+    return d == 1.0_d;
 }
 
 #endif //SIMPLEX_DOUBLE_H

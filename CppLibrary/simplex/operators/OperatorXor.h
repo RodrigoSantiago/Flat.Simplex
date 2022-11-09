@@ -8,31 +8,35 @@
 #include "../Classes.h"
 
 inline Pointer operator^(const Pointer& a, const Pointer& b) {
-    return Pointer(a.isNumber() && b.isNumber() ? a.getNumber() ^ b.getNumber() : make_nan().number);
+    return a.asNumber() ^ b.asNumber();
 }
 
 inline Pointer operator^(const Chars& a, const Chars& b) {
-    return Pointer();
+    return simplex::number(a.chars) ^ simplex::number(b.chars);
 }
 
 inline Pointer operator^(const Pointer& a, Double b) {
-    return Pointer(a.isNumber() ? a.getNumber() ^ b : make_nan().number);
+    return a.asNumber() ^ b;
 }
 
 inline Pointer operator^(Double a, const Pointer& b) {
-    return Pointer(b.isNumber() ? a ^ b.getNumber() : make_nan().number);
+    return a ^ b.asNumber();
 }
 
 inline Pointer operator^(const Pointer& a, const Chars& b) {
-    return Pointer();
-}
-
-inline Pointer operator^(const Chars& a, Double b) {
-    return Pointer();
+    return a.asNumber() ^ simplex::number(b.chars);
 }
 
 inline Pointer operator^(const Chars& a, const Pointer& b) {
-    return Pointer();
+    return simplex::number(a.chars) ^ b.asNumber();
+}
+
+inline Pointer operator^(const Chars& a, Double b) {
+    return simplex::number(a.chars) ^ b;
+}
+
+inline Pointer operator^(Double a, const Chars& b) {
+    return a ^ simplex::number(b.chars);
 }
 
 #endif //SIMPLEX_OPERATORXOR_H

@@ -31,10 +31,6 @@ Double Value::getBool() {
     return false;
 }
 
-DoublePointer Value::getPointer() {
-    return make_ptr(this);
-}
-
 Value *Value::reference() {
     return this;
 }
@@ -78,11 +74,6 @@ Pointer &Value::refField(long hashName) {
     throw simplex::ex_missing_field(HashName::getName(hashName), getTypeName());
 }
 
-Pointer Value::execute(const Pointer& args) {
-
-    throw simplex::ex_invalid_function();
-}
-
 Pointer& Value::setIndex(const Pointer &index, const Pointer &value) {
     switch (value.getType()) {
         case VariableType::Array:
@@ -121,4 +112,9 @@ Pointer &Value::setIndexGrid(const Pointer &x, const Pointer &y, const Pointer &
             throw simplex::ex_container_value(value);
     }
     return this->indexGrid(x, y) = value;
+}
+
+Pointer Value::execute(const Pointer& self, const Pointer&) {
+
+    throw simplex::ex_invalid_function();
 }

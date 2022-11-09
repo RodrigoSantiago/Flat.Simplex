@@ -32,30 +32,22 @@ void Test::test() {
         1.0_d, s("2.0_d"),
         s("eae"), s("2.586")
     );
+    Pointer _g1 = _g;
     debug_log(_g);
     debug_log(_g->indexGrid(0.0_d, 0.0_d));
     debug_log(_g->indexGrid(0.0_d, 1.0_d));
     debug_log(_g->indexGrid(1.0_d, 1.0_d));
     debug_log(_g->indexGrid(1.0_d, 1.0_d));
 
-    Pointer _args = args({
-                           {1, 2.0_d},
-                           {2, a(10.0_d)}
-                   });
-    debug_log(_args);
-    debug_log(_args->getField(1));
-    debug_log(_args->getField(2));
-
-    Pointer _f = f([](Pointer args) -> Pointer {
+    Asset* asset = new Asset();
+    Pointer _self = Pointer(new Reference(asset));
+    Pointer _f = f(2, [](const Pointer& self, const Pointer& args) -> Pointer {
         debug_log(s("Ola mundo"));
-        debug_log(args->getField(1));
-        debug_log(args->getField(2));
-        args->setField(1, s("ONE"));
+        debug_log(s("0 : ") + args->getField(0));
+        debug_log(s("1 : ") + args->getField(1));
+        debug_log(s("2 : ") + self);
         return Pointer();
     });
-    debug_log(_args.getString());
-    debug_log(_args->getField(1));
-    debug_log(_args->getField(2));
-
-    _f->execute(_args);
+    _f->execute(_self, args(2.0_d));
+    _s->setField(1, _f);
 }

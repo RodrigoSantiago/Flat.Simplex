@@ -41,10 +41,6 @@ Double Reference::getBool() {
     return asset != nullptr;
 }
 
-DoublePointer Reference::getPointer() {
-    return make_ptr(asset);
-}
-
 Value *Reference::reference() {
     count++;
     return this;

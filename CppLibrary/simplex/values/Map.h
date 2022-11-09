@@ -22,8 +22,11 @@ public:
     void* mapD;
 
     Map();
+
     Map(const Map& copy) = delete;
+
     Map(long size, const MapInit *initList);
+
     ~Map() override;
 
     VariableType::VariableType getType() const final;
@@ -44,7 +47,7 @@ public:
 };
 
 template <long N>
-Pointer m(const MapInit (& initList) [N]) {
+inline Pointer m(const MapInit (& initList) [N]) {
     return Pointer(new Map(N, initList));
 }
 

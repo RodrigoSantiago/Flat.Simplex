@@ -5,7 +5,7 @@ import com.flat.simplex.parser.logic.block.BlockWhile;
 
 import java.util.HashMap;
 
-public class Block {
+public abstract class Block {
 
     private Context context;
     private Block parent;

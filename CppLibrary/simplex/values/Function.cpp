@@ -5,15 +5,15 @@
 #include "Function.h"
 #include "../Simplex.h"
 
-Function::Function() : function() {
+Function::Function() : function(), args(0) {
 
 }
 
-Function::Function(const Function &copy) : function(copy.function) {
+Function::Function(const Function &copy) : function(copy.function), args(copy.args) {
 
 }
 
-Function::Function(Pointer (*function)(Pointer)) : function(function) {
+Function::Function(long args, Pointer (*function)(const Pointer&, const Pointer&)) : function(function), args(args) {
 
 }
 
@@ -41,7 +41,8 @@ void Function::deference() {
     delete this;
 }
 
-Pointer Function::execute(const Pointer &args) {
-
-    return function ? function(args) : Pointer();
+Pointer Function::execute(const Pointer& self, const Pointer &args) {
+    Arguments* ar = static_cast<Arguments*>(AS_OBJECT(args.data));
+    ar->reserve(this->args);
+    return function ? function(self, args) : Pointer();
 }

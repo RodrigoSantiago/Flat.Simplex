@@ -16,6 +16,7 @@ class Object;
 class Asset;
 class Function;
 class Reference;
+class Arguments;
 
 #include "Double.h"
 #include "Chars.h"
@@ -43,7 +44,7 @@ union DoublePointer {
 #define AS_STRING(p) (*static_cast<String*>(reinterpret_cast<Value*>((p.data.bits) & MASK_PTR)))
 
 inline DoublePointer make_num(Double value) {
-    return std::isnan(value.value) ? DoublePointer{.bits = QNAN} : DoublePointer{.number = value};
+    return value.value == value.value ? DoublePointer{.number = value} : DoublePointer{.bits = QNAN};
 }
 
 inline DoublePointer make_nan() {
@@ -59,11 +60,13 @@ inline DoublePointer make_ptr(Asset *ptr) {
 }
 
 namespace simplex {
-    inline long long to_int(const Double val) {
-        return static_cast<long long>(round(val.value));
-    }
-
     char* string(const Double value);
+
+    Double number(const char* value);
+
+    void* alloc(decltype(sizeof(0)) size);
+
+    void dealloc(void* ptr);
 }
 
 namespace VariableType {

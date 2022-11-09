@@ -11,14 +11,14 @@ Grid::Grid() : pointers(nullptr), count(0) {
 
 Grid::Grid(const Pointer &width, const Pointer &height) : count(0) {
     if (!width.isNumber() || !height.isNumber()) {
-        throw simplex::ex_grid_out_of_bounds(width, height);
+        throw simplex::ex_grid_invalid_size(width, height);
     }
 
-    this->width = simplex::to_int(width.getNumber());
-    this->height = simplex::to_int(height.getNumber());
+    this->width = simplex::round(width.getNumber());
+    this->height = simplex::round(height.getNumber());
     if (this->width < 0 || this->height < 0) {
 
-        throw simplex::ex_grid_out_of_bounds(width, height);
+        throw simplex::ex_grid_invalid_size(width, height);
     }
 
     pointers = new Pointer[this->width * this->height];
@@ -76,8 +76,8 @@ Pointer& Grid::indexGrid(const Pointer &x, const Pointer &y) {
         throw simplex::ex_grid_out_of_bounds(x, y);
     }
 
-    long long w = simplex::to_int(x.getNumber());
-    long long h = simplex::to_int(y.getNumber());
+    long long w = simplex::round(x.getNumber());
+    long long h = simplex::round(y.getNumber());
     if (w < 0 || w >= width || h < 0 || h >= height) {
 
         throw simplex::ex_grid_out_of_bounds(x, y);
