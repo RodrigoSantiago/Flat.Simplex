@@ -40,7 +40,7 @@ public class CallValue extends LineCall {
 
             if (!endOk) {
                 strValue = "";
-                getContext().error(getToken(), Error.lineIncorrectlyFormatted);
+                getParent().error(getToken(), Error.lineIncorrectlyFormatted);
             } else {
                 strValue = string.substring(1, string.length() - 1);
             }
@@ -51,13 +51,13 @@ public class CallValue extends LineCall {
                     if (getToken().getLength() <= 9) {
                         doubleValue = Double.longBitsToDouble(Long.parseLong(getToken().getString().substring(1), 16));
                     } else {
-                        getContext().error(getToken(), Error.lineIncorrectlyFormatted);
+                        getParent().error(getToken(), Error.lineIncorrectlyFormatted);
                     }
                 } else {
                     doubleValue = Double.parseDouble(getToken().getString());
                 }
             } catch (Exception e) {
-                getContext().error(getToken(), Error.lineIncorrectlyFormatted);
+                getParent().error(getToken(), Error.lineIncorrectlyFormatted);
             }
         } else if (getToken().getKey() == Key.True) {
             boolValue = Boolean.TRUE;
@@ -83,7 +83,7 @@ public class CallValue extends LineCall {
     @Override
     public void setNext(LineCall next) {
         super.setNext(next);
-        getContext().error(next.getToken(), Error.lineUnexpectedCall);
+        getParent().error(next.getToken(), Error.lineUnexpectedCall);
     }
 
     @Override

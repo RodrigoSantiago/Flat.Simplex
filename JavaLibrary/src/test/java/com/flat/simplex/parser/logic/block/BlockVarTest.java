@@ -22,8 +22,8 @@ class BlockVarTest {
     public void varSemicolon() {
         TokenChain chain = readChain("var a;");
 
-        Context context = new Context();
-        BlockVar block = new BlockVar(context, null, chain.get(), null, true);
+        Context context = new Context(chain.get());
+        BlockVar block = new BlockVar(context, chain.get(), null, true);
         block.read();
 
         assertFields(context, "a");
@@ -34,8 +34,8 @@ class BlockVarTest {
     public void varNoSemicolon() {
         TokenChain chain = readChain("var a");
 
-        Context context = new Context();
-        BlockVar block = new BlockVar(context, null, chain.get(), null, false);
+        Context context = new Context(chain.get());
+        BlockVar block = new BlockVar(context, chain.get(), null, false);
         block.read();
 
         assertFields(context, "a");
@@ -46,8 +46,8 @@ class BlockVarTest {
     public void varMultiple() {
         TokenChain chain = readChain("var a,b;");
 
-        Context context = new Context();
-        BlockVar block = new BlockVar(context, null, chain.get(), null, true);
+        Context context = new Context(chain.get());
+        BlockVar block = new BlockVar(context, chain.get(), null, true);
         block.read();
 
         assertFields(context, "a", "b");
@@ -58,8 +58,8 @@ class BlockVarTest {
     public void varMultipleNoSemicolon() {
         TokenChain chain = readChain("var a,b");
 
-        Context context = new Context();
-        BlockVar block = new BlockVar(context, null, chain.get(), null, false);
+        Context context = new Context(chain.get());
+        BlockVar block = new BlockVar(context, chain.get(), null, false);
         block.read();
 
         assertFields(context, "a", "b");
@@ -70,8 +70,8 @@ class BlockVarTest {
     public void varSingleInit() {
         TokenChain chain = readChain("var a = 1;");
 
-        Context context = new Context();
-        BlockVar block = new BlockVar(context, null, chain.get(), null, true);
+        Context context = new Context(chain.get());
+        BlockVar block = new BlockVar(context, chain.get(), null, true);
         block.read();
 
         assertFieldsInit(block, "1");
@@ -83,8 +83,8 @@ class BlockVarTest {
     public void varSingleInitNoSemicolon() {
         TokenChain chain = readChain("var a = 1");
 
-        Context context = new Context();
-        BlockVar block = new BlockVar(context, null, chain.get(), null, false);
+        Context context = new Context(chain.get());
+        BlockVar block = new BlockVar(context, chain.get(), null, false);
         block.read();
 
         assertFieldsInit(block, "1");
@@ -96,8 +96,8 @@ class BlockVarTest {
     public void varMultipleSingleInit() {
         TokenChain chain = readChain("var a = 1, b;");
 
-        Context context = new Context();
-        BlockVar block = new BlockVar(context, null, chain.get(), null, true);
+        Context context = new Context(chain.get());
+        BlockVar block = new BlockVar(context, chain.get(), null, true);
         block.read();
 
         assertFieldsInit(block, "1", "");
@@ -109,8 +109,8 @@ class BlockVarTest {
     public void varMultipleSingleInitNoSemicolon() {
         TokenChain chain = readChain("var a = 1, b");
 
-        Context context = new Context();
-        BlockVar block = new BlockVar(context, null, chain.get(), null, false);
+        Context context = new Context(chain.get());
+        BlockVar block = new BlockVar(context, chain.get(), null, false);
         block.read();
 
         assertFieldsInit(block, "1", "");
@@ -122,8 +122,8 @@ class BlockVarTest {
     public void varMultipleSingleInitAfter() {
         TokenChain chain = readChain("var a, b = 1;");
 
-        Context context = new Context();
-        BlockVar block = new BlockVar(context, null, chain.get(), null, true);
+        Context context = new Context(chain.get());
+        BlockVar block = new BlockVar(context, chain.get(), null, true);
         block.read();
 
         assertFieldsInit(block, "", "1");
@@ -135,8 +135,8 @@ class BlockVarTest {
     public void varMultipleSingleInitAfterNoSemicolon() {
         TokenChain chain = readChain("var a, b = 1");
 
-        Context context = new Context();
-        BlockVar block = new BlockVar(context, null, chain.get(), null, false);
+        Context context = new Context(chain.get());
+        BlockVar block = new BlockVar(context, chain.get(), null, false);
         block.read();
 
         assertFieldsInit(block, "", "1");
@@ -148,8 +148,8 @@ class BlockVarTest {
     public void varMultipleInit() {
         TokenChain chain = readChain("var a = 1, b = 2;");
 
-        Context context = new Context();
-        BlockVar block = new BlockVar(context, null, chain.get(), null, true);
+        Context context = new Context(chain.get());
+        BlockVar block = new BlockVar(context, chain.get(), null, true);
         block.read();
 
         assertFieldsInit(block, "1", "2");
@@ -161,8 +161,8 @@ class BlockVarTest {
     public void varMultipleInitNoSemicolon() {
         TokenChain chain = readChain("var a = 1, b = 2");
 
-        Context context = new Context();
-        BlockVar block = new BlockVar(context, null, chain.get(), null, false);
+        Context context = new Context(chain.get());
+        BlockVar block = new BlockVar(context, chain.get(), null, false);
         block.read();
 
         assertFieldsInit(block, "1", "2");
@@ -174,8 +174,8 @@ class BlockVarTest {
     public void varSemicolonExpected_Fail() {
         TokenChain chain = readChain("var a = 1, b = 2");
 
-        Context context = new Context();
-        BlockVar block = new BlockVar(context, null, chain.get(), null, true);
+        Context context = new Context(chain.get());
+        BlockVar block = new BlockVar(context, chain.get(), null, true);
         block.read();
 
         assertFieldsInit(block, "1", "2");
@@ -187,8 +187,8 @@ class BlockVarTest {
     public void varSemicolonUnexpected_Fail() {
         TokenChain chain = readChain("var a = 1, b = 2;");
 
-        Context context = new Context();
-        BlockVar block = new BlockVar(context, null, chain.get(), null, false);
+        Context context = new Context(chain.get());
+        BlockVar block = new BlockVar(context, chain.get(), null, false);
         block.read();
 
         assertFieldsInit(block, "1", "2");
@@ -200,8 +200,8 @@ class BlockVarTest {
     public void varSemicolonEarly_Fail() {
         TokenChain chain = readChain("var a = 1; b, c");
 
-        Context context = new Context();
-        BlockVar block = new BlockVar(context, null, chain.get(), null, true);
+        Context context = new Context(chain.get());
+        BlockVar block = new BlockVar(context, chain.get(), null, true);
         block.read();
 
         assertFieldsInit(block, "1");
@@ -213,8 +213,8 @@ class BlockVarTest {
     public void varSemicolonEarlyNoSemicolon_Fail() {
         TokenChain chain = readChain("var a = 1; b, c");
 
-        Context context = new Context();
-        BlockVar block = new BlockVar(context, null, chain.get(), null, false);
+        Context context = new Context(chain.get());
+        BlockVar block = new BlockVar(context, chain.get(), null, false);
         block.read();
 
         assertFieldsInit(block, "1");
@@ -226,8 +226,8 @@ class BlockVarTest {
     public void varUnexpectedEndOfTokens_Fail() {
         TokenChain chain = readChain("var");
 
-        Context context = new Context();
-        BlockVar block = new BlockVar(context, null, chain.get(), null, true);
+        Context context = new Context(chain.get());
+        BlockVar block = new BlockVar(context, chain.get(), null, true);
         block.read();
 
         assertFieldsInit(block);
@@ -239,8 +239,8 @@ class BlockVarTest {
     public void varUnexpectedEndOfTokensNoSemicolon_Fail() {
         TokenChain chain = readChain("var");
 
-        Context context = new Context();
-        BlockVar block = new BlockVar(context, null, chain.get(), null, false);
+        Context context = new Context(chain.get());
+        BlockVar block = new BlockVar(context, chain.get(), null, false);
         block.read();
 
         assertFieldsInit(block);
@@ -252,8 +252,8 @@ class BlockVarTest {
     public void varInitExpected_Fail() {
         TokenChain chain = readChain("var a =, b = 1;");
 
-        Context context = new Context();
-        BlockVar block = new BlockVar(context, null, chain.get(), null, true);
+        Context context = new Context(chain.get());
+        BlockVar block = new BlockVar(context, chain.get(), null, true);
         block.read();
 
         assertFieldsInit(block, "", "1");
@@ -265,8 +265,8 @@ class BlockVarTest {
     public void varLastInitExpectedNoSemicolon_Fail() {
         TokenChain chain = readChain("var a = 1, b =");
 
-        Context context = new Context();
-        BlockVar block = new BlockVar(context, null, chain.get(), null, false);
+        Context context = new Context(chain.get());
+        BlockVar block = new BlockVar(context, chain.get(), null, false);
         block.read();
 
         assertFieldsInit(block, "1", "");
@@ -278,8 +278,8 @@ class BlockVarTest {
     public void varLastInitExpected_Fail() {
         TokenChain chain = readChain("var a = 1, b =;");
 
-        Context context = new Context();
-        BlockVar block = new BlockVar(context, null, chain.get(), null, true);
+        Context context = new Context(chain.get());
+        BlockVar block = new BlockVar(context, chain.get(), null, true);
         block.read();
 
         assertFieldsInit(block, "1", "");
@@ -291,8 +291,8 @@ class BlockVarTest {
     public void varLastInitExpectedNeededSemicolon_Fail() {
         TokenChain chain = readChain("var a = 1, b =");
 
-        Context context = new Context();
-        BlockVar block = new BlockVar(context, null, chain.get(), null, true);
+        Context context = new Context(chain.get());
+        BlockVar block = new BlockVar(context, chain.get(), null, true);
         block.read();
 
         assertFieldsInit(block, "1", "");
@@ -304,8 +304,8 @@ class BlockVarTest {
     public void varInitExpectedNoSemicolon_Fail() {
         TokenChain chain = readChain("var a =, b = 1");
 
-        Context context = new Context();
-        BlockVar block = new BlockVar(context, null, chain.get(), null, false);
+        Context context = new Context(chain.get());
+        BlockVar block = new BlockVar(context, chain.get(), null, false);
         block.read();
 
         assertFieldsInit(block, "", "1");
@@ -317,8 +317,8 @@ class BlockVarTest {
     public void varDoubleComma_Fail() {
         TokenChain chain = readChain("var a = 1, ,b = 2;");
 
-        Context context = new Context();
-        BlockVar block = new BlockVar(context, null, chain.get(), null, true);
+        Context context = new Context(chain.get());
+        BlockVar block = new BlockVar(context, chain.get(), null, true);
         block.read();
 
         assertFieldsInit(block, "1", "2");
@@ -330,8 +330,8 @@ class BlockVarTest {
     public void varDoubleCommaNoSemicolon_Fail() {
         TokenChain chain = readChain("var a = 1, ,b = 2");
 
-        Context context = new Context();
-        BlockVar block = new BlockVar(context, null, chain.get(), null, false);
+        Context context = new Context(chain.get());
+        BlockVar block = new BlockVar(context, chain.get(), null, false);
         block.read();
 
         assertFieldsInit(block, "1", "2");
@@ -343,9 +343,9 @@ class BlockVarTest {
     public void varRepeatedName() {
         TokenChain chain = readChain("var a;");
 
-        Context context = new Context();
+        Context context = new Context(chain.get());
         context.addField(new Field(mChain("a").get(), "a", Field.Type.Local));
-        BlockVar block = new BlockVar(context, null, chain.get(), null, true);
+        BlockVar block = new BlockVar(context, chain.get(), null, true);
         block.read();
 
         assertFields(context, "a");
@@ -356,11 +356,11 @@ class BlockVarTest {
     public void varParentRepeatedName() {
         TokenChain chain = readChain("var a;");
 
-        Context context = new Context();
+        Context context = new Context(chain.get());
         BlockIf blockIf = getBlockIf(context);
         blockIf.addField(new Field(mChain("a").get(), "a", Field.Type.Local));
 
-        BlockVar block = new BlockVar(context, blockIf, chain.get(), null, true);
+        BlockVar block = new BlockVar(blockIf, chain.get(), null, true);
         block.read();
 
         assertFields(context);
@@ -371,9 +371,9 @@ class BlockVarTest {
     public void varInsideSwitch_Fail() {
         TokenChain chain = readChain("var a;");
 
-        Context context = new Context();
+        Context context = new Context(chain.get());
         BlockSwitch blockSwitch = getBlockSwitch(context);
-        BlockVar block = new BlockVar(context, blockSwitch, chain.get(), null, true);
+        BlockVar block = new BlockVar(blockSwitch, chain.get(), null, true);
         block.read();
 
         assertFields(context);
@@ -401,12 +401,12 @@ class BlockVarTest {
     private BlockIf getBlockIf(Context context) {
         TokenChain chain = readChain("if(true);");
 
-        return new BlockIf(context, null, chain.get(), null);
+        return new BlockIf(context, chain.get(), null);
     }
 
     private BlockSwitch getBlockSwitch(Context context) {
         TokenChain chain = readChain("switch(hello){}");
 
-        return new BlockSwitch(context, null, chain.get(), null);
+        return new BlockSwitch(context, chain.get(), null);
     }
 }

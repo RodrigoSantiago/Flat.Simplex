@@ -15,9 +15,8 @@ class CallValueTest {
     @Test
     public void loadNumber() {
         TokenChain chain = readChain("123");
-        Context context = new Context();
-        BlockIf blockIf = getBlock(context);
-        CallValue value = new CallValue(blockIf, chain.get());
+        Context context = new Context(chain.get());
+        CallValue value = new CallValue(context, chain.get());
         value.load();
 
         assertEquals(123D, value.getDoubleValue(), "Invalid value");
@@ -30,9 +29,8 @@ class CallValueTest {
     @Test
     public void loadString() {
         TokenChain chain = readChain("\"hello\"");
-        Context context = new Context();
-        BlockIf blockIf = getBlock(context);
-        CallValue value = new CallValue(blockIf, chain.get());
+        Context context = new Context(chain.get());
+        CallValue value = new CallValue(context, chain.get());
         value.load();
 
         assertNull(value.getDoubleValue(), "Invalid value");
@@ -45,9 +43,8 @@ class CallValueTest {
     @Test
     public void loadTrue() {
         TokenChain chain = readChain("true");
-        Context context = new Context();
-        BlockIf blockIf = getBlock(context);
-        CallValue value = new CallValue(blockIf, chain.get());
+        Context context = new Context(chain.get());
+        CallValue value = new CallValue(context, chain.get());
         value.load();
 
         assertNull(value.getDoubleValue(), "Invalid value");
@@ -60,9 +57,8 @@ class CallValueTest {
     @Test
     public void loadFalse() {
         TokenChain chain = readChain("false");
-        Context context = new Context();
-        BlockIf blockIf = getBlock(context);
-        CallValue value = new CallValue(blockIf, chain.get());
+        Context context = new Context(chain.get());
+        CallValue value = new CallValue(context, chain.get());
         value.load();
 
         assertNull(value.getDoubleValue(), "Invalid value");
@@ -75,9 +71,8 @@ class CallValueTest {
     @Test
     public void loadHex() {
         TokenChain chain = readChain("#AABBCC");
-        Context context = new Context();
-        BlockIf blockIf = getBlock(context);
-        CallValue value = new CallValue(blockIf, chain.get());
+        Context context = new Context(chain.get());
+        CallValue value = new CallValue(context, chain.get());
         value.load();
 
         Double dValue = Double.longBitsToDouble(0xAABBCC);
@@ -91,9 +86,8 @@ class CallValueTest {
     @Test
     public void loadComplex() {
         TokenChain chain = readChain("123.456e+2");
-        Context context = new Context();
-        BlockIf blockIf = getBlock(context);
-        CallValue value = new CallValue(blockIf, chain.get());
+        Context context = new Context(chain.get());
+        CallValue value = new CallValue(context, chain.get());
         value.load();
 
         assertEquals(123.456e+2D,value.getDoubleValue(), "Invalid value");
@@ -106,9 +100,8 @@ class CallValueTest {
     @Test
     public void loadUndefined() {
         TokenChain chain = readChain("undefined");
-        Context context = new Context();
-        BlockIf blockIf = getBlock(context);
-        CallValue value = new CallValue(blockIf, chain.get());
+        Context context = new Context(chain.get());
+        CallValue value = new CallValue(context, chain.get());
         value.load();
 
         assertEquals(Double.NaN,value.getDoubleValue(), "Invalid value");
@@ -121,9 +114,8 @@ class CallValueTest {
     @Test
     public void loadIncorrectDouble_Fail() {
         TokenChain chain = readChain("123.123ee2");
-        Context context = new Context();
-        BlockIf blockIf = getBlock(context);
-        CallValue value = new CallValue(blockIf, chain.get());
+        Context context = new Context(chain.get());
+        CallValue value = new CallValue(context, chain.get());
         value.load();
 
         assertEquals(0.0D,value.getDoubleValue(), "Invalid value");
@@ -136,9 +128,8 @@ class CallValueTest {
     @Test
     public void loadHexTooBig_Fail() {
         TokenChain chain = readChain("#AABBCCDDEE");
-        Context context = new Context();
-        BlockIf blockIf = getBlock(context);
-        CallValue value = new CallValue(blockIf, chain.get());
+        Context context = new Context(chain.get());
+        CallValue value = new CallValue(context, chain.get());
         value.load();
 
         assertEquals(0.0D,value.getDoubleValue(), "Invalid value");
@@ -151,9 +142,8 @@ class CallValueTest {
     @Test
     public void loadOpenString_Fail() {
         TokenChain chain = readChain("\"hello");
-        Context context = new Context();
-        BlockIf blockIf = getBlock(context);
-        CallValue value = new CallValue(blockIf, chain.get());
+        Context context = new Context(chain.get());
+        CallValue value = new CallValue(context, chain.get());
         value.load();
 
         assertNull(value.getDoubleValue(), "Invalid value");
@@ -166,9 +156,8 @@ class CallValueTest {
     @Test
     public void loadOpenStringFakeEnd_Fail() {
         TokenChain chain = readChain("\"hello\\\"");
-        Context context = new Context();
-        BlockIf blockIf = getBlock(context);
-        CallValue value = new CallValue(blockIf, chain.get());
+        Context context = new Context(chain.get());
+        CallValue value = new CallValue(context, chain.get());
         value.load();
 
         assertNull(value.getDoubleValue(), "Invalid value");
@@ -176,12 +165,5 @@ class CallValueTest {
         assertNull(value.getBoolValue(), "Invalid value");
 
         assertErrors(context, Error.lineIncorrectlyFormatted);
-    }
-
-    private BlockIf getBlock(Context context) {
-        TokenChain chain = readChain("if(true);");
-
-        return new BlockIf(context, null, chain.get(), null);
-
     }
 }

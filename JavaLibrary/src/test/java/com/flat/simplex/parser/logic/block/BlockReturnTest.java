@@ -16,8 +16,8 @@ class BlockReturnTest {
     public void blockBreak() {
         TokenChain chain = readChain("return;");
 
-        Context context = new Context();
-        BlockReturn block = new BlockReturn(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockReturn block = new BlockReturn(context, chain.get(), null);
         block.read();
 
         assertNull(block.getTokenContent());
@@ -30,8 +30,8 @@ class BlockReturnTest {
     public void blockBreakContent() {
         TokenChain chain = readChain("return hello;");
 
-        Context context = new Context();
-        BlockReturn block = new BlockReturn(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockReturn block = new BlockReturn(context, chain.get(), null);
         block.read();
 
         TokenChain.assertChain("hello;", block.getTokenContent(), block.getTokenContentEnd(), "Invalid body");
@@ -43,8 +43,8 @@ class BlockReturnTest {
     public void blockBreakUnexpectedToken_Fail() {
         TokenChain chain = readChain("return;;");
 
-        Context context = new Context();
-        BlockReturn block = new BlockReturn(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockReturn block = new BlockReturn(context, chain.get(), null);
         block.read();
 
         assertNull(block.getTokenContent());
@@ -57,8 +57,8 @@ class BlockReturnTest {
     public void blockBreakUnexpectedEndOfTokens_Fail() {
         TokenChain chain = readChain("return");
 
-        Context context = new Context();
-        BlockReturn block = new BlockReturn(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockReturn block = new BlockReturn(context, chain.get(), null);
         block.read();
 
         assertNull(block.getTokenContent());

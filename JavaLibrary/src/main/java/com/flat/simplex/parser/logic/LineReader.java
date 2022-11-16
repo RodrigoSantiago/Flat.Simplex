@@ -11,7 +11,6 @@ import java.util.ArrayList;
 public class LineReader {
 
     private Block parent;
-    private Context context;
 
     private ArrayList<Line> calls = new ArrayList<>();
     private LineCall firstCall = null;
@@ -22,7 +21,6 @@ public class LineReader {
 
     public LineReader(Block parent) {
         this.parent = parent;
-        this.context = parent.getContext();
     }
 
     public ArrayList<Line> read(Token tokenStart, Token tokenEnd) {
@@ -60,7 +58,7 @@ public class LineReader {
                 if (lastCall != null) {
                     addLastLineChain();
                 }
-                context.error(token, Error.unexpectedToken);
+                parent.error(token, Error.unexpectedToken);
             }
             token = token.getNext();
         }
@@ -73,7 +71,7 @@ public class LineReader {
     private void consumeField() {
         if (lastCall != null) {
             addLastLineChain();
-            context.error(token, Error.lineMissingAccessor);
+            parent.error(token, Error.lineMissingAccessor);
         }
         bindNext(new CallField(parent, token));
     }
@@ -81,12 +79,13 @@ public class LineReader {
     private void consumeValue() {
         if (lastCall != null) {
             addLastLineChain();
-            context.error(token, Error.lineMissingAccessor);
+            parent.error(token, Error.lineMissingAccessor);
         }
         bindNext(new CallValue(parent, token));
     }
 
     private void consumeFunction() {
+        Token start = token;
         Token fEnd = token.getNext();
         if (fEnd != null && fEnd != end && fEnd.getKey() == Key.Param) {
             token = fEnd;
@@ -98,14 +97,14 @@ public class LineReader {
         }
         if (lastCall != null) {
             addLastLineChain();
-            context.error(token, Error.lineMissingAccessor);
+            parent.error(token, Error.lineMissingAccessor);
         }
-        bindNext(new CallFunction(parent, token, fEnd));
+        bindNext(new CallFunction(parent, start, fEnd));
     }
 
     private void consumeDot() {
         if (lastCall == null) {
-            context.error(token, Error.unexpectedToken);
+            parent.error(token, Error.unexpectedToken);
         } else {
             if (token.getNext() != null && token.getNext() != end) {
                 if (token.getNext().getKey() == Key.Word) {
@@ -113,11 +112,11 @@ public class LineReader {
                     bindNext(new CallField(parent, token));
                 } else {
                     addLastLineChain();
-                    context.error(token, Error.unexpectedToken);
+                    parent.error(token, Error.unexpectedToken);
                 }
             } else {
                 addLastLineChain();
-                context.error(token, Error.unexpectedEndOfTokens);
+                parent.error(token, Error.unexpectedEndOfTokens);
             }
         }
     }
@@ -141,7 +140,7 @@ public class LineReader {
     private void consumeBrace() {
         if (lastCall != null) {
             addLastLineChain();
-            context.error(token, Error.lineMissingAccessor);
+            parent.error(token, Error.lineMissingAccessor);
         }
         bindNext(new CallStruct(parent, token));
     }

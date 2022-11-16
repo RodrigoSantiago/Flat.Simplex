@@ -114,7 +114,7 @@ public class Lexer {
         }
     }
 
-    private boolean isCloser(Key a, Key b) {
+    private boolean isCloserFor(Key a, Key b) {
         if (a == Key.Param) return b == Key.CParam;
         if (a == Key.Brace) return b == Key.CBrace;
         if (a == Key.Index) return b == Key.CIndex;
@@ -138,7 +138,7 @@ public class Lexer {
                 token.setNext(next);
             }
             token = next;
-            if (isCloser(key, token.getKey())) {
+            if (isCloserFor(key, token.getKey())) {
                 block.setLastChild(token);
                 break;
             }

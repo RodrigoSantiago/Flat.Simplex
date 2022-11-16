@@ -3,7 +3,6 @@ package com.flat.simplex.parser.logic.block;
 import com.flat.simplex.lexer.Key;
 import com.flat.simplex.lexer.Token;
 import com.flat.simplex.parser.logic.Block;
-import com.flat.simplex.parser.logic.Context;
 import com.flat.simplex.parser.logic.error.Error;
 
 public class BlockReturn extends Block {
@@ -13,8 +12,8 @@ public class BlockReturn extends Block {
 
     private BlockLine lineCondition;
 
-    public BlockReturn(Context context, Block parent, Token start, Token end) {
-        super(context, parent, start);
+    public BlockReturn(Block parent, Token start, Token end) {
+        super(parent, start);
 
         Token token = start;
         Token lToken = start;
@@ -30,20 +29,20 @@ public class BlockReturn extends Block {
                 tokenContentEnd = end;
                 break;
             } else {
-                context.error(token, Error.unexpectedToken);
+                error(token, Error.unexpectedToken);
             }
             lToken = token;
             token = token.getNext();
         }
         if (state < 2) {
-            context.error(lToken, Error.unexpectedEndOfTokens);
+            error(lToken, Error.unexpectedEndOfTokens);
         }
     }
 
     @Override
     public void read() {
         if (tokenContent != null) {
-            lineCondition = new BlockLine(getContext(), this, tokenContent, tokenContentEnd, true);
+            lineCondition = new BlockLine(this, tokenContent, tokenContentEnd, true);
             lineCondition.read();
         }
     }

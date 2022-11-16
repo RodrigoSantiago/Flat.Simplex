@@ -15,9 +15,9 @@ class BlockElseIfTest {
     public void block() {
         TokenChain chain = readChain("else if (true) hello = true;");
 
-        Context context = new Context();
+        Context context = new Context(chain.get());
         BlockIf blockIf = getBlockIf(context);
-        BlockElseIf block = new BlockElseIf(context, null, chain.get(), null);
+        BlockElseIf block = new BlockElseIf(context, chain.get(), null);
         block.read();
         block.setPreviousBlock(blockIf);
 
@@ -31,9 +31,9 @@ class BlockElseIfTest {
     public void blockElseIfBlock() {
         TokenChain chain = readChain("else if (true){}");
 
-        Context context = new Context();
+        Context context = new Context(chain.get());
         BlockIf blockIf = getBlockIf(context);
-        BlockElseIf block = new BlockElseIf(context, null, chain.get(), null);
+        BlockElseIf block = new BlockElseIf(context, chain.get(), null);
         block.read();
         block.setPreviousBlock(blockIf);
 
@@ -47,9 +47,9 @@ class BlockElseIfTest {
     public void blockElseIfOpenBlock_Fail() {
         TokenChain chain = readChain("else if (true){");
 
-        Context context = new Context();
+        Context context = new Context(chain.get());
         BlockIf blockIf = getBlockIf(context);
-        BlockElseIf block = new BlockElseIf(context, null, chain.get(), null);
+        BlockElseIf block = new BlockElseIf(context, chain.get(), null);
         block.read();
         block.setPreviousBlock(blockIf);
 
@@ -63,9 +63,9 @@ class BlockElseIfTest {
     public void blockElseIfWithElseIf() {
         TokenChain chain = readChain("else if (true) hello = true;");
 
-        Context context = new Context();
+        Context context = new Context(chain.get());
         BlockElseIf blockElseIfA = getBlockElseIfIf(context);
-        BlockElseIf block = new BlockElseIf(context, null, chain.get(), null);
+        BlockElseIf block = new BlockElseIf(context, chain.get(), null);
         block.read();
         block.setPreviousBlock(blockElseIfA);
 
@@ -79,9 +79,9 @@ class BlockElseIfTest {
     public void blockElseIfWithoutIf_Fail() {
         TokenChain chain = readChain("else if (true) hello = true;");
 
-        Context context = new Context();
+        Context context = new Context(chain.get());
         BlockWhile blockWhile = getBlockWhile(context);
-        BlockElseIf block = new BlockElseIf(context, null, chain.get(), null);
+        BlockElseIf block = new BlockElseIf(context, chain.get(), null);
         block.read();
         block.setPreviousBlock(blockWhile);
 
@@ -95,9 +95,9 @@ class BlockElseIfTest {
     public void blockElseIfUnexpectedToken_Fail() {
         TokenChain chain = readChain("else if a (true) {}");
 
-        Context context = new Context();
+        Context context = new Context(chain.get());
         BlockIf blockIf = getBlockIf(context);
-        BlockElseIf block = new BlockElseIf(context, null, chain.get(), null);
+        BlockElseIf block = new BlockElseIf(context, chain.get(), null);
         block.read();
         block.setPreviousBlock(blockIf);
 
@@ -111,9 +111,9 @@ class BlockElseIfTest {
     public void blockElseIfUnexpectedEndOfTokens_Fail() {
         TokenChain chain = readChain("else if (true)");
 
-        Context context = new Context();
+        Context context = new Context(chain.get());
         BlockIf blockIf = getBlockIf(context);
-        BlockElseIf block = new BlockElseIf(context, null, chain.get(), null);
+        BlockElseIf block = new BlockElseIf(context, chain.get(), null);
         block.read();
         block.setPreviousBlock(blockIf);
 
@@ -126,9 +126,9 @@ class BlockElseIfTest {
     public void blockElseIfMissingCondition_Fail() {
         TokenChain chain = readChain("else if () hello = true;");
 
-        Context context = new Context();
+        Context context = new Context(chain.get());
         BlockIf blockIf = getBlockIf(context);
-        BlockElseIf block = new BlockElseIf(context, null, chain.get(), null);
+        BlockElseIf block = new BlockElseIf(context, chain.get(), null);
         block.read();
         block.setPreviousBlock(blockIf);
 
@@ -141,18 +141,18 @@ class BlockElseIfTest {
     private BlockIf getBlockIf(Context context) {
         TokenChain chain = readChain("if(true);");
 
-        return new BlockIf(context, null, chain.get(), null);
+        return new BlockIf(null, chain.get(), null);
     }
 
     private BlockElseIf getBlockElseIfIf(Context context) {
         TokenChain chain = readChain("else if(true);");
 
-        return new BlockElseIf(context, null, chain.get(), null);
+        return new BlockElseIf(context, chain.get(), null);
     }
 
     private BlockWhile getBlockWhile(Context context) {
         TokenChain chain = readChain("while(true);");
 
-        return new BlockWhile(context, null, chain.get(), null);
+        return new BlockWhile(context, chain.get(), null);
     }
 }

@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class CallStruct extends LineCall {
 
-    private ArrayList<Member> members = new ArrayList<>();
+    private final ArrayList<Member> members = new ArrayList<>();
 
     public CallStruct(Block parent, Token token) {
         super(parent, token, Type.Struct);
@@ -22,7 +22,7 @@ public class CallStruct extends LineCall {
         Token start = getToken().getChild();
         Token end = getToken().getLastChild();
         if (end == null) {
-            getContext().error(getToken(), Error.missingCloser);
+            getParent().error(getToken(), Error.missingCloser);
         }
 
         Token token = start;
@@ -37,7 +37,7 @@ public class CallStruct extends LineCall {
             } else if ((state == 0 || state == 4) && token.getKey() == Key.String) {
                 nameToken = token;
                 state = 1;
-                getContext().error(token, Error.structDoNotUseString);
+                getParent().error(token, Error.structDoNotUseString);
             } else if (state == 1 && token.getKey() == Key.Colon) {
                 state = 2;
             } else if (state == 2 && token.getKey() != Key.Comma) {
@@ -50,7 +50,7 @@ public class CallStruct extends LineCall {
                 members.add(new Member(nameToken, lineValue));
                 state = 4;
             } else {
-                getContext().error(token, Error.unexpectedToken);
+                getParent().error(token, Error.unexpectedToken);
             }
             lToken = token;
             token = token.getNext();
@@ -59,7 +59,7 @@ public class CallStruct extends LineCall {
             LineValue lineValue = new LineParser(getParent(), initToken, token).parse();
             members.add(new Member(nameToken, lineValue));
         } else if (state != 0) {
-            getContext().error(lToken, Error.unexpectedEndOfTokens);
+            getParent().error(lToken, Error.unexpectedEndOfTokens);
         }
     }
 
@@ -67,7 +67,7 @@ public class CallStruct extends LineCall {
     public void setNext(LineCall next) {
         super.setNext(next);
         if (next.getType() == Type.Value || getNext().getType() == Type.Struct || getNext().getType() == Type.Function) {
-            getContext().error(next.getToken(), Error.lineUnexpectedCall);
+            getParent().error(next.getToken(), Error.lineUnexpectedCall);
         }
     }
 

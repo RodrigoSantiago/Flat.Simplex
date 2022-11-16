@@ -1,25 +1,20 @@
 package com.flat.simplex.parser.logic;
 
 import com.flat.simplex.lexer.Token;
-import com.flat.simplex.parser.logic.block.BlockWhile;
+import com.flat.simplex.parser.logic.error.Error;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public abstract class Block {
 
-    private Context context;
     private Block parent;
     private Token token;
-    private HashMap<String, Field> fields = new HashMap<>();
+    protected final HashMap<String, Field> fields = new HashMap<>();
 
-    public Block(Context context, Block parent, Token token) {
-        this.context = context;
+    public Block(Block parent, Token token) {
         this.parent = parent;
         this.token = token;
-    }
-
-    public Block() {
-
     }
 
     public void read() {
@@ -72,13 +67,24 @@ public abstract class Block {
             return field;
         } else if (parent != null) {
             return parent.getField(fieldName);
-        } else {
-            return context.getField(fieldName);
         }
+        return null;
     }
-
-    public Context getContext() {
-        return context;
+    
+    public void error(Token token, String description) {
+        getParent().error(token, description);
+    }
+    
+    public void warning(Token token, String description) {
+        getParent().warning(token, description);
+    }
+    
+    public void addError(Error error) {
+        getParent().addError(error);
+    }
+    
+    public ArrayList<Error> getErrors() {
+        return getParent().getErrors();
     }
 
     public Block getParent() {

@@ -4,7 +4,6 @@ import com.flat.simplex.lexer.Key;
 import com.flat.simplex.lexer.Token;
 import com.flat.simplex.parser.Parser;
 import com.flat.simplex.parser.logic.Block;
-import com.flat.simplex.parser.logic.Context;
 import com.flat.simplex.parser.logic.error.Error;
 
 import java.util.ArrayList;
@@ -19,8 +18,8 @@ public class BlockWith extends Block {
     private BlockLine lineValue;
     private ArrayList<Block> blocks;
 
-    public BlockWith(Context context, Block parent, Token start, Token end) {
-        super(context, parent, start);
+    public BlockWith(Block parent, Token start, Token end) {
+        super(parent, start);
 
         Token token = start;
         Token lToken = start;
@@ -41,34 +40,34 @@ public class BlockWith extends Block {
                 tokenContentEnd = end;
                 break;
             } else {
-                context.error(token, Error.unexpectedToken);
+                error(token, Error.unexpectedToken);
             }
             lToken = token;
             token = token.getNext();
         }
         if (state < 3) {
-            context.error(lToken, Error.unexpectedEndOfTokens);
+            error(lToken, Error.unexpectedEndOfTokens);
         }
     }
 
     @Override
     public void read() {
         if (tokenValue != null) {
-            lineValue = new BlockLine(getContext(), this, tokenValue.getChild(), tokenValue.getLastChild(), false);
+            lineValue = new BlockLine(this, tokenValue.getChild(), tokenValue.getLastChild(), false);
             lineValue.read();
 
             if (lineValue.isEmpty()) {
-                getContext().error(tokenValue, Error.withConditionExpected);
+                error(tokenValue, Error.withConditionExpected);
             }
         }
         if (tokenContent != null) {
             if (commandBlock) {
-                blocks = new Parser(getContext(), this).parse(tokenContent.getChild(), tokenContent.getLastChild());
+                blocks = new Parser(this).parse(tokenContent.getChild(), tokenContent.getLastChild());
                 if (tokenContent.getLastChild() == null) {
-                    getContext().error(tokenContent, Error.missingCloser);
+                    error(tokenContent, Error.missingCloser);
                 }
             } else {
-                blocks = new Parser(getContext(), this).parse(tokenContent, tokenContentEnd);
+                blocks = new Parser(this).parse(tokenContent, tokenContentEnd);
             }
         }
     }

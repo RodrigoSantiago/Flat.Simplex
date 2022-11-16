@@ -6,15 +6,15 @@ import com.flat.simplex.parser.logic.Block;
 import com.flat.simplex.parser.logic.Context;
 import com.flat.simplex.parser.logic.LineParser;
 import com.flat.simplex.parser.logic.error.Error;
-import com.flat.simplex.parser.logic.line.Line;
 import com.flat.simplex.parser.logic.line.LineValue;
 
 import java.util.ArrayList;
 
 public class CallArray extends LineCall {
 
-    private ArrayList<Member> members = new ArrayList<>();
+    private final ArrayList<Member> members = new ArrayList<>();
     private int type;
+    
     public CallArray(Block parent, Token token) {
         super(parent, token, Type.Array);
     }
@@ -24,7 +24,7 @@ public class CallArray extends LineCall {
         Token start = getToken().getChild();
         Token end = getToken().getLastChild();
         if (end == null) {
-            getContext().error(getToken(), Error.missingCloser);
+            getParent().error(getToken(), Error.missingCloser);
         }
 
         Token token = start;
@@ -84,7 +84,7 @@ public class CallArray extends LineCall {
                 LineValue lineValue = new LineParser(getParent(), sinitToken, sinitTokenEnd).parse();
                 members.add(new Member(lineKey, lineValue, initToken));
             } else {
-                getContext().error(token, Error.unexpectedToken);
+                getParent().error(token, Error.unexpectedToken);
             }
             lToken = token;
             token = token.getNext();
@@ -103,7 +103,7 @@ public class CallArray extends LineCall {
             members.add(new Member(lineKey, lineValue, initToken));
 
         } else if (state != 0) {
-            getContext().error(lToken, Error.unexpectedEndOfTokens);
+            getParent().error(lToken, Error.unexpectedEndOfTokens);
         }
         membersCheck();
     }
@@ -114,7 +114,7 @@ public class CallArray extends LineCall {
             if (type == -1) {
                 type = member.getType();
             } else if (type != member.getType()) {
-                getContext().error(member.token, Error.arrayMixingTypes);
+                getParent().error(member.token, Error.arrayMixingTypes);
             }
         }
         if (type == -1) {
@@ -124,17 +124,17 @@ public class CallArray extends LineCall {
             if (member.getType() == 0 || member.getType() == 1) {
                 LineValue lineValue = member.lineValue;
                 if (lineValue != null && lineValue.isContainer())
-                    getContext().warning(member.token, Error.arrayContainer);
+                    getParent().warning(member.token, Error.arrayContainer);
             }
             if (member.getType() == 1) {
                 LineValue lineValue = member.lineKey;
                 if (lineValue != null && lineValue.isContainer())
-                    getContext().warning(member.token, Error.arrayContainer);
+                    getParent().warning(member.token, Error.arrayContainer);
             }
             if (member.getType() == 2) {
                 for (LineValue lineValue : member.lines) {
                     if (lineValue != null && lineValue.isContainer())
-                        getContext().warning(member.token, Error.arrayContainer);
+                        getParent().warning(member.token, Error.arrayContainer);
                 }
             }
         }
@@ -144,7 +144,7 @@ public class CallArray extends LineCall {
     public void setNext(LineCall next) {
         super.setNext(next);
         if (next.getType() == Type.Value || getNext().getType() == Type.Struct || getNext().getType() == Type.Function) {
-            getContext().error(next.getToken(), Error.lineUnexpectedCall);
+            getParent().error(next.getToken(), Error.lineUnexpectedCall);
         }
     }
 
@@ -160,13 +160,12 @@ public class CallArray extends LineCall {
 
         public Member(Block parent, Token gridToken) {
             this.token = gridToken;
-            Context context = parent.getContext();
 
             lines = new ArrayList<>();
             Token start = gridToken.getChild();
             Token end = gridToken.getLastChild();
             if (end == null) {
-                context.error(gridToken, Error.missingCloser);
+                parent.error(gridToken, Error.missingCloser);
             }
 
             Token init = null;
@@ -191,7 +190,7 @@ public class CallArray extends LineCall {
                     init = null;
                     initEnd = null;
                 } else {
-                    context.error(token, Error.unexpectedToken);
+                    parent.error(token, Error.unexpectedToken);
                 }
                 lToken = token;
                 token = token.getNext();
@@ -202,7 +201,7 @@ public class CallArray extends LineCall {
                     lines.add(lineValue);
                 }
             } else if (state != 0) {
-                context.error(lToken, Error.unexpectedEndOfTokens);
+                parent.error(lToken, Error.unexpectedEndOfTokens);
             }
         }
 

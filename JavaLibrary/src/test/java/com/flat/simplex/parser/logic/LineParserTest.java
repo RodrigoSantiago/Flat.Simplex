@@ -17,7 +17,7 @@ class LineParserTest {
     void parse() {
         TokenChain chain = readChain("a.b.c");
 
-        Context context = new Context();
+        Context context = new Context(chain.get());
         BlockIf block = getBlock(context);
         LineValue line = new LineParser(block, chain.get(), null).parse();
 
@@ -29,7 +29,7 @@ class LineParserTest {
     private BlockIf getBlock(Context context) {
         TokenChain chain = readChain("if(true);");
 
-        return new BlockIf(context, null, chain.get(), null);
+        return new BlockIf(null, chain.get(), null);
 
     }
 }

@@ -3,7 +3,6 @@ package com.flat.simplex.parser.logic.line.call;
 import com.flat.simplex.parser.logic.Context;
 import com.flat.simplex.parser.logic.Field;
 import com.flat.simplex.parser.logic.block.BlockIf;
-import com.flat.simplex.parser.logic.error.Error;
 import com.flat.simplex.support.TokenChain;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +17,7 @@ class CallFieldTest {
         TokenChain chain = readChain("field");
 
         Field field = new Field(readChain("field").get(), "field", Field.Type.Parameter);
-        Context context = new Context();
+        Context context = new Context(chain.get());
         context.addField(field);
 
         BlockIf blockIf = getBlock(context);
@@ -35,7 +34,7 @@ class CallFieldTest {
         TokenChain chain = readChain("local");
 
         Field field = new Field(readChain("field").get(), "field", Field.Type.Parameter);
-        Context context = new Context();
+        Context context = new Context(chain.get());
         context.addField(field);
 
         BlockIf blockIf = getBlock(context);
@@ -50,7 +49,7 @@ class CallFieldTest {
     private BlockIf getBlock(Context context) {
         TokenChain chain = readChain("if(true);");
 
-        return new BlockIf(context, null, chain.get(), null);
+        return new BlockIf(context, chain.get(), null);
 
     }
 }

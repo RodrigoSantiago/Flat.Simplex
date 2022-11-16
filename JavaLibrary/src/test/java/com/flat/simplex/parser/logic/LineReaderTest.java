@@ -14,7 +14,6 @@ import org.opentest4j.AssertionFailedError;
 import java.util.ArrayList;
 
 import static com.flat.simplex.support.ContextSupport.assertErrors;
-import static com.flat.simplex.support.LineCallChain.lChain;
 import static com.flat.simplex.support.TokenChain.readChain;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,9 +23,8 @@ class LineReaderTest {
     public void readValue() {
         TokenChain chain = readChain("1234 + true + false + undefined + \"string\"");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLines(lines, 9);
@@ -46,9 +44,8 @@ class LineReaderTest {
     public void readField() {
         TokenChain chain = readChain("hello");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLines(lines, 1);
@@ -60,9 +57,8 @@ class LineReaderTest {
     public void readOperator() {
         TokenChain chain = readChain("a + b");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLines(lines, 3);
@@ -76,9 +72,8 @@ class LineReaderTest {
     public void readOperators() {
         TokenChain chain = readChain("!a + ++b * c");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLines(lines, 7);
@@ -96,9 +91,8 @@ class LineReaderTest {
     public void readFunction() {
         TokenChain chain = readChain("function(){ a = b;}");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLine(lines, 0, CallFunction.class);
@@ -109,9 +103,8 @@ class LineReaderTest {
     public void readGroup() {
         TokenChain chain = readChain("(hello)");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLines(lines, 1);
@@ -123,9 +116,8 @@ class LineReaderTest {
     public void readOperatorGroup() {
         TokenChain chain = readChain("a+(b)");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLines(lines, 3);
@@ -139,9 +131,8 @@ class LineReaderTest {
     public void readArray() {
         TokenChain chain = readChain("[hello]");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLines(lines, 1);
@@ -153,9 +144,8 @@ class LineReaderTest {
     public void readOperatorArray() {
         TokenChain chain = readChain("a = [b]");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLines(lines, 3);
@@ -169,9 +159,8 @@ class LineReaderTest {
     public void readStruct() {
         TokenChain chain = readChain("{a : b}");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLines(lines, 1);
@@ -183,9 +172,8 @@ class LineReaderTest {
     public void readOperatorStruct() {
         TokenChain chain = readChain("a = {a : b}");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLines(lines, 3);
@@ -199,9 +187,8 @@ class LineReaderTest {
     public void readMethod() {
         TokenChain chain = readChain("hello()");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLines(lines, 1);
@@ -213,9 +200,8 @@ class LineReaderTest {
     public void readMethodMethod() {
         TokenChain chain = readChain("hello()()");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLines(lines, 1);
@@ -227,9 +213,8 @@ class LineReaderTest {
     public void readIndexerMethod() {
         TokenChain chain = readChain("hello[0]()");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLines(lines, 1);
@@ -241,9 +226,8 @@ class LineReaderTest {
     public void readGroupMethod() {
         TokenChain chain = readChain("(func)()");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLines(lines, 1);
@@ -255,9 +239,8 @@ class LineReaderTest {
     public void readArrayMethod() {
         TokenChain chain = readChain("[func]()");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLines(lines, 1);
@@ -269,9 +252,8 @@ class LineReaderTest {
     public void readStructMethod() {
         TokenChain chain = readChain("{a : b}()");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLines(lines, 1);
@@ -283,9 +265,8 @@ class LineReaderTest {
     public void readFunctionMethod() {
         TokenChain chain = readChain("function(){ return a;}()");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLines(lines, 1);
@@ -297,9 +278,8 @@ class LineReaderTest {
     public void readIndexer() {
         TokenChain chain = readChain("hello[0]");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLines(lines, 1);
@@ -311,9 +291,8 @@ class LineReaderTest {
     public void readGroupIndexer() {
         TokenChain chain = readChain("(func)[0]");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLines(lines, 1);
@@ -325,9 +304,8 @@ class LineReaderTest {
     public void readArrayIndexer() {
         TokenChain chain = readChain("[func][0]");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLines(lines, 1);
@@ -339,9 +317,8 @@ class LineReaderTest {
     public void readStructIndexer() {
         TokenChain chain = readChain("{a : b}[0]");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLines(lines, 1);
@@ -353,9 +330,8 @@ class LineReaderTest {
     public void readMethodIndexer() {
         TokenChain chain = readChain("hello()[0]");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLines(lines, 1);
@@ -367,9 +343,8 @@ class LineReaderTest {
     public void readIndexerIndexer() {
         TokenChain chain = readChain("hello[0][0]");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLines(lines, 1);
@@ -381,9 +356,8 @@ class LineReaderTest {
     public void readFunctionIndexer() {
         TokenChain chain = readChain("function(){ return a;}[0]");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLines(lines, 1);
@@ -395,9 +369,8 @@ class LineReaderTest {
     public void readFieldFieldAccess() {
         TokenChain chain = readChain("hello.word");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLine(lines, 0, CallField.class, CallField.class);
@@ -408,9 +381,8 @@ class LineReaderTest {
     public void readGroupFieldAccess() {
         TokenChain chain = readChain("(hello).word");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLine(lines, 0, CallGroup.class, CallField.class);
@@ -421,9 +393,8 @@ class LineReaderTest {
     public void readArrayFieldAccess() {
         TokenChain chain = readChain("[hello].word");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLine(lines, 0, CallArray.class, CallField.class);
@@ -434,9 +405,8 @@ class LineReaderTest {
     public void readStructFieldAccess() {
         TokenChain chain = readChain("{a : b}.word");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLine(lines, 0, CallStruct.class, CallField.class);
@@ -447,9 +417,8 @@ class LineReaderTest {
     public void readMethodFieldAccess() {
         TokenChain chain = readChain("method().word");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLine(lines, 0, CallField.class, CallMethod.class, CallField.class);
@@ -460,9 +429,8 @@ class LineReaderTest {
     public void readIndexerFieldAccess() {
         TokenChain chain = readChain("indexer[0].word");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLine(lines, 0, CallField.class, CallIndexer.class, CallField.class);
@@ -473,9 +441,8 @@ class LineReaderTest {
     public void readFunctionField() {
         TokenChain chain = readChain("function(){ return a;}.word");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLines(lines, 1);
@@ -487,9 +454,8 @@ class LineReaderTest {
     public void readDotNothing_Fail() {
         TokenChain chain = readChain("hello.");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLines(lines, 1);
@@ -501,9 +467,8 @@ class LineReaderTest {
     public void readDotOperator_Fail() {
         TokenChain chain = readChain("hello. +");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLines(lines, 2);
@@ -516,9 +481,8 @@ class LineReaderTest {
     public void readDoubleDots_Fail() {
         TokenChain chain = readChain("hello..word");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLines(lines, 2);
@@ -531,9 +495,8 @@ class LineReaderTest {
     public void readNothingDot_Fail() {
         TokenChain chain = readChain(".word");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLines(lines, 1);
@@ -545,9 +508,8 @@ class LineReaderTest {
     public void readOperatorDot_Fail() {
         TokenChain chain = readChain("a + .word");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLines(lines, 3);
@@ -561,9 +523,8 @@ class LineReaderTest {
     public void readFieldWithoutDot_Fail() {
         TokenChain chain = readChain("hello word");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLines(lines, 2);
@@ -576,9 +537,8 @@ class LineReaderTest {
     public void readMethodFieldWithoutDot_Fail() {
         TokenChain chain = readChain("hello()word");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLines(lines, 2);
@@ -591,9 +551,8 @@ class LineReaderTest {
     public void readNumberAfterField_Fail() {
         TokenChain chain = readChain("hello 123");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLines(lines, 2);
@@ -606,9 +565,8 @@ class LineReaderTest {
     public void readStructAfterField_Fail() {
         TokenChain chain = readChain("hello { a : b }");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLines(lines, 2);
@@ -621,9 +579,8 @@ class LineReaderTest {
     public void readFunctionAfterField_Fail() {
         TokenChain chain = readChain("hello function(){ a = b; }");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLines(lines, 2);
@@ -636,9 +593,8 @@ class LineReaderTest {
     public void readInvalid_Fail() {
         TokenChain chain = readChain("hello + $ word");
 
-        Context context = new Context();
-        BlockIf block = getBlock(context);
-        LineReader reader = new LineReader(block);
+        Context context = new Context(chain.get());
+        LineReader reader = new LineReader(context);
         var lines = reader.read(chain.get(), null);
 
         assertLines(lines, 3);
@@ -680,12 +636,5 @@ class LineReaderTest {
         if (i < types.length) {
             throw new AssertionFailedError("Invalid line", types.length + " members", i + " members");
         }
-    }
-
-    private BlockIf getBlock(Context context) {
-        TokenChain chain = readChain("if(true);");
-
-        return new BlockIf(context, null, chain.get(), null);
-
     }
 }

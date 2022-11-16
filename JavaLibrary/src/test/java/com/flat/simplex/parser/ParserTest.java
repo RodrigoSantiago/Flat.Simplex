@@ -1,18 +1,14 @@
 package com.flat.simplex.parser;
 
-import com.flat.simplex.lexer.Key;
 import com.flat.simplex.lexer.TokenGroup;
 import com.flat.simplex.parser.logic.Block;
 import com.flat.simplex.parser.logic.Context;
 import com.flat.simplex.parser.logic.block.*;
-import com.flat.simplex.parser.logic.error.Error;
 import com.flat.simplex.support.TokenChain;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
-import static com.flat.simplex.support.ContextSupport.assertErrors;
 import static com.flat.simplex.support.TokenChain.mChain;
 import static com.flat.simplex.support.TokenChain.readChain;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -23,8 +19,8 @@ class ParserTest {
     public void readSingleLine() {
         TokenChain chain = readChain("break;");
 
-        Context context = new Context();
-        Parser parser = new Parser(context, null);
+        Context context = new Context(chain.get());
+        Parser parser = new Parser(context);
         ArrayList<TokenGroup> blocks = parser.read(chain.get(), null);
         assertGroups(blocks, chain);
     }
@@ -35,8 +31,8 @@ class ParserTest {
         TokenChain chainB = readChain("break;");
         TokenChain chain = mChain().token(chainA).token(chainB);
 
-        Context context = new Context();
-        Parser parser = new Parser(context, null);
+        Context context = new Context(chain.get());
+        Parser parser = new Parser(context);
         ArrayList<TokenGroup> blocks = parser.read(chain.get(), null);
         assertGroups(blocks, chainA, chainB);
     }
@@ -47,8 +43,8 @@ class ParserTest {
         TokenChain chainB = readChain("{hello = word;}");
         TokenChain chain = mChain().token(chainA).token(chainB);
 
-        Context context = new Context();
-        Parser parser = new Parser(context, null);
+        Context context = new Context(chain.get());
+        Parser parser = new Parser(context);
         ArrayList<TokenGroup> blocks = parser.read(chain.get(), null);
         assertGroups(blocks, chainA, chainB);
     }
@@ -59,8 +55,8 @@ class ParserTest {
         TokenChain chainB = readChain("break;");
         TokenChain chain = mChain().token(chainA).token(chainB);
 
-        Context context = new Context();
-        Parser parser = new Parser(context, null);
+        Context context = new Context(chain.get());
+        Parser parser = new Parser(context);
         ArrayList<TokenGroup> blocks = parser.read(chain.get(), null);
         assertGroups(blocks, chainA, chainB);
     }
@@ -70,8 +66,8 @@ class ParserTest {
         TokenChain chainA = readChain("if(true)hello = word");
         TokenChain chain = mChain().token(chainA);
 
-        Context context = new Context();
-        Parser parser = new Parser(context, null);
+        Context context = new Context(chain.get());
+        Parser parser = new Parser(context);
         ArrayList<TokenGroup> blocks = parser.read(chain.get(), null);
         assertGroups(blocks, chainA);
     }
@@ -81,8 +77,8 @@ class ParserTest {
         TokenChain chainA = readChain("var hello = word");
         TokenChain chain = mChain().token(chainA);
 
-        Context context = new Context();
-        Parser parser = new Parser(context, null);
+        Context context = new Context(chain.get());
+        Parser parser = new Parser(context);
         ArrayList<TokenGroup> blocks = parser.read(chain.get(), null);
         assertGroups(blocks, chainA);
     }
@@ -93,8 +89,8 @@ class ParserTest {
         TokenChain chainB = readChain("for(;;) hello = word");
         TokenChain chain = mChain().token(chainA).token(chainB);
 
-        Context context = new Context();
-        Parser parser = new Parser(context, null);
+        Context context = new Context(chain.get());
+        Parser parser = new Parser(context);
         ArrayList<TokenGroup> blocks = parser.read(chain.get(), null);
         assertGroups(blocks, chainA, chainB);
     }
@@ -105,8 +101,8 @@ class ParserTest {
         TokenChain chainB = readChain("else if(true) hello = word;");
         TokenChain chain = mChain().token(chainA).token(chainB);
 
-        Context context = new Context();
-        Parser parser = new Parser(context, null);
+        Context context = new Context(chain.get());
+        Parser parser = new Parser(context);
         ArrayList<TokenGroup> blocks = parser.read(chain.get(), null);
         assertGroups(blocks, chainA, chainB);
     }
@@ -117,8 +113,8 @@ class ParserTest {
         TokenChain chainB = readChain("else if(true) {hello = word;}");
         TokenChain chain = mChain().token(chainA).token(chainB);
 
-        Context context = new Context();
-        Parser parser = new Parser(context, null);
+        Context context = new Context(chain.get());
+        Parser parser = new Parser(context);
         ArrayList<TokenGroup> blocks = parser.read(chain.get(), null);
         assertGroups(blocks, chainA, chainB);
     }
@@ -130,8 +126,8 @@ class ParserTest {
         TokenChain chainC = readChain("while(true) hello = word;");
         TokenChain chain = mChain().token(chainA).token(chainB).token(chainC);
 
-        Context context = new Context();
-        Parser parser = new Parser(context, null);
+        Context context = new Context(chain.get());
+        Parser parser = new Parser(context);
         ArrayList<TokenGroup> blocks = parser.read(chain.get(), null);
         assertGroups(blocks, chainA, chainB, chainC);
     }
@@ -142,8 +138,8 @@ class ParserTest {
         TokenChain chainB = readChain("for(;;) hello = word;");
         TokenChain chain = mChain().token(chainA).token(chainB);
 
-        Context context = new Context();
-        Parser parser = new Parser(context, null);
+        Context context = new Context(chain.get());
+        Parser parser = new Parser(context);
         ArrayList<TokenGroup> blocks = parser.read(chain.get(), null);
         assertGroups(blocks, chain);
     }
@@ -154,8 +150,8 @@ class ParserTest {
         TokenChain chainB = readChain("for(;;) { hello = word;}");
         TokenChain chain = mChain().token(chainA).token(chainB);
 
-        Context context = new Context();
-        Parser parser = new Parser(context, null);
+        Context context = new Context(chain.get());
+        Parser parser = new Parser(context);
         ArrayList<TokenGroup> blocks = parser.read(chain.get(), null);
         assertGroups(blocks, chain);
     }
@@ -166,8 +162,8 @@ class ParserTest {
         TokenChain chainB = readChain("else { hello = word;}");
         TokenChain chain = mChain().token(chainA).token(chainB);
 
-        Context context = new Context();
-        Parser parser = new Parser(context, null);
+        Context context = new Context(chain.get());
+        Parser parser = new Parser(context);
         ArrayList<TokenGroup> blocks = parser.read(chain.get(), null);
         assertGroups(blocks, chainA, chainB);
     }
@@ -178,8 +174,8 @@ class ParserTest {
         TokenChain chainB = readChain("for(;;) hello = word;");
         TokenChain chain = mChain().token(chainA).token(chainB);
 
-        Context context = new Context();
-        Parser parser = new Parser(context, null);
+        Context context = new Context(chain.get());
+        Parser parser = new Parser(context);
         ArrayList<TokenGroup> blocks = parser.read(chain.get(), null);
         assertGroups(blocks, chainA, chainB);
     }
@@ -190,8 +186,8 @@ class ParserTest {
         TokenChain chainB = readChain("for(;;) hello = word;");
         TokenChain chain = mChain().token(chainA).token(chainB);
 
-        Context context = new Context();
-        Parser parser = new Parser(context, null);
+        Context context = new Context(chain.get());
+        Parser parser = new Parser(context);
         ArrayList<TokenGroup> blocks = parser.read(chain.get(), null);
         assertGroups(blocks, chainA, chainB);
     }
@@ -202,8 +198,8 @@ class ParserTest {
         TokenChain chainB = readChain("for(;;) hello = word;");
         TokenChain chain = mChain().token(chainA).token(chainB);
 
-        Context context = new Context();
-        Parser parser = new Parser(context, null);
+        Context context = new Context(chain.get());
+        Parser parser = new Parser(context);
         ArrayList<TokenGroup> blocks = parser.read(chain.get(), null);
         assertGroups(blocks, chainA, chainB);
     }
@@ -214,8 +210,8 @@ class ParserTest {
         TokenChain chainB = readChain("for(;;) hello = word;");
         TokenChain chain = mChain().token(chainA).token(chainB);
 
-        Context context = new Context();
-        Parser parser = new Parser(context, null);
+        Context context = new Context(chain.get());
+        Parser parser = new Parser(context);
         ArrayList<TokenGroup> blocks = parser.read(chain.get(), null);
         assertGroups(blocks, chainA, chainB);
     }
@@ -226,8 +222,8 @@ class ParserTest {
         TokenChain chainB = readChain("for(;;) hello = word;");
         TokenChain chain = mChain().token(chainA).token(chainB);
 
-        Context context = new Context();
-        Parser parser = new Parser(context, null);
+        Context context = new Context(chain.get());
+        Parser parser = new Parser(context);
         ArrayList<TokenGroup> blocks = parser.read(chain.get(), null);
         assertGroups(blocks, chainA, chainB);
     }
@@ -238,8 +234,8 @@ class ParserTest {
         TokenChain chainB = readChain("for(;;) hello = word;");
         TokenChain chain = mChain().token(chainA).token(chainB);
 
-        Context context = new Context();
-        Parser parser = new Parser(context, null);
+        Context context = new Context(chain.get());
+        Parser parser = new Parser(context);
         ArrayList<TokenGroup> blocks = parser.read(chain.get(), null);
         assertGroups(blocks, chainA, chainB);
     }
@@ -250,8 +246,8 @@ class ParserTest {
         TokenChain chainB = readChain("for(;;) hello = word;");
         TokenChain chain = mChain().token(chainA).token(chainB);
 
-        Context context = new Context();
-        Parser parser = new Parser(context, null);
+        Context context = new Context(chain.get());
+        Parser parser = new Parser(context);
         ArrayList<TokenGroup> blocks = parser.read(chain.get(), null);
         assertGroups(blocks, chainA, chainB);
     }
@@ -264,8 +260,8 @@ class ParserTest {
         TokenChain chainD = readChain("break;");
         TokenChain chain = mChain().token(chainA).token(chainB).token(chainC).token(chainD);
 
-        Context context = new Context();
-        Parser parser = new Parser(context, null);
+        Context context = new Context(chain.get());
+        Parser parser = new Parser(context);
         ArrayList<TokenGroup> blocks = parser.read(chain.get(), null);
         assertGroups(blocks, chainA, chainB, chainC, chainD);
     }
@@ -276,8 +272,8 @@ class ParserTest {
         TokenChain chainB = readChain("for(;;) hello = word;");
         TokenChain chain = mChain().token(chainA).token(chainB);
 
-        Context context = new Context();
-        Parser parser = new Parser(context, null);
+        Context context = new Context(chain.get());
+        Parser parser = new Parser(context);
         ArrayList<TokenGroup> blocks = parser.read(chain.get(), null);
         assertGroups(blocks, chainA, chainB);
     }
@@ -287,8 +283,8 @@ class ParserTest {
         TokenChain chainA = readChain("case hello");
         TokenChain chain = mChain().token(chainA);
 
-        Context context = new Context();
-        Parser parser = new Parser(context, null);
+        Context context = new Context(chain.get());
+        Parser parser = new Parser(context);
         ArrayList<TokenGroup> blocks = parser.read(chain.get(), null);
         assertGroups(blocks, chainA);
     }
@@ -315,8 +311,8 @@ class ParserTest {
                 .token(chainG).token(chainH).token(chainI).token(chainJ).token(chainK).token(chainL).token(chainM)
                 .token(chainN).token(chainO).token(chainP);
 
-        Context context = new Context();
-        Parser parser = new Parser(context, null);
+        Context context = new Context(chain.get());
+        Parser parser = new Parser(context);
         ArrayList<TokenGroup> groups = parser.read(chain.get(), null);
 
         assertGroups(groups, chainA, chainB, chainC, chainD, chainE, chainF, chainG, chainH, chainI, chainJ, chainK,

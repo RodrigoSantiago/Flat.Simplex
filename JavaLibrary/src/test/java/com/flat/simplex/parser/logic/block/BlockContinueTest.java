@@ -14,9 +14,9 @@ class BlockContinueTest {
     public void blockContinue() {
         TokenChain chain = readChain("continue;");
 
-        Context context = new Context();
+        Context context = new Context(chain.get());
         BlockWhile blockWhile = getBlockWhile(context);
-        BlockContinue blockContinue = new BlockContinue(context, blockWhile, chain.get(), null);
+        BlockContinue blockContinue = new BlockContinue(blockWhile, chain.get(), null);
         blockContinue.read();
 
         assertErrors(context);
@@ -26,8 +26,8 @@ class BlockContinueTest {
     public void blockContinueWithoutLoop_Fail() {
         TokenChain chain = readChain("continue;");
 
-        Context context = new Context();
-        BlockContinue blockContinue = new BlockContinue(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockContinue blockContinue = new BlockContinue(context, chain.get(), null);
         blockContinue.read();
 
         assertErrors(context, Error.continueOutOfPlace);
@@ -37,9 +37,9 @@ class BlockContinueTest {
     public void blockContinueUnexpectedToken_Fail() {
         TokenChain chain = readChain("continue hello;");
 
-        Context context = new Context();
+        Context context = new Context(chain.get());
         BlockWhile blockWhile = getBlockWhile(context);
-        BlockContinue blockContinue = new BlockContinue(context, blockWhile, chain.get(), null);
+        BlockContinue blockContinue = new BlockContinue(blockWhile, chain.get(), null);
         blockContinue.read();
 
         assertErrors(context, Error.unexpectedToken);
@@ -49,9 +49,9 @@ class BlockContinueTest {
     public void blockContinueUnexpectedEndOfTokens_Fail() {
         TokenChain chain = readChain("continue");
 
-        Context context = new Context();
+        Context context = new Context(chain.get());
         BlockWhile blockWhile = getBlockWhile(context);
-        BlockContinue blockContinue = new BlockContinue(context, blockWhile, chain.get(), null);
+        BlockContinue blockContinue = new BlockContinue(blockWhile, chain.get(), null);
         blockContinue.read();
 
         assertErrors(context, Error.unexpectedEndOfTokens);
@@ -60,7 +60,7 @@ class BlockContinueTest {
     private BlockWhile getBlockWhile(Context context) {
         TokenChain chain = readChain("while(true);");
 
-        return new BlockWhile(context, null, chain.get(), null);
+        return new BlockWhile(context, chain.get(), null);
 
     }
 }

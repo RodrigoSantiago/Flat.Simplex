@@ -4,7 +4,6 @@ import com.flat.simplex.lexer.Key;
 import com.flat.simplex.lexer.Token;
 import com.flat.simplex.parser.logic.Block;
 import com.flat.simplex.parser.logic.LineParser;
-import com.flat.simplex.parser.logic.LineReader;
 import com.flat.simplex.parser.logic.error.Error;
 import com.flat.simplex.parser.logic.line.LineValue;
 
@@ -12,7 +11,7 @@ import java.util.ArrayList;
 
 public class CallMethod extends LineCall {
 
-    private ArrayList<LineValue> lines = new ArrayList<>();
+    private final ArrayList<LineValue> lines = new ArrayList<>();
 
     public CallMethod(Block parent, Token token) {
         super(parent, token, Type.MethodCall);
@@ -23,7 +22,7 @@ public class CallMethod extends LineCall {
         Token start = getToken().getChild();
         Token end = getToken().getLastChild();
         if (end == null) {
-            getContext().error(getToken(), Error.missingCloser);
+            getParent().error(getToken(), Error.missingCloser);
         }
 
         Token init = null;
@@ -48,7 +47,7 @@ public class CallMethod extends LineCall {
                 init = null;
                 initEnd = null;
             } else {
-                getContext().error(token, Error.unexpectedToken);
+                getParent().error(token, Error.unexpectedToken);
             }
             lToken = token;
             token = token.getNext();
@@ -59,7 +58,7 @@ public class CallMethod extends LineCall {
                 lines.add(lineValue);
             }
         } else if (state != 0) {
-            getContext().error(lToken, Error.unexpectedEndOfTokens);
+            getParent().error(lToken, Error.unexpectedEndOfTokens);
         }
     }
 
@@ -71,7 +70,7 @@ public class CallMethod extends LineCall {
     public void setNext(LineCall next) {
         super.setNext(next);
         if (next.getType() == Type.Value || getNext().getType() == Type.Struct || getNext().getType() == Type.Function) {
-            getContext().error(next.getToken(), Error.lineUnexpectedCall);
+            getParent().error(next.getToken(), Error.lineUnexpectedCall);
         }
     }
 }

@@ -16,8 +16,8 @@ class BlockDoTest {
     public void block() {
         TokenChain chain = readChain("do hello();");
 
-        Context context = new Context();
-        BlockDo block = new BlockDo(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockDo block = new BlockDo(context, chain.get(), null);
         block.read();
 
         assertTrue(block.isLoop());
@@ -31,8 +31,8 @@ class BlockDoTest {
         public void blockDoBlock() {
         TokenChain chain = readChain("do{}");
 
-        Context context = new Context();
-        BlockDo block = new BlockDo(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockDo block = new BlockDo(context, chain.get(), null);
         block.read();
 
         assertTrue(block.isCommandBlock());
@@ -45,8 +45,8 @@ class BlockDoTest {
     public void blockDoMarkWhile() {
         TokenChain chain = readChain("do hello();");
 
-        Context context = new Context();
-        BlockDo block = new BlockDo(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockDo block = new BlockDo(context, chain.get(), null);
         block.read();
 
         BlockWhile blockWhile = getBlockWhile(context);
@@ -63,8 +63,8 @@ class BlockDoTest {
     public void blockDoMarkWhileBlock_Fail() {
         TokenChain chain = readChain("do hello();");
 
-        Context context = new Context();
-        BlockDo block = new BlockDo(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockDo block = new BlockDo(context, chain.get(), null);
         block.read();
 
         BlockWhile blockWhile = getBlockWhileBlock(context);
@@ -80,8 +80,8 @@ class BlockDoTest {
     public void blockDoMarkNoWhile_Fail() {
         TokenChain chain = readChain("do hello();");
 
-        Context context = new Context();
-        BlockDo block = new BlockDo(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockDo block = new BlockDo(context, chain.get(), null);
         block.read();
         block.markWhile(null);
 
@@ -95,8 +95,8 @@ class BlockDoTest {
     public void blockDoUnexpectedToken_Fail() {
         TokenChain chain = readChain("do {};");
 
-        Context context = new Context();
-        BlockDo block = new BlockDo(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockDo block = new BlockDo(context, chain.get(), null);
         block.read();
 
         assertTrue(block.isCommandBlock());
@@ -109,8 +109,8 @@ class BlockDoTest {
     public void blockDoUnexpectedEndOfTokens_Fail() {
         TokenChain chain = readChain("do");
 
-        Context context = new Context();
-        BlockDo block = new BlockDo(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockDo block = new BlockDo(context, chain.get(), null);
         block.read();
 
         assertFalse(block.isCommandBlock());
@@ -121,8 +121,8 @@ class BlockDoTest {
     public void blockDoOpenBlock_Fail() {
         TokenChain chain = readChain("do{");
 
-        Context context = new Context();
-        BlockDo block = new BlockDo(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockDo block = new BlockDo(context, chain.get(), null);
         block.read();
 
         assertTrue(block.isCommandBlock());
@@ -134,12 +134,12 @@ class BlockDoTest {
     private BlockWhile getBlockWhile(Context context) {
         TokenChain chain = readChain("while(true);");
 
-        return new BlockWhile(context, null, chain.get(), null);
+        return new BlockWhile(context, chain.get(), null);
     }
 
     private BlockWhile getBlockWhileBlock(Context context) {
         TokenChain chain = readChain("while(true){}");
 
-        return new BlockWhile(context, null, chain.get(), null);
+        return new BlockWhile(context, chain.get(), null);
     }
 }

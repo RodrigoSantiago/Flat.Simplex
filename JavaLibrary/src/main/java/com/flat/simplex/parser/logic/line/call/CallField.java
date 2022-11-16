@@ -28,7 +28,7 @@ public class CallField extends LineCall {
     public void setNext(LineCall next) {
         super.setNext(next);
         if (next.getType() == Type.Value || getNext().getType() == Type.Struct || getNext().getType() == Type.Function) {
-            getContext().error(next.getToken(), Error.lineUnexpectedCall);
+            getParent().error(next.getToken(), Error.lineUnexpectedCall);
         }
     }
 

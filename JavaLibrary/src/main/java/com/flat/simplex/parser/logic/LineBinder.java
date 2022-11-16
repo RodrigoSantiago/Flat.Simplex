@@ -13,19 +13,17 @@ import java.util.ArrayList;
 public class LineBinder {
 
     private Block parent;
-    private Context context;
     private Token token;
     private ArrayList<Line> input;
 
     public LineBinder(Block parent, Token token) {
         this.parent = parent;
-        this.context = parent.getContext();
         this.token = token;
     }
 
     public LineValue bind(ArrayList<Line> lines) {
         if (lines.size() == 0) {
-            context.error(token, Error.lineEmptyLine);
+            parent.error(token, Error.lineEmptyLine);
             return null;
         }
 
@@ -50,7 +48,7 @@ public class LineBinder {
                     && ((line.getKey().op > 1 && line.getKey().op < 12
                     && next.getKey().op > 1 && next.getKey().op < 12) || line.getKey().op == next.getKey().op)) {
                 if (line.getPrecedence() > 1 && line.getKey() != Key.Add && line.getKey() != Key.Sub) {
-                    context.error(next.getToken(), Error.lineUnexpectedCall);
+                    parent.error(next.getToken(), Error.lineUnexpectedCall);
                     input.remove(i + 1);
                     i--;
                 }
@@ -114,7 +112,7 @@ public class LineBinder {
         for (int i = 0; i < input.size(); i++) {
             LineOp line = input.get(i).getOp();
             if (line != null && line.getPrecedence() == 1) {
-                context.error(line.getToken(), Error.lineUnexpectedCall);
+                parent.error(line.getToken(), Error.lineUnexpectedCall);
                 input.remove(i);
                 i -= 1;
             }
@@ -138,7 +136,7 @@ public class LineBinder {
         for (int i = 0; i < input.size(); i++) {
             LineOp line = input.get(i).getOp();
             if (line != null && line.getPrecedence() == precedence) {
-                context.error(line.getToken(), Error.lineUnexpectedCall);
+                parent.error(line.getToken(), Error.lineUnexpectedCall);
                 input.remove(i);
                 i--;
             }
@@ -165,7 +163,7 @@ public class LineBinder {
         for (int i = 0; i < input.size(); i++) {
             LineOp line = input.get(i).getOp();
             if (line != null && line.getPrecedence() == 13) {
-                context.error(line.getToken(), Error.lineUnexpectedCall);
+                parent.error(line.getToken(), Error.lineUnexpectedCall);
                 input.remove(i);
                 i--;
             }
@@ -187,9 +185,9 @@ public class LineBinder {
             }
             if (start != -1 || end != -1) {
                 if (start == -1) {
-                    context.error(input.get(end).getToken(), Error.lineTernaryIncomplete);
+                    parent.error(input.get(end).getToken(), Error.lineTernaryIncomplete);
                 } else if (end == -1) {
-                    context.error(input.get(start).getToken(), Error.lineTernaryIncomplete);
+                    parent.error(input.get(start).getToken(), Error.lineTernaryIncomplete);
                 } else {
                     LineOp lineQuest = input.get(start).getOp();
                     LineOp lineColon = input.get(end).getOp();
@@ -198,14 +196,14 @@ public class LineBinder {
                     LineValue center = null;
 
                     if (lineStart == null) {
-                        context.error(input.get(start).getToken(), Error.lineTernaryIncomplete);
+                        parent.error(input.get(start).getToken(), Error.lineTernaryIncomplete);
                     } else if (lineEnd == null) {
-                        context.error(input.get(start).getToken(), Error.lineTernaryIncomplete);
+                        parent.error(input.get(start).getToken(), Error.lineTernaryIncomplete);
                     } else if (start + 1 == end) {
-                        context.error(input.get(start).getToken(), Error.lineTernaryIncomplete);
+                        parent.error(input.get(start).getToken(), Error.lineTernaryIncomplete);
                     } else if (start + 2 == end) {
                         if (input.get(start + 1).getValue() == null) {
-                            context.error(input.get(start).getToken(), Error.lineTernaryIncomplete);
+                            parent.error(input.get(start).getToken(), Error.lineTernaryIncomplete);
                         } else {
                             center = input.get(start + 1).getValue();
                         }
@@ -217,7 +215,7 @@ public class LineBinder {
                         groupByMiddleSetter(innerLine);
 
                         if (innerLine.size() != 1 || innerLine.get(0).getValue() == null) {
-                            context.error(input.get(start).getToken(), Error.lineTernaryIncomplete);
+                            parent.error(input.get(start).getToken(), Error.lineTernaryIncomplete);
                         } else {
                             center = innerLine.get(0).getValue();
                         }

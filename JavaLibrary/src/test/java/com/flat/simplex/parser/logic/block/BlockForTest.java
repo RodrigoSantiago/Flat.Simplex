@@ -16,8 +16,8 @@ class BlockForTest {
     public void block() {
         TokenChain chain = readChain("for(var hello; hello < 10; hello++) hello = true;");
 
-        Context context = new Context();
-        BlockFor block = new BlockFor(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockFor block = new BlockFor(context, chain.get(), null);
         block.read();
 
         TokenChain.assertChain("var hello", block.getTokenInit(), block.getTokenInitEnd(), "Invalid body");
@@ -35,8 +35,8 @@ class BlockForTest {
     public void blockForEmpty() {
         TokenChain chain = readChain("for(;;) hello = true;");
 
-        Context context = new Context();
-        BlockFor block = new BlockFor(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockFor block = new BlockFor(context, chain.get(), null);
         block.read();
 
         assertNull(block.getTokenInit());
@@ -53,8 +53,8 @@ class BlockForTest {
     public void blockForInitOnly() {
         TokenChain chain = readChain("for(hello = 10;;) hello = true;");
 
-        Context context = new Context();
-        BlockFor block = new BlockFor(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockFor block = new BlockFor(context, chain.get(), null);
         block.read();
 
         TokenChain.assertChain("hello = 10", block.getTokenInit(), block.getTokenInitEnd(), "Invalid body");
@@ -71,8 +71,8 @@ class BlockForTest {
     public void blockForConditionOnly() {
         TokenChain chain = readChain("for(;hello < 10;) hello = true;");
 
-        Context context = new Context();
-        BlockFor block = new BlockFor(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockFor block = new BlockFor(context, chain.get(), null);
         block.read();
 
         assertNull(block.getTokenInit());
@@ -89,8 +89,8 @@ class BlockForTest {
     public void blockForLoopOnly() {
         TokenChain chain = readChain("for(;;hello++) hello = true;");
 
-        Context context = new Context();
-        BlockFor block = new BlockFor(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockFor block = new BlockFor(context, chain.get(), null);
         block.read();
 
         assertNull(block.getTokenInit());
@@ -107,8 +107,8 @@ class BlockForTest {
     public void blockForTooMuchSemicolons_Fail() {
         TokenChain chain = readChain("for(;;;) hello = true;");
 
-        Context context = new Context();
-        BlockFor block = new BlockFor(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockFor block = new BlockFor(context, chain.get(), null);
         block.read();
 
         assertNull(block.getTokenInit());
@@ -125,8 +125,8 @@ class BlockForTest {
     public void blockForInitOnlyMissingSemicolon_Fail() {
         TokenChain chain = readChain("for(var hello = 10) hello = true;");
 
-        Context context = new Context();
-        BlockFor block = new BlockFor(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockFor block = new BlockFor(context, chain.get(), null);
         block.read();
 
         TokenChain.assertChain("var hello = 10", block.getTokenInit(), block.getTokenInitEnd(), "Invalid body");
@@ -143,8 +143,8 @@ class BlockForTest {
     public void blockForBlock() {
         TokenChain chain = readChain("for(;;) {}");
 
-        Context context = new Context();
-        BlockFor block = new BlockFor(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockFor block = new BlockFor(context, chain.get(), null);
         block.read();
 
         assertNull(block.getTokenInit());
@@ -161,8 +161,8 @@ class BlockForTest {
     public void blockForOpenBlock_Fail() {
         TokenChain chain = readChain("for(;;) {");
 
-        Context context = new Context();
-        BlockFor block = new BlockFor(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockFor block = new BlockFor(context, chain.get(), null);
         block.read();
 
         assertNull(block.getTokenInit());
@@ -179,8 +179,8 @@ class BlockForTest {
     public void blockForUnexpectedToken_Fail() {
         TokenChain chain = readChain("for true(;;) hello = true;");
 
-        Context context = new Context();
-        BlockFor block = new BlockFor(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockFor block = new BlockFor(context, chain.get(), null);
         block.read();
 
         assertNull(block.getTokenInit());
@@ -197,8 +197,8 @@ class BlockForTest {
     public void blockForUnexpectedEndOfTokens_Fail() {
         TokenChain chain = readChain("for(;;)");
 
-        Context context = new Context();
-        BlockFor block = new BlockFor(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockFor block = new BlockFor(context, chain.get(), null);
         block.read();
 
         assertNull(block.getTokenInit());

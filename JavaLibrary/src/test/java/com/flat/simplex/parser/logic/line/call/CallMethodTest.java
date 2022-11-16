@@ -15,9 +15,8 @@ class CallMethodTest {
     @Test
     public void loadEmptyMethod() {
         TokenChain chain = readChain("()");
-        Context context = new Context();
-        BlockIf blockIf = getBlock(context);
-        CallMethod call = new CallMethod(blockIf, chain.get());
+        Context context = new Context(chain.get());
+        CallMethod call = new CallMethod(context, chain.get());
         call.load();
 
         assertEquals(0, call.getLines().size(), "Invalid parameters count");
@@ -28,9 +27,8 @@ class CallMethodTest {
     @Test
     public void loadSingleParameterMethod() {
         TokenChain chain = readChain("(a)");
-        Context context = new Context();
-        BlockIf blockIf = getBlock(context);
-        CallMethod call = new CallMethod(blockIf, chain.get());
+        Context context = new Context(chain.get());
+        CallMethod call = new CallMethod(context, chain.get());
         call.load();
 
         assertEquals(1, call.getLines().size(), "Invalid parameters count");
@@ -41,9 +39,8 @@ class CallMethodTest {
     @Test
     public void loadMultipleParameterMethod() {
         TokenChain chain = readChain("(a,b,c)");
-        Context context = new Context();
-        BlockIf blockIf = getBlock(context);
-        CallMethod call = new CallMethod(blockIf, chain.get());
+        Context context = new Context(chain.get());
+        CallMethod call = new CallMethod(context, chain.get());
         call.load();
 
         assertEquals(3, call.getLines().size(), "Invalid parameters count");
@@ -54,9 +51,8 @@ class CallMethodTest {
     @Test
     public void loadComplexParameterMethod() {
         TokenChain chain = readChain("(a + b)");
-        Context context = new Context();
-        BlockIf blockIf = getBlock(context);
-        CallMethod call = new CallMethod(blockIf, chain.get());
+        Context context = new Context(chain.get());
+        CallMethod call = new CallMethod(context, chain.get());
         call.load();
 
         assertEquals(1, call.getLines().size(), "Invalid parameters count");
@@ -67,9 +63,8 @@ class CallMethodTest {
     @Test
     public void loadEmptyMissingCloser_Fail() {
         TokenChain chain = readChain("(");
-        Context context = new Context();
-        BlockIf blockIf = getBlock(context);
-        CallMethod call = new CallMethod(blockIf, chain.get());
+        Context context = new Context(chain.get());
+        CallMethod call = new CallMethod(context, chain.get());
         call.load();
 
         assertEquals(0, call.getLines().size(), "Invalid parameters count");
@@ -80,9 +75,8 @@ class CallMethodTest {
     @Test
     public void loadSingleMissingCloser_Fail() {
         TokenChain chain = readChain("(a");
-        Context context = new Context();
-        BlockIf blockIf = getBlock(context);
-        CallMethod call = new CallMethod(blockIf, chain.get());
+        Context context = new Context(chain.get());
+        CallMethod call = new CallMethod(context, chain.get());
         call.load();
 
         assertEquals(1, call.getLines().size(), "Invalid parameters count");
@@ -93,9 +87,8 @@ class CallMethodTest {
     @Test
     public void loadMultipleMissingCloser_Fail() {
         TokenChain chain = readChain("(a,b,c");
-        Context context = new Context();
-        BlockIf blockIf = getBlock(context);
-        CallMethod call = new CallMethod(blockIf, chain.get());
+        Context context = new Context(chain.get());
+        CallMethod call = new CallMethod(context, chain.get());
         call.load();
 
         assertEquals(3, call.getLines().size(), "Invalid parameters count");
@@ -106,9 +99,8 @@ class CallMethodTest {
     @Test
     public void loadSingleEndComma_Fail() {
         TokenChain chain = readChain("(a,)");
-        Context context = new Context();
-        BlockIf blockIf = getBlock(context);
-        CallMethod call = new CallMethod(blockIf, chain.get());
+        Context context = new Context(chain.get());
+        CallMethod call = new CallMethod(context, chain.get());
         call.load();
 
         assertEquals(1, call.getLines().size(), "Invalid parameters count");
@@ -119,9 +111,8 @@ class CallMethodTest {
     @Test
     public void loadMultipleEndComma_Fail() {
         TokenChain chain = readChain("(a,b,)");
-        Context context = new Context();
-        BlockIf blockIf = getBlock(context);
-        CallMethod call = new CallMethod(blockIf, chain.get());
+        Context context = new Context(chain.get());
+        CallMethod call = new CallMethod(context, chain.get());
         call.load();
 
         assertEquals(2, call.getLines().size(), "Invalid parameters count");
@@ -132,9 +123,8 @@ class CallMethodTest {
     @Test
     public void loadDoubleComma_Fail() {
         TokenChain chain = readChain("(a,,b)");
-        Context context = new Context();
-        BlockIf blockIf = getBlock(context);
-        CallMethod call = new CallMethod(blockIf, chain.get());
+        Context context = new Context(chain.get());
+        CallMethod call = new CallMethod(context, chain.get());
         call.load();
 
         assertEquals(2, call.getLines().size(), "Invalid parameters count");
@@ -145,9 +135,8 @@ class CallMethodTest {
     @Test
     public void loadOnlyComma_Fail() {
         TokenChain chain = readChain("(,)");
-        Context context = new Context();
-        BlockIf blockIf = getBlock(context);
-        CallMethod call = new CallMethod(blockIf, chain.get());
+        Context context = new Context(chain.get());
+        CallMethod call = new CallMethod(context, chain.get());
         call.load();
 
         assertEquals(0, call.getLines().size(), "Invalid parameters count");
@@ -158,9 +147,8 @@ class CallMethodTest {
     @Test
     public void loadOnlyDoubleComma_Fail() {
         TokenChain chain = readChain("(,,)");
-        Context context = new Context();
-        BlockIf blockIf = getBlock(context);
-        CallMethod call = new CallMethod(blockIf, chain.get());
+        Context context = new Context(chain.get());
+        CallMethod call = new CallMethod(context, chain.get());
         call.load();
 
         assertEquals(0, call.getLines().size(), "Invalid parameters count");
@@ -171,20 +159,12 @@ class CallMethodTest {
     @Test
     public void loadOpenComma_Fail() {
         TokenChain chain = readChain("(,");
-        Context context = new Context();
-        BlockIf blockIf = getBlock(context);
-        CallMethod call = new CallMethod(blockIf, chain.get());
+        Context context = new Context(chain.get());
+        CallMethod call = new CallMethod(context, chain.get());
         call.load();
 
         assertEquals(0, call.getLines().size(), "Invalid parameters count");
 
         assertErrors(context, Error.missingCloser, Error.unexpectedToken);
-    }
-
-    private BlockIf getBlock(Context context) {
-        TokenChain chain = readChain("if(true);");
-
-        return new BlockIf(context, null, chain.get(), null);
-
     }
 }

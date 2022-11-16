@@ -15,9 +15,8 @@ class CallIndexerTest {
     @Test
     public void loadSingleIndexer() {
         TokenChain chain = readChain("[a]");
-        Context context = new Context();
-        BlockIf blockIf = getBlock(context);
-        CallIndexer call = new CallIndexer(blockIf, chain.get());
+        Context context = new Context(chain.get());
+        CallIndexer call = new CallIndexer(context, chain.get());
         call.load();
 
         assertEquals(1, call.getLines().size(), "Invalid parameters count");
@@ -28,9 +27,8 @@ class CallIndexerTest {
     @Test
     public void loadDoubleIndexer() {
         TokenChain chain = readChain("[a, b]");
-        Context context = new Context();
-        BlockIf blockIf = getBlock(context);
-        CallIndexer call = new CallIndexer(blockIf, chain.get());
+        Context context = new Context(chain.get());
+        CallIndexer call = new CallIndexer(context, chain.get());
         call.load();
 
         assertEquals(2, call.getLines().size(), "Invalid parameters count");
@@ -41,9 +39,8 @@ class CallIndexerTest {
     @Test
     public void loadComplexIndexer() {
         TokenChain chain = readChain("[a + b]");
-        Context context = new Context();
-        BlockIf blockIf = getBlock(context);
-        CallIndexer call = new CallIndexer(blockIf, chain.get());
+        Context context = new Context(chain.get());
+        CallIndexer call = new CallIndexer(context, chain.get());
         call.load();
 
         assertEquals(1, call.getLines().size(), "Invalid parameters count");
@@ -54,9 +51,8 @@ class CallIndexerTest {
     @Test
     public void loadEmptyIndexer_Fail() {
         TokenChain chain = readChain("[]");
-        Context context = new Context();
-        BlockIf blockIf = getBlock(context);
-        CallIndexer call = new CallIndexer(blockIf, chain.get());
+        Context context = new Context(chain.get());
+        CallIndexer call = new CallIndexer(context, chain.get());
         call.load();
 
         assertEquals(0, call.getLines().size(), "Invalid parameters count");
@@ -67,9 +63,8 @@ class CallIndexerTest {
     @Test
     public void loadTripleIndexer_Fail() {
         TokenChain chain = readChain("[a,b,c]");
-        Context context = new Context();
-        BlockIf blockIf = getBlock(context);
-        CallIndexer call = new CallIndexer(blockIf, chain.get());
+        Context context = new Context(chain.get());
+        CallIndexer call = new CallIndexer(context, chain.get());
         call.load();
 
         assertEquals(3, call.getLines().size(), "Invalid parameters count");
@@ -80,9 +75,8 @@ class CallIndexerTest {
     @Test
     public void loadDoubleCommaIndexer_Fail() {
         TokenChain chain = readChain("[a,,b]");
-        Context context = new Context();
-        BlockIf blockIf = getBlock(context);
-        CallIndexer call = new CallIndexer(blockIf, chain.get());
+        Context context = new Context(chain.get());
+        CallIndexer call = new CallIndexer(context, chain.get());
         call.load();
 
         assertEquals(2, call.getLines().size(), "Invalid parameters count");
@@ -93,9 +87,8 @@ class CallIndexerTest {
     @Test
     public void loadEndComma_Fail() {
         TokenChain chain = readChain("[a,]");
-        Context context = new Context();
-        BlockIf blockIf = getBlock(context);
-        CallIndexer call = new CallIndexer(blockIf, chain.get());
+        Context context = new Context(chain.get());
+        CallIndexer call = new CallIndexer(context, chain.get());
         call.load();
 
         assertEquals(1, call.getLines().size(), "Invalid parameters count");
@@ -106,9 +99,8 @@ class CallIndexerTest {
     @Test
     public void loadMissingCloser_Fail() {
         TokenChain chain = readChain("[a");
-        Context context = new Context();
-        BlockIf blockIf = getBlock(context);
-        CallIndexer call = new CallIndexer(blockIf, chain.get());
+        Context context = new Context(chain.get());
+        CallIndexer call = new CallIndexer(context, chain.get());
         call.load();
 
         assertEquals(1, call.getLines().size(), "Invalid parameters count");
@@ -119,20 +111,12 @@ class CallIndexerTest {
     @Test
     public void loadEndCommaMissingCloser_Fail() {
         TokenChain chain = readChain("[a,");
-        Context context = new Context();
-        BlockIf blockIf = getBlock(context);
-        CallIndexer call = new CallIndexer(blockIf, chain.get());
+        Context context = new Context(chain.get());
+        CallIndexer call = new CallIndexer(context, chain.get());
         call.load();
 
         assertEquals(1, call.getLines().size(), "Invalid parameters count");
 
         assertErrors(context, Error.missingCloser, Error.unexpectedEndOfTokens);
-    }
-
-    private BlockIf getBlock(Context context) {
-        TokenChain chain = readChain("if(true);");
-
-        return new BlockIf(context, null, chain.get(), null);
-
     }
 }

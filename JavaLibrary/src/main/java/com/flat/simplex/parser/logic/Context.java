@@ -4,26 +4,17 @@ import com.flat.simplex.lexer.Token;
 import com.flat.simplex.parser.logic.error.Error;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
-public class Context {
+public class Context extends Block {
 
-    private HashMap<String, Field> fields = new HashMap<>();
-    private ArrayList<Error> errors = new ArrayList<>();
-
-    public ArrayList<Error> getErrors() {
-        return errors;
+    private final ArrayList<Error> errors = new ArrayList<>();
+    
+    public Context(Token token) {
+        super(null, token);
     }
 
-    public boolean addField(Field field) {
-        if (fields.get(field.getName()) == null) {
-            fields.put(field.getName(), field);
-            return true;
-        }
-        return false;
-    }
-
+    @Override
     public Field getField(String fieldName) {
         return fields.get(fieldName);
     }
@@ -32,15 +23,23 @@ public class Context {
         return fields.keySet().stream().toList();
     }
 
+    @Override
     public void error(Token token, String description) {
         errors.add(new Error(Error.Type.Syntax, description, token, token));
     }
-
+    
+    @Override
     public void warning(Token token, String description) {
         errors.add(new Error(Error.Type.Warning, description, token, token));
     }
-
+    
+    @Override
     public void addError(Error error) {
         errors.add(error);
+    }
+    
+    @Override
+    public ArrayList<Error> getErrors() {
+        return errors;
     }
 }

@@ -15,8 +15,8 @@ class BlockWithTest {
     public void block() {
         TokenChain chain = readChain("with (true) hello = true;");
 
-        Context context = new Context();
-        BlockWith block = new BlockWith(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockWith block = new BlockWith(context, chain.get(), null);
         block.read();
 
         assertFalse(block.isCommandBlock());
@@ -30,8 +30,8 @@ class BlockWithTest {
     public void blockWithBlock() {
         TokenChain chain = readChain("with (true) {}");
 
-        Context context = new Context();
-        BlockWith block = new BlockWith(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockWith block = new BlockWith(context, chain.get(), null);
         block.read();
 
         assertTrue(block.isCommandBlock());
@@ -45,8 +45,8 @@ class BlockWithTest {
     public void blockWithUnexpectedToken_Fail() {
         TokenChain chain = readChain("with a (true) {}");
 
-        Context context = new Context();
-        BlockWith block = new BlockWith(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockWith block = new BlockWith(context, chain.get(), null);
         block.read();
 
         assertTrue(block.isCommandBlock());
@@ -60,8 +60,8 @@ class BlockWithTest {
     public void blockWithUnexpectedEndOfTokens_Fail() {
         TokenChain chain = readChain("with (true)");
 
-        Context context = new Context();
-        BlockWith block = new BlockWith(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockWith block = new BlockWith(context, chain.get(), null);
         block.read();
 
         assertFalse(block.isCommandBlock());
@@ -74,8 +74,8 @@ class BlockWithTest {
     public void blockWithMissingCondition_Fail() {
         TokenChain chain = readChain("with () hello = true;");
 
-        Context context = new Context();
-        BlockWith block = new BlockWith(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockWith block = new BlockWith(context, chain.get(), null);
         block.read();
 
         assertFalse(block.isCommandBlock());
@@ -89,8 +89,8 @@ class BlockWithTest {
     public void blockWithMissingCloser_Fail() {
         TokenChain chain = readChain("with (true) {");
 
-        Context context = new Context();
-        BlockWith block = new BlockWith(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockWith block = new BlockWith(context, chain.get(), null);
         block.read();
 
         assertTrue(block.isCommandBlock());

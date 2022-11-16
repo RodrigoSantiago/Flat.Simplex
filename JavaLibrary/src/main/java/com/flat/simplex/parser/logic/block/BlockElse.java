@@ -4,7 +4,6 @@ import com.flat.simplex.lexer.Key;
 import com.flat.simplex.lexer.Token;
 import com.flat.simplex.parser.Parser;
 import com.flat.simplex.parser.logic.Block;
-import com.flat.simplex.parser.logic.Context;
 import com.flat.simplex.parser.logic.error.Error;
 
 import java.util.ArrayList;
@@ -17,8 +16,8 @@ public class BlockElse extends Block {
 
     private ArrayList<Block> blocks;
 
-    public BlockElse(Context context, Block parent, Token start, Token end) {
-        super(context, parent, start);
+    public BlockElse(Block parent, Token start, Token end) {
+        super(parent, start);
 
         Token token = start;
         Token lToken = start;
@@ -36,13 +35,13 @@ public class BlockElse extends Block {
                 tokenContentEnd = end;
                 break;
             } else {
-                context.error(token, Error.unexpectedToken);
+                error(token, Error.unexpectedToken);
             }
             lToken = token;
             token = token.getNext();
         }
         if (state < 2) {
-            context.error(lToken, Error.unexpectedEndOfTokens);
+            error(lToken, Error.unexpectedEndOfTokens);
         }
     }
 
@@ -50,12 +49,12 @@ public class BlockElse extends Block {
     public void read() {
         if (tokenContent != null) {
             if (commandBlock) {
-                blocks = new Parser(getContext(), this).parse(tokenContent.getChild(), tokenContent.getLastChild());
+                blocks = new Parser(this).parse(tokenContent.getChild(), tokenContent.getLastChild());
                 if (tokenContent.getLastChild() == null) {
-                    getContext().error(tokenContent, Error.missingCloser);
+                    error(tokenContent, Error.missingCloser);
                 }
             } else {
-                blocks = new Parser(getContext(), this).parse(tokenContent, tokenContentEnd);
+                blocks = new Parser(this).parse(tokenContent, tokenContentEnd);
             }
         }
     }
@@ -63,7 +62,7 @@ public class BlockElse extends Block {
     @Override
     public void setPreviousBlock(Block blockPrevious) {
         if (!(blockPrevious instanceof BlockIf) && !(blockPrevious instanceof BlockElseIf)) {
-            getContext().error(getToken(), Error.elseOutOfPlace);
+            error(getToken(), Error.elseOutOfPlace);
         }
     }
 

@@ -15,9 +15,8 @@ class BlockLineTest {
     public void line() {
         TokenChain chain = readChain("a = b;");
 
-        Context context = new Context();
-        BlockDo blockDo = getBlockDo(context);
-        BlockLine block = new BlockLine(context, blockDo, chain.get(), null, true);
+        Context context = new Context(chain.get());
+        BlockLine block = new BlockLine(context, chain.get(), null, true);
         block.read();
 
         assertNotNull(block.getLineValue(), "Invalid line");
@@ -29,9 +28,8 @@ class BlockLineTest {
     public void lineNoSemicolon() {
         TokenChain chain = readChain("a = b");
 
-        Context context = new Context();
-        BlockDo blockDo = getBlockDo(context);
-        BlockLine block = new BlockLine(context, blockDo, chain.get(), null, false);
+        Context context = new Context(chain.get());
+        BlockLine block = new BlockLine(context, chain.get(), null, false);
         block.read();
 
         assertNotNull(block.getLineValue(), "Invalid line");
@@ -43,9 +41,8 @@ class BlockLineTest {
     public void lineEmpty() {
         TokenChain chain = readChain("");
 
-        Context context = new Context();
-        BlockDo blockDo = getBlockDo(context);
-        BlockLine block = new BlockLine(context, blockDo, chain.get(), null, true);
+        Context context = new Context(chain.get());
+        BlockLine block = new BlockLine(context, chain.get(), null, true);
         block.read();
 
         assertNull(block.getLineValue(), "Invalid line");
@@ -57,9 +54,8 @@ class BlockLineTest {
     public void lineSemicolon_Fail() {
         TokenChain chain = readChain("a = b");
 
-        Context context = new Context();
-        BlockDo blockDo = getBlockDo(context);
-        BlockLine block = new BlockLine(context, blockDo, chain.get(), null, true);
+        Context context = new Context(chain.get());
+        BlockLine block = new BlockLine(context, chain.get(), null, true);
         block.read();
 
         assertNotNull(block.getLineValue(), "Invalid line");
@@ -71,19 +67,12 @@ class BlockLineTest {
     public void lineNoSemicolon_Fail() {
         TokenChain chain = readChain("a = b;");
 
-        Context context = new Context();
-        BlockDo blockDo = getBlockDo(context);
-        BlockLine block = new BlockLine(context, blockDo, chain.get(), null, false);
+        Context context = new Context(chain.get());
+        BlockLine block = new BlockLine(context, chain.get(), null, false);
         block.read();
 
         assertNotNull(block.getLineValue(), "Invalid line");
 
         assertErrors(context, Error.semicolonUnexpected);
-    }
-
-    private BlockDo getBlockDo(Context context) {
-        TokenChain chain = readChain("do;");
-
-        return new BlockDo(context, null, chain.get(), null);
     }
 }

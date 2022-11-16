@@ -16,8 +16,8 @@ class BlockIfTest {
     public void block() {
         TokenChain chain = readChain("if (true) hello = true;");
 
-        Context context = new Context();
-        BlockIf block = new BlockIf(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockIf block = new BlockIf(context, chain.get(), null);
         block.read();
 
         assertFalse(block.isCommandBlock());
@@ -31,8 +31,8 @@ class BlockIfTest {
     public void blockIfBlock() {
         TokenChain chain = readChain("if (true) {}");
 
-        Context context = new Context();
-        BlockIf block = new BlockIf(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockIf block = new BlockIf(context, chain.get(), null);
         block.read();
 
         assertTrue(block.isCommandBlock());
@@ -46,8 +46,8 @@ class BlockIfTest {
     public void blockIfUnexpectedToken_Fail() {
         TokenChain chain = readChain("if a (true) {}");
 
-        Context context = new Context();
-        BlockIf block = new BlockIf(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockIf block = new BlockIf(context, chain.get(), null);
         block.read();
 
         assertTrue(block.isCommandBlock());
@@ -61,8 +61,8 @@ class BlockIfTest {
     public void blockIfUnexpectedEndOfTokens_Fail() {
         TokenChain chain = readChain("if (true)");
 
-        Context context = new Context();
-        BlockIf block = new BlockIf(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockIf block = new BlockIf(context, chain.get(), null);
         block.read();
 
         assertFalse(block.isCommandBlock());
@@ -75,8 +75,8 @@ class BlockIfTest {
     public void blockIfMissingCondition_Fail() {
         TokenChain chain = readChain("if () hello = true;");
 
-        Context context = new Context();
-        BlockIf block = new BlockIf(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockIf block = new BlockIf(context, chain.get(), null);
         block.read();
 
         assertFalse(block.isCommandBlock());
@@ -90,8 +90,8 @@ class BlockIfTest {
     public void blockIfMissingCloser_Fail() {
         TokenChain chain = readChain("if (true) {");
 
-        Context context = new Context();
-        BlockIf block = new BlockIf(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockIf block = new BlockIf(context, chain.get(), null);
         block.read();
 
         assertTrue(block.isCommandBlock());

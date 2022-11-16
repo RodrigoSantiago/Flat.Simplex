@@ -1,16 +1,15 @@
 package com.flat.simplex.parser.logic.line.call;
 
-import com.flat.simplex.lexer.Key;
 import com.flat.simplex.lexer.Token;
 import com.flat.simplex.parser.logic.Block;
 import com.flat.simplex.parser.logic.LineParser;
-import com.flat.simplex.parser.logic.LineReader;
 import com.flat.simplex.parser.logic.error.Error;
 import com.flat.simplex.parser.logic.line.LineValue;
 
 public class CallGroup extends LineCall {
 
     private LineValue lineValue;
+    
     public CallGroup(Block parent, Token token) {
         super(parent, token, Type.Group);
     }
@@ -21,15 +20,15 @@ public class CallGroup extends LineCall {
         Token end = getToken().getLastChild();
         if (start == end) {
             if (end == null) {
-                getContext().error(getToken(), Error.missingCloser);
+                getParent().error(getToken(), Error.missingCloser);
             }
-
-            getContext().error(getToken(), Error.lineEmptyLine);
+    
+            getParent().error(getToken(), Error.lineEmptyLine);
         } else {
             lineValue = new LineParser(getParent(), start, end).parse();
 
             if (end == null) {
-                getContext().error(start, Error.missingCloser);
+                getParent().error(start, Error.missingCloser);
             }
         }
     }
@@ -42,7 +41,7 @@ public class CallGroup extends LineCall {
     public void setNext(LineCall next) {
         super.setNext(next);
         if (next.getType() == Type.Value || getNext().getType() == Type.Struct || getNext().getType() == Type.Function) {
-            getContext().error(next.getToken(), Error.lineUnexpectedCall);
+            getParent().error(next.getToken(), Error.lineUnexpectedCall);
         }
     }
 }

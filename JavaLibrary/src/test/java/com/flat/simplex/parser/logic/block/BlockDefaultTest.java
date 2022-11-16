@@ -15,9 +15,9 @@ class BlockDefaultTest {
     public void blockDefault() {
         TokenChain chain = readChain("default:");
 
-        Context context = new Context();
+        Context context = new Context(chain.get());
         BlockSwitch blockSwitch = getBlockSwitch(context);
-        BlockDefault blockDefault = new BlockDefault(context, blockSwitch, chain.get(), null);
+        BlockDefault blockDefault = new BlockDefault(blockSwitch, chain.get(), null);
         blockDefault.read();
 
         assertErrors(context);
@@ -27,8 +27,8 @@ class BlockDefaultTest {
     public void blockDefaultWithoutSwitch_Fail() {
         TokenChain chain = readChain("default:");
 
-        Context context = new Context();
-        BlockDefault blockDefault = new BlockDefault(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockDefault blockDefault = new BlockDefault(context, chain.get(), null);
         blockDefault.read();
         assertErrors(context, Error.defaultOutOfPlace);
     }
@@ -37,9 +37,9 @@ class BlockDefaultTest {
     public void blockDefaultUnexpectedToken_Fail() {
         TokenChain chain = readChain("default hello:");
 
-        Context context = new Context();
+        Context context = new Context(chain.get());
         BlockSwitch blockSwitch = getBlockSwitch(context);
-        BlockDefault blockDefault = new BlockDefault(context, blockSwitch, chain.get(), null);
+        BlockDefault blockDefault = new BlockDefault(blockSwitch, chain.get(), null);
         blockDefault.read();
 
         assertErrors(context, Error.unexpectedToken);
@@ -49,9 +49,9 @@ class BlockDefaultTest {
     public void blockDefaultUnexpectedEndOfTokens_Fail() {
         TokenChain chain = readChain("default");
 
-        Context context = new Context();
+        Context context = new Context(chain.get());
         BlockSwitch blockSwitch = getBlockSwitch(context);
-        BlockDefault blockDefault = new BlockDefault(context, blockSwitch, chain.get(), null);
+        BlockDefault blockDefault = new BlockDefault(blockSwitch, chain.get(), null);
         blockDefault.read();
 
         assertErrors(context, Error.unexpectedEndOfTokens);
@@ -60,6 +60,6 @@ class BlockDefaultTest {
     private BlockSwitch getBlockSwitch(Context context) {
         TokenChain chain = readChain("switch(value){}");
 
-        return new BlockSwitch(context, null, chain.get(), null);
+        return new BlockSwitch(context, chain.get(), null);
     }
 }

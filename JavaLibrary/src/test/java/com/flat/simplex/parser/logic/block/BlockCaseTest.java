@@ -14,9 +14,9 @@ class BlockCaseTest {
     public void blockCase() {
         TokenChain chain = readChain("case hello:");
 
-        Context context = new Context();
+        Context context = new Context(chain.get());
         BlockSwitch blockSwitch = getBlockSwitch(context);
-        BlockCase blockCase = new BlockCase(context, blockSwitch, chain.get(), null);
+        BlockCase blockCase = new BlockCase(blockSwitch, chain.get(), null);
         blockCase.read();
 
         TokenChain.assertChain("hello", blockCase.getTokenValue(), blockCase.getTokenValueEnd(), "Invalid Case value");
@@ -28,9 +28,9 @@ class BlockCaseTest {
     public void blockCaseExpression() {
         TokenChain chain = readChain("case -123:");
 
-        Context context = new Context();
+        Context context = new Context(chain.get());
         BlockSwitch blockSwitch = getBlockSwitch(context);
-        BlockCase blockCase = new BlockCase(context, blockSwitch, chain.get(), null);
+        BlockCase blockCase = new BlockCase(blockSwitch, chain.get(), null);
         blockCase.read();
 
         TokenChain.assertChain("-123", blockCase.getTokenValue(), blockCase.getTokenValueEnd(), "Invalid Case value");
@@ -42,8 +42,8 @@ class BlockCaseTest {
     public void blockCaseWithoutSwitch_Fail() {
         TokenChain chain = readChain("case hello:");
 
-        Context context = new Context();
-        BlockCase blockCase = new BlockCase(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockCase blockCase = new BlockCase(context, chain.get(), null);
         blockCase.read();
 
         TokenChain.assertChain("hello", blockCase.getTokenValue(), blockCase.getTokenValueEnd(), "Invalid Case value");
@@ -55,9 +55,9 @@ class BlockCaseTest {
     public void blockCaseUnexpectedToken_Fail() {
         TokenChain chain = readChain("case hello:;");
 
-        Context context = new Context();
+        Context context = new Context(chain.get());
         BlockSwitch blockSwitch = getBlockSwitch(context);
-        BlockCase blockCase = new BlockCase(context, blockSwitch, chain.get(), null);
+        BlockCase blockCase = new BlockCase(blockSwitch, chain.get(), null);
         blockCase.read();
 
         TokenChain.assertChain("hello", blockCase.getTokenValue(), blockCase.getTokenValueEnd(), "Invalid Case value");
@@ -69,9 +69,9 @@ class BlockCaseTest {
     public void blockCaseUnexpectedEndOfTokens_Fail() {
         TokenChain chain = readChain("case hello");
 
-        Context context = new Context();
+        Context context = new Context(chain.get());
         BlockSwitch blockSwitch = getBlockSwitch(context);
-        BlockCase blockCase = new BlockCase(context, blockSwitch, chain.get(), null);
+        BlockCase blockCase = new BlockCase(blockSwitch, chain.get(), null);
         blockCase.read();
 
         TokenChain.assertChain("hello", blockCase.getTokenValue(), blockCase.getTokenValueEnd(), "Invalid Case value");
@@ -82,6 +82,6 @@ class BlockCaseTest {
     private BlockSwitch getBlockSwitch(Context context) {
         TokenChain chain = readChain("switch(value){}");
 
-        return new BlockSwitch(context, null, chain.get(), null);
+        return new BlockSwitch(context, chain.get(), null);
     }
 }

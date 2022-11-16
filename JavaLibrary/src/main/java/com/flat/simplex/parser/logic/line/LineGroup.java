@@ -41,7 +41,7 @@ public class LineGroup extends LineValue {
         if (leftOp.getKey() == Key.Inc || leftOp.getKey() == Key.Dec) {
             if (line.getLastCall() == null || (line.getLastCall().getType() != LineCall.Type.Field &&
                     line.getLastCall().getType() != LineCall.Type.IndexCall)) {
-                getContext().error(leftOp.getToken(), Error.lineRefOperator);
+                getParent().error(leftOp.getToken(), Error.lineRefOperator);
             }
         }
     }
@@ -57,7 +57,7 @@ public class LineGroup extends LineValue {
         if (rightOp.getKey() == Key.Inc || rightOp.getKey() == Key.Dec) {
             if (line.getLastCall() == null || (line.getLastCall().getType() != LineCall.Type.Field &&
                     line.getLastCall().getType() != LineCall.Type.IndexCall)) {
-                getContext().error(rightOp.getToken(), Error.lineRefOperator);
+                getParent().error(rightOp.getToken(), Error.lineRefOperator);
             }
         }
     }
@@ -75,7 +75,7 @@ public class LineGroup extends LineValue {
         if (lineOp.getKey().op == LineOp.SetPrecedence) {
             if (leftLine.getLastCall() == null || (leftLine.getLastCall().getType() != LineCall.Type.Field &&
                     leftLine.getLastCall().getType() != LineCall.Type.IndexCall)) {
-                getContext().error(lineOp.getToken(), Error.lineSetOperator);
+                getParent().error(lineOp.getToken(), Error.lineSetOperator);
             }
         }
     }
@@ -93,10 +93,6 @@ public class LineGroup extends LineValue {
         lines.add(lineTwo);
         lines.add(lineElse);
         lines.add(lineTree);
-    }
-
-    public Context getContext() {
-        return parent.getContext();
     }
 
     public Block getParent() {

@@ -15,8 +15,8 @@ class BlockWhileTest {
     public void block() {
         TokenChain chain = readChain("while (true) hello = true;");
 
-        Context context = new Context();
-        BlockWhile block = new BlockWhile(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockWhile block = new BlockWhile(context, chain.get(), null);
         block.read();
 
         assertTrue(block.isLoop());
@@ -31,8 +31,8 @@ class BlockWhileTest {
     public void blockWhileBlock() {
         TokenChain chain = readChain("while (true) {}");
 
-        Context context = new Context();
-        BlockWhile block = new BlockWhile(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockWhile block = new BlockWhile(context, chain.get(), null);
         block.read();
 
         assertTrue(block.isCommandBlock());
@@ -46,8 +46,8 @@ class BlockWhileTest {
     public void blockWhileUnexpectedToken_Fail() {
         TokenChain chain = readChain("while a (true) {}");
 
-        Context context = new Context();
-        BlockWhile block = new BlockWhile(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockWhile block = new BlockWhile(context, chain.get(), null);
         block.read();
 
         assertTrue(block.isCommandBlock());
@@ -61,8 +61,8 @@ class BlockWhileTest {
     public void blockWhileUnexpectedEndOfTokens_Fail() {
         TokenChain chain = readChain("while (true)");
 
-        Context context = new Context();
-        BlockWhile block = new BlockWhile(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockWhile block = new BlockWhile(context, chain.get(), null);
         block.read();
 
         assertFalse(block.isCommandBlock());
@@ -75,8 +75,8 @@ class BlockWhileTest {
     public void blockWhileMissingCondition_Fail() {
         TokenChain chain = readChain("while () hello = true;");
 
-        Context context = new Context();
-        BlockWhile block = new BlockWhile(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockWhile block = new BlockWhile(context, chain.get(), null);
         block.read();
 
         assertFalse(block.isCommandBlock());
@@ -90,8 +90,8 @@ class BlockWhileTest {
     public void blockWhileMissingCloser_Fail() {
         TokenChain chain = readChain("while (true) {");
 
-        Context context = new Context();
-        BlockWhile block = new BlockWhile(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockWhile block = new BlockWhile(context, chain.get(), null);
         block.read();
 
         assertTrue(block.isCommandBlock());

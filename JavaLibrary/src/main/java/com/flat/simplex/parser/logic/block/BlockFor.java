@@ -4,7 +4,6 @@ import com.flat.simplex.lexer.Key;
 import com.flat.simplex.lexer.Token;
 import com.flat.simplex.parser.Parser;
 import com.flat.simplex.parser.logic.Block;
-import com.flat.simplex.parser.logic.Context;
 import com.flat.simplex.parser.logic.error.Error;
 
 import java.util.ArrayList;
@@ -26,8 +25,8 @@ public class BlockFor extends Block {
     private BlockLine conditionLine;
     private BlockLine loopLine;
 
-    public BlockFor(Context context, Block parent, Token start, Token end) {
-        super(context, parent, start);
+    public BlockFor(Block parent, Token start, Token end) {
+        super(parent, start);
 
         Token token = start;
         Token lToken = start;
@@ -48,13 +47,13 @@ public class BlockFor extends Block {
                 tokenContentEnd = end;
                 break;
             } else {
-                context.error(token, Error.unexpectedToken);
+                error(token, Error.unexpectedToken);
             }
             lToken = token;
             token = token.getNext();
         }
         if (state < 3) {
-            context.error(lToken, Error.unexpectedEndOfTokens);
+            error(lToken, Error.unexpectedEndOfTokens);
         }
     }
 
@@ -92,13 +91,13 @@ public class BlockFor extends Block {
                 tokenLoopEnd = token.getNext();
             } else {
                 if (state >= 4) state = 6;
-                getContext().error(token, Error.unexpectedToken);
+                error(token, Error.unexpectedToken);
             }
             lToken = token;
             token = token.getNext();
         }
         if (state < 4) {
-            getContext().error(lToken, Error.unexpectedEndOfTokens);
+            error(lToken, Error.unexpectedEndOfTokens);
         }
     }
 
@@ -106,28 +105,28 @@ public class BlockFor extends Block {
     public void read() {
         if (tokenInit != null && tokenInit != tokenInitEnd) {
             if (tokenInit.getKey() == Key.Var) {
-                initLine = new BlockVar(getContext(), this, tokenInit, tokenInitEnd, false);
+                initLine = new BlockVar(this, tokenInit, tokenInitEnd, false);
             } else {
-                initLine = new BlockLine(getContext(), this, tokenInit, tokenInitEnd, false);
+                initLine = new BlockLine(this, tokenInit, tokenInitEnd, false);
             }
             initLine.read();
         }
         if (tokenCondition != null && tokenCondition != tokenConditionEnd) {
-            conditionLine = new BlockLine(getContext(), this, tokenCondition, tokenConditionEnd, false);
+            conditionLine = new BlockLine(this, tokenCondition, tokenConditionEnd, false);
             conditionLine.read();
         }
         if (tokenLoop != null && tokenLoop != tokenLoopEnd) {
-            loopLine = new BlockLine(getContext(), this, tokenLoop, tokenLoopEnd, false);
+            loopLine = new BlockLine(this, tokenLoop, tokenLoopEnd, false);
             loopLine.read();
         }
         if (tokenContent != null) {
             if (commandBlock) {
-                blocks = new Parser(getContext(), this).parse(tokenContent.getChild(), tokenContent.getLastChild());
+                blocks = new Parser(this).parse(tokenContent.getChild(), tokenContent.getLastChild());
                 if (tokenContent.getLastChild() == null) {
-                    getContext().error(tokenContent, Error.missingCloser);
+                    error(tokenContent, Error.missingCloser);
                 }
             } else {
-                blocks = new Parser(getContext(), this).parse(tokenContent, tokenContentEnd);
+                blocks = new Parser(this).parse(tokenContent, tokenContentEnd);
             }
         }
     }

@@ -15,8 +15,8 @@ class BlockSwitchTest {
     public void blockSwitchBlock() {
         TokenChain chain = readChain("switch (hello) {}");
 
-        Context context = new Context();
-        BlockSwitch block = new BlockSwitch(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockSwitch block = new BlockSwitch(context, chain.get(), null);
         block.read();
 
         TokenChain.assertOne("(hello)", block.getTokenValue(), "Invalid condition");
@@ -29,8 +29,8 @@ class BlockSwitchTest {
     public void blockSwitchUnexpectedToken_Fail() {
         TokenChain chain = readChain("switch a (hello) {}");
 
-        Context context = new Context();
-        BlockSwitch block = new BlockSwitch(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockSwitch block = new BlockSwitch(context, chain.get(), null);
         block.read();
 
         TokenChain.assertOne("(hello)", block.getTokenValue(), "Invalid condition");
@@ -43,8 +43,8 @@ class BlockSwitchTest {
     public void blockSwitchUnexpectedEndOfTokens_Fail() {
         TokenChain chain = readChain("switch (hello)");
 
-        Context context = new Context();
-        BlockSwitch block = new BlockSwitch(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockSwitch block = new BlockSwitch(context, chain.get(), null);
         block.read();
 
         TokenChain.assertOne("(hello)", block.getTokenValue(), "Invalid condition");
@@ -56,8 +56,8 @@ class BlockSwitchTest {
     public void blockSwitchMissingValue_Fail() {
         TokenChain chain = readChain("switch () {}");
 
-        Context context = new Context();
-        BlockSwitch block = new BlockSwitch(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockSwitch block = new BlockSwitch(context, chain.get(), null);
         block.read();
 
         TokenChain.assertOne("()", block.getTokenValue(), "Invalid condition");
@@ -70,8 +70,8 @@ class BlockSwitchTest {
     public void blockSwitchMissingCloser_Fail() {
         TokenChain chain = readChain("switch (hello) {");
 
-        Context context = new Context();
-        BlockSwitch block = new BlockSwitch(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockSwitch block = new BlockSwitch(context, chain.get(), null);
         block.read();
 
         TokenChain.assertOne("(hello)", block.getTokenValue(), "Invalid condition");
@@ -84,8 +84,8 @@ class BlockSwitchTest {
     public void blockSwitchCase() {
         TokenChain chain = readChain("switch (hello) { case 1: break; case 2: break; }");
 
-        Context context = new Context();
-        BlockSwitch block = new BlockSwitch(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockSwitch block = new BlockSwitch(context, chain.get(), null);
         block.read();
 
         TokenChain.assertOne("(hello)", block.getTokenValue(), "Invalid condition");
@@ -100,8 +100,8 @@ class BlockSwitchTest {
     public void blockSwitchBlockBeforeCase() {
         TokenChain chain = readChain("switch (hello) { break; case 1: break; }");
 
-        Context context = new Context();
-        BlockSwitch block = new BlockSwitch(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockSwitch block = new BlockSwitch(context, chain.get(), null);
         block.read();
 
         TokenChain.assertOne("(hello)", block.getTokenValue(), "Invalid condition");
@@ -116,8 +116,8 @@ class BlockSwitchTest {
     public void blockSwitchDefault() {
         TokenChain chain = readChain("switch (hello) { default: break; }");
 
-        Context context = new Context();
-        BlockSwitch block = new BlockSwitch(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockSwitch block = new BlockSwitch(context, chain.get(), null);
         block.read();
 
         TokenChain.assertOne("(hello)", block.getTokenValue(), "Invalid condition");
@@ -132,8 +132,8 @@ class BlockSwitchTest {
     public void blockSwitchMultipleDefault_Fail() {
         TokenChain chain = readChain("switch (hello) { default: break; default: break; }");
 
-        Context context = new Context();
-        BlockSwitch block = new BlockSwitch(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockSwitch block = new BlockSwitch(context, chain.get(), null);
         block.read();
 
         TokenChain.assertOne("(hello)", block.getTokenValue(), "Invalid condition");

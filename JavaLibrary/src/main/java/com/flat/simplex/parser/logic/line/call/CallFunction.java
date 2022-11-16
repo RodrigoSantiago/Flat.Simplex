@@ -6,9 +6,7 @@ import com.flat.simplex.parser.Parser;
 import com.flat.simplex.parser.logic.Block;
 import com.flat.simplex.parser.logic.Context;
 import com.flat.simplex.parser.logic.Field;
-import com.flat.simplex.parser.logic.LineParser;
 import com.flat.simplex.parser.logic.error.Error;
-import com.flat.simplex.parser.logic.line.LineValue;
 
 import java.util.ArrayList;
 
@@ -16,11 +14,11 @@ public class CallFunction extends LineCall {
     
     private Token tokenParam;
     private Token tokenBody;
-    private ArrayList<Field> params = new ArrayList<>();
+    private final ArrayList<Field> params = new ArrayList<>();
     private Context innerContext;
     private ArrayList<Block> blocks;
-    private Token start;
-    private Token end;
+    private final Token start;
+    private final Token end;
 
     public CallFunction(Block parent, Token token, Token end) {
         super(parent, token, Type.Function);
@@ -43,13 +41,13 @@ public class CallFunction extends LineCall {
                 state = 3;
                 loadBody(token);
             } else {
-                getContext().error(token, Error.unexpectedToken);
+                getParent().error(token, Error.unexpectedToken);
             }
             lToken = token;
             token = token.getNext();
         }
         if (state != 3) {
-            getContext().error(lToken, Error.unexpectedEndOfTokens);
+            getParent().error(lToken, Error.unexpectedEndOfTokens);
         }
     }
     
@@ -58,7 +56,7 @@ public class CallFunction extends LineCall {
         Token start = tokenParam.getChild();
         Token end = tokenParam.getLastChild();
         if (end == null) {
-            getContext().error(tokenParam, Error.missingCloser);
+            getParent().error(tokenParam, Error.missingCloser);
         }
 
         Token token = start;
@@ -71,29 +69,29 @@ public class CallFunction extends LineCall {
             } else if (state == 1 && token.getKey() == Key.Comma) {
                 state = 2;
             } else {
-                getContext().error(token, Error.unexpectedToken);
+                getParent().error(token, Error.unexpectedToken);
             }
             lToken = token;
             token = token.getNext();
         }
         if (state == 2) {
-            getContext().error(lToken, Error.unexpectedEndOfTokens);
+            getParent().error(lToken, Error.unexpectedEndOfTokens);
         }
-
-        innerContext = new Context();
+    
+        innerContext = new Context(tokenParam);
         for (Field param : params) {
             if (!innerContext.addField(param)) {
-                getContext().error(param.getTokenSource(), Error.varRepeatedField);
+                getParent().error(param.getTokenSource(), Error.varRepeatedField);
             }
         }
     }
 
     private void loadBody(Token tokenBody) {
         this.tokenBody = tokenBody;
-
-        blocks = new Parser(innerContext, null).parse(tokenBody.getChild(), tokenBody.getLastChild());
+        
+        blocks = new Parser(innerContext).parse(tokenBody.getChild(), tokenBody.getLastChild());
         if (tokenBody.getLastChild() == null) {
-            getContext().error(tokenBody, Error.missingCloser);
+            getParent().error(tokenBody, Error.missingCloser);
         }
     }
 
@@ -113,7 +111,7 @@ public class CallFunction extends LineCall {
     public void setNext(LineCall next) {
         super.setNext(next);
         if (next.getType() == Type.Value || getNext().getType() == Type.Struct || getNext().getType() == Type.Function) {
-            getContext().error(next.getToken(), Error.lineUnexpectedCall);
+            getParent().error(next.getToken(), Error.lineUnexpectedCall);
         }
     }
 }

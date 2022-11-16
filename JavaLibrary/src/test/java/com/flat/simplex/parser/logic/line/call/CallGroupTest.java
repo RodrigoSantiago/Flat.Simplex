@@ -15,9 +15,8 @@ class CallGroupTest {
     @Test
     public void loadGroup() {
         TokenChain chain = readChain("(a)");
-        Context context = new Context();
-        BlockIf blockIf = getBlock(context);
-        CallGroup call = new CallGroup(blockIf, chain.get());
+        Context context = new Context(chain.get());
+        CallGroup call = new CallGroup(context, chain.get());
         call.load();
 
         assertNotNull(call.getLineValue(), "Invalid line");
@@ -28,9 +27,8 @@ class CallGroupTest {
     @Test
     public void loadEmpty_Fail() {
         TokenChain chain = readChain("()");
-        Context context = new Context();
-        BlockIf blockIf = getBlock(context);
-        CallGroup call = new CallGroup(blockIf, chain.get());
+        Context context = new Context(chain.get());
+        CallGroup call = new CallGroup(context, chain.get());
         call.load();
 
         assertNull(call.getLineValue(), "Invalid line");
@@ -41,9 +39,8 @@ class CallGroupTest {
     @Test
     public void loadMissingCloser_Fail() {
         TokenChain chain = readChain("(a");
-        Context context = new Context();
-        BlockIf blockIf = getBlock(context);
-        CallGroup call = new CallGroup(blockIf, chain.get());
+        Context context = new Context(chain.get());
+        CallGroup call = new CallGroup(context, chain.get());
         call.load();
 
         assertNotNull(call.getLineValue(), "Invalid line");
@@ -54,20 +51,12 @@ class CallGroupTest {
     @Test
     public void loadEmptyMissingCloser_Fail() {
         TokenChain chain = readChain("(");
-        Context context = new Context();
-        BlockIf blockIf = getBlock(context);
-        CallGroup call = new CallGroup(blockIf, chain.get());
+        Context context = new Context(chain.get());
+        CallGroup call = new CallGroup(context, chain.get());
         call.load();
 
         assertNull(call.getLineValue(), "Invalid line");
 
         assertErrors(context, Error.missingCloser, Error.lineEmptyLine);
-    }
-
-    private BlockIf getBlock(Context context) {
-        TokenChain chain = readChain("if(true);");
-
-        return new BlockIf(context, null, chain.get(), null);
-
     }
 }

@@ -4,7 +4,6 @@ import com.flat.simplex.lexer.Key;
 import com.flat.simplex.lexer.Token;
 import com.flat.simplex.parser.Parser;
 import com.flat.simplex.parser.logic.Block;
-import com.flat.simplex.parser.logic.Context;
 import com.flat.simplex.parser.logic.error.Error;
 
 import java.util.ArrayList;
@@ -20,8 +19,8 @@ public class BlockSwitch extends Block {
     private ArrayList<BlockCase> blockCases = new ArrayList<>();
     private BlockDefault blockDefault;
 
-    public BlockSwitch(Context context, Block parent, Token start, Token end) {
-        super(context, parent, start);
+    public BlockSwitch(Block parent, Token start, Token end) {
+        super(parent, start);
 
         Token token = start;
         Token lToken = start;
@@ -36,30 +35,30 @@ public class BlockSwitch extends Block {
                 state = 3;
                 tokenContent = token;
             } else {
-                context.error(token, Error.unexpectedToken);
+                error(token, Error.unexpectedToken);
             }
             lToken = token;
             token = token.getNext();
         }
         if (state < 3) {
-            context.error(lToken, Error.unexpectedEndOfTokens);
+            error(lToken, Error.unexpectedEndOfTokens);
         }
     }
 
     @Override
     public void read() {
         if (tokenValue != null) {
-            lineValue = new BlockLine(getContext(), this, tokenValue.getChild(), tokenValue.getLastChild(), false);
+            lineValue = new BlockLine(this, tokenValue.getChild(), tokenValue.getLastChild(), false);
             lineValue.read();
 
             if (lineValue.isEmpty()) {
-                getContext().error(tokenValue, Error.switchConditionExpected);
+                error(tokenValue, Error.switchConditionExpected);
             }
         }
         if (tokenContent != null) {
-            blocks = new Parser(getContext(), this).parse(tokenContent.getChild(), tokenContent.getLastChild());
+            blocks = new Parser(this).parse(tokenContent.getChild(), tokenContent.getLastChild());
             if (tokenContent.getLastChild() == null) {
-                getContext().error(tokenContent, Error.missingCloser);
+                error(tokenContent, Error.missingCloser);
             }
         }
     }
@@ -72,7 +71,7 @@ public class BlockSwitch extends Block {
     @Override
     public void markBlock(Block blockChild) {
         if (blockCases.size() == 0 && blockDefault == null) {
-            getContext().error(tokenValue, Error.switchLineBeforeCase);
+            error(tokenValue, Error.switchLineBeforeCase);
         }
     }
 
@@ -80,7 +79,7 @@ public class BlockSwitch extends Block {
         for (BlockCase bCase : blockCases) {
             if (bCase.getLineCondition() != null && blockCase.getLineCondition() != null) {
                 if (bCase.getLineCondition().constantEquals(blockCase.getLineCondition())) {
-                    getContext().error(tokenValue, Error.switchRepeatedCase);
+                    error(tokenValue, Error.switchRepeatedCase);
                 }
             }
         }
@@ -91,7 +90,7 @@ public class BlockSwitch extends Block {
         if (this.blockDefault == null) {
             this.blockDefault = blockDefault;
         } else {
-            getContext().error(blockDefault.getToken(), Error.switchRepeatedDefault);
+            error(blockDefault.getToken(), Error.switchRepeatedDefault);
         }
     }
 

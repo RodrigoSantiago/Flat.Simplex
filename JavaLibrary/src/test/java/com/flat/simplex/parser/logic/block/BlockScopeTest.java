@@ -14,8 +14,8 @@ class BlockScopeTest {
     public void blockScope() {
         TokenChain chain = readChain("{hello = true;}");
 
-        Context context = new Context();
-        BlockScope block = new BlockScope(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockScope block = new BlockScope(context, chain.get(), null);
         block.read();
 
         TokenChain.assertOne("{hello = true;}", block.getTokenContent(), "Invalid body");
@@ -27,8 +27,8 @@ class BlockScopeTest {
     public void blockScopeOpenBlock_Fail() {
         TokenChain chain = readChain("{hello = true;");
 
-        Context context = new Context();
-        BlockScope block = new BlockScope(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockScope block = new BlockScope(context, chain.get(), null);
         block.read();
 
         TokenChain.assertOne("{hello = true;", block.getTokenContent(), "Invalid body");
@@ -40,8 +40,8 @@ class BlockScopeTest {
     public void blockScopeUnexpectedToken_Fail() {
         TokenChain chain = readChain("{hello = true;};");
 
-        Context context = new Context();
-        BlockScope block = new BlockScope(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockScope block = new BlockScope(context, chain.get(), null);
         block.read();
 
         TokenChain.assertOne("{hello = true;}", block.getTokenContent(), "Invalid body");
@@ -53,8 +53,8 @@ class BlockScopeTest {
     public void blockScopeUnexpectedEndOfTokens_Fail() {
         TokenChain chain = readChain("");
 
-        Context context = new Context();
-        BlockScope block = new BlockScope(context, null, chain.get(), null);
+        Context context = new Context(chain.get());
+        BlockScope block = new BlockScope(context, chain.get(), null);
         block.read();
 
         assertErrors(context, Error.unexpectedEndOfTokens);

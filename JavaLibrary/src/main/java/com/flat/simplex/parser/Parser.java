@@ -11,14 +11,12 @@ import java.util.ArrayList;
 
 public class Parser {
 
-    private Context context;
     private Block block;
 
     private Token tokenStart;
     private Token tokenEnd;
 
-    public Parser(Context context, Block block) {
-        this.context = context == null ? block.getContext() : context;
+    public Parser(Block block) {
         this.block = block;
     }
 
@@ -63,39 +61,39 @@ public class Parser {
             Key key = group.getStart().getKey();
             Block cBlock = null;
             if (key == Key.Case) {
-                cBlock = new BlockCase(context, block, group.getStart(), group.getEnd());
+                cBlock = new BlockCase(block, group.getStart(), group.getEnd());
             } else if (key == Key.Default) {
-                cBlock = new BlockDefault(context, block, group.getStart(), group.getEnd());
+                cBlock = new BlockDefault(block, group.getStart(), group.getEnd());
             } else if (key == Key.Do) {
-                cBlock = new BlockDo(context, block, group.getStart(), group.getEnd());
+                cBlock = new BlockDo(block, group.getStart(), group.getEnd());
             } else if (key == Key.Else) {
                 if (group.getStart().getNext() != null && group.getStart().getNext().getKey() == Key.If) {
-                    cBlock = new BlockElseIf(context, block, group.getStart(), group.getEnd());
+                    cBlock = new BlockElseIf(block, group.getStart(), group.getEnd());
                 } else {
-                    cBlock = new BlockElse(context, block, group.getStart(), group.getEnd());
+                    cBlock = new BlockElse(block, group.getStart(), group.getEnd());
                 }
             } else if (key == Key.For) {
-                cBlock = new BlockFor(context, block, group.getStart(), group.getEnd());
+                cBlock = new BlockFor(block, group.getStart(), group.getEnd());
             } else if (key == Key.If) {
-                cBlock = new BlockIf(context, block, group.getStart(), group.getEnd());
+                cBlock = new BlockIf(block, group.getStart(), group.getEnd());
             } else if (key == Key.Switch) {
-                cBlock = new BlockSwitch(context, block, group.getStart(), group.getEnd());
+                cBlock = new BlockSwitch(block, group.getStart(), group.getEnd());
             } else if (key == Key.While) {
-                cBlock = new BlockWhile(context, block, group.getStart(), group.getEnd());
+                cBlock = new BlockWhile(block, group.getStart(), group.getEnd());
             } else if (key == Key.With) {
-                cBlock = new BlockWith(context, block, group.getStart(), group.getEnd());
+                cBlock = new BlockWith(block, group.getStart(), group.getEnd());
             } else if (key == Key.Brace) {
-                cBlock = new BlockScope(context, block, group.getStart(), group.getEnd());
+                cBlock = new BlockScope(block, group.getStart(), group.getEnd());
             } else if (key == Key.Continue) {
-                cBlock = new BlockContinue(context, block, group.getStart(), group.getEnd());
+                cBlock = new BlockContinue(block, group.getStart(), group.getEnd());
             } else if (key == Key.Break) {
-                cBlock = new BlockBreak(context, block, group.getStart(), group.getEnd());
+                cBlock = new BlockBreak(block, group.getStart(), group.getEnd());
             } else if (key == Key.Return) {
-                cBlock = new BlockReturn(context, block, group.getStart(), group.getEnd());
+                cBlock = new BlockReturn(block, group.getStart(), group.getEnd());
             } else if (key == Key.Var) {
-                cBlock = new BlockVar(context, block, group.getStart(), group.getEnd(), true);
+                cBlock = new BlockVar(block, group.getStart(), group.getEnd(), true);
             } else {
-                cBlock = new BlockLine(context, block, group.getStart(), group.getEnd(), true);
+                cBlock = new BlockLine(block, group.getStart(), group.getEnd(), true);
             }
             cBlock.read();
             if (pBlock != null) {

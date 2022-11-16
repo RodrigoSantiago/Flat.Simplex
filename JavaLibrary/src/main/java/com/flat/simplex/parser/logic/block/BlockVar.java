@@ -4,7 +4,6 @@ import com.flat.simplex.lexer.Key;
 import com.flat.simplex.lexer.Token;
 import com.flat.simplex.lexer.TokenGroup;
 import com.flat.simplex.parser.logic.Block;
-import com.flat.simplex.parser.logic.Context;
 import com.flat.simplex.parser.logic.Field;
 import com.flat.simplex.parser.logic.error.Error;
 
@@ -17,8 +16,8 @@ public class BlockVar extends Block {
     private ArrayList<BlockLine> initLines = new ArrayList<>();
     private ArrayList<Field> fields = new ArrayList<>();
 
-    public BlockVar(Context context, Block parent, Token start, Token end, boolean semicolon) {
-        super(context, parent, start);
+    public BlockVar(Block parent, Token start, Token end, boolean semicolon) {
+        super(parent, start);
         Token token = start;
         Token lToken = start;
 
@@ -37,7 +36,7 @@ public class BlockVar extends Block {
                 state = key == Key.Comma ? 4 : 5;
                 nameTokens.add(nameToken);
                 initTokens.add(null);
-                if (key == Key.Semicolon && !semicolon) getContext().error(token, Error.semicolonUnexpected);
+                if (key == Key.Semicolon && !semicolon) error(token, Error.semicolonUnexpected);
             } else if (state == 2 && key == Key.Set) {
                 state = 3;
             } else if (state == 3 && (key == Key.Comma || key == Key.Semicolon)) {
@@ -45,10 +44,10 @@ public class BlockVar extends Block {
                 nameTokens.add(nameToken);
                 if (initToken != null) {
                     initTokens.add(new TokenGroup(initToken, initTokenEnd));
-                    if (key == Key.Semicolon && !semicolon) getContext().error(token, Error.semicolonUnexpected);
+                    if (key == Key.Semicolon && !semicolon) error(token, Error.semicolonUnexpected);
                 } else {
                     initTokens.add(null);
-                    getContext().error(lToken, Error.varInitExpected);
+                    error(lToken, Error.varInitExpected);
                 }
                 initToken = null;
                 initTokenEnd = null;
@@ -58,7 +57,7 @@ public class BlockVar extends Block {
                 }
                 initTokenEnd = token.getNext();
             } else {
-                getContext().error(token, Error.unexpectedToken);
+                error(token, Error.unexpectedToken);
             }
             lToken = token;
             token = token.getNext();
@@ -67,21 +66,21 @@ public class BlockVar extends Block {
         if (state == 2) {
             nameTokens.add(nameToken);
             initTokens.add(null);
-            if (semicolon) getContext().error(lToken, Error.semicolonExpected);
+            if (semicolon) error(lToken, Error.semicolonExpected);
         } else if (state == 3) {
             nameTokens.add(nameToken);
             if (initToken != null) {
                 initTokens.add(new TokenGroup(initToken, initTokenEnd));
-                if (semicolon) getContext().error(lToken, Error.semicolonExpected);
+                if (semicolon) error(lToken, Error.semicolonExpected);
             } else {
                 initTokens.add(null);
-                getContext().error(lToken, Error.varInitExpected);
+                error(lToken, Error.varInitExpected);
             }
         } else if (state != 5) {
-            getContext().error(lToken, Error.unexpectedEndOfTokens);
+            error(lToken, Error.unexpectedEndOfTokens);
         }
         if (getParent() != null && getParent().isSwitch()) {
-            getContext().error(lToken, Error.varOutOfPlace);
+            error(lToken, Error.varOutOfPlace);
         }
     }
 
@@ -92,21 +91,15 @@ public class BlockVar extends Block {
             TokenGroup group = initTokens.get(i);
             fields.add(new Field(name, name.getString(), Field.Type.Local));
             if (group != null) {
-                BlockLine initLine = new BlockLine(getContext(), this, group.getStart(), group.getEnd(), false);
+                BlockLine initLine = new BlockLine(this, group.getStart(), group.getEnd(), false);
                 initLine.read();
                 initLines.add(initLine);
             }
         }
 
         for (Field field : fields) {
-            if (getParent() != null) {
-                if (!getParent().addField(field)) {
-                    getContext().error(field.getTokenSource(), Error.varRepeatedField);
-                }
-            } else {
-                if (!getContext().addField(field)) {
-                    getContext().error(field.getTokenSource(), Error.varRepeatedField);
-                }
+            if (!getParent().addField(field)) {
+                error(field.getTokenSource(), Error.varRepeatedField);
             }
         }
     }

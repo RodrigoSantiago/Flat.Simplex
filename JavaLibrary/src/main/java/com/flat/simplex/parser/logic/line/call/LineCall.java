@@ -13,9 +13,9 @@ public class LineCall {
 
     private LineCall next;
     private LineCall prev;
-    private Type type;
-    private Token token;
-    private Block parent;
+    private final Type type;
+    private final Token token;
+    private final Block parent;
 
     public LineCall(Block parent, Token token, Type type) {
         this.parent = parent;
@@ -50,10 +50,6 @@ public class LineCall {
 
     public Block getParent() {
         return parent;
-    }
-
-    public Context getContext() {
-        return parent.getContext();
     }
 
     public LineValue.ReturnType getReturnType() {
