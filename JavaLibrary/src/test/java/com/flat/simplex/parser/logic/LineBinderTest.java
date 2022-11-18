@@ -197,7 +197,7 @@ class LineBinderTest {
                 .add(lChain(CallField.class).add(Key.Set).add(CallField.class))
                 .add(Key.Colon).add(CallField.class);
         callChain.assertChain(line, "Invalid line chain");
-        // todo - assertErrors(context); can happen
+        assertErrors(context);
     }
 
     @Test

@@ -104,14 +104,4 @@ public class LineCallChain {
         }
 
     }
-
-    private static class ClassChain {
-        public Class<?> clazz;
-        public ClassChain next;
-        public ClassChain child;
-
-        public ClassChain(Class<?> clazz) {
-            this.clazz = clazz;
-        }
-    }
 }

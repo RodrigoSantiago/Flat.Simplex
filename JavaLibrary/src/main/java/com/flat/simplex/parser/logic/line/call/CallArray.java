@@ -42,8 +42,7 @@ public class CallArray extends LineCall {
                 return;
             }
         }
-
-
+        
         int state = 0;
         int quest = 0;
         while (token != end && token != null) {

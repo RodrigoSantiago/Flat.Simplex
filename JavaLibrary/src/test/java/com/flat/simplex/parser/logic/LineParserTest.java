@@ -29,7 +29,7 @@ class LineParserTest {
     private BlockIf getBlock(Context context) {
         TokenChain chain = readChain("if(true);");
 
-        return new BlockIf(null, chain.get(), null);
+        return new BlockIf(context, chain.get(), null);
 
     }
 }

@@ -54,7 +54,7 @@ public abstract class Block {
     }
 
     public boolean addField(Field field) {
-        if (fields.get(field.getName()) == null) {
+        if (getField(field.getName()) == null) {
             fields.put(field.getName(), field);
             return true;
         }

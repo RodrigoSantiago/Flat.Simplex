@@ -183,49 +183,51 @@ public class LineBinder {
                     break;
                 }
             }
-            if (start != -1 || end != -1) {
-                if (start == -1) {
-                    parent.error(input.get(end).getToken(), Error.lineTernaryIncomplete);
-                } else if (end == -1) {
+            if (start == -1 && end == -1) {
+                break;
+            }
+            
+            if (start == -1) {
+                parent.error(input.get(end).getToken(), Error.lineTernaryIncomplete);
+            } else if (end == -1) {
+                parent.error(input.get(start).getToken(), Error.lineTernaryIncomplete);
+            } else {
+                LineOp lineQuest = input.get(start).getOp();
+                LineOp lineColon = input.get(end).getOp();
+                LineValue lineStart = start < 1 ? null : input.get(start - 1).getValue();
+                LineValue lineEnd = end + 1 >= input.size() ? null : input.get(end + 1).getValue();
+                LineValue center = null;
+
+                if (lineStart == null) {
                     parent.error(input.get(start).getToken(), Error.lineTernaryIncomplete);
-                } else {
-                    LineOp lineQuest = input.get(start).getOp();
-                    LineOp lineColon = input.get(end).getOp();
-                    LineValue lineStart = start < 1 ? null : input.get(start - 1).getValue();
-                    LineValue lineEnd = end + 1 >= input.size() ? null : input.get(end + 1).getValue();
-                    LineValue center = null;
-
-                    if (lineStart == null) {
+                } else if (lineEnd == null) {
+                    parent.error(input.get(start).getToken(), Error.lineTernaryIncomplete);
+                } else if (start + 1 == end) {
+                    parent.error(input.get(start).getToken(), Error.lineTernaryIncomplete);
+                } else if (start + 2 == end) {
+                    if (input.get(start + 1).getValue() == null) {
                         parent.error(input.get(start).getToken(), Error.lineTernaryIncomplete);
-                    } else if (lineEnd == null) {
-                        parent.error(input.get(start).getToken(), Error.lineTernaryIncomplete);
-                    } else if (start + 1 == end) {
-                        parent.error(input.get(start).getToken(), Error.lineTernaryIncomplete);
-                    } else if (start + 2 == end) {
-                        if (input.get(start + 1).getValue() == null) {
-                            parent.error(input.get(start).getToken(), Error.lineTernaryIncomplete);
-                        } else {
-                            center = input.get(start + 1).getValue();
-                        }
                     } else {
-                        ArrayList<Line> innerLine = new ArrayList<>(end - (start + 1));
-                        for (int i = start + 1; i < end; i++) {
-                            innerLine.add(input.get(i));
-                        }
-                        groupByMiddleSetter(innerLine);
-
-                        if (innerLine.size() != 1 || innerLine.get(0).getValue() == null) {
-                            parent.error(input.get(start).getToken(), Error.lineTernaryIncomplete);
-                        } else {
-                            center = innerLine.get(0).getValue();
-                        }
+                        center = input.get(start + 1).getValue();
                     }
-
-                    if (center != null) {
-                        input.subList(start - 1, end + 2).clear();
-                        input.add(start - 1, new LineGroup(lineStart, lineQuest, center, lineColon, lineEnd));
-                        continue;
+                } else {
+                    ArrayList<Line> innerLine = new ArrayList<>(end - (start + 1));
+                    for (int i = start + 1; i < end; i++) {
+                        innerLine.add(input.get(i));
                     }
+                    groupByMiddleSetter(innerLine);
+
+                    if (innerLine.size() != 1 || innerLine.get(0).getValue() == null) {
+                        parent.error(input.get(start).getToken(), Error.lineTernaryIncomplete);
+                    } else {
+                        center = innerLine.get(0).getValue();
+                    }
+                }
+
+                if (center != null) {
+                    input.subList(start - 1, end + 2).clear();
+                    input.add(start - 1, new LineGroup(lineStart, lineQuest, center, lineColon, lineEnd));
+                    continue;
                 }
             }
             break;
