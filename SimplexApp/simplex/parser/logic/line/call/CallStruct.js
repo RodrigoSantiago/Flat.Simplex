@@ -37,7 +37,7 @@ class CallStruct extends LineCall {
 
             } else if (state === 3 && token.getKey() === Key.Comma) {
                 let lineValue = new LineParser(this.getParent(), initToken, token).parse();
-                this.members.add(new Member(nameToken, lineValue));
+                this.members.push(new Member(nameToken, lineValue));
                 state = 4;
             } else {
                 this.getParent().error(token, Error.unexpectedToken);

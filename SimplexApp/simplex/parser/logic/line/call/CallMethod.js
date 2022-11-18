@@ -31,12 +31,12 @@ class CallMethod extends LineCall {
                 state = 2;
                 let lineValue = new LineParser(this.getParent(), init, initEnd).parse();
                 if (lineValue !== null) {
-                    this.lines.add(lineValue);
+                    this.lines.push(lineValue);
                 }
                 init = null;
                 initEnd = null;
             } else {
-                getParent().error(token, Error.unexpectedToken);
+                this.getParent().error(token, Error.unexpectedToken);
             }
             lToken = token;
             token = token.getNext();
@@ -44,7 +44,7 @@ class CallMethod extends LineCall {
         if (state === 1) {
             let lineValue = new LineParser(this.getParent(), init, initEnd).parse();
             if (lineValue !== null) {
-                this.lines.add(lineValue);
+                this.lines.push(lineValue);
             }
         } else if (state !== 0) {
             this.getParent().error(lToken, Error.unexpectedEndOfTokens);

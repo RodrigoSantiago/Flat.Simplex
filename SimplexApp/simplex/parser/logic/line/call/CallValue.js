@@ -41,17 +41,15 @@ class CallValue extends LineCall {
             }
         } else if (this.getToken().getKey() === Key.Number) {
             this.doubleValue = 0.0;
-            try {
-                if (this.getToken().getString().startsWith('#')) {
-                    if (this.getToken().getLength() <= 9) {
-                        this.doubleValue = parseInt(this.getToken().getString().substring(1), 16);
-                    } else {
-                        this.getParent().error(this.getToken(), Error.lineIncorrectlyFormatted);
-                    }
+            if (this.getToken().getString().startsWith('#')) {
+                if (this.getToken().getLength() <= 9) {
+                    this.doubleValue = parseInt(this.getToken().getString().substring(1), 16);
                 } else {
-                    this.doubleValue = parseFloat(this.getToken().getString());
+                    this.getParent().error(this.getToken(), Error.lineIncorrectlyFormatted);
                 }
-            } catch (e) {
+            } else if (isNumeric(this.getToken().getString())) {
+                this.doubleValue = parseFloat(this.getToken().getString());
+            } else {
                 this.getParent().error(this.getToken(), Error.lineIncorrectlyFormatted);
             }
         } else if (this.getToken().getKey() === Key.True) {
@@ -89,6 +87,10 @@ class CallValue extends LineCall {
     toString() {
         return '' + this.getToken();
     }
+}
+
+function isNumeric(value) {
+    return /^([+\-])?\d+(\.\d+)?(e([+\-])?\d+)?$/.test(value);
 }
 
 module.exports = CallValue;

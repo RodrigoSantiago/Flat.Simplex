@@ -9,7 +9,8 @@ class Context extends Block {
     }
 
     getField(fieldName) {
-        return this.fields.get(fieldName);
+        let val = this.fields.get(fieldName);
+        return val ? val : null;
     }
 
     getAllFieldNames() {

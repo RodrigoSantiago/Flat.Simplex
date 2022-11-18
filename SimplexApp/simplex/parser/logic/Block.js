@@ -46,7 +46,7 @@ class Block {
 
     addField(field) {
         if (this.getField(field.getName()) === null) {
-            this.fields[field.getName()] = field;
+            this.fields.set(field.getName(), field);
             return true;
         }
         return false;

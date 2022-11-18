@@ -53,7 +53,7 @@ class CallFunction extends LineCall {
         while (token !== end && token !== null) {
             if ((state === 0 || state === 2) && token.getKey() === Key.Word) {
                 state = 1;
-                this.params.add(new Field(token, token.getString(), Field.Parameter));
+                this.params.push(new Field(token, token.getString(), Field.Parameter));
             } else if (state === 1 && token.getKey() === Key.Comma) {
                 state = 2;
             } else {

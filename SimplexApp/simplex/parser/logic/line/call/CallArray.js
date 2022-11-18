@@ -6,8 +6,6 @@ class CallArray extends LineCall {
         super(parent, token, LineCall.Array);
 
         this.members = [];
-        this.type = 0;
-
     }
 
     load() {
@@ -24,10 +22,10 @@ class CallArray extends LineCall {
         let sinitTokenEnd = null;
         if (start !== null && start.getNext() === end) {
             if (start.getKey() === Key.Colon) {
-                this.type = 2;
+                this.arrayType = 2;
                 return;
             } else if (start.getKey() === Key.Index && start.getChild() === start.getLastChild()) {
-                this.type = 3;
+                this.arrayType = 3;
                 return;
             }
         }
@@ -98,18 +96,18 @@ class CallArray extends LineCall {
     }
 
     membersCheck() {
-        this.type = -1;
+        this.arrayType = -1;
         for (const member of this.members) {
-            if (this.type === -1) {
-                this.type = member.getType();
+            if (this.arrayType === -1) {
+                this.arrayType = member.getType();
             } else {
-                if (this.type !== member.getType()) {
+                if (this.arrayType !== member.getType()) {
                     this.getParent().error(member.token, Error.arrayMixingTypes);
                 }
             }
         }
-        if (this.type === -1) {
-            this.type = 0;
+        if (this.arrayType === -1) {
+            this.arrayType = 0;
         }
         for (const member of this.members) {
             if (member.getType() === 0 || member.getType() === 1) {
@@ -200,7 +198,7 @@ class Member {
         if (state === 1) {
             let lineValue = new LineParser(parent, init, initEnd).parse();
             if (lineValue !== null) {
-                this.lines.add(lineValue);
+                this.lines.push(lineValue);
             }
         } else if (state !== 0) {
             parent.error(lToken, Error.unexpectedEndOfTokens);

@@ -88,8 +88,6 @@ test('readOperator', () => {
     let lexer = new Lexer(source);
     let token = lexer.read();
     let expected = mChain().number('1').key(Key.Add).number('1').get();
-    console.log(token.getNext().key === Key.Add);
-    console.log(expected.getNext().key === Key.Add);
     assertChain(expected, token, 'Unexpected token chain result');
 });
 test('readSplitter', () => {
