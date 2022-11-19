@@ -56,7 +56,7 @@ class BlockDo extends Block {
     }
 
     markWhile(blockWhile) {
-        if (this.blockWhile instanceof BlockWhile) {
+        if (blockWhile instanceof BlockWhile) {
             this.blockWhile = blockWhile;
             if (this.blockWhile.isCommandBlock()) {
                 this.error(this.blockWhile.getToken(), Error.doWhileUnexpectedBlock);

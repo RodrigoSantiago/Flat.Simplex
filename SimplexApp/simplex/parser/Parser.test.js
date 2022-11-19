@@ -1,11 +1,7 @@
-const Key = require("simplex/lexer/Key.js");
-const Token = require("simplex/lexer/Token.js");
-const Lexer = require("simplex/lexer/Lexer.js");
 const TokenChain = require("simplex/support/TokenChain.js");
 const Parser = require("simplex/parser/Parser.js");
 const Context = require("simplex/parser/logic/Context.js");
 
-const assertChain = TokenChain.assertChain;
 const mChain = TokenChain.mChain;
 const readChain = TokenChain.readChain;
 

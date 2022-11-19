@@ -183,7 +183,7 @@ test('loadLineInnerTernarySetOperation', () => {
         .add(lChain('CallField').add(Key.Set).add('CallField'))
         .add(Key.Colon).add('CallField');
     callChain.assertChain(line, "Invalid line chain");
-    // todo - assertErrors(context); can happen
+    assertErrors(context);
 });
 
 test('loadLineComplexOperation', () => {

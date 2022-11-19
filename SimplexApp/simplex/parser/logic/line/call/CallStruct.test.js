@@ -3,19 +3,11 @@ const Context = require("simplex/parser/logic/Context.js");
 const ContextSupport = require("simplex/support/ContextSupport.js");
 const Error = require("simplex/parser/logic/error/Error.js");
 const CallStruct = require("simplex/parser/logic/line/call/CallStruct.js");
+const AssertError = require("simplex/support/AssertError.js");
 
 const readChain = TokenChain.readChain;
 const assertErrors = ContextSupport.assertErrors;
-
-function assertNotNull(a, message) {
-    expect(a, message).not.toBeNull();
-}
-function assertEquals(a, b, message) {
-    expect(a, message).toEqual(b);
-}
-function assertNull(a, message) {
-    expect(a, message).toBeNull();
-}
+const assertEquals = AssertError.assertEquals;
 
 test('loadEmpty', () => {
     let chain = readChain('{}');

@@ -4,16 +4,12 @@ const ContextSupport = require("simplex/support/ContextSupport.js");
 const BlockIf = require("simplex/parser/logic/block/BlockIf.js");
 const CallField = require("simplex/parser/logic/line/call/CallField.js");
 const Field = require("simplex/parser/logic/Field.js");
+const AssertError = require("simplex/support/AssertError.js");
 
 const readChain = TokenChain.readChain;
 const assertErrors = ContextSupport.assertErrors;
-
-function assertEquals(a, b, message) {
-    expect(a, message).toEqual(b);
-}
-function assertNull(a, message) {
-    expect(a, message).toBeNull();
-}
+const assertNull = AssertError.assertNull;
+const assertEquals = AssertError.assertEquals;
 
 test('loadField', () => {
     let chain = readChain('field');

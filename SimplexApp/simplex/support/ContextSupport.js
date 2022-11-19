@@ -6,7 +6,7 @@ class ContextSupport {
         let fieldNames = names.sort();
         let dif = contextFields.length !== fieldNames.length;
         if (!dif) {
-            for (let i = 0; i < contextFields.size(); i++) {
+            for (let i = 0; i < contextFields.length; i++) {
                 if (fieldNames[i] !== contextFields[i]) {
                     dif = true;
                     break;
@@ -48,7 +48,7 @@ class ContextSupport {
             }
             throw new AssertError('Invalid Syntax Errors', expected, actual);
         }
-    };
+    }
 }
 
 module.exports = ContextSupport;

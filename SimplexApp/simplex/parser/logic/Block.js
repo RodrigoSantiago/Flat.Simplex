@@ -53,7 +53,7 @@ class Block {
     }
 
     getField(fieldName) {
-        let field = this.fields[fieldName];
+        let field = this.fields.get(fieldName);
         if (field) {
             return field;
         } else if (this.parent !== null) {

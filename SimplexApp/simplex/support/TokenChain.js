@@ -118,6 +118,8 @@ class TokenChain {
     }
 
     static assertOne (expected, actual, message) {
+        if (typeof expected === 'string') expected = this.readChain(expected).get();
+
         if (expected !== null && actual !== null) {
             if (!expected.equals(actual) || ((expected.getChild() === null) !== (actual.getChild() === null))) {
                 throw new AssertError(message, TokenChain.chainString(expected), TokenChain.chainString(actual));
@@ -141,6 +143,7 @@ class TokenChain {
     }
 
     static assertChain$5(expected, endA, actual, endB, message) {
+        if (typeof expected === 'string') expected = this.readChain(expected);
         let a = expected;
         let b = actual;
         while (a !== endA && b !== endB) {

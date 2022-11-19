@@ -8,7 +8,7 @@ class BlockVar extends Block {
         this.nameTokens = [];
         this.initTokens = [];
         this.initLines = [];
-        this.fields = [];
+        this.localFields = [];
 
         let token = start;
         let lToken = start;
@@ -87,14 +87,14 @@ class BlockVar extends Block {
         for (let i = 0; i < this.nameTokens.length; i++) {
             let name = this.nameTokens[i];
             let group = this.initTokens[i];
-            this.fields.push(new Field(name, name.getString(), Field.Local));
+            this.localFields.push(new Field(name, name.getString(), Field.Local));
             if (group !== null) {
                 let initLine = new BlockLine(this, group.getStart(), group.getEnd(), false);
                 initLine.read();
                 this.initLines.push(initLine);
             }
         }
-        for (const field of this.fields) {
+        for (const field of this.localFields) {
             if (!this.getParent().addField(field)) {
                 this.error(field.getTokenSource(), Error.varRepeatedField);
             }
@@ -114,7 +114,7 @@ class BlockVar extends Block {
     }
 
     getFields() {
-        return this.fields;
+        return this.localFields;
     }
 }
 
