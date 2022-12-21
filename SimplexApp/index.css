@@ -1,0 +1,1175 @@
+:root {
+  --pr-color: #2196f3;
+  --pr-color-light: #64b5f6;
+  --pr-color-dark: #1565c0;
+  --pr-an-color: #2979ff;
+  --pr-an-color-light: #448aff;
+  --pr-an-color-dark: #2962ff;
+  --sc-color: #e91e63;
+  --sc-color-light: #f06292;
+  --sc-color-dark: #c2185b;
+  --sc-an-color: #f50057;
+  --sc-an-color-light: #ff4081;
+  --sc-an-color-dark: #c51162;
+  --surface-color: #fff;
+  --surface-an-color: #eee;
+  --surface-an-color-light: #fff;
+  --surface-an-color-dark: #e0e0e0;
+  --tooltip-color: #616161;
+  --on-tooltip-color: #fff;
+  --background-color: #f5f5f5;
+  --error-color: #B00020;
+  --on-primary-color: #fff;
+  --on-secondary-color: #fff;
+  --on-background-color: #000;
+  --on-surface-color: #000;
+  --on-error-color: #fff;
+  --pr-color-a0: rgba(33, 150, 243, 0.5);
+  --pr-color-light-a0: rgba(100, 181, 246, 0.5);
+  --pr-color-dark-a0: rgba(21, 101, 192, 0.5);
+  --pr-an-color-a0: rgba(41, 121, 255, 0.5);
+  --pr-an-color-light-a0: rgba(68, 138, 255, 0.5);
+  --pr-an-color-dark-a0: rgba(41, 98, 255, 0.5);
+  --sc-color-a0: rgba(233, 30, 99, 0.5);
+  --sc-color-light-a0: rgba(240, 98, 146, 0.5);
+  --sc-color-dark-a0: rgba(194, 24, 91, 0.5);
+  --sc-an-color-a0: rgba(245, 0, 87, 0.5);
+  --sc-an-color-light-a0: rgba(255, 64, 129, 0.5);
+  --sc-an-color-dark-a0: rgba(197, 17, 98, 0.5);
+  --surface-color-a0: rgba(255, 255, 255, 0.5);
+  --surface-an-color-a0: rgba(238, 238, 238, 0.5);
+  --surface-an-color-light-a0: rgba(255, 255, 255, 0.5);
+  --surface-an-color-dark-a0: rgba(158, 158, 158, 0.5);
+  --background-color-a0: rgba(245, 245, 245, 0.5);
+  --error-color-a0: rgba(#B00020, 0.50);
+  --on-primary-color-a0: rgba(255, 255, 255, 0.5);
+  --on-secondary-color-a0: rgba(255, 255, 255, 0.5);
+  --on-background-color-a0: rgba(0, 0, 0, 0.5);
+  --on-surface-color-a0: rgba(0, 0, 0, 0.5);
+  --on-error-color-a0: rgba(255, 255, 255, 0.5);
+  --pr-color-a1: rgba(33, 150, 243, 0.25);
+  --pr-color-light-a1: rgba(100, 181, 246, 0.25);
+  --pr-color-dark-a1: rgba(21, 101, 192, 0.25);
+  --pr-an-color-a1: rgba(41, 121, 255, 0.25);
+  --pr-an-color-light-a1: rgba(68, 138, 255, 0.25);
+  --pr-an-color-dark-a1: rgba(41, 98, 255, 0.25);
+  --sc-color-a1: rgba(233, 30, 99, 0.25);
+  --sc-color-light-a1: rgba(240, 98, 146, 0.25);
+  --sc-color-dark-a1: rgba(194, 24, 91, 0.25);
+  --sc-an-color-a1: rgba(245, 0, 87, 0.25);
+  --sc-an-color-light-a1: rgba(255, 64, 129, 0.25);
+  --sc-an-color-dark-a1: rgba(197, 17, 98, 0.25);
+  --surface-color-a1: rgba(255, 255, 255, 0.25);
+  --surface-an-color-a1: rgba(238, 238, 238, 0.25);
+  --surface-an-color-light-a1: rgba(255, 255, 255, 0.25);
+  --surface-an-color-dark-a1: rgba(158, 158, 158, 0.25);
+  --background-color-a1: rgba(245, 245, 245, 0.25);
+  --error-color-a1: rgba(#B00020, 0.25);
+  --on-primary-color-a1: rgba(255, 255, 255, 0.25);
+  --on-secondary-color-a1: rgba(255, 255, 255, 0.25);
+  --on-background-color-a1: rgba(0, 0, 0, 0.25);
+  --on-surface-color-a1: rgba(0, 0, 0, 0.25);
+  --on-error-color-a1: rgba(255, 255, 255, 0.25);
+  --pr-color-a2: rgba(33, 150, 243, 0.15);
+  --pr-color-light-a2: rgba(100, 181, 246, 0.15);
+  --pr-color-dark-a2: rgba(21, 101, 192, 0.15);
+  --pr-an-color-a2: rgba(41, 121, 255, 0.15);
+  --pr-an-color-light-a2: rgba(68, 138, 255, 0.15);
+  --pr-an-color-dark-a2: rgba(41, 98, 255, 0.15);
+  --sc-color-a2: rgba(233, 30, 99, 0.15);
+  --sc-color-light-a2: rgba(240, 98, 146, 0.15);
+  --sc-color-dark-a2: rgba(194, 24, 91, 0.15);
+  --sc-an-color-a2: rgba(245, 0, 87, 0.15);
+  --sc-an-color-light-a2: rgba(255, 64, 129, 0.15);
+  --sc-an-color-dark-a2: rgba(197, 17, 98, 0.15);
+  --surface-color-a2: rgba(255, 255, 255, 0.15);
+  --surface-an-color-a2: rgba(238, 238, 238, 0.15);
+  --surface-an-color-light-a2: rgba(255, 255, 255, 0.15);
+  --surface-an-color-dark-a2: rgba(158, 158, 158, 0.15);
+  --background-color-a2: rgba(245, 245, 245, 0.15);
+  --error-color-a2: rgba(#B00020, 0.15);
+  --on-primary-color-a2: rgba(255, 255, 255, 0.15);
+  --on-secondary-color-a2: rgba(255, 255, 255, 0.15);
+  --on-background-color-a2: rgba(0, 0, 0, 0.15);
+  --on-surface-color-a2: rgba(0, 0, 0, 0.15);
+  --on-error-color-a2: rgba(255, 255, 255, 0.15);
+}
+
+.button.contained, .toolbar > .menu > .contained.menu-item {
+  box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.18);
+}
+
+.toolbar, .button.contained:hover, .toolbar > .menu > .contained.menu-item:hover {
+  box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.18);
+}
+
+.floating-creation > .button > .tooltip, .button.floating, .toolbar > .menu > .floating.menu-item {
+  box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.18);
+}
+
+.dropdown, .button.contained:focus, .button.contained:active, .toolbar > .menu > .contained.menu-item:focus, .toolbar > .menu > .contained.menu-item:active {
+  box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.18);
+}
+
+.button.floating:focus, .button.floating:active, .toolbar > .menu > .floating.menu-item:focus, .toolbar > .menu > .floating.menu-item:active {
+  box-shadow: 0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 12px 17px 2px rgba(0, 0, 0, 0.18);
+}
+
+.main > .navigator .drawer {
+  box-shadow: 0px 8px 10px -5px rgba(0, 0, 0, 0.2), 0px 16px 24px 2px rgba(0, 0, 0, 0.18);
+}
+
+@font-face {
+  font-family: "Roboto-Flex";
+  src: url(mdc/fonts/Roboto.ttf) format("truetype");
+}
+* {
+  box-sizing: border-box;
+}
+
+.drawer-header, .dropdown > .menu-item:not(.separator), .tree-view .tree-item, .tree-view .ident, .main, .main > .navigator-split > .content, .toolbar, .toolbar > .menu, .toolbar > .title, .hbox {
+  display: flex;
+  flex-direction: row;
+}
+
+.fill {
+  flex-grow: 1;
+}
+
+.button, .button.icon, .toolbar > .menu > .menu-item, .hbox-center {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.left-list, .negative-floating, .floating-creation, .drawer, .main > .navigator-split, .main > .navigator, .main > .navigator .drawer, main, html, body, .vbox {
+  display: flex;
+  flex-direction: column;
+}
+
+.dropdown, .vbox-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+html, body {
+  position: relative;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  font-family: Roboto-Flex, sans-serif;
+  font-size: 14px;
+  text-rendering: optimizeLegibility;
+  background-color: var(--background-color);
+}
+
+main {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+main {
+  padding: 4px 4px 4px 4px;
+}
+main > * {
+  margin: 4px 4px 4px 4px;
+}
+
+main div {
+  padding: 4px 4px 4px 4px;
+}
+main div > * {
+  margin: 4px 4px 4px 4px;
+}
+
+@keyframes rippleExpand {
+  0% {
+    width: 20px;
+    padding-bottom: 20px;
+    opacity: 0.5;
+  }
+  100% {
+    width: 150%;
+    padding-bottom: 150%;
+    opacity: 0;
+  }
+}
+@keyframes rippleExpandLimited {
+  0% {
+    width: 20px;
+    padding-bottom: 20px;
+    opacity: 0.5;
+  }
+  100% {
+    width: 100%;
+    padding-bottom: 100%;
+    opacity: 0;
+  }
+}
+.ripple {
+  border-radius: 100%;
+  height: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  background-color: var(--on-surface-color-a1);
+  transform: translate(-50%, -50%);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.ripple.expand {
+  animation: rippleExpand 0.5s ease-out;
+}
+
+.button, .toolbar > .menu > .menu-item {
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.25s ease-in, color 0.25s ease-in, box-shadow 0.25s ease-in;
+  min-width: 64px;
+  min-height: 36px;
+  height: 36px;
+  border-radius: 4px;
+  padding: 0 16px 0 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  overflow: hidden;
+  user-select: none;
+  --btn-color-text: var(--on-surface-color);
+  --btn-color-bg: var(--surface-color);
+  --btn-color-bg-hover: var(--surface-an-color);
+  --btn-color-bg-active: var(--surface-an-color-dark);
+  --btn-color-bg-ripple: var(--surface-an-color-dark);
+  --btn-color-bg-hover-a: var(--surface-an-color-a1);
+  --btn-color-bg-active-a: var(--surface-an-color-dark-a1);
+  --btn-color-bg-ripple-a: var(--surface-an-color-dark-a1);
+  --btn-color-text-disabled: var(--on-surface-color);
+  --btn-color-bg-disabled: var(--on-surface-color-a1);
+}
+
+.button > span, .toolbar > .menu > .menu-item > span {
+  z-index: 1;
+}
+
+.button > i, .toolbar > .menu > .menu-item > i {
+  z-index: 1;
+  margin: 0 8px 0 -4px;
+  font-size: 18px;
+}
+
+.button.disabled, .toolbar > .menu > .disabled.menu-item {
+  opacity: 0.5;
+  cursor: auto;
+}
+.button.disabled .ripple, .toolbar > .menu > .disabled.menu-item .ripple {
+  display: none !important;
+}
+
+.button.contained, .toolbar > .menu > .contained.menu-item {
+  background-color: var(--btn-color-bg);
+  color: var(--btn-color-text);
+}
+.button.contained:hover, .toolbar > .menu > .contained.menu-item:hover {
+  background-color: var(--btn-color-bg-hover);
+}
+.button.contained:focus, .toolbar > .menu > .contained.menu-item:focus, .button.contained:active, .toolbar > .menu > .contained.menu-item:active {
+  background-color: var(--btn-color-bg-active);
+}
+.button.contained.disabled, .toolbar > .menu > .contained.disabled.menu-item {
+  opacity: 0.5;
+  box-shadow: none !important;
+}
+
+.button.dense, .toolbar > .menu > .dense.menu-item {
+  min-height: 28px;
+  height: 28px;
+}
+
+.button.contained .ripple, .toolbar > .menu > .contained.menu-item .ripple {
+  background-color: var(--btn-color-bg-ripple);
+}
+
+.button.primary, .toolbar > .menu > .primary.menu-item, .button#floating-add.open, .toolbar > .menu > .menu-item#floating-add.open {
+  --btn-color-text: var(--on-primary-color);
+  --btn-color-bg: var(--pr-color);
+  --btn-color-bg-hover: var(--pr-an-color);
+  --btn-color-bg-active: var(--pr-an-color-dark);
+  --btn-color-bg-ripple: var(--pr-an-color-dark);
+  --btn-color-bg-hover-a: var(--pr-an-color-a2);
+  --btn-color-bg-active-a: var(--pr-an-color-dark-a1);
+  --btn-color-text-disabled: var(--on-surface-color);
+  --btn-color-bg-disabled: var(--on-surface-color-a1);
+}
+
+.button.secondary, .toolbar > .menu > .secondary.menu-item {
+  --btn-color-text: var(--on-secondary-color);
+  --btn-color-bg: var(--sc-color);
+  --btn-color-bg-hover: var(--sc-an-color);
+  --btn-color-bg-active: var(--sc-an-color-dark);
+  --btn-color-bg-ripple: var(--sc-an-color-dark);
+  --btn-color-bg-hover-a: var(--sc-an-color-a2);
+  --btn-color-bg-active-a: var(--sc-an-color-dark-a1);
+  --btn-color-text-disabled: var(--on-surface-color);
+  --btn-color-bg-disabled: var(--on-surface-color-a1);
+}
+
+.button.outline, .toolbar > .menu > .outline.menu-item {
+  color: var(--btn-color-bg);
+  border-radius: 4px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--btn-color-bg);
+}
+.button.outline:hover, .toolbar > .menu > .outline.menu-item:hover {
+  background-color: var(--btn-color-bg-hover-a);
+}
+.button.outline:focus, .toolbar > .menu > .outline.menu-item:focus, .button.outline:active, .toolbar > .menu > .outline.menu-item:active {
+  background-color: var(--btn-color-bg-active-a);
+}
+.button.outline.disabled, .toolbar > .menu > .outline.disabled.menu-item {
+  color: var(--btn-color-text-disabled);
+  border-color: var(--btn-color-text-disabled);
+  background-color: transparent;
+}
+
+.button.text, .toolbar > .menu > .text.menu-item {
+  color: var(--btn-color-bg);
+}
+.button.text:hover, .toolbar > .menu > .text.menu-item:hover {
+  background-color: var(--btn-color-bg-hover-a);
+}
+.button.text:focus, .toolbar > .menu > .text.menu-item:focus, .button.text:active, .toolbar > .menu > .text.menu-item:active {
+  background-color: var(--btn-color-bg-active-a);
+}
+.button.text.disabled, .toolbar > .menu > .text.disabled.menu-item {
+  color: var(--btn-color-text-disabled);
+  background-color: transparent;
+}
+
+.button.icon, .toolbar > .menu > .menu-item {
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.25s ease-in, color 0.25s ease-in;
+  min-width: 36px;
+  min-height: 36px;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 100%;
+  font-weight: unset;
+  text-transform: unset;
+  overflow: visible;
+}
+
+.button.icon > i, .toolbar > .menu > .menu-item > i {
+  padding: 6px;
+  border-radius: 100%;
+  font-size: 24px;
+  margin: 0;
+  transition: background-color 0.25s ease-in, color 0.25s ease-in;
+}
+
+.button.icon, .toolbar > .menu > .menu-item {
+  color: var(--pr-color);
+}
+.button.icon:hover, .toolbar > .menu > .menu-item:hover {
+  background-color: unset;
+}
+.button.icon:focus, .toolbar > .menu > .menu-item:focus, .button.icon:active, .toolbar > .menu > .menu-item:active {
+  background-color: unset;
+}
+
+.button.icon.dense, .toolbar > .menu > .dense.menu-item {
+  min-width: 28px;
+  min-height: 28px;
+  width: 28px;
+  height: 28px;
+}
+
+.button.icon.dense > i, .toolbar > .menu > .dense.menu-item > i {
+  font-size: 18px;
+  padding: 5px;
+}
+
+.button.icon .ripple, .toolbar > .menu > .menu-item .ripple {
+  background-color: var(--surface-an-color-dark);
+  left: 50% !important;
+  top: 50% !important;
+}
+
+.button.icon .ripple.expand, .toolbar > .menu > .menu-item .ripple.expand {
+  animation: rippleExpandLimited 0.5s ease-out;
+}
+
+.button.icon.primary, .toolbar > .menu > .primary.menu-item, .button.icon#floating-add.open, .toolbar > .menu > .menu-item#floating-add.open {
+  color: var(--pr-color);
+}
+.button.icon.primary:hover > i, .toolbar > .menu > .primary.menu-item:hover > i, .button.icon#floating-add.open:hover > i, .toolbar > .menu > .menu-item#floating-add.open:hover > i {
+  background-color: var(--pr-an-color-light-a2);
+}
+.button.icon.primary:focus > i, .toolbar > .menu > .primary.menu-item:focus > i, .button.icon#floating-add.open:focus > i, .toolbar > .menu > .menu-item#floating-add.open:focus > i, .button.icon.primary:active > i, .toolbar > .menu > .primary.menu-item:active > i, .button.icon#floating-add.open:active > i, .toolbar > .menu > .menu-item#floating-add.open:active > i {
+  background-color: var(--pr-an-color-a1);
+}
+
+.button.icon.primary .ripple, .toolbar > .menu > .primary.menu-item .ripple, .button.icon#floating-add.open .ripple, .toolbar > .menu > .menu-item#floating-add.open .ripple {
+  background-color: var(--pr-an-color-dark);
+}
+
+.button.icon.secondary, .toolbar > .menu > .secondary.menu-item {
+  color: var(--sc-color);
+}
+.button.icon.secondary:hover > i, .toolbar > .menu > .secondary.menu-item:hover > i {
+  background-color: var(--sc-an-color-light-a2);
+}
+.button.icon.secondary:focus > i, .toolbar > .menu > .secondary.menu-item:focus > i, .button.icon.secondary:active > i, .toolbar > .menu > .secondary.menu-item:active > i {
+  background-color: var(--sc-an-color-a1);
+}
+
+.button.icon.secondary .ripple, .toolbar > .menu > .secondary.menu-item .ripple {
+  background-color: var(--sc-an-color-dark);
+}
+
+.button.icon.on-primary, .toolbar > .menu > .on-primary.menu-item {
+  color: var(--on-primary-color);
+}
+.button.icon.on-primary:hover > i, .toolbar > .menu > .on-primary.menu-item:hover > i {
+  background-color: var(--on-primary-color-a2);
+}
+.button.icon.on-primary:focus > i, .toolbar > .menu > .on-primary.menu-item:focus > i, .button.icon.on-primary:active > i, .toolbar > .menu > .on-primary.menu-item:active > i {
+  background-color: var(--on-primary-color-a1);
+}
+
+.button.icon.on-primary .ripple, .toolbar > .menu > .on-primary.menu-item .ripple {
+  background-color: var(--on-primary-color);
+}
+
+.button.icon.on-secondary, .toolbar > .menu > .on-secondary.menu-item {
+  color: var(--on-secondary-color);
+}
+.button.icon.on-secondary:hover > i, .toolbar > .menu > .on-secondary.menu-item:hover > i {
+  background-color: var(--on-secondary-color-a2);
+}
+.button.icon.on-secondary:focus > i, .toolbar > .menu > .on-secondary.menu-item:focus > i, .button.icon.on-secondary:active > i, .toolbar > .menu > .on-secondary.menu-item:active > i {
+  background-color: var(--on-secondary-color-a1);
+}
+
+.button.icon.on-secondary .ripple, .toolbar > .menu > .on-secondary.menu-item .ripple {
+  background-color: var(--on-secondary-color);
+}
+
+.button.floating, .toolbar > .menu > .floating.menu-item {
+  background-color: var(--btn-color-bg);
+  color: var(--btn-color-text);
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  width: 56px;
+  height: 56px;
+  min-width: 56px;
+  min-height: 56px;
+  max-width: 56px;
+  max-height: 56px;
+  border-radius: 100%;
+  padding: 0;
+  z-index: 6;
+}
+.button.floating > i, .toolbar > .menu > .floating.menu-item > i {
+  margin: 0;
+  font-size: 24px;
+}
+.button.floating:hover, .toolbar > .menu > .floating.menu-item:hover {
+  background-color: var(--btn-color-bg-hover);
+}
+.button.floating:focus, .toolbar > .menu > .floating.menu-item:focus, .button.floating:active, .toolbar > .menu > .floating.menu-item:active {
+  background-color: var(--btn-color-bg-active);
+}
+.button.floating.disabled, .toolbar > .menu > .floating.disabled.menu-item {
+  opacity: 0.5;
+  box-shadow: none !important;
+}
+
+.button.floating.dense, .toolbar > .menu > .floating.dense.menu-item {
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  max-width: 48px;
+  max-height: 48px;
+}
+
+.button.floating.mini, .toolbar > .menu > .floating.mini.menu-item {
+  width: 36px;
+  height: 36px;
+  min-width: 36px;
+  min-height: 36px;
+  max-width: 36px;
+  max-height: 36px;
+}
+
+.button.floating .ripple, .toolbar > .menu > .floating.menu-item .ripple {
+  left: 50% !important;
+  top: 50% !important;
+}
+
+.button.floating .ripple.expand, .toolbar > .menu > .floating.menu-item .ripple.expand {
+  animation: rippleExpandLimited 0.5s ease-out;
+}
+
+.main {
+  align-items: stretch;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+}
+.main > .navigator-split {
+  align-items: stretch;
+  position: relative;
+  flex-grow: 1;
+}
+.main > .navigator-split > .content {
+  flex: 1;
+  min-height: 0;
+  position: relative;
+  background-color: var(--background-color);
+}
+.main > .navigator-split > .statusbar {
+  width: 100%;
+  height: 16px;
+  background-color: var(--pr-color-dark);
+}
+.main > .navigator {
+  position: absolute;
+  top: 0;
+  visibility: hidden;
+  width: calc(100% + 256px);
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 16;
+}
+.main > .navigator .drawer {
+  width: min(256px, 100% - 56px);
+  height: 100%;
+  background-color: var(--surface-color);
+}
+.main > .navigator.close {
+  visibility: hidden;
+}
+.main > .navigator.open {
+  visibility: visible;
+}
+
+.toolbar {
+  align-items: start;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 56px;
+  background-color: var(--pr-color);
+  z-index: 8;
+}
+.toolbar > .hamburger {
+  margin: 8px;
+}
+.toolbar > .menu {
+  height: 56px;
+  min-width: 56px;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: flex-end;
+  position: relative;
+}
+.toolbar > .menu > .menu-item {
+  margin: 6px;
+}
+.toolbar > .menu > .menu-item > i {
+  padding: 6px;
+}
+.toolbar > .menu > .menu-item > span {
+  display: none;
+}
+.toolbar > .title {
+  align-items: center;
+  min-width: 128px;
+  flex-grow: 1;
+  font-size: 24px;
+  height: 56px;
+  color: var(--on-primary-color);
+}
+.toolbar.dense {
+  height: 48px;
+  min-height: 48px;
+}
+.toolbar.dense > .menu {
+  height: 48px;
+}
+.toolbar.dense > .title {
+  font-size: 18px;
+  height: 48px;
+}
+.toolbar.prominent {
+  height: 128px;
+  min-height: 128px;
+}
+.toolbar.prominent.dense {
+  height: 96px;
+  min-height: 96px;
+}
+.toolbar.prominent.dense > .menu {
+  height: 48px;
+}
+.toolbar.prominent.dense > .title {
+  font-size: 18px;
+  height: 48px;
+}
+
+@media (min-width: 2000px) {
+  .main > .navigator-split > .statusbar {
+    width: calc(100% + 256px);
+    height: 16px;
+    margin-left: -256px;
+    z-index: 2;
+  }
+  .main > .navigator {
+    left: 0 !important;
+    visibility: visible !important;
+    max-width: min(256px, 100% - 56px);
+    position: relative;
+    border-right: 1px var(--on-surface-color-a1) solid;
+    background-color: transparent !important;
+    z-index: 1;
+  }
+  .main > .navigator .drawer {
+    width: 100%;
+    box-shadow: none !important;
+  }
+  .toolbar .hamburger {
+    display: none;
+  }
+  .toolbar > .title {
+    margin-left: 16px;
+  }
+}
+@keyframes toDisplayNone {
+  99% {
+    display: flex;
+  }
+  100% {
+    display: none;
+  }
+}
+.tree-view {
+  overflow-y: hidden;
+  overflow-x: auto;
+  position: relative;
+  flex-grow: 1;
+  max-height: 100%;
+  background-color: var(--surface-color);
+}
+.tree-view .no-animation {
+  transition: none !important;
+}
+.tree-view .tree-item {
+  justify-content: start;
+  align-items: center;
+  padding: 0 16px 0 8px;
+  position: relative;
+  overflow: hidden;
+  transition: background-color 0.25s ease-in, color 0.25s ease-in;
+  width: 100%;
+  height: 48px;
+  background-color: #fff;
+  user-select: none;
+  font-weight: 400;
+}
+.tree-view .tree-item:not(.empty, .selected):hover {
+  background-color: var(--surface-an-color);
+}
+.tree-view .tree-item.selected {
+  background-color: var(--surface-an-color-dark-a0);
+}
+.tree-view .tree-item > span {
+  min-width: 128px;
+  width: 100%;
+  height: 48px;
+  line-height: 48px;
+  flex-grow: 1;
+}
+.tree-view .tree-item > i {
+  font-size: 18px;
+  padding: 5px;
+  border-radius: 100%;
+}
+.tree-view .tree-item > .left {
+  margin-right: 8px;
+  color: var(--surface-color);
+  background-color: var(--on-surface-color-a1);
+}
+.tree-view .tree-item > .right {
+  opacity: 0;
+  font-size: 18px;
+  padding: 0;
+  color: var(--on-surface-color-a0);
+}
+.tree-view .tree-item > .right.folder {
+  opacity: 1;
+  cursor: pointer;
+}
+.tree-view .tree-item > .left.primary, .tree-view .tree-item > .left#floating-add.open {
+  color: var(--pr-color);
+  background-color: var(--surface-color);
+}
+.tree-view .tree-item > .left.secondary {
+  color: var(--sc-color);
+  background-color: var(--surface-color);
+}
+.tree-view .tree-item > .left.on-primary {
+  color: var(--on-primary-color);
+  background-color: var(--pr-color);
+}
+.tree-view .tree-item > .left.on-secondary {
+  color: var(--on-secondary-color);
+  background-color: var(--sc-color);
+}
+.tree-view .tree-item .ripple {
+  background-color: var(--surface-an-color-dark-a0);
+}
+.tree-view .tree-item.drag {
+  display: none;
+  opacity: 0.5;
+  background-color: var(--surface-an-color);
+}
+.tree-view .tree-item.drag.dragged {
+  display: flex;
+  opacity: 0.85;
+  border-radius: 0px;
+  background-color: var(--surface-color);
+  box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.14);
+  z-index: 4;
+  cursor: grabbing;
+  width: 100%;
+}
+.tree-view .tree-item.negative, .tree-view .tree-item.empty {
+  background-color: var(--surface-color);
+}
+.tree-view .tree-item.negative i, .tree-view .tree-item.negative span, .tree-view .tree-item.empty i, .tree-view .tree-item.empty span {
+  display: none;
+}
+.tree-view .tree-item.negative > .ripple, .tree-view .tree-item.empty > .ripple {
+  display: none;
+}
+.tree-view .tree-item.negative {
+  box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.14);
+}
+.tree-view .tree-content {
+  position: relative;
+  top: 0;
+  min-width: fit-content;
+  width: 100%;
+}
+.tree-view .tree-drop-line {
+  display: none;
+  position: absolute;
+  top: 0;
+  height: 4px;
+  background-color: var(--pr-color);
+  z-index: 0;
+}
+.tree-view .tree-drop-line.dragged {
+  display: flex;
+}
+.tree-view .ident {
+  height: 100%;
+  align-items: start;
+}
+.tree-view .ident .line {
+  width: 1px;
+  height: 100%;
+  background-color: var(--on-surface-color-a1);
+  margin-left: 35px;
+  margin-right: 0;
+}
+.tree-view .ident .line.end {
+  height: 60%;
+}
+
+.tree-view.dense .tree-item {
+  height: 36px;
+}
+.tree-view.dense .tree-item > span {
+  height: 36px;
+  line-height: 36px;
+}
+.tree-view.dense .tree-item > i {
+  font-size: 16px;
+  padding: 4px;
+  border-radius: 100%;
+}
+.tree-view.dense .tree-item > .right {
+  font-size: 16px;
+  padding: 0;
+}
+.tree-view.dense .tree-item .ident .line {
+  margin-left: 27px;
+}
+.tree-view.dense .tree-drop-line {
+  margin-left: calc(var(--drop-ident) * 28px);
+  width: calc(100% - var(--drop-ident) * 28px);
+}
+
+.dropdown {
+  display: none;
+  position: absolute;
+  min-width: 112px;
+  max-width: 280px;
+  border-radius: 4px;
+  padding: 8px 0 8px 0;
+  z-index: 8;
+  overflow: hidden;
+  background-color: var(--surface-color);
+}
+.dropdown > .menu-item:not(.separator) {
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+  transition: all 0.25s ease-in;
+  width: 100%;
+  min-width: 64px;
+  min-height: 36px;
+  height: 36px;
+  padding: 0 16px 0 16px;
+  overflow: hidden;
+  user-select: none;
+  color: var(--on-surface-color);
+  background-color: var(--surface-color);
+}
+.dropdown > .menu-item:not(.separator):hover {
+  background-color: var(--on-surface-color-a2);
+}
+.dropdown > .menu-item:not(.separator):focus, .dropdown > .menu-item:not(.separator):active {
+  background-color: var(--on-surface-color-a1);
+}
+.dropdown > .menu-item:not(.separator) i {
+  margin: 0 20px 0 4px;
+  color: var(--on-surface-color-a0);
+}
+.dropdown > .menu-item:not(.separator):has(> i) {
+  padding: 0 24px 0 16px;
+}
+.dropdown > .menu-item:not(.separator).disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+.dropdown > .menu-item:not(.separator).disabled:hover, .dropdown > .menu-item:not(.separator).disabled:focus, .dropdown > .menu-item:not(.separator).disabled:active {
+  background-color: var(--surface-color);
+}
+.dropdown > .menu-item.separator {
+  height: 1px;
+  min-height: 1px;
+  width: 100%;
+  margin: 8px 0px 8px 0px;
+  background-color: var(--on-surface-color-a1);
+}
+
+.dropdown.dense > .menu-item:not(.separator) {
+  min-height: 32px;
+  height: 32px;
+}
+
+.dropdown.show {
+  display: flex;
+  animation-duration: 0.5s;
+  opacity: 1;
+}
+
+.dropdown.show.left {
+  animation-name: circleLeft;
+}
+
+.dropdown.show.top {
+  animation-name: circleTop;
+}
+
+.dropdown.show.right {
+  animation-name: circleRight;
+}
+
+.dropdown.show.bottom {
+  animation-name: circleBottom;
+}
+
+@keyframes circleLeft {
+  0% {
+    clip-path: circle(10% at 0% 0%);
+  }
+  100% {
+    clip-path: circle(150%);
+  }
+}
+@keyframes circleTop {
+  0% {
+    clip-path: circle(10% at 150% 0%);
+  }
+  100% {
+    clip-path: circle(150%);
+  }
+}
+@keyframes circleRight {
+  0% {
+    clip-path: circle(10% at 0% 150%);
+  }
+  100% {
+    clip-path: circle(150%);
+  }
+}
+@keyframes circleBottom {
+  0% {
+    clip-path: circle(10% at 150% 150%);
+  }
+  100% {
+    clip-path: circle(150%);
+  }
+}
+/*
+.material-icons {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+    font-variation-settings:
+            'FILL' 1,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+}*/
+* {
+  -webkit-app-region: no-drag;
+}
+
+.left-list {
+  align-items: stretch;
+  justify-content: stretch;
+  width: 256px;
+  min-width: 256px;
+  max-width: 50%;
+  position: relative;
+}
+
+.preview {
+  width: 100%;
+  height: 200px;
+  min-height: 200px;
+  background-color: var(--surface-color);
+  border-bottom: 1px solid var(--on-surface-color-a2);
+}
+
+.tree-owner {
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  overflow: hidden;
+}
+
+.divider {
+  min-width: 8px;
+  width: 8px;
+  height: 100%;
+  cursor: ew-resize;
+}
+
+.negative-floating {
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.24);
+  z-index: 12;
+  margin-top: -48px;
+  position: relative;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  height: calc(100% + 40px);
+  width: 100%;
+  border-radius: 4px;
+  background-color: var(--background-color);
+}
+.negative-floating .top-bar {
+  width: 100%;
+  height: 48px;
+  background-color: var(--on-primary-color);
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+
+#floating-menu {
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+#floating-add i {
+  transition: all 0.5s ease;
+}
+
+#floating-add.open i {
+  transform: rotate(45deg);
+}
+
+.floating-creation {
+  position: absolute;
+  right: 16px;
+  bottom: 56px;
+  border-radius: 100px;
+  width: 36px;
+}
+.floating-creation > .button {
+  position: relative;
+  margin-bottom: 8px;
+  color: white;
+  right: 0;
+  bottom: 0;
+  overflow: visible;
+}
+.floating-creation > .button > .tooltip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  position: absolute;
+  right: 48px;
+  background-color: var(--tooltip-color);
+  color: var(--on-tooltip-color);
+  border-radius: 2px;
+  font-weight: lighter;
+  padding: 2px 6px 2px 6px;
+  text-transform: capitalize;
+  pointer-events: none;
+}
+.floating-creation .button.red {
+  background-color: #f06292;
+}
+.floating-creation .button.red:hover {
+  background-color: #ec407a;
+}
+.floating-creation .button.red:focus, .floating-creation .button.red:active {
+  background-color: #e91e63;
+}
+.floating-creation .button.orange {
+  background-color: #e57373;
+}
+.floating-creation .button.orange:hover {
+  background-color: #ef5350;
+}
+.floating-creation .button.orange:focus, .floating-creation .button.orange:active {
+  background-color: #f44336;
+}
+.floating-creation .button.yellow {
+  background-color: #a1887f;
+}
+.floating-creation .button.yellow:hover {
+  background-color: #8d6e63;
+}
+.floating-creation .button.yellow:focus, .floating-creation .button.yellow:active {
+  background-color: #795548;
+}
+.floating-creation .button.grey {
+  background-color: #90a4ae;
+}
+.floating-creation .button.grey:hover {
+  background-color: #78909c;
+}
+.floating-creation .button.grey:focus, .floating-creation .button.grey:active {
+  background-color: #607d8b;
+}
+.floating-creation .button.green {
+  background-color: #81c784;
+}
+.floating-creation .button.green:hover {
+  background-color: #66bb6a;
+}
+.floating-creation .button.green:focus, .floating-creation .button.green:active {
+  background-color: #4caf50;
+}
+.floating-creation .button.blue {
+  background-color: #64b5f6;
+}
+.floating-creation .button.blue:hover {
+  background-color: #42a5f5;
+}
+.floating-creation .button.blue:focus, .floating-creation .button.blue:active {
+  background-color: #2196f3;
+}
+.floating-creation .button.purple {
+  background-color: #ba68c8;
+}
+.floating-creation .button.purple:hover {
+  background-color: #ab47bc;
+}
+.floating-creation .button.purple:focus, .floating-creation .button.purple:active {
+  background-color: #9c27b0;
+}
+
+.drawer > .button {
+  justify-content: start;
+  color: var(--on-surface-color);
+  margin: 0 8px 0 8px;
+}
+.drawer > .button i {
+  margin-right: 32px;
+  font-size: 24px;
+  color: var(--on-surface-color-a0);
+}
+.drawer > .button:active, .drawer > .button:focus {
+  color: var(--pr-color);
+}
+.drawer > .button:active i, .drawer > .button:focus i {
+  color: var(--pr-color);
+}
+.drawer > .separator {
+  width: 100%;
+  height: 1px;
+  margin: 8px 0 8px 0;
+  background-color: var(--on-surface-color-a1);
+}
+
+.drawer-header {
+  background-color: var(--surface-color);
+  padding: 24px 16px 24px 16px;
+  height: 96px;
+}
+.drawer-header .icon {
+  margin-right: 8px;
+}
+.drawer-header > .vbox {
+  margin: 8px;
+}
+.drawer-header > .vbox .title {
+  color: var(--on-surface-color);
+  font-size: 16px;
+  font-weight: bold;
+}
+.drawer-header > .vbox .subtitle {
+  color: var(--on-surface-color-a0);
+  font-size: 12px;
+}
+
+/*# sourceMappingURL=index.css.map */

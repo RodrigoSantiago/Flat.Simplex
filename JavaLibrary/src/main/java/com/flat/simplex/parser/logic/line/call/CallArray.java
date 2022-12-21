@@ -3,7 +3,6 @@ package com.flat.simplex.parser.logic.line.call;
 import com.flat.simplex.lexer.Key;
 import com.flat.simplex.lexer.Token;
 import com.flat.simplex.parser.logic.Block;
-import com.flat.simplex.parser.logic.Context;
 import com.flat.simplex.parser.logic.LineParser;
 import com.flat.simplex.parser.logic.error.Error;
 import com.flat.simplex.parser.logic.line.LineValue;
@@ -13,7 +12,7 @@ import java.util.ArrayList;
 public class CallArray extends LineCall {
 
     private final ArrayList<Member> members = new ArrayList<>();
-    private int type;
+    private int arrayType;
     
     public CallArray(Block parent, Token token) {
         super(parent, token, Type.Array);
@@ -35,10 +34,10 @@ public class CallArray extends LineCall {
         Token sinitTokenEnd = null;
         if (start != null && start.getNext() == end) {
             if (start.getKey() == Key.Colon) {
-                type = 2;
+                arrayType = 2;
                 return;
             } else if (start.getKey() == Key.Index && start.getChild() == start.getLastChild()) {
-                type = 3;
+                arrayType = 3;
                 return;
             }
         }
@@ -108,16 +107,16 @@ public class CallArray extends LineCall {
     }
 
     public void membersCheck() {
-        type = -1;
+        arrayType = -1;
         for (Member member : members) {
-            if (type == -1) {
-                type = member.getType();
-            } else if (type != member.getType()) {
+            if (arrayType == -1) {
+                arrayType = member.getType();
+            } else if (arrayType != member.getType()) {
                 getParent().error(member.token, Error.arrayMixingTypes);
             }
         }
-        if (type == -1) {
-            type = 0;
+        if (arrayType == -1) {
+            arrayType = 0;
         }
         for (Member member : members) {
             if (member.getType() == 0 || member.getType() == 1) {

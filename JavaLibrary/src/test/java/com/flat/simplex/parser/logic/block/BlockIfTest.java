@@ -6,7 +6,6 @@ import com.flat.simplex.support.TokenChain;
 import org.junit.jupiter.api.Test;
 
 import static com.flat.simplex.support.ContextSupport.assertErrors;
-import static com.flat.simplex.support.TokenChain.mChain;
 import static com.flat.simplex.support.TokenChain.readChain;
 import static org.junit.jupiter.api.Assertions.*;
 

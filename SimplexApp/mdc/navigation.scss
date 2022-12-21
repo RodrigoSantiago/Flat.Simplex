@@ -1,0 +1,192 @@
+@use "colors";
+@use "main";
+@use "buttons";
+
+.main {
+    @extend %hbox;
+    align-items: stretch;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+
+    > .navigator-split {
+        @extend %vbox;
+        align-items: stretch;
+        position: relative;
+        flex-grow: 1;
+
+        > .content {
+            @extend %hbox;
+            flex: 1;
+
+            min-height: 0;
+            position: relative;
+
+            background-color: var(--background-color);
+        }
+
+        > .statusbar {
+            width: 100%;
+            height: 16px;
+            background-color: var(--pr-color-dark);
+        }
+    }
+
+    > .navigator {
+        @extend %vbox;
+
+        position: absolute;
+        top: 0;
+        visibility: hidden;
+
+        width: calc(100% + 256px);
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 16;
+
+        .drawer {
+            @extend %vbox;
+            @extend %elevation-16;
+
+            width: min(256px, 100% - 56px);
+            height: 100%;
+            background-color: var(--surface-color);
+        }
+    }
+
+    > .navigator.close {
+        visibility: hidden;
+    }
+
+    > .navigator.open {
+        visibility: visible;
+    }
+}
+
+.toolbar {
+    @extend %hbox;
+    @extend %elevation-4;
+    align-items: start;
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 56px;
+    background-color: var(--pr-color);
+    z-index: 8;
+
+    > .hamburger {
+        margin: 8px;
+    }
+
+    > .menu {
+        @extend %hbox;
+        height: 56px;
+        min-width: 56px;
+        flex-grow: 1;
+
+        align-items: center;
+        justify-content: flex-end;
+        position: relative;
+    }
+
+    > .menu > .menu-item {
+        @extend .button, .icon;
+        margin: 6px;
+
+        > i {
+            padding: 6px;
+        }
+        > span {
+            display: none;
+        }
+    }
+
+    > .title {
+        @extend %hbox;
+        align-items: center;
+        min-width: 128px;
+        flex-grow: 1;
+        font-size: 24px;
+        height: 56px;
+
+        color: var(--on-primary-color);
+    }
+
+    &.dense {
+        height: 48px;
+        min-height: 48px;
+
+        > .menu {
+            height: 48px;
+        }
+
+        > .title {
+            font-size: 18px;
+            height: 48px;
+        }
+    }
+
+    &.prominent {
+        height: 128px;
+        min-height: 128px;
+    }
+
+    &.prominent.dense {
+        height: 96px;
+        min-height: 96px;
+
+        > .menu {
+            height: 48px;
+        }
+
+        > .title {
+            font-size: 18px;
+            height: 48px;
+        }
+    }
+}
+
+@media (min-width: main.$big-screen) {
+    .main {
+        > .navigator-split {
+            > .statusbar {
+                width: calc(100% + 256px);
+                height: 16px;
+                margin-left: -256px;
+                z-index: 2;
+            }
+        }
+
+        > .navigator {
+            left: 0 !important;
+            visibility: visible !important;
+            max-width: min(256px, 100% - 56px);
+            position: relative;
+            border-right: 1px var(--on-surface-color-a1) solid;
+            background-color: transparent !important;
+            z-index: 1;
+            .drawer {
+                width: 100%;
+                box-shadow: none !important;
+            }
+        }
+    }
+
+    .toolbar {
+        .hamburger {
+            display: none;
+        }
+
+        > .title {
+            margin-left: 16px;
+        }
+    }
+}
+
+@keyframes toDisplayNone {
+    99% {display: flex}
+    100% {display: none}
+}

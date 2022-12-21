@@ -1,0 +1,2465 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1668908450392" clover="3.2.0">
+  <project timestamp="1668908450392" name="All files">
+    <metrics statements="2297" coveredstatements="2144" conditionals="1448" coveredconditionals="1325" methods="355" coveredmethods="299" elements="4100" coveredelements="3768" complexity="0" loc="2297" ncloc="2297" packages="8" files="46" classes="46"/>
+    <package name="lexer">
+      <metrics statements="272" coveredstatements="261" conditionals="165" coveredconditionals="154" methods="50" coveredmethods="45"/>
+      <file name="Key.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\lexer\Key.js">
+        <metrics statements="84" coveredstatements="84" conditionals="16" coveredconditionals="16" methods="3" coveredmethods="3"/>
+        <line num="3" count="1950" type="stmt"/>
+        <line num="4" count="1950" type="cond" truecount="2" falsecount="0"/>
+        <line num="8" count="4490" type="cond" truecount="2" falsecount="0"/>
+        <line num="9" count="4490" type="cond" truecount="2" falsecount="0"/>
+        <line num="11" count="4490" type="stmt"/>
+        <line num="12" count="4490" type="cond" truecount="2" falsecount="0"/>
+        <line num="13" count="4374" type="stmt"/>
+        <line num="14" count="9721" type="stmt"/>
+        <line num="15" count="9721" type="stmt"/>
+        <line num="17" count="4374" type="stmt"/>
+        <line num="21" count="2605" type="cond" truecount="2" falsecount="0"/>
+        <line num="22" count="29" type="stmt"/>
+        <line num="23" count="29" type="stmt"/>
+        <line num="24" count="1914" type="cond" truecount="4" falsecount="0"/>
+        <line num="25" count="1885" type="stmt"/>
+        <line num="29" count="2605" type="stmt"/>
+        <line num="30" count="2605" type="cond" truecount="2" falsecount="0"/>
+        <line num="34" count="30" type="stmt"/>
+        <line num="35" count="30" type="stmt"/>
+        <line num="36" count="30" type="stmt"/>
+        <line num="37" count="30" type="stmt"/>
+        <line num="38" count="30" type="stmt"/>
+        <line num="39" count="30" type="stmt"/>
+        <line num="40" count="30" type="stmt"/>
+        <line num="41" count="30" type="stmt"/>
+        <line num="42" count="30" type="stmt"/>
+        <line num="43" count="30" type="stmt"/>
+        <line num="44" count="30" type="stmt"/>
+        <line num="45" count="30" type="stmt"/>
+        <line num="46" count="30" type="stmt"/>
+        <line num="47" count="30" type="stmt"/>
+        <line num="48" count="30" type="stmt"/>
+        <line num="49" count="30" type="stmt"/>
+        <line num="50" count="30" type="stmt"/>
+        <line num="51" count="30" type="stmt"/>
+        <line num="52" count="30" type="stmt"/>
+        <line num="53" count="30" type="stmt"/>
+        <line num="54" count="30" type="stmt"/>
+        <line num="55" count="30" type="stmt"/>
+        <line num="56" count="30" type="stmt"/>
+        <line num="57" count="30" type="stmt"/>
+        <line num="58" count="30" type="stmt"/>
+        <line num="59" count="30" type="stmt"/>
+        <line num="60" count="30" type="stmt"/>
+        <line num="61" count="30" type="stmt"/>
+        <line num="62" count="30" type="stmt"/>
+        <line num="63" count="30" type="stmt"/>
+        <line num="64" count="30" type="stmt"/>
+        <line num="65" count="30" type="stmt"/>
+        <line num="66" count="30" type="stmt"/>
+        <line num="67" count="30" type="stmt"/>
+        <line num="68" count="30" type="stmt"/>
+        <line num="69" count="30" type="stmt"/>
+        <line num="70" count="30" type="stmt"/>
+        <line num="71" count="30" type="stmt"/>
+        <line num="72" count="30" type="stmt"/>
+        <line num="73" count="30" type="stmt"/>
+        <line num="74" count="30" type="stmt"/>
+        <line num="75" count="30" type="stmt"/>
+        <line num="76" count="30" type="stmt"/>
+        <line num="77" count="30" type="stmt"/>
+        <line num="78" count="30" type="stmt"/>
+        <line num="79" count="30" type="stmt"/>
+        <line num="80" count="30" type="stmt"/>
+        <line num="81" count="30" type="stmt"/>
+        <line num="82" count="30" type="stmt"/>
+        <line num="83" count="30" type="stmt"/>
+        <line num="84" count="30" type="stmt"/>
+        <line num="85" count="30" type="stmt"/>
+        <line num="86" count="30" type="stmt"/>
+        <line num="87" count="30" type="stmt"/>
+        <line num="88" count="30" type="stmt"/>
+        <line num="89" count="30" type="stmt"/>
+        <line num="90" count="30" type="stmt"/>
+        <line num="91" count="30" type="stmt"/>
+        <line num="92" count="30" type="stmt"/>
+        <line num="93" count="30" type="stmt"/>
+        <line num="94" count="30" type="stmt"/>
+        <line num="95" count="30" type="stmt"/>
+        <line num="96" count="30" type="stmt"/>
+        <line num="97" count="30" type="stmt"/>
+        <line num="98" count="30" type="stmt"/>
+        <line num="99" count="30" type="stmt"/>
+        <line num="101" count="30" type="stmt"/>
+      </file>
+      <file name="Lexer.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\lexer\Lexer.js">
+        <metrics statements="145" coveredstatements="144" conditionals="131" coveredconditionals="125" methods="28" coveredmethods="28"/>
+        <line num="5" count="577" type="stmt"/>
+        <line num="6" count="577" type="stmt"/>
+        <line num="7" count="577" type="stmt"/>
+        <line num="8" count="577" type="stmt"/>
+        <line num="9" count="577" type="stmt"/>
+        <line num="10" count="577" type="stmt"/>
+        <line num="14" count="577" type="stmt"/>
+        <line num="15" count="577" type="stmt"/>
+        <line num="16" count="577" type="stmt"/>
+        <line num="17" count="1641" type="stmt"/>
+        <line num="18" count="1641" type="stmt"/>
+        <line num="20" count="577" type="stmt"/>
+        <line num="24" count="11661" type="stmt"/>
+        <line num="28" count="3354" type="stmt"/>
+        <line num="29" count="3594" type="cond" truecount="2" falsecount="0"/>
+        <line num="30" count="852" type="stmt"/>
+        <line num="31" count="852" type="stmt"/>
+        <line num="33" count="2742" type="cond" truecount="4" falsecount="0"/>
+        <line num="34" count="1" type="stmt"/>
+        <line num="35" count="1" type="stmt"/>
+        <line num="37" count="2741" type="cond" truecount="4" falsecount="0"/>
+        <line num="38" count="2" type="stmt"/>
+        <line num="39" count="2" type="stmt"/>
+        <line num="43" count="2739" type="cond" truecount="2" falsecount="0"/>
+        <line num="44" count="448" type="stmt"/>
+        <line num="46" count="2291" type="cond" truecount="2" falsecount="0"/>
+        <line num="47" count="415" type="stmt"/>
+        <line num="49" count="1876" type="cond" truecount="2" falsecount="0"/>
+        <line num="50" count="1067" type="stmt"/>
+        <line num="52" count="809" type="cond" truecount="4" falsecount="0"/>
+        <line num="53" count="121" type="stmt"/>
+        <line num="55" count="688" type="cond" truecount="2" falsecount="0"/>
+        <line num="56" count="9" type="stmt"/>
+        <line num="58" count="679" type="cond" truecount="2" falsecount="0"/>
+        <line num="59" count="376" type="stmt"/>
+        <line num="61" count="303" type="cond" truecount="2" falsecount="0"/>
+        <line num="62" count="299" type="stmt"/>
+        <line num="65" count="4" type="stmt"/>
+        <line num="68" count="615" type="stmt"/>
+        <line num="72" count="6939" type="stmt"/>
+        <line num="73" count="6939" type="cond" truecount="2" falsecount="0"/>
+        <line num="74" count="577" type="stmt"/>
+        <line num="75" count="577" type="stmt"/>
+        <line num="77" count="6362" type="stmt"/>
+        <line num="78" count="6362" type="cond" truecount="1" falsecount="1"/>
+        <line num="79" count="6362" type="cond" truecount="2" falsecount="0"/>
+        <line num="84" count="852" type="cond" truecount="2" falsecount="0"/>
+        <line num="85" count="853" type="stmt"/>
+        <line num="90" count="1" type="stmt"/>
+        <line num="91" count="1" type="stmt"/>
+        <line num="92" count="1" type="stmt"/>
+        <line num="93" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="94" count="1" type="stmt"/>
+        <line num="95" count="1" type="stmt"/>
+        <line num="97" count="8" type="stmt"/>
+        <line num="102" count="2" type="stmt"/>
+        <line num="103" count="2" type="stmt"/>
+        <line num="104" count="2" type="stmt"/>
+        <line num="105" count="22" type="cond" truecount="4" falsecount="0"/>
+        <line num="106" count="1" type="stmt"/>
+        <line num="107" count="1" type="stmt"/>
+        <line num="108" count="1" type="stmt"/>
+        <line num="110" count="21" type="stmt"/>
+        <line num="115" count="1098" type="cond" truecount="2" falsecount="0"/>
+        <line num="116" count="533" type="stmt"/>
+        <line num="118" count="565" type="cond" truecount="2" falsecount="0"/>
+        <line num="119" count="342" type="stmt"/>
+        <line num="121" count="223" type="cond" truecount="1" falsecount="1"/>
+        <line num="122" count="223" type="stmt"/>
+        <line num="124" count="0" type="stmt"/>
+        <line num="128" count="448" type="stmt"/>
+        <line num="129" count="448" type="stmt"/>
+        <line num="130" count="448" type="stmt"/>
+        <line num="131" count="448" type="cond" truecount="1" falsecount="1"/>
+        <line num="132" count="448" type="stmt"/>
+        <line num="133" count="448" type="stmt"/>
+        <line num="134" count="448" type="stmt"/>
+        <line num="135" count="448" type="stmt"/>
+        <line num="136" count="1098" type="cond" truecount="2" falsecount="0"/>
+        <line num="137" count="429" type="stmt"/>
+        <line num="139" count="669" type="stmt"/>
+        <line num="141" count="1098" type="stmt"/>
+        <line num="142" count="1098" type="cond" truecount="2" falsecount="0"/>
+        <line num="143" count="410" type="stmt"/>
+        <line num="144" count="410" type="stmt"/>
+        <line num="146" count="688" type="stmt"/>
+        <line num="148" count="448" type="stmt"/>
+        <line num="149" count="448" type="stmt"/>
+        <line num="153" count="415" type="stmt"/>
+        <line num="154" count="415" type="stmt"/>
+        <line num="155" count="415" type="stmt"/>
+        <line num="156" count="415" type="cond" truecount="1" falsecount="1"/>
+        <line num="160" count="1067" type="stmt"/>
+        <line num="161" count="1067" type="cond" truecount="2" falsecount="0"/>
+        <line num="162" count="3650" type="stmt"/>
+        <line num="164" count="1067" type="stmt"/>
+        <line num="165" count="1067" type="cond" truecount="2" falsecount="0"/>
+        <line num="169" count="121" type="stmt"/>
+        <line num="170" count="121" type="stmt"/>
+        <line num="171" count="277" type="cond" truecount="5" falsecount="0"/>
+        <line num="172" count="2" type="stmt"/>
+        <line num="173" count="2" type="stmt"/>
+        <line num="175" count="275" type="cond" truecount="2" falsecount="0"/>
+        <line num="176" count="208" type="stmt"/>
+        <line num="178" count="67" type="stmt"/>
+        <line num="182" count="121" type="stmt"/>
+        <line num="186" count="9" type="stmt"/>
+        <line num="187" count="9" type="stmt"/>
+        <line num="188" count="9" type="stmt"/>
+        <line num="189" count="9" type="stmt"/>
+        <line num="190" count="9" type="stmt"/>
+        <line num="191" count="49" type="cond" truecount="2" falsecount="0"/>
+        <line num="192" count="2" type="stmt"/>
+        <line num="194" count="47" type="cond" truecount="5" falsecount="0"/>
+        <line num="195" count="6" type="stmt"/>
+        <line num="196" count="6" type="stmt"/>
+        <line num="199" count="43" type="stmt"/>
+        <line num="201" count="9" type="stmt"/>
+        <line num="205" count="376" type="stmt"/>
+        <line num="206" count="376" type="stmt"/>
+        <line num="207" count="376" type="stmt"/>
+        <line num="208" count="376" type="cond" truecount="1" falsecount="1"/>
+        <line num="212" count="299" type="stmt"/>
+        <line num="213" count="299" type="cond" truecount="2" falsecount="0"/>
+        <line num="214" count="308" type="stmt"/>
+        <line num="216" count="299" type="stmt"/>
+        <line num="217" count="299" type="cond" truecount="1" falsecount="1"/>
+        <line num="221" count="4" type="stmt"/>
+        <line num="222" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="223" count="4" type="stmt"/>
+        <line num="225" count="4" type="stmt"/>
+        <line num="229" count="5304" type="stmt"/>
+        <line num="234" count="5441" type="cond" truecount="2" falsecount="0"/>
+        <line num="239" count="6506" type="cond" truecount="5" falsecount="0"/>
+        <line num="244" count="2743" type="cond" truecount="3" falsecount="0"/>
+        <line num="249" count="2295" type="cond" truecount="3" falsecount="0"/>
+        <line num="256" count="893" type="cond" truecount="15" falsecount="0"/>
+        <line num="263" count="683" type="cond" truecount="3" falsecount="0"/>
+        <line num="268" count="692" type="cond" truecount="2" falsecount="0"/>
+        <line num="272" count="5" type="cond" truecount="8" falsecount="0"/>
+        <line num="278" count="4628" type="cond" truecount="2" falsecount="0"/>
+        <line num="285" count="275" type="cond" truecount="8" falsecount="0"/>
+        <line num="291" count="29" type="stmt"/>
+        <line num="292" count="29" type="stmt"/>
+        <line num="293" count="29" type="stmt"/>
+      </file>
+      <file name="Token.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\lexer\Token.js">
+        <metrics statements="37" coveredstatements="27" conditionals="18" coveredconditionals="13" methods="16" coveredmethods="11"/>
+        <line num="5" count="4821" type="stmt"/>
+        <line num="6" count="4821" type="stmt"/>
+        <line num="7" count="4821" type="stmt"/>
+        <line num="8" count="4821" type="stmt"/>
+        <line num="9" count="4821" type="stmt"/>
+        <line num="10" count="4821" type="stmt"/>
+        <line num="11" count="4821" type="stmt"/>
+        <line num="12" count="4821" type="stmt"/>
+        <line num="13" count="4821" type="stmt"/>
+        <line num="15" count="4821" type="cond" truecount="6" falsecount="0"/>
+        <line num="16" count="1182" type="stmt"/>
+        <line num="18" count="3639" type="stmt"/>
+        <line num="23" count="0" type="stmt"/>
+        <line num="27" count="0" type="stmt"/>
+        <line num="31" count="0" type="stmt"/>
+        <line num="35" count="1945" type="stmt"/>
+        <line num="39" count="9509" type="stmt"/>
+        <line num="43" count="2541" type="stmt"/>
+        <line num="47" count="12449" type="stmt"/>
+        <line num="51" count="4103" type="stmt"/>
+        <line num="55" count="5523" type="stmt"/>
+        <line num="59" count="677" type="stmt"/>
+        <line num="63" count="633" type="stmt"/>
+        <line num="67" count="484" type="stmt"/>
+        <line num="71" count="0" type="stmt"/>
+        <line num="75" count="850" type="cond" truecount="2" falsecount="0"/>
+        <line num="76" count="30" type="stmt"/>
+        <line num="78" count="820" type="cond" truecount="3" falsecount="1"/>
+        <line num="79" count="0" type="stmt"/>
+        <line num="81" count="820" type="cond" truecount="2" falsecount="0"/>
+        <line num="85" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="86" count="0" type="stmt"/>
+        <line num="87" count="0" type="stmt"/>
+        <line num="88" count="0" type="stmt"/>
+        <line num="91" count="0" type="stmt"/>
+        <line num="95" count="30" type="stmt"/>
+        <line num="96" count="30" type="stmt"/>
+      </file>
+      <file name="TokenGroup.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\lexer\TokenGroup.js">
+        <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="3"/>
+        <line num="5" count="146" type="stmt"/>
+        <line num="6" count="146" type="stmt"/>
+        <line num="10" count="267" type="stmt"/>
+        <line num="14" count="187" type="stmt"/>
+        <line num="18" count="27" type="stmt"/>
+        <line num="19" count="27" type="stmt"/>
+      </file>
+    </package>
+    <package name="parser">
+      <metrics statements="126" coveredstatements="126" conditionals="117" coveredconditionals="114" methods="11" coveredmethods="11"/>
+      <file name="Parser.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\parser\Parser.js">
+        <metrics statements="126" coveredstatements="126" conditionals="117" coveredconditionals="114" methods="11" coveredmethods="11"/>
+        <line num="6" count="101" type="stmt"/>
+        <line num="7" count="101" type="stmt"/>
+        <line num="8" count="101" type="stmt"/>
+        <line num="10" count="101" type="stmt"/>
+        <line num="14" count="77" type="stmt"/>
+        <line num="18" count="101" type="stmt"/>
+        <line num="19" count="101" type="stmt"/>
+        <line num="20" count="101" type="stmt"/>
+        <line num="21" count="101" type="stmt"/>
+        <line num="22" count="101" type="stmt"/>
+        <line num="23" count="119" type="stmt"/>
+        <line num="24" count="119" type="stmt"/>
+        <line num="25" count="119" type="cond" truecount="4" falsecount="0"/>
+        <line num="26" count="12" type="stmt"/>
+        <line num="28" count="107" type="cond" truecount="9" falsecount="0"/>
+        <line num="30" count="32" type="stmt"/>
+        <line num="32" count="75" type="cond" truecount="2" falsecount="0"/>
+        <line num="33" count="4" type="stmt"/>
+        <line num="36" count="71" type="stmt"/>
+        <line num="39" count="119" type="stmt"/>
+        <line num="40" count="119" type="stmt"/>
+        <line num="42" count="101" type="stmt"/>
+        <line num="46" count="78" type="stmt"/>
+        <line num="47" count="78" type="stmt"/>
+        <line num="48" count="78" type="stmt"/>
+        <line num="49" count="76" type="stmt"/>
+        <line num="50" count="76" type="stmt"/>
+        <line num="51" count="76" type="cond" truecount="2" falsecount="0"/>
+        <line num="52" count="4" type="stmt"/>
+        <line num="53" count="72" type="cond" truecount="2" falsecount="0"/>
+        <line num="54" count="4" type="stmt"/>
+        <line num="55" count="68" type="cond" truecount="2" falsecount="0"/>
+        <line num="56" count="1" type="stmt"/>
+        <line num="57" count="67" type="cond" truecount="2" falsecount="0"/>
+        <line num="58" count="2" type="cond" truecount="4" falsecount="0"/>
+        <line num="59" count="1" type="stmt"/>
+        <line num="61" count="1" type="stmt"/>
+        <line num="63" count="65" type="cond" truecount="2" falsecount="0"/>
+        <line num="64" count="1" type="stmt"/>
+        <line num="65" count="64" type="cond" truecount="2" falsecount="0"/>
+        <line num="66" count="1" type="stmt"/>
+        <line num="67" count="63" type="cond" truecount="2" falsecount="0"/>
+        <line num="68" count="1" type="stmt"/>
+        <line num="69" count="62" type="cond" truecount="2" falsecount="0"/>
+        <line num="70" count="1" type="stmt"/>
+        <line num="71" count="61" type="cond" truecount="2" falsecount="0"/>
+        <line num="72" count="1" type="stmt"/>
+        <line num="73" count="60" type="cond" truecount="2" falsecount="0"/>
+        <line num="74" count="1" type="stmt"/>
+        <line num="75" count="59" type="cond" truecount="2" falsecount="0"/>
+        <line num="76" count="1" type="stmt"/>
+        <line num="77" count="58" type="cond" truecount="2" falsecount="0"/>
+        <line num="78" count="8" type="stmt"/>
+        <line num="79" count="50" type="cond" truecount="2" falsecount="0"/>
+        <line num="80" count="10" type="stmt"/>
+        <line num="81" count="40" type="cond" truecount="2" falsecount="0"/>
+        <line num="82" count="1" type="stmt"/>
+        <line num="84" count="39" type="stmt"/>
+        <line num="86" count="76" type="stmt"/>
+        <line num="87" count="76" type="cond" truecount="2" falsecount="0"/>
+        <line num="88" count="24" type="stmt"/>
+        <line num="89" count="24" type="cond" truecount="1" falsecount="1"/>
+        <line num="90" count="24" type="cond" truecount="1" falsecount="1"/>
+        <line num="91" count="24" type="stmt"/>
+        <line num="93" count="24" type="stmt"/>
+        <line num="96" count="52" type="cond" truecount="1" falsecount="1"/>
+        <line num="97" count="52" type="stmt"/>
+        <line num="99" count="52" type="stmt"/>
+        <line num="101" count="76" type="stmt"/>
+        <line num="102" count="76" type="stmt"/>
+        <line num="104" count="78" type="cond" truecount="2" falsecount="0"/>
+        <line num="105" count="52" type="stmt"/>
+        <line num="107" count="78" type="stmt"/>
+        <line num="111" count="32" type="stmt"/>
+        <line num="112" count="32" type="stmt"/>
+        <line num="113" count="180" type="cond" truecount="7" falsecount="0"/>
+        <line num="116" count="2" type="stmt"/>
+        <line num="118" count="178" type="cond" truecount="7" falsecount="0"/>
+        <line num="121" count="2" type="stmt"/>
+        <line num="123" count="176" type="cond" truecount="5" falsecount="0"/>
+        <line num="125" count="1" type="stmt"/>
+        <line num="127" count="175" type="cond" truecount="2" falsecount="0"/>
+        <line num="128" count="27" type="stmt"/>
+        <line num="131" count="150" type="stmt"/>
+        <line num="133" count="2" type="stmt"/>
+        <line num="137" count="71" type="stmt"/>
+        <line num="138" count="71" type="stmt"/>
+        <line num="139" count="183" type="cond" truecount="7" falsecount="0"/>
+        <line num="142" count="1" type="stmt"/>
+        <line num="144" count="182" type="cond" truecount="2" falsecount="0"/>
+        <line num="145" count="69" type="stmt"/>
+        <line num="147" count="113" type="cond" truecount="2" falsecount="0"/>
+        <line num="148" count="1" type="stmt"/>
+        <line num="151" count="113" type="stmt"/>
+        <line num="153" count="1" type="stmt"/>
+        <line num="157" count="12" type="stmt"/>
+        <line num="158" count="12" type="stmt"/>
+        <line num="159" count="18" type="cond" truecount="2" falsecount="0"/>
+        <line num="160" count="10" type="stmt"/>
+        <line num="162" count="8" type="cond" truecount="4" falsecount="0"/>
+        <line num="163" count="1" type="stmt"/>
+        <line num="166" count="7" type="stmt"/>
+        <line num="168" count="1" type="stmt"/>
+        <line num="172" count="121" type="cond" truecount="13" falsecount="0"/>
+        <line num="178" count="178" type="cond" truecount="5" falsecount="0"/>
+        <line num="182" count="176" type="cond" truecount="2" falsecount="0"/>
+        <line num="186" count="679" type="cond" truecount="2" falsecount="0"/>
+        <line num="190" count="27" type="stmt"/>
+        <line num="191" count="27" type="stmt"/>
+        <line num="192" count="27" type="stmt"/>
+        <line num="193" count="27" type="stmt"/>
+        <line num="194" count="27" type="stmt"/>
+        <line num="195" count="27" type="stmt"/>
+        <line num="196" count="27" type="stmt"/>
+        <line num="197" count="27" type="stmt"/>
+        <line num="198" count="27" type="stmt"/>
+        <line num="199" count="27" type="stmt"/>
+        <line num="200" count="27" type="stmt"/>
+        <line num="201" count="27" type="stmt"/>
+        <line num="202" count="27" type="stmt"/>
+        <line num="203" count="27" type="stmt"/>
+        <line num="204" count="27" type="stmt"/>
+        <line num="205" count="27" type="stmt"/>
+        <line num="206" count="27" type="stmt"/>
+        <line num="207" count="27" type="stmt"/>
+        <line num="208" count="27" type="stmt"/>
+      </file>
+    </package>
+    <package name="parser.logic">
+      <metrics statements="293" coveredstatements="286" conditionals="208" coveredconditionals="204" methods="53" coveredmethods="47"/>
+      <file name="Block.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\parser\logic\Block.js">
+        <metrics statements="27" coveredstatements="23" conditionals="12" coveredconditionals="11" methods="18" coveredmethods="14"/>
+        <line num="3" count="688" type="stmt"/>
+        <line num="4" count="688" type="stmt"/>
+        <line num="5" count="688" type="stmt"/>
+        <line num="7" count="688" type="stmt"/>
+        <line num="8" count="688" type="stmt"/>
+        <line num="24" count="75" type="stmt"/>
+        <line num="28" count="20" type="stmt"/>
+        <line num="32" count="32" type="stmt"/>
+        <line num="36" count="39" type="cond" truecount="3" falsecount="0"/>
+        <line num="40" count="12" type="cond" truecount="3" falsecount="0"/>
+        <line num="48" count="66" type="cond" truecount="2" falsecount="0"/>
+        <line num="49" count="63" type="stmt"/>
+        <line num="50" count="63" type="stmt"/>
+        <line num="52" count="3" type="stmt"/>
+        <line num="56" count="166" type="stmt"/>
+        <line num="57" count="166" type="cond" truecount="2" falsecount="0"/>
+        <line num="58" count="5" type="stmt"/>
+        <line num="59" count="161" type="cond" truecount="1" falsecount="1"/>
+        <line num="60" count="161" type="stmt"/>
+        <line num="62" count="0" type="stmt"/>
+        <line num="66" count="128" type="stmt"/>
+        <line num="70" count="0" type="stmt"/>
+        <line num="74" count="0" type="stmt"/>
+        <line num="78" count="0" type="stmt"/>
+        <line num="82" count="504" type="stmt"/>
+        <line num="86" count="7" type="stmt"/>
+        <line num="90" count="28" type="stmt"/>
+      </file>
+      <file name="Context.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\parser\logic\Context.js">
+        <metrics statements="12" coveredstatements="11" conditionals="2" coveredconditionals="2" methods="7" coveredmethods="6"/>
+        <line num="2" count="28" type="stmt"/>
+        <line num="6" count="325" type="stmt"/>
+        <line num="8" count="325" type="stmt"/>
+        <line num="12" count="354" type="stmt"/>
+        <line num="13" count="354" type="cond" truecount="2" falsecount="0"/>
+        <line num="17" count="38" type="stmt"/>
+        <line num="21" count="183" type="stmt"/>
+        <line num="25" count="3" type="stmt"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="33" count="286" type="stmt"/>
+        <line num="37" count="28" type="stmt"/>
+        <line num="38" count="28" type="stmt"/>
+      </file>
+      <file name="Field.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\parser\logic\Field.js">
+        <metrics statements="11" coveredstatements="10" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="3"/>
+        <line num="3" count="66" type="stmt"/>
+        <line num="4" count="66" type="stmt"/>
+        <line num="5" count="66" type="stmt"/>
+        <line num="6" count="66" type="stmt"/>
+        <line num="10" count="129" type="stmt"/>
+        <line num="14" count="0" type="stmt"/>
+        <line num="18" count="3" type="stmt"/>
+        <line num="21" count="27" type="stmt"/>
+        <line num="22" count="27" type="stmt"/>
+        <line num="23" count="27" type="stmt"/>
+        <line num="25" count="27" type="stmt"/>
+      </file>
+      <file name="LineBinder.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\parser\logic\LineBinder.js">
+        <metrics statements="137" coveredstatements="137" conditionals="130" coveredconditionals="130" methods="9" coveredmethods="9"/>
+        <line num="5" count="281" type="stmt"/>
+        <line num="7" count="281" type="stmt"/>
+        <line num="8" count="281" type="stmt"/>
+        <line num="12" count="281" type="cond" truecount="2" falsecount="0"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="16" count="280" type="stmt"/>
+        <line num="17" count="280" type="stmt"/>
+        <line num="18" count="280" type="stmt"/>
+        <line num="19" count="3920" type="stmt"/>
+        <line num="21" count="280" type="cond" truecount="2" falsecount="0"/>
+        <line num="22" count="1" type="stmt"/>
+        <line num="24" count="279" type="stmt"/>
+        <line num="29" count="280" type="stmt"/>
+        <line num="30" count="518" type="stmt"/>
+        <line num="31" count="518" type="cond" truecount="2" falsecount="0"/>
+        <line num="33" count="518" type="cond" truecount="9" falsecount="0"/>
+        <line num="36" count="9" type="cond" truecount="5" falsecount="0"/>
+        <line num="37" count="6" type="stmt"/>
+        <line num="38" count="6" type="stmt"/>
+        <line num="39" count="6" type="stmt"/>
+        <line num="46" count="3920" type="cond" truecount="2" falsecount="0"/>
+        <line num="47" count="280" type="stmt"/>
+        <line num="48" count="3640" type="cond" truecount="2" falsecount="0"/>
+        <line num="49" count="280" type="stmt"/>
+        <line num="50" count="3360" type="cond" truecount="2" falsecount="0"/>
+        <line num="51" count="280" type="stmt"/>
+        <line num="52" count="3080" type="cond" truecount="2" falsecount="0"/>
+        <line num="53" count="280" type="stmt"/>
+        <line num="55" count="2800" type="stmt"/>
+        <line num="60" count="280" type="stmt"/>
+        <line num="61" count="512" type="stmt"/>
+        <line num="62" count="512" type="cond" truecount="2" falsecount="0"/>
+        <line num="63" count="512" type="cond" truecount="4" falsecount="0"/>
+        <line num="64" count="113" type="cond" truecount="4" falsecount="0"/>
+        <line num="65" count="3" type="stmt"/>
+        <line num="66" count="3" type="stmt"/>
+        <line num="67" count="3" type="stmt"/>
+        <line num="74" count="280" type="stmt"/>
+        <line num="75" count="506" type="cond" truecount="2" falsecount="0"/>
+        <line num="76" count="506" type="stmt"/>
+        <line num="77" count="506" type="cond" truecount="2" falsecount="0"/>
+        <line num="78" count="506" type="cond" truecount="7" falsecount="0"/>
+        <line num="79" count="10" type="cond" truecount="5" falsecount="0"/>
+        <line num="80" count="5" type="stmt"/>
+        <line num="81" count="5" type="stmt"/>
+        <line num="82" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="83" count="1" type="stmt"/>
+        <line num="88" count="280" type="stmt"/>
+        <line num="89" count="504" type="stmt"/>
+        <line num="90" count="504" type="cond" truecount="4" falsecount="0"/>
+        <line num="91" count="1" type="stmt"/>
+        <line num="92" count="1" type="stmt"/>
+        <line num="93" count="1" type="stmt"/>
+        <line num="99" count="2800" type="stmt"/>
+        <line num="100" count="4544" type="stmt"/>
+        <line num="101" count="4544" type="cond" truecount="2" falsecount="0"/>
+        <line num="102" count="4544" type="cond" truecount="2" falsecount="0"/>
+        <line num="103" count="4544" type="cond" truecount="6" falsecount="0"/>
+        <line num="104" count="25" type="stmt"/>
+        <line num="105" count="25" type="stmt"/>
+        <line num="106" count="25" type="stmt"/>
+        <line num="107" count="25" type="stmt"/>
+        <line num="110" count="2800" type="stmt"/>
+        <line num="111" count="4519" type="stmt"/>
+        <line num="112" count="4519" type="cond" truecount="4" falsecount="0"/>
+        <line num="113" count="7" type="stmt"/>
+        <line num="114" count="7" type="stmt"/>
+        <line num="115" count="7" type="stmt"/>
+        <line num="121" count="282" type="cond" truecount="2" falsecount="0"/>
+        <line num="122" count="280" type="stmt"/>
+        <line num="125" count="282" type="stmt"/>
+        <line num="126" count="398" type="stmt"/>
+        <line num="127" count="398" type="cond" truecount="2" falsecount="0"/>
+        <line num="128" count="398" type="cond" truecount="2" falsecount="0"/>
+        <line num="129" count="398" type="cond" truecount="6" falsecount="0"/>
+        <line num="130" count="52" type="stmt"/>
+        <line num="131" count="52" type="stmt"/>
+        <line num="132" count="52" type="stmt"/>
+        <line num="135" count="282" type="stmt"/>
+        <line num="136" count="294" type="stmt"/>
+        <line num="137" count="294" type="cond" truecount="4" falsecount="0"/>
+        <line num="138" count="1" type="stmt"/>
+        <line num="139" count="1" type="stmt"/>
+        <line num="140" count="1" type="stmt"/>
+        <line num="146" count="280" type="stmt"/>
+        <line num="147" count="69" type="stmt"/>
+        <line num="148" count="69" type="stmt"/>
+        <line num="149" count="69" type="stmt"/>
+        <line num="150" count="223" type="stmt"/>
+        <line num="151" count="223" type="cond" truecount="4" falsecount="0"/>
+        <line num="152" count="18" type="stmt"/>
+        <line num="154" count="205" type="cond" truecount="4" falsecount="0"/>
+        <line num="155" count="16" type="stmt"/>
+        <line num="156" count="16" type="stmt"/>
+        <line num="160" count="69" type="cond" truecount="4" falsecount="0"/>
+        <line num="161" count="50" type="stmt"/>
+        <line num="162" count="19" type="cond" truecount="2" falsecount="0"/>
+        <line num="163" count="2" type="stmt"/>
+        <line num="164" count="17" type="cond" truecount="2" falsecount="0"/>
+        <line num="165" count="3" type="stmt"/>
+        <line num="167" count="14" type="stmt"/>
+        <line num="168" count="14" type="stmt"/>
+        <line num="169" count="14" type="cond" truecount="2" falsecount="0"/>
+        <line num="170" count="14" type="cond" truecount="2" falsecount="0"/>
+        <line num="171" count="14" type="stmt"/>
+        <line num="172" count="14" type="cond" truecount="2" falsecount="0"/>
+        <line num="173" count="1" type="stmt"/>
+        <line num="174" count="13" type="cond" truecount="2" falsecount="0"/>
+        <line num="175" count="1" type="stmt"/>
+        <line num="176" count="12" type="cond" truecount="2" falsecount="0"/>
+        <line num="177" count="1" type="stmt"/>
+        <line num="178" count="11" type="cond" truecount="2" falsecount="0"/>
+        <line num="179" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="180" count="1" type="stmt"/>
+        <line num="182" count="8" type="stmt"/>
+        <line num="185" count="2" type="stmt"/>
+        <line num="186" count="2" type="stmt"/>
+        <line num="187" count="5" type="stmt"/>
+        <line num="189" count="2" type="stmt"/>
+        <line num="190" count="2" type="cond" truecount="4" falsecount="0"/>
+        <line num="191" count="1" type="stmt"/>
+        <line num="193" count="1" type="stmt"/>
+        <line num="196" count="14" type="cond" truecount="2" falsecount="0"/>
+        <line num="197" count="9" type="stmt"/>
+        <line num="198" count="9" type="stmt"/>
+        <line num="199" count="9" type="stmt"/>
+        <line num="202" count="10" type="stmt"/>
+        <line num="204" count="280" type="stmt"/>
+        <line num="205" count="408" type="stmt"/>
+        <line num="206" count="408" type="cond" truecount="4" falsecount="0"/>
+        <line num="207" count="15" type="stmt"/>
+        <line num="208" count="15" type="stmt"/>
+        <line num="214" count="27" type="stmt"/>
+        <line num="215" count="27" type="stmt"/>
+        <line num="216" count="27" type="stmt"/>
+        <line num="217" count="27" type="stmt"/>
+      </file>
+      <file name="LineParser.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\parser\logic\LineParser.js">
+        <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
+        <line num="5" count="244" type="stmt"/>
+        <line num="6" count="244" type="stmt"/>
+        <line num="7" count="244" type="stmt"/>
+        <line num="10" count="244" type="stmt"/>
+        <line num="11" count="244" type="stmt"/>
+        <line num="12" count="244" type="stmt"/>
+        <line num="16" count="27" type="stmt"/>
+        <line num="17" count="27" type="stmt"/>
+        <line num="18" count="27" type="stmt"/>
+      </file>
+      <file name="LineReader.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\parser\logic\LineReader.js">
+        <metrics statements="97" coveredstatements="96" conditionals="64" coveredconditionals="61" methods="13" coveredmethods="13"/>
+        <line num="5" count="324" type="stmt"/>
+        <line num="6" count="324" type="stmt"/>
+        <line num="7" count="324" type="stmt"/>
+        <line num="8" count="324" type="stmt"/>
+        <line num="9" count="324" type="stmt"/>
+        <line num="10" count="324" type="stmt"/>
+        <line num="15" count="324" type="stmt"/>
+        <line num="16" count="324" type="stmt"/>
+        <line num="17" count="324" type="cond" truecount="2" falsecount="0"/>
+        <line num="18" count="642" type="stmt"/>
+        <line num="19" count="642" type="cond" truecount="5" falsecount="0"/>
+        <line num="20" count="291" type="stmt"/>
+        <line num="21" count="351" type="cond" truecount="7" falsecount="0"/>
+        <line num="22" count="131" type="stmt"/>
+        <line num="23" count="220" type="cond" truecount="2" falsecount="0"/>
+        <line num="24" count="5" type="stmt"/>
+        <line num="25" count="215" type="cond" truecount="2" falsecount="0"/>
+        <line num="26" count="17" type="stmt"/>
+        <line num="27" count="198" type="cond" truecount="2" falsecount="0"/>
+        <line num="28" count="21" type="stmt"/>
+        <line num="29" count="177" type="cond" truecount="2" falsecount="0"/>
+        <line num="30" count="20" type="stmt"/>
+        <line num="31" count="157" type="cond" truecount="2" falsecount="0"/>
+        <line num="32" count="6" type="stmt"/>
+        <line num="33" count="151" type="cond" truecount="2" falsecount="0"/>
+        <line num="34" count="148" type="stmt"/>
+        <line num="36" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="37" count="0" type="stmt"/>
+        <line num="39" count="3" type="stmt"/>
+        <line num="41" count="642" type="stmt"/>
+        <line num="43" count="324" type="cond" truecount="2" falsecount="0"/>
+        <line num="44" count="313" type="stmt"/>
+        <line num="46" count="324" type="stmt"/>
+        <line num="50" count="291" type="cond" truecount="2" falsecount="0"/>
+        <line num="51" count="3" type="stmt"/>
+        <line num="52" count="3" type="stmt"/>
+        <line num="54" count="291" type="stmt"/>
+        <line num="58" count="131" type="cond" truecount="2" falsecount="0"/>
+        <line num="59" count="1" type="stmt"/>
+        <line num="60" count="1" type="stmt"/>
+        <line num="62" count="131" type="stmt"/>
+        <line num="66" count="5" type="stmt"/>
+        <line num="67" count="5" type="stmt"/>
+        <line num="68" count="5" type="cond" truecount="4" falsecount="1"/>
+        <line num="69" count="5" type="stmt"/>
+        <line num="70" count="5" type="stmt"/>
+        <line num="71" count="5" type="cond" truecount="4" falsecount="1"/>
+        <line num="72" count="5" type="stmt"/>
+        <line num="73" count="5" type="stmt"/>
+        <line num="76" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="77" count="1" type="stmt"/>
+        <line num="78" count="1" type="stmt"/>
+        <line num="80" count="5" type="stmt"/>
+        <line num="84" count="17" type="cond" truecount="2" falsecount="0"/>
+        <line num="85" count="3" type="stmt"/>
+        <line num="87" count="14" type="cond" truecount="4" falsecount="0"/>
+        <line num="88" count="13" type="cond" truecount="2" falsecount="0"/>
+        <line num="89" count="11" type="stmt"/>
+        <line num="90" count="11" type="stmt"/>
+        <line num="92" count="2" type="stmt"/>
+        <line num="93" count="2" type="stmt"/>
+        <line num="97" count="1" type="stmt"/>
+        <line num="98" count="1" type="stmt"/>
+        <line num="104" count="21" type="cond" truecount="2" falsecount="0"/>
+        <line num="105" count="5" type="stmt"/>
+        <line num="107" count="16" type="stmt"/>
+        <line num="112" count="20" type="cond" truecount="2" falsecount="0"/>
+        <line num="113" count="8" type="stmt"/>
+        <line num="115" count="12" type="stmt"/>
+        <line num="120" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="121" count="1" type="stmt"/>
+        <line num="122" count="1" type="stmt"/>
+        <line num="124" count="6" type="stmt"/>
+        <line num="128" count="148" type="cond" truecount="2" falsecount="0"/>
+        <line num="129" count="124" type="stmt"/>
+        <line num="131" count="148" type="stmt"/>
+        <line num="135" count="485" type="cond" truecount="2" falsecount="0"/>
+        <line num="136" count="39" type="stmt"/>
+        <line num="138" count="446" type="stmt"/>
+        <line num="140" count="485" type="stmt"/>
+        <line num="144" count="446" type="stmt"/>
+        <line num="145" count="446" type="stmt"/>
+        <line num="146" count="446" type="stmt"/>
+        <line num="150" count="148" type="stmt"/>
+        <line num="154" count="27" type="stmt"/>
+        <line num="155" count="27" type="stmt"/>
+        <line num="156" count="27" type="stmt"/>
+        <line num="157" count="27" type="stmt"/>
+        <line num="158" count="27" type="stmt"/>
+        <line num="159" count="27" type="stmt"/>
+        <line num="160" count="27" type="stmt"/>
+        <line num="161" count="27" type="stmt"/>
+        <line num="162" count="27" type="stmt"/>
+        <line num="163" count="27" type="stmt"/>
+        <line num="164" count="27" type="stmt"/>
+        <line num="165" count="27" type="stmt"/>
+        <line num="166" count="27" type="stmt"/>
+      </file>
+    </package>
+    <package name="parser.logic.block">
+      <metrics statements="742" coveredstatements="721" conditionals="457" coveredconditionals="444" methods="100" coveredmethods="84"/>
+      <file name="BlockBreak.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\parser\logic\block\BlockBreak.js">
+        <metrics statements="20" coveredstatements="20" conditionals="16" coveredconditionals="16" methods="1" coveredmethods="1"/>
+        <line num="2" count="27" type="stmt"/>
+        <line num="6" count="14" type="stmt"/>
+        <line num="8" count="14" type="stmt"/>
+        <line num="9" count="14" type="stmt"/>
+        <line num="10" count="14" type="stmt"/>
+        <line num="11" count="14" type="cond" truecount="2" falsecount="0"/>
+        <line num="12" count="28" type="cond" truecount="4" falsecount="0"/>
+        <line num="13" count="14" type="stmt"/>
+        <line num="14" count="14" type="cond" truecount="4" falsecount="0"/>
+        <line num="15" count="13" type="stmt"/>
+        <line num="17" count="1" type="stmt"/>
+        <line num="19" count="28" type="stmt"/>
+        <line num="20" count="28" type="stmt"/>
+        <line num="23" count="14" type="cond" truecount="2" falsecount="0"/>
+        <line num="24" count="1" type="stmt"/>
+        <line num="26" count="14" type="cond" truecount="4" falsecount="0"/>
+        <line num="27" count="2" type="stmt"/>
+        <line num="32" count="27" type="stmt"/>
+        <line num="33" count="27" type="stmt"/>
+        <line num="34" count="27" type="stmt"/>
+      </file>
+      <file name="BlockCase.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\parser\logic\block\BlockCase.js">
+        <metrics statements="39" coveredstatements="38" conditionals="24" coveredconditionals="23" methods="5" coveredmethods="5"/>
+        <line num="2" count="27" type="stmt"/>
+        <line num="6" count="9" type="stmt"/>
+        <line num="8" count="9" type="stmt"/>
+        <line num="9" count="9" type="stmt"/>
+        <line num="10" count="9" type="stmt"/>
+        <line num="12" count="9" type="stmt"/>
+        <line num="13" count="9" type="stmt"/>
+        <line num="14" count="9" type="stmt"/>
+        <line num="15" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="16" count="28" type="cond" truecount="4" falsecount="0"/>
+        <line num="17" count="9" type="stmt"/>
+        <line num="18" count="19" type="cond" truecount="4" falsecount="0"/>
+        <line num="19" count="9" type="stmt"/>
+        <line num="20" count="9" type="stmt"/>
+        <line num="21" count="10" type="cond" truecount="2" falsecount="0"/>
+        <line num="22" count="9" type="stmt"/>
+        <line num="23" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="24" count="8" type="stmt"/>
+        <line num="27" count="1" type="stmt"/>
+        <line num="29" count="28" type="stmt"/>
+        <line num="30" count="28" type="stmt"/>
+        <line num="33" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="34" count="1" type="stmt"/>
+        <line num="36" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="37" count="7" type="stmt"/>
+        <line num="39" count="2" type="stmt"/>
+        <line num="44" count="9" type="cond" truecount="4" falsecount="0"/>
+        <line num="45" count="8" type="stmt"/>
+        <line num="46" count="8" type="stmt"/>
+        <line num="47" count="8" type="cond" truecount="1" falsecount="1"/>
+        <line num="48" count="0" type="stmt"/>
+        <line num="54" count="5" type="stmt"/>
+        <line num="58" count="5" type="stmt"/>
+        <line num="62" count="2" type="stmt"/>
+        <line num="66" count="27" type="stmt"/>
+        <line num="67" count="27" type="stmt"/>
+        <line num="68" count="27" type="stmt"/>
+        <line num="69" count="27" type="stmt"/>
+        <line num="70" count="27" type="stmt"/>
+      </file>
+      <file name="BlockContinue.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\parser\logic\block\BlockContinue.js">
+        <metrics statements="20" coveredstatements="20" conditionals="14" coveredconditionals="14" methods="1" coveredmethods="1"/>
+        <line num="2" count="27" type="stmt"/>
+        <line num="6" count="5" type="stmt"/>
+        <line num="8" count="5" type="stmt"/>
+        <line num="9" count="5" type="stmt"/>
+        <line num="10" count="5" type="stmt"/>
+        <line num="11" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="12" count="10" type="cond" truecount="4" falsecount="0"/>
+        <line num="13" count="5" type="stmt"/>
+        <line num="14" count="5" type="cond" truecount="4" falsecount="0"/>
+        <line num="15" count="4" type="stmt"/>
+        <line num="17" count="1" type="stmt"/>
+        <line num="19" count="10" type="stmt"/>
+        <line num="20" count="10" type="stmt"/>
+        <line num="23" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="24" count="1" type="stmt"/>
+        <line num="26" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="27" count="2" type="stmt"/>
+        <line num="32" count="27" type="stmt"/>
+        <line num="33" count="27" type="stmt"/>
+        <line num="34" count="27" type="stmt"/>
+      </file>
+      <file name="BlockDefault.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\parser\logic\block\BlockDefault.js">
+        <metrics statements="22" coveredstatements="22" conditionals="14" coveredconditionals="14" methods="1" coveredmethods="1"/>
+        <line num="2" count="27" type="stmt"/>
+        <line num="6" count="8" type="stmt"/>
+        <line num="8" count="8" type="stmt"/>
+        <line num="9" count="8" type="stmt"/>
+        <line num="10" count="8" type="stmt"/>
+        <line num="11" count="8" type="cond" truecount="2" falsecount="0"/>
+        <line num="12" count="16" type="cond" truecount="4" falsecount="0"/>
+        <line num="13" count="8" type="stmt"/>
+        <line num="14" count="8" type="cond" truecount="4" falsecount="0"/>
+        <line num="15" count="7" type="stmt"/>
+        <line num="17" count="1" type="stmt"/>
+        <line num="19" count="16" type="stmt"/>
+        <line num="20" count="16" type="stmt"/>
+        <line num="23" count="8" type="cond" truecount="2" falsecount="0"/>
+        <line num="24" count="1" type="stmt"/>
+        <line num="26" count="8" type="cond" truecount="2" falsecount="0"/>
+        <line num="27" count="6" type="stmt"/>
+        <line num="29" count="2" type="stmt"/>
+        <line num="34" count="27" type="stmt"/>
+        <line num="35" count="27" type="stmt"/>
+        <line num="36" count="27" type="stmt"/>
+        <line num="37" count="27" type="stmt"/>
+      </file>
+      <file name="BlockDo.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\parser\logic\block\BlockDo.js">
+        <metrics statements="51" coveredstatements="50" conditionals="24" coveredconditionals="24" methods="9" coveredmethods="8"/>
+        <line num="2" count="27" type="stmt"/>
+        <line num="6" count="9" type="stmt"/>
+        <line num="8" count="9" type="stmt"/>
+        <line num="9" count="9" type="stmt"/>
+        <line num="10" count="9" type="stmt"/>
+        <line num="11" count="9" type="stmt"/>
+        <line num="12" count="9" type="stmt"/>
+        <line num="14" count="9" type="stmt"/>
+        <line num="15" count="9" type="stmt"/>
+        <line num="16" count="9" type="stmt"/>
+        <line num="17" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="18" count="18" type="cond" truecount="4" falsecount="0"/>
+        <line num="19" count="9" type="stmt"/>
+        <line num="20" count="9" type="cond" truecount="4" falsecount="0"/>
+        <line num="21" count="3" type="stmt"/>
+        <line num="22" count="3" type="stmt"/>
+        <line num="23" count="3" type="stmt"/>
+        <line num="24" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="25" count="5" type="stmt"/>
+        <line num="26" count="5" type="stmt"/>
+        <line num="27" count="5" type="stmt"/>
+        <line num="28" count="5" type="stmt"/>
+        <line num="30" count="1" type="stmt"/>
+        <line num="32" count="13" type="stmt"/>
+        <line num="33" count="13" type="stmt"/>
+        <line num="36" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="37" count="1" type="stmt"/>
+        <line num="42" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="43" count="8" type="cond" truecount="2" falsecount="0"/>
+        <line num="44" count="3" type="stmt"/>
+        <line num="45" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="46" count="1" type="stmt"/>
+        <line num="49" count="5" type="stmt"/>
+        <line num="55" count="1" type="stmt"/>
+        <line num="59" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="60" count="2" type="stmt"/>
+        <line num="61" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="62" count="1" type="stmt"/>
+        <line num="64" count="2" type="stmt"/>
+        <line num="66" count="2" type="stmt"/>
+        <line num="68" count="2" type="stmt"/>
+        <line num="72" count="7" type="stmt"/>
+        <line num="76" count="4" type="stmt"/>
+        <line num="80" count="1" type="stmt"/>
+        <line num="84" count="8" type="stmt"/>
+        <line num="88" count="0" type="stmt"/>
+        <line num="92" count="27" type="stmt"/>
+        <line num="93" count="27" type="stmt"/>
+        <line num="94" count="27" type="stmt"/>
+        <line num="95" count="27" type="stmt"/>
+        <line num="96" count="27" type="stmt"/>
+      </file>
+      <file name="BlockElse.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\parser\logic\block\BlockElse.js">
+        <metrics statements="44" coveredstatements="43" conditionals="24" coveredconditionals="24" methods="7" coveredmethods="6"/>
+        <line num="2" count="27" type="stmt"/>
+        <line num="6" count="8" type="stmt"/>
+        <line num="8" count="8" type="stmt"/>
+        <line num="9" count="8" type="stmt"/>
+        <line num="10" count="8" type="stmt"/>
+        <line num="11" count="8" type="stmt"/>
+        <line num="13" count="8" type="stmt"/>
+        <line num="14" count="8" type="stmt"/>
+        <line num="15" count="8" type="stmt"/>
+        <line num="16" count="8" type="cond" truecount="2" falsecount="0"/>
+        <line num="17" count="16" type="cond" truecount="4" falsecount="0"/>
+        <line num="18" count="8" type="stmt"/>
+        <line num="19" count="8" type="cond" truecount="4" falsecount="0"/>
+        <line num="20" count="3" type="stmt"/>
+        <line num="21" count="3" type="stmt"/>
+        <line num="22" count="3" type="stmt"/>
+        <line num="23" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="24" count="4" type="stmt"/>
+        <line num="25" count="4" type="stmt"/>
+        <line num="26" count="4" type="stmt"/>
+        <line num="27" count="4" type="stmt"/>
+        <line num="29" count="1" type="stmt"/>
+        <line num="31" count="12" type="stmt"/>
+        <line num="32" count="12" type="stmt"/>
+        <line num="35" count="8" type="cond" truecount="2" falsecount="0"/>
+        <line num="36" count="1" type="stmt"/>
+        <line num="41" count="8" type="cond" truecount="2" falsecount="0"/>
+        <line num="42" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="43" count="3" type="stmt"/>
+        <line num="44" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="45" count="1" type="stmt"/>
+        <line num="48" count="4" type="stmt"/>
+        <line num="54" count="8" type="cond" truecount="4" falsecount="0"/>
+        <line num="55" count="1" type="stmt"/>
+        <line num="60" count="6" type="stmt"/>
+        <line num="64" count="3" type="stmt"/>
+        <line num="68" count="7" type="stmt"/>
+        <line num="72" count="0" type="stmt"/>
+        <line num="76" count="27" type="stmt"/>
+        <line num="77" count="27" type="stmt"/>
+        <line num="78" count="27" type="stmt"/>
+        <line num="79" count="27" type="stmt"/>
+        <line num="80" count="27" type="stmt"/>
+        <line num="81" count="27" type="stmt"/>
+      </file>
+      <file name="BlockElseIf.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\parser\logic\block\BlockElseIf.js">
+        <metrics statements="58" coveredstatements="55" conditionals="36" coveredconditionals="35" methods="9" coveredmethods="6"/>
+        <line num="2" count="27" type="stmt"/>
+        <line num="6" count="11" type="stmt"/>
+        <line num="8" count="11" type="stmt"/>
+        <line num="9" count="11" type="stmt"/>
+        <line num="10" count="11" type="stmt"/>
+        <line num="11" count="11" type="stmt"/>
+        <line num="12" count="11" type="stmt"/>
+        <line num="13" count="11" type="stmt"/>
+        <line num="15" count="11" type="stmt"/>
+        <line num="16" count="11" type="stmt"/>
+        <line num="17" count="11" type="stmt"/>
+        <line num="18" count="11" type="cond" truecount="2" falsecount="0"/>
+        <line num="19" count="44" type="cond" truecount="4" falsecount="0"/>
+        <line num="20" count="11" type="stmt"/>
+        <line num="21" count="33" type="cond" truecount="4" falsecount="0"/>
+        <line num="22" count="11" type="stmt"/>
+        <line num="23" count="22" type="cond" truecount="4" falsecount="0"/>
+        <line num="24" count="11" type="stmt"/>
+        <line num="25" count="11" type="stmt"/>
+        <line num="26" count="11" type="cond" truecount="4" falsecount="0"/>
+        <line num="27" count="3" type="stmt"/>
+        <line num="28" count="3" type="stmt"/>
+        <line num="29" count="3" type="stmt"/>
+        <line num="30" count="8" type="cond" truecount="2" falsecount="0"/>
+        <line num="31" count="7" type="stmt"/>
+        <line num="32" count="7" type="stmt"/>
+        <line num="33" count="7" type="stmt"/>
+        <line num="34" count="7" type="stmt"/>
+        <line num="36" count="1" type="stmt"/>
+        <line num="38" count="37" type="stmt"/>
+        <line num="39" count="37" type="stmt"/>
+        <line num="42" count="11" type="cond" truecount="2" falsecount="0"/>
+        <line num="43" count="1" type="stmt"/>
+        <line num="48" count="9" type="cond" truecount="1" falsecount="1"/>
+        <line num="49" count="9" type="stmt"/>
+        <line num="50" count="9" type="stmt"/>
+        <line num="51" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="52" count="1" type="stmt"/>
+        <line num="55" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="56" count="8" type="cond" truecount="2" falsecount="0"/>
+        <line num="57" count="3" type="stmt"/>
+        <line num="58" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="59" count="1" type="stmt"/>
+        <line num="62" count="5" type="stmt"/>
+        <line num="68" count="9" type="cond" truecount="4" falsecount="0"/>
+        <line num="69" count="2" type="stmt"/>
+        <line num="74" count="0" type="stmt"/>
+        <line num="78" count="7" type="stmt"/>
+        <line num="82" count="4" type="stmt"/>
+        <line num="86" count="8" type="stmt"/>
+        <line num="90" count="0" type="stmt"/>
+        <line num="94" count="0" type="stmt"/>
+        <line num="98" count="27" type="stmt"/>
+        <line num="99" count="27" type="stmt"/>
+        <line num="100" count="27" type="stmt"/>
+        <line num="101" count="27" type="stmt"/>
+        <line num="102" count="27" type="stmt"/>
+        <line num="103" count="27" type="stmt"/>
+      </file>
+      <file name="BlockFor.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\parser\logic\block\BlockFor.js">
+        <metrics statements="110" coveredstatements="109" conditionals="84" coveredconditionals="83" methods="14" coveredmethods="13"/>
+        <line num="2" count="27" type="stmt"/>
+        <line num="6" count="13" type="stmt"/>
+        <line num="8" count="13" type="stmt"/>
+        <line num="9" count="13" type="stmt"/>
+        <line num="10" count="13" type="stmt"/>
+        <line num="11" count="13" type="stmt"/>
+        <line num="12" count="13" type="stmt"/>
+        <line num="13" count="13" type="stmt"/>
+        <line num="14" count="13" type="stmt"/>
+        <line num="15" count="13" type="stmt"/>
+        <line num="16" count="13" type="stmt"/>
+        <line num="17" count="13" type="stmt"/>
+        <line num="18" count="13" type="stmt"/>
+        <line num="19" count="13" type="stmt"/>
+        <line num="20" count="13" type="stmt"/>
+        <line num="22" count="13" type="stmt"/>
+        <line num="23" count="13" type="stmt"/>
+        <line num="24" count="13" type="stmt"/>
+        <line num="25" count="13" type="cond" truecount="2" falsecount="0"/>
+        <line num="26" count="39" type="cond" truecount="4" falsecount="0"/>
+        <line num="27" count="13" type="stmt"/>
+        <line num="28" count="26" type="cond" truecount="4" falsecount="0"/>
+        <line num="29" count="13" type="stmt"/>
+        <line num="30" count="13" type="stmt"/>
+        <line num="31" count="13" type="cond" truecount="4" falsecount="0"/>
+        <line num="32" count="2" type="stmt"/>
+        <line num="33" count="2" type="stmt"/>
+        <line num="34" count="2" type="stmt"/>
+        <line num="35" count="11" type="cond" truecount="2" falsecount="0"/>
+        <line num="36" count="10" type="stmt"/>
+        <line num="37" count="10" type="stmt"/>
+        <line num="38" count="10" type="stmt"/>
+        <line num="39" count="10" type="stmt"/>
+        <line num="41" count="1" type="stmt"/>
+        <line num="43" count="29" type="stmt"/>
+        <line num="44" count="29" type="stmt"/>
+        <line num="47" count="13" type="cond" truecount="2" falsecount="0"/>
+        <line num="48" count="1" type="stmt"/>
+        <line num="52" count="13" type="stmt"/>
+        <line num="53" count="13" type="stmt"/>
+        <line num="54" count="13" type="stmt"/>
+        <line num="55" count="13" type="stmt"/>
+        <line num="56" count="13" type="cond" truecount="2" falsecount="0"/>
+        <line num="57" count="44" type="cond" truecount="4" falsecount="0"/>
+        <line num="58" count="3" type="stmt"/>
+        <line num="59" count="3" type="stmt"/>
+        <line num="60" count="3" type="stmt"/>
+        <line num="61" count="41" type="cond" truecount="4" falsecount="0"/>
+        <line num="62" count="10" type="stmt"/>
+        <line num="63" count="31" type="cond" truecount="4" falsecount="0"/>
+        <line num="64" count="6" type="stmt"/>
+        <line num="65" count="25" type="cond" truecount="4" falsecount="0"/>
+        <line num="66" count="2" type="stmt"/>
+        <line num="67" count="23" type="cond" truecount="4" falsecount="0"/>
+        <line num="68" count="2" type="stmt"/>
+        <line num="69" count="2" type="stmt"/>
+        <line num="70" count="2" type="stmt"/>
+        <line num="71" count="21" type="cond" truecount="4" falsecount="0"/>
+        <line num="72" count="10" type="stmt"/>
+        <line num="73" count="11" type="cond" truecount="4" falsecount="0"/>
+        <line num="74" count="4" type="stmt"/>
+        <line num="75" count="7" type="cond" truecount="4" falsecount="0"/>
+        <line num="76" count="2" type="stmt"/>
+        <line num="77" count="5" type="cond" truecount="4" falsecount="0"/>
+        <line num="78" count="2" type="stmt"/>
+        <line num="79" count="2" type="stmt"/>
+        <line num="80" count="2" type="stmt"/>
+        <line num="81" count="3" type="cond" truecount="4" falsecount="0"/>
+        <line num="82" count="2" type="stmt"/>
+        <line num="84" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="85" count="1" type="stmt"/>
+        <line num="87" count="1" type="stmt"/>
+        <line num="89" count="44" type="stmt"/>
+        <line num="90" count="44" type="stmt"/>
+        <line num="93" count="13" type="cond" truecount="2" falsecount="0"/>
+        <line num="94" count="1" type="stmt"/>
+        <line num="98" count="12" type="cond" truecount="4" falsecount="0"/>
+        <line num="99" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="100" count="2" type="stmt"/>
+        <line num="102" count="1" type="stmt"/>
+        <line num="104" count="3" type="stmt"/>
+        <line num="106" count="12" type="cond" truecount="4" falsecount="0"/>
+        <line num="107" count="2" type="stmt"/>
+        <line num="108" count="2" type="stmt"/>
+        <line num="110" count="12" type="cond" truecount="4" falsecount="0"/>
+        <line num="111" count="2" type="stmt"/>
+        <line num="112" count="2" type="stmt"/>
+        <line num="114" count="12" type="cond" truecount="2" falsecount="0"/>
+        <line num="115" count="11" type="cond" truecount="2" falsecount="0"/>
+        <line num="116" count="2" type="stmt"/>
+        <line num="117" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="118" count="1" type="stmt"/>
+        <line num="121" count="9" type="stmt"/>
+        <line num="127" count="2" type="stmt"/>
+        <line num="131" count="11" type="stmt"/>
+        <line num="135" count="3" type="stmt"/>
+        <line num="139" count="11" type="stmt"/>
+        <line num="143" count="2" type="stmt"/>
+        <line num="147" count="11" type="stmt"/>
+        <line num="151" count="2" type="stmt"/>
+        <line num="155" count="10" type="stmt"/>
+        <line num="159" count="8" type="stmt"/>
+        <line num="163" count="11" type="stmt"/>
+        <line num="167" count="0" type="stmt"/>
+        <line num="171" count="27" type="stmt"/>
+        <line num="172" count="27" type="stmt"/>
+        <line num="173" count="27" type="stmt"/>
+        <line num="174" count="27" type="stmt"/>
+        <line num="175" count="27" type="stmt"/>
+        <line num="176" count="27" type="stmt"/>
+      </file>
+      <file name="BlockIf.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\parser\logic\block\BlockIf.js">
+        <metrics statements="51" coveredstatements="51" conditionals="28" coveredconditionals="27" methods="6" coveredmethods="6"/>
+        <line num="2" count="27" type="stmt"/>
+        <line num="6" count="59" type="stmt"/>
+        <line num="8" count="59" type="stmt"/>
+        <line num="9" count="59" type="stmt"/>
+        <line num="10" count="59" type="stmt"/>
+        <line num="11" count="59" type="stmt"/>
+        <line num="12" count="59" type="stmt"/>
+        <line num="13" count="59" type="stmt"/>
+        <line num="15" count="59" type="stmt"/>
+        <line num="16" count="59" type="stmt"/>
+        <line num="17" count="59" type="stmt"/>
+        <line num="18" count="59" type="cond" truecount="2" falsecount="0"/>
+        <line num="19" count="177" type="cond" truecount="4" falsecount="0"/>
+        <line num="20" count="59" type="stmt"/>
+        <line num="21" count="118" type="cond" truecount="4" falsecount="0"/>
+        <line num="22" count="59" type="stmt"/>
+        <line num="23" count="59" type="stmt"/>
+        <line num="24" count="59" type="cond" truecount="4" falsecount="0"/>
+        <line num="25" count="3" type="stmt"/>
+        <line num="26" count="3" type="stmt"/>
+        <line num="27" count="3" type="stmt"/>
+        <line num="28" count="56" type="cond" truecount="2" falsecount="0"/>
+        <line num="29" count="55" type="stmt"/>
+        <line num="30" count="55" type="stmt"/>
+        <line num="31" count="55" type="stmt"/>
+        <line num="32" count="55" type="stmt"/>
+        <line num="34" count="1" type="stmt"/>
+        <line num="36" count="122" type="stmt"/>
+        <line num="37" count="122" type="stmt"/>
+        <line num="40" count="59" type="cond" truecount="2" falsecount="0"/>
+        <line num="41" count="1" type="stmt"/>
+        <line num="46" count="7" type="cond" truecount="1" falsecount="1"/>
+        <line num="47" count="7" type="stmt"/>
+        <line num="48" count="7" type="stmt"/>
+        <line num="49" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="50" count="1" type="stmt"/>
+        <line num="53" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="54" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="55" count="3" type="stmt"/>
+        <line num="56" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="57" count="1" type="stmt"/>
+        <line num="60" count="3" type="stmt"/>
+        <line num="66" count="6" type="stmt"/>
+        <line num="70" count="5" type="stmt"/>
+        <line num="74" count="2" type="stmt"/>
+        <line num="78" count="6" type="stmt"/>
+        <line num="82" count="27" type="stmt"/>
+        <line num="83" count="27" type="stmt"/>
+        <line num="84" count="27" type="stmt"/>
+        <line num="85" count="27" type="stmt"/>
+        <line num="86" count="27" type="stmt"/>
+      </file>
+      <file name="BlockLine.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\parser\logic\block\BlockLine.js">
+        <metrics statements="24" coveredstatements="23" conditionals="10" coveredconditionals="10" methods="5" coveredmethods="4"/>
+        <line num="2" count="27" type="stmt"/>
+        <line num="6" count="134" type="stmt"/>
+        <line num="8" count="134" type="stmt"/>
+        <line num="9" count="134" type="stmt"/>
+        <line num="11" count="134" type="cond" truecount="2" falsecount="0"/>
+        <line num="12" count="6" type="stmt"/>
+        <line num="14" count="128" type="stmt"/>
+        <line num="15" count="128" type="cond" truecount="2" falsecount="0"/>
+        <line num="16" count="154" type="stmt"/>
+        <line num="18" count="128" type="cond" truecount="2" falsecount="0"/>
+        <line num="19" count="51" type="stmt"/>
+        <line num="20" count="51" type="cond" truecount="2" falsecount="0"/>
+        <line num="21" count="1" type="stmt"/>
+        <line num="24" count="77" type="stmt"/>
+        <line num="25" count="77" type="cond" truecount="2" falsecount="0"/>
+        <line num="26" count="1" type="stmt"/>
+        <line num="33" count="5" type="stmt"/>
+        <line num="37" count="40" type="stmt"/>
+        <line num="41" count="8" type="stmt"/>
+        <line num="45" count="0" type="stmt"/>
+        <line num="49" count="27" type="stmt"/>
+        <line num="50" count="27" type="stmt"/>
+        <line num="51" count="27" type="stmt"/>
+        <line num="52" count="27" type="stmt"/>
+      </file>
+      <file name="BlockReturn.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\parser\logic\block\BlockReturn.js">
+        <metrics statements="32" coveredstatements="32" conditionals="16" coveredconditionals="16" methods="4" coveredmethods="4"/>
+        <line num="2" count="27" type="stmt"/>
+        <line num="6" count="14" type="stmt"/>
+        <line num="8" count="14" type="stmt"/>
+        <line num="9" count="14" type="stmt"/>
+        <line num="10" count="14" type="stmt"/>
+        <line num="12" count="14" type="stmt"/>
+        <line num="13" count="14" type="stmt"/>
+        <line num="14" count="14" type="stmt"/>
+        <line num="15" count="14" type="cond" truecount="2" falsecount="0"/>
+        <line num="16" count="28" type="cond" truecount="4" falsecount="0"/>
+        <line num="17" count="14" type="stmt"/>
+        <line num="18" count="14" type="cond" truecount="4" falsecount="0"/>
+        <line num="19" count="3" type="stmt"/>
+        <line num="20" count="11" type="cond" truecount="2" falsecount="0"/>
+        <line num="21" count="10" type="stmt"/>
+        <line num="22" count="10" type="stmt"/>
+        <line num="23" count="10" type="stmt"/>
+        <line num="24" count="10" type="stmt"/>
+        <line num="26" count="1" type="stmt"/>
+        <line num="28" count="18" type="stmt"/>
+        <line num="29" count="18" type="stmt"/>
+        <line num="32" count="14" type="cond" truecount="2" falsecount="0"/>
+        <line num="33" count="1" type="stmt"/>
+        <line num="38" count="14" type="cond" truecount="2" falsecount="0"/>
+        <line num="39" count="10" type="stmt"/>
+        <line num="40" count="10" type="stmt"/>
+        <line num="45" count="4" type="stmt"/>
+        <line num="49" count="4" type="stmt"/>
+        <line num="53" count="27" type="stmt"/>
+        <line num="54" count="27" type="stmt"/>
+        <line num="55" count="27" type="stmt"/>
+        <line num="56" count="27" type="stmt"/>
+      </file>
+      <file name="BlockScope.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\parser\logic\block\BlockScope.js">
+        <metrics statements="25" coveredstatements="25" conditionals="12" coveredconditionals="12" methods="3" coveredmethods="3"/>
+        <line num="2" count="27" type="stmt"/>
+        <line num="6" count="5" type="stmt"/>
+        <line num="8" count="5" type="stmt"/>
+        <line num="9" count="5" type="stmt"/>
+        <line num="11" count="5" type="stmt"/>
+        <line num="12" count="5" type="stmt"/>
+        <line num="13" count="5" type="stmt"/>
+        <line num="14" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="15" count="5" type="cond" truecount="4" falsecount="0"/>
+        <line num="16" count="4" type="stmt"/>
+        <line num="17" count="4" type="stmt"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="21" count="5" type="stmt"/>
+        <line num="22" count="5" type="stmt"/>
+        <line num="25" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="26" count="1" type="stmt"/>
+        <line num="31" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="32" count="4" type="stmt"/>
+        <line num="33" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="34" count="1" type="stmt"/>
+        <line num="40" count="3" type="stmt"/>
+        <line num="43" count="27" type="stmt"/>
+        <line num="44" count="27" type="stmt"/>
+        <line num="45" count="27" type="stmt"/>
+        <line num="46" count="27" type="stmt"/>
+      </file>
+      <file name="BlockSwitch.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\parser\logic\block\BlockSwitch.js">
+        <metrics statements="56" coveredstatements="52" conditionals="36" coveredconditionals="32" methods="12" coveredmethods="10"/>
+        <line num="2" count="27" type="stmt"/>
+        <line num="6" count="19" type="stmt"/>
+        <line num="8" count="19" type="stmt"/>
+        <line num="9" count="19" type="stmt"/>
+        <line num="10" count="19" type="stmt"/>
+        <line num="11" count="19" type="stmt"/>
+        <line num="12" count="19" type="stmt"/>
+        <line num="13" count="19" type="stmt"/>
+        <line num="15" count="19" type="stmt"/>
+        <line num="16" count="19" type="stmt"/>
+        <line num="17" count="19" type="stmt"/>
+        <line num="18" count="19" type="cond" truecount="2" falsecount="0"/>
+        <line num="19" count="60" type="cond" truecount="4" falsecount="0"/>
+        <line num="20" count="19" type="stmt"/>
+        <line num="21" count="41" type="cond" truecount="4" falsecount="0"/>
+        <line num="22" count="19" type="stmt"/>
+        <line num="23" count="19" type="stmt"/>
+        <line num="24" count="22" type="cond" truecount="4" falsecount="0"/>
+        <line num="25" count="17" type="stmt"/>
+        <line num="26" count="17" type="stmt"/>
+        <line num="28" count="5" type="stmt"/>
+        <line num="30" count="60" type="stmt"/>
+        <line num="31" count="60" type="stmt"/>
+        <line num="34" count="19" type="cond" truecount="2" falsecount="0"/>
+        <line num="35" count="2" type="stmt"/>
+        <line num="40" count="10" type="cond" truecount="1" falsecount="1"/>
+        <line num="41" count="10" type="stmt"/>
+        <line num="42" count="10" type="stmt"/>
+        <line num="43" count="10" type="cond" truecount="2" falsecount="0"/>
+        <line num="44" count="1" type="stmt"/>
+        <line num="47" count="10" type="cond" truecount="2" falsecount="0"/>
+        <line num="48" count="8" type="stmt"/>
+        <line num="49" count="8" type="cond" truecount="2" falsecount="0"/>
+        <line num="50" count="1" type="stmt"/>
+        <line num="56" count="9" type="stmt"/>
+        <line num="60" count="13" type="cond" truecount="4" falsecount="0"/>
+        <line num="61" count="1" type="stmt"/>
+        <line num="66" count="7" type="stmt"/>
+        <line num="67" count="1" type="cond" truecount="3" falsecount="1"/>
+        <line num="68" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="69" count="0" type="stmt"/>
+        <line num="73" count="7" type="stmt"/>
+        <line num="77" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="78" count="5" type="stmt"/>
+        <line num="80" count="1" type="stmt"/>
+        <line num="85" count="9" type="stmt"/>
+        <line num="89" count="8" type="stmt"/>
+        <line num="93" count="0" type="stmt"/>
+        <line num="97" count="0" type="stmt"/>
+        <line num="101" count="4" type="stmt"/>
+        <line num="105" count="4" type="stmt"/>
+        <line num="109" count="27" type="stmt"/>
+        <line num="110" count="27" type="stmt"/>
+        <line num="111" count="27" type="stmt"/>
+        <line num="112" count="27" type="stmt"/>
+        <line num="113" count="27" type="stmt"/>
+      </file>
+      <file name="BlockVar.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\parser\logic\block\BlockVar.js">
+        <metrics statements="83" coveredstatements="78" conditionals="63" coveredconditionals="60" methods="6" coveredmethods="3"/>
+        <line num="2" count="27" type="stmt"/>
+        <line num="6" count="31" type="stmt"/>
+        <line num="8" count="31" type="stmt"/>
+        <line num="9" count="31" type="stmt"/>
+        <line num="10" count="31" type="stmt"/>
+        <line num="11" count="31" type="stmt"/>
+        <line num="13" count="31" type="stmt"/>
+        <line num="14" count="31" type="stmt"/>
+        <line num="15" count="31" type="stmt"/>
+        <line num="16" count="31" type="stmt"/>
+        <line num="17" count="31" type="stmt"/>
+        <line num="18" count="31" type="stmt"/>
+        <line num="19" count="31" type="cond" truecount="2" falsecount="0"/>
+        <line num="20" count="177" type="stmt"/>
+        <line num="21" count="177" type="cond" truecount="4" falsecount="0"/>
+        <line num="22" count="31" type="stmt"/>
+        <line num="23" count="146" type="cond" truecount="5" falsecount="0"/>
+        <line num="24" count="46" type="stmt"/>
+        <line num="25" count="46" type="stmt"/>
+        <line num="26" count="100" type="cond" truecount="5" falsecount="0"/>
+        <line num="27" count="10" type="cond" truecount="2" falsecount="0"/>
+        <line num="28" count="10" type="stmt"/>
+        <line num="29" count="10" type="stmt"/>
+        <line num="30" count="10" type="cond" truecount="3" falsecount="1"/>
+        <line num="31" count="0" type="stmt"/>
+        <line num="33" count="90" type="cond" truecount="4" falsecount="0"/>
+        <line num="34" count="32" type="stmt"/>
+        <line num="35" count="58" type="cond" truecount="5" falsecount="0"/>
+        <line num="36" count="23" type="cond" truecount="2" falsecount="0"/>
+        <line num="37" count="23" type="stmt"/>
+        <line num="38" count="23" type="cond" truecount="2" falsecount="0"/>
+        <line num="39" count="20" type="stmt"/>
+        <line num="40" count="20" type="cond" truecount="4" falsecount="0"/>
+        <line num="41" count="2" type="stmt"/>
+        <line num="44" count="3" type="stmt"/>
+        <line num="45" count="3" type="stmt"/>
+        <line num="47" count="23" type="stmt"/>
+        <line num="48" count="23" type="stmt"/>
+        <line num="49" count="35" type="cond" truecount="2" falsecount="0"/>
+        <line num="50" count="27" type="cond" truecount="1" falsecount="1"/>
+        <line num="51" count="27" type="stmt"/>
+        <line num="53" count="27" type="stmt"/>
+        <line num="55" count="8" type="stmt"/>
+        <line num="57" count="177" type="stmt"/>
+        <line num="58" count="177" type="stmt"/>
+        <line num="61" count="31" type="cond" truecount="2" falsecount="0"/>
+        <line num="62" count="4" type="stmt"/>
+        <line num="63" count="4" type="stmt"/>
+        <line num="64" count="4" type="cond" truecount="1" falsecount="1"/>
+        <line num="65" count="0" type="stmt"/>
+        <line num="67" count="27" type="cond" truecount="2" falsecount="0"/>
+        <line num="68" count="9" type="stmt"/>
+        <line num="69" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="70" count="7" type="stmt"/>
+        <line num="71" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="72" count="1" type="stmt"/>
+        <line num="75" count="2" type="stmt"/>
+        <line num="76" count="2" type="stmt"/>
+        <line num="78" count="18" type="cond" truecount="2" falsecount="0"/>
+        <line num="79" count="2" type="stmt"/>
+        <line num="81" count="31" type="cond" truecount="4" falsecount="0"/>
+        <line num="82" count="1" type="stmt"/>
+        <line num="87" count="31" type="stmt"/>
+        <line num="88" count="46" type="stmt"/>
+        <line num="89" count="46" type="stmt"/>
+        <line num="90" count="46" type="stmt"/>
+        <line num="91" count="46" type="cond" truecount="2" falsecount="0"/>
+        <line num="92" count="27" type="stmt"/>
+        <line num="93" count="27" type="stmt"/>
+        <line num="94" count="27" type="stmt"/>
+        <line num="97" count="31" type="stmt"/>
+        <line num="98" count="46" type="cond" truecount="2" falsecount="0"/>
+        <line num="99" count="2" type="stmt"/>
+        <line num="105" count="0" type="stmt"/>
+        <line num="109" count="21" type="stmt"/>
+        <line num="113" count="0" type="stmt"/>
+        <line num="117" count="0" type="stmt"/>
+        <line num="121" count="27" type="stmt"/>
+        <line num="122" count="27" type="stmt"/>
+        <line num="123" count="27" type="stmt"/>
+        <line num="124" count="27" type="stmt"/>
+        <line num="125" count="27" type="stmt"/>
+        <line num="126" count="27" type="stmt"/>
+      </file>
+      <file name="BlockWhile.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\parser\logic\block\BlockWhile.js">
+        <metrics statements="54" coveredstatements="52" conditionals="28" coveredconditionals="27" methods="9" coveredmethods="7"/>
+        <line num="2" count="27" type="stmt"/>
+        <line num="6" count="17" type="stmt"/>
+        <line num="8" count="17" type="stmt"/>
+        <line num="9" count="17" type="stmt"/>
+        <line num="10" count="17" type="stmt"/>
+        <line num="11" count="17" type="stmt"/>
+        <line num="12" count="17" type="stmt"/>
+        <line num="13" count="17" type="stmt"/>
+        <line num="15" count="17" type="stmt"/>
+        <line num="16" count="17" type="stmt"/>
+        <line num="17" count="17" type="stmt"/>
+        <line num="18" count="17" type="cond" truecount="2" falsecount="0"/>
+        <line num="19" count="51" type="cond" truecount="4" falsecount="0"/>
+        <line num="20" count="17" type="stmt"/>
+        <line num="21" count="34" type="cond" truecount="4" falsecount="0"/>
+        <line num="22" count="17" type="stmt"/>
+        <line num="23" count="17" type="stmt"/>
+        <line num="24" count="17" type="cond" truecount="4" falsecount="0"/>
+        <line num="25" count="4" type="stmt"/>
+        <line num="26" count="4" type="stmt"/>
+        <line num="27" count="4" type="stmt"/>
+        <line num="28" count="13" type="cond" truecount="2" falsecount="0"/>
+        <line num="29" count="12" type="stmt"/>
+        <line num="30" count="12" type="stmt"/>
+        <line num="31" count="12" type="stmt"/>
+        <line num="32" count="12" type="stmt"/>
+        <line num="34" count="1" type="stmt"/>
+        <line num="36" count="39" type="stmt"/>
+        <line num="37" count="39" type="stmt"/>
+        <line num="40" count="17" type="cond" truecount="2" falsecount="0"/>
+        <line num="41" count="1" type="stmt"/>
+        <line num="46" count="7" type="cond" truecount="1" falsecount="1"/>
+        <line num="47" count="7" type="stmt"/>
+        <line num="48" count="7" type="stmt"/>
+        <line num="49" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="50" count="1" type="stmt"/>
+        <line num="53" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="54" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="55" count="3" type="stmt"/>
+        <line num="56" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="57" count="1" type="stmt"/>
+        <line num="60" count="3" type="stmt"/>
+        <line num="66" count="7" type="stmt"/>
+        <line num="70" count="8" type="stmt"/>
+        <line num="74" count="6" type="stmt"/>
+        <line num="78" count="5" type="stmt"/>
+        <line num="82" count="2" type="stmt"/>
+        <line num="86" count="0" type="stmt"/>
+        <line num="90" count="0" type="stmt"/>
+        <line num="94" count="27" type="stmt"/>
+        <line num="95" count="27" type="stmt"/>
+        <line num="96" count="27" type="stmt"/>
+        <line num="97" count="27" type="stmt"/>
+        <line num="98" count="27" type="stmt"/>
+      </file>
+      <file name="BlockWith.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\parser\logic\block\BlockWith.js">
+        <metrics statements="53" coveredstatements="51" conditionals="28" coveredconditionals="27" methods="8" coveredmethods="6"/>
+        <line num="2" count="27" type="stmt"/>
+        <line num="6" count="7" type="stmt"/>
+        <line num="8" count="7" type="stmt"/>
+        <line num="9" count="7" type="stmt"/>
+        <line num="10" count="7" type="stmt"/>
+        <line num="11" count="7" type="stmt"/>
+        <line num="12" count="7" type="stmt"/>
+        <line num="13" count="7" type="stmt"/>
+        <line num="15" count="7" type="stmt"/>
+        <line num="16" count="7" type="stmt"/>
+        <line num="17" count="7" type="stmt"/>
+        <line num="18" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="19" count="21" type="cond" truecount="4" falsecount="0"/>
+        <line num="20" count="7" type="stmt"/>
+        <line num="21" count="14" type="cond" truecount="4" falsecount="0"/>
+        <line num="22" count="7" type="stmt"/>
+        <line num="23" count="7" type="stmt"/>
+        <line num="24" count="7" type="cond" truecount="4" falsecount="0"/>
+        <line num="25" count="3" type="stmt"/>
+        <line num="26" count="3" type="stmt"/>
+        <line num="27" count="3" type="stmt"/>
+        <line num="28" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="29" count="3" type="stmt"/>
+        <line num="30" count="3" type="stmt"/>
+        <line num="31" count="3" type="stmt"/>
+        <line num="32" count="3" type="stmt"/>
+        <line num="34" count="1" type="stmt"/>
+        <line num="36" count="18" type="stmt"/>
+        <line num="37" count="18" type="stmt"/>
+        <line num="40" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="41" count="1" type="stmt"/>
+        <line num="46" count="7" type="cond" truecount="1" falsecount="1"/>
+        <line num="47" count="7" type="stmt"/>
+        <line num="48" count="7" type="stmt"/>
+        <line num="49" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="50" count="1" type="stmt"/>
+        <line num="53" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="54" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="55" count="3" type="stmt"/>
+        <line num="56" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="57" count="1" type="stmt"/>
+        <line num="60" count="3" type="stmt"/>
+        <line num="66" count="6" type="stmt"/>
+        <line num="70" count="5" type="stmt"/>
+        <line num="74" count="2" type="stmt"/>
+        <line num="78" count="6" type="stmt"/>
+        <line num="82" count="0" type="stmt"/>
+        <line num="86" count="0" type="stmt"/>
+        <line num="90" count="27" type="stmt"/>
+        <line num="91" count="27" type="stmt"/>
+        <line num="92" count="27" type="stmt"/>
+        <line num="93" count="27" type="stmt"/>
+        <line num="94" count="27" type="stmt"/>
+      </file>
+    </package>
+    <package name="parser.logic.error">
+      <metrics statements="47" coveredstatements="44" conditionals="0" coveredconditionals="0" methods="5" coveredmethods="2"/>
+      <file name="Error.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\parser\logic\error\Error.js">
+        <metrics statements="47" coveredstatements="44" conditionals="0" coveredconditionals="0" methods="5" coveredmethods="2"/>
+        <line num="3" count="186" type="stmt"/>
+        <line num="4" count="186" type="stmt"/>
+        <line num="5" count="186" type="stmt"/>
+        <line num="6" count="186" type="stmt"/>
+        <line num="10" count="0" type="stmt"/>
+        <line num="14" count="0" type="stmt"/>
+        <line num="18" count="0" type="stmt"/>
+        <line num="22" count="175" type="stmt"/>
+        <line num="25" count="28" type="stmt"/>
+        <line num="26" count="28" type="stmt"/>
+        <line num="27" count="28" type="stmt"/>
+        <line num="28" count="28" type="stmt"/>
+        <line num="29" count="28" type="stmt"/>
+        <line num="30" count="28" type="stmt"/>
+        <line num="31" count="28" type="stmt"/>
+        <line num="32" count="28" type="stmt"/>
+        <line num="33" count="28" type="stmt"/>
+        <line num="34" count="28" type="stmt"/>
+        <line num="35" count="28" type="stmt"/>
+        <line num="36" count="28" type="stmt"/>
+        <line num="37" count="28" type="stmt"/>
+        <line num="38" count="28" type="stmt"/>
+        <line num="39" count="28" type="stmt"/>
+        <line num="40" count="28" type="stmt"/>
+        <line num="41" count="28" type="stmt"/>
+        <line num="42" count="28" type="stmt"/>
+        <line num="43" count="28" type="stmt"/>
+        <line num="44" count="28" type="stmt"/>
+        <line num="45" count="28" type="stmt"/>
+        <line num="46" count="28" type="stmt"/>
+        <line num="47" count="28" type="stmt"/>
+        <line num="48" count="28" type="stmt"/>
+        <line num="49" count="28" type="stmt"/>
+        <line num="50" count="28" type="stmt"/>
+        <line num="51" count="28" type="stmt"/>
+        <line num="52" count="28" type="stmt"/>
+        <line num="53" count="28" type="stmt"/>
+        <line num="54" count="28" type="stmt"/>
+        <line num="55" count="28" type="stmt"/>
+        <line num="56" count="28" type="stmt"/>
+        <line num="57" count="28" type="stmt"/>
+        <line num="58" count="28" type="stmt"/>
+        <line num="59" count="28" type="stmt"/>
+        <line num="60" count="28" type="stmt"/>
+        <line num="61" count="28" type="stmt"/>
+        <line num="62" count="28" type="stmt"/>
+        <line num="64" count="28" type="stmt"/>
+      </file>
+    </package>
+    <package name="parser.logic.line">
+      <metrics statements="143" coveredstatements="98" conditionals="63" coveredconditionals="28" methods="41" coveredmethods="26"/>
+      <file name="Line.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\parser\logic\line\Line.js">
+        <metrics statements="8" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="5"/>
+        <line num="3" count="688" type="stmt"/>
+        <line num="4" count="688" type="stmt"/>
+        <line num="8" count="123" type="stmt"/>
+        <line num="12" count="0" type="stmt"/>
+        <line num="16" count="6689" type="stmt"/>
+        <line num="20" count="1282" type="stmt"/>
+        <line num="24" count="88" type="stmt"/>
+        <line num="28" count="28" type="stmt"/>
+      </file>
+      <file name="LineChain.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\parser\logic\line\LineChain.js">
+        <metrics statements="27" coveredstatements="15" conditionals="12" coveredconditionals="3" methods="6" coveredmethods="4"/>
+        <line num="2" count="27" type="stmt"/>
+        <line num="6" count="446" type="stmt"/>
+        <line num="8" count="446" type="stmt"/>
+        <line num="9" count="446" type="stmt"/>
+        <line num="10" count="446" type="stmt"/>
+        <line num="11" count="446" type="stmt"/>
+        <line num="12" count="485" type="stmt"/>
+        <line num="13" count="485" type="stmt"/>
+        <line num="14" count="485" type="stmt"/>
+        <line num="19" count="136" type="stmt"/>
+        <line num="23" count="114" type="stmt"/>
+        <line num="27" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="28" count="0" type="stmt"/>
+        <line num="30" count="0" type="stmt"/>
+        <line num="34" count="53" type="cond" truecount="3" falsecount="1"/>
+        <line num="35" count="53" type="stmt"/>
+        <line num="37" count="0" type="stmt"/>
+        <line num="41" count="0" type="stmt"/>
+        <line num="42" count="0" type="stmt"/>
+        <line num="43" count="0" type="stmt"/>
+        <line num="44" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="45" count="0" type="stmt"/>
+        <line num="47" count="0" type="stmt"/>
+        <line num="48" count="0" type="stmt"/>
+        <line num="50" count="0" type="stmt"/>
+        <line num="54" count="27" type="stmt"/>
+        <line num="55" count="27" type="stmt"/>
+      </file>
+      <file name="LineGroup.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\parser\logic\line\LineGroup.js">
+        <metrics statements="85" coveredstatements="56" conditionals="51" coveredconditionals="25" methods="16" coveredmethods="7"/>
+        <line num="2" count="27" type="stmt"/>
+        <line num="7" count="94" type="stmt"/>
+        <line num="8" count="94" type="stmt"/>
+        <line num="9" count="94" type="cond" truecount="3" falsecount="1"/>
+        <line num="11" count="0" type="stmt"/>
+        <line num="13" count="8" type="cond" truecount="2" falsecount="0"/>
+        <line num="14" count="5" type="stmt"/>
+        <line num="16" count="3" type="stmt"/>
+        <line num="19" count="77" type="stmt"/>
+        <line num="21" count="9" type="stmt"/>
+        <line num="26" count="0" type="stmt"/>
+        <line num="27" count="0" type="stmt"/>
+        <line num="28" count="0" type="stmt"/>
+        <line num="32" count="5" type="stmt"/>
+        <line num="33" count="5" type="stmt"/>
+        <line num="34" count="5" type="stmt"/>
+        <line num="35" count="5" type="stmt"/>
+        <line num="36" count="5" type="stmt"/>
+        <line num="38" count="5" type="cond" truecount="4" falsecount="0"/>
+        <line num="39" count="2" type="cond" truecount="4" falsecount="1"/>
+        <line num="41" count="0" type="stmt"/>
+        <line num="47" count="3" type="stmt"/>
+        <line num="48" count="3" type="stmt"/>
+        <line num="49" count="3" type="stmt"/>
+        <line num="50" count="3" type="stmt"/>
+        <line num="51" count="3" type="stmt"/>
+        <line num="52" count="3" type="cond" truecount="2" falsecount="2"/>
+        <line num="53" count="3" type="cond" truecount="3" falsecount="2"/>
+        <line num="54" count="0" type="stmt"/>
+        <line num="60" count="77" type="stmt"/>
+        <line num="61" count="77" type="stmt"/>
+        <line num="62" count="77" type="stmt"/>
+        <line num="63" count="77" type="stmt"/>
+        <line num="64" count="77" type="stmt"/>
+        <line num="65" count="77" type="stmt"/>
+        <line num="66" count="77" type="stmt"/>
+        <line num="67" count="77" type="cond" truecount="2" falsecount="0"/>
+        <line num="68" count="52" type="cond" truecount="5" falsecount="0"/>
+        <line num="69" count="4" type="stmt"/>
+        <line num="75" count="9" type="stmt"/>
+        <line num="76" count="9" type="stmt"/>
+        <line num="77" count="9" type="stmt"/>
+        <line num="78" count="9" type="stmt"/>
+        <line num="79" count="9" type="stmt"/>
+        <line num="80" count="9" type="stmt"/>
+        <line num="81" count="9" type="stmt"/>
+        <line num="82" count="9" type="stmt"/>
+        <line num="83" count="9" type="stmt"/>
+        <line num="84" count="9" type="stmt"/>
+        <line num="85" count="9" type="stmt"/>
+        <line num="89" count="10" type="stmt"/>
+        <line num="93" count="0" type="stmt"/>
+        <line num="97" count="0" type="stmt"/>
+        <line num="101" count="0" type="stmt"/>
+        <line num="105" count="0" type="stmt"/>
+        <line num="109" count="0" type="stmt"/>
+        <line num="113" count="0" type="stmt"/>
+        <line num="117" count="157" type="stmt"/>
+        <line num="121" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="122" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="123" count="0" type="stmt"/>
+        <line num="124" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="125" count="0" type="stmt"/>
+        <line num="128" count="0" type="stmt"/>
+        <line num="132" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="133" count="0" type="stmt"/>
+        <line num="135" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="136" count="0" type="stmt"/>
+        <line num="138" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="139" count="0" type="stmt"/>
+        <line num="141" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="142" count="0" type="stmt"/>
+        <line num="144" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="145" count="0" type="stmt"/>
+        <line num="147" count="0" type="stmt"/>
+        <line num="150" count="27" type="stmt"/>
+        <line num="151" count="27" type="stmt"/>
+        <line num="152" count="27" type="stmt"/>
+        <line num="153" count="27" type="stmt"/>
+        <line num="154" count="27" type="stmt"/>
+        <line num="156" count="27" type="stmt"/>
+        <line num="157" count="27" type="stmt"/>
+        <line num="158" count="27" type="stmt"/>
+        <line num="159" count="27" type="stmt"/>
+        <line num="160" count="27" type="stmt"/>
+      </file>
+      <file name="LineOp.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\parser\logic\line\LineOp.js">
+        <metrics statements="9" coveredstatements="8" conditionals="0" coveredconditionals="0" methods="6" coveredmethods="5"/>
+        <line num="1" count="27" type="stmt"/>
+        <line num="5" count="148" type="stmt"/>
+        <line num="8" count="611" type="stmt"/>
+        <line num="11" count="1971" type="stmt"/>
+        <line num="14" count="131" type="stmt"/>
+        <line num="17" count="2666" type="stmt"/>
+        <line num="20" count="0" type="stmt"/>
+        <line num="23" count="27" type="stmt"/>
+        <line num="25" count="27" type="stmt"/>
+      </file>
+      <file name="LineValue.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\parser\logic\line\LineValue.js">
+        <metrics statements="14" coveredstatements="12" conditionals="0" coveredconditionals="0" methods="7" coveredmethods="5"/>
+        <line num="1" count="28" type="stmt"/>
+        <line num="5" count="540" type="stmt"/>
+        <line num="9" count="0" type="stmt"/>
+        <line num="13" count="0" type="stmt"/>
+        <line num="17" count="2" type="stmt"/>
+        <line num="21" count="183" type="stmt"/>
+        <line num="25" count="5615" type="stmt"/>
+        <line num="29" count="2" type="stmt"/>
+        <line num="33" count="28" type="stmt"/>
+        <line num="34" count="28" type="stmt"/>
+        <line num="35" count="28" type="stmt"/>
+        <line num="36" count="28" type="stmt"/>
+        <line num="37" count="28" type="stmt"/>
+        <line num="39" count="28" type="stmt"/>
+      </file>
+    </package>
+    <package name="parser.logic.line.call">
+      <metrics statements="463" coveredstatements="445" conditionals="321" coveredconditionals="298" methods="59" coveredmethods="52"/>
+      <file name="CallArray.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\parser\logic\line\call\CallArray.js">
+        <metrics statements="149" coveredstatements="147" conditionals="126" coveredconditionals="120" methods="10" coveredmethods="10"/>
+        <line num="2" count="27" type="stmt"/>
+        <line num="6" count="33" type="stmt"/>
+        <line num="8" count="33" type="stmt"/>
+        <line num="12" count="33" type="stmt"/>
+        <line num="13" count="33" type="stmt"/>
+        <line num="14" count="33" type="cond" truecount="2" falsecount="0"/>
+        <line num="15" count="2" type="stmt"/>
+        <line num="17" count="33" type="stmt"/>
+        <line num="18" count="33" type="stmt"/>
+        <line num="19" count="33" type="stmt"/>
+        <line num="20" count="33" type="stmt"/>
+        <line num="21" count="33" type="stmt"/>
+        <line num="22" count="33" type="stmt"/>
+        <line num="23" count="33" type="cond" truecount="4" falsecount="0"/>
+        <line num="24" count="18" type="cond" truecount="2" falsecount="0"/>
+        <line num="25" count="1" type="stmt"/>
+        <line num="26" count="1" type="stmt"/>
+        <line num="27" count="17" type="cond" truecount="4" falsecount="0"/>
+        <line num="28" count="1" type="stmt"/>
+        <line num="29" count="1" type="stmt"/>
+        <line num="33" count="31" type="stmt"/>
+        <line num="34" count="31" type="stmt"/>
+        <line num="35" count="31" type="cond" truecount="2" falsecount="0"/>
+        <line num="36" count="79" type="stmt"/>
+        <line num="37" count="79" type="cond" truecount="5" falsecount="0"/>
+        <line num="38" count="40" type="stmt"/>
+        <line num="39" count="40" type="stmt"/>
+        <line num="40" count="39" type="cond" truecount="5" falsecount="0"/>
+        <line num="41" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="42" count="2" type="stmt"/>
+        <line num="44" count="33" type="cond" truecount="4" falsecount="0"/>
+        <line num="45" count="10" type="cond" truecount="2" falsecount="0"/>
+        <line num="46" count="1" type="stmt"/>
+        <line num="48" count="9" type="stmt"/>
+        <line num="49" count="9" type="stmt"/>
+        <line num="51" count="23" type="cond" truecount="4" falsecount="0"/>
+        <line num="52" count="10" type="stmt"/>
+        <line num="53" count="10" type="stmt"/>
+        <line num="54" count="10" type="stmt"/>
+        <line num="55" count="10" type="cond" truecount="4" falsecount="0"/>
+        <line num="56" count="3" type="stmt"/>
+        <line num="58" count="7" type="stmt"/>
+        <line num="59" count="7" type="stmt"/>
+        <line num="61" count="13" type="cond" truecount="4" falsecount="0"/>
+        <line num="62" count="9" type="stmt"/>
+        <line num="63" count="9" type="stmt"/>
+        <line num="64" count="4" type="cond" truecount="3" falsecount="1"/>
+        <line num="65" count="4" type="cond" truecount="4" falsecount="0"/>
+        <line num="66" count="2" type="stmt"/>
+        <line num="67" count="2" type="stmt"/>
+        <line num="68" count="2" type="stmt"/>
+        <line num="69" count="2" type="stmt"/>
+        <line num="70" count="2" type="stmt"/>
+        <line num="72" count="2" type="stmt"/>
+        <line num="74" count="79" type="stmt"/>
+        <line num="75" count="79" type="stmt"/>
+        <line num="77" count="31" type="cond" truecount="2" falsecount="0"/>
+        <line num="78" count="21" type="cond" truecount="4" falsecount="0"/>
+        <line num="79" count="8" type="stmt"/>
+        <line num="81" count="13" type="stmt"/>
+        <line num="82" count="13" type="stmt"/>
+        <line num="85" count="10" type="cond" truecount="2" falsecount="0"/>
+        <line num="86" count="7" type="stmt"/>
+        <line num="87" count="7" type="stmt"/>
+        <line num="88" count="7" type="stmt"/>
+        <line num="90" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="91" count="1" type="stmt"/>
+        <line num="95" count="31" type="stmt"/>
+        <line num="99" count="31" type="stmt"/>
+        <line num="100" count="31" type="stmt"/>
+        <line num="101" count="40" type="cond" truecount="2" falsecount="0"/>
+        <line num="102" count="29" type="stmt"/>
+        <line num="104" count="11" type="cond" truecount="2" falsecount="0"/>
+        <line num="105" count="3" type="stmt"/>
+        <line num="109" count="31" type="cond" truecount="2" falsecount="0"/>
+        <line num="110" count="2" type="stmt"/>
+        <line num="112" count="31" type="stmt"/>
+        <line num="113" count="40" type="cond" truecount="4" falsecount="0"/>
+        <line num="114" count="29" type="stmt"/>
+        <line num="115" count="29" type="cond" truecount="4" falsecount="0"/>
+        <line num="116" count="1" type="stmt"/>
+        <line num="119" count="40" type="cond" truecount="2" falsecount="0"/>
+        <line num="120" count="9" type="stmt"/>
+        <line num="121" count="9" type="cond" truecount="4" falsecount="0"/>
+        <line num="122" count="1" type="stmt"/>
+        <line num="125" count="40" type="cond" truecount="2" falsecount="0"/>
+        <line num="126" count="11" type="stmt"/>
+        <line num="127" count="17" type="cond" truecount="4" falsecount="0"/>
+        <line num="128" count="1" type="stmt"/>
+        <line num="136" count="3" type="stmt"/>
+        <line num="137" count="3" type="cond" truecount="4" falsecount="1"/>
+        <line num="138" count="0" type="stmt"/>
+        <line num="143" count="25" type="stmt"/>
+        <line num="150" count="40" type="stmt"/>
+        <line num="151" count="40" type="cond" truecount="2" falsecount="0"/>
+        <line num="153" count="31" type="cond" truecount="2" falsecount="0"/>
+        <line num="154" count="11" type="stmt"/>
+        <line num="156" count="20" type="stmt"/>
+        <line num="159" count="9" type="stmt"/>
+        <line num="164" count="11" type="stmt"/>
+        <line num="165" count="11" type="stmt"/>
+        <line num="166" count="11" type="stmt"/>
+        <line num="167" count="11" type="stmt"/>
+        <line num="168" count="11" type="cond" truecount="2" falsecount="0"/>
+        <line num="169" count="1" type="stmt"/>
+        <line num="172" count="11" type="stmt"/>
+        <line num="173" count="11" type="stmt"/>
+        <line num="174" count="11" type="stmt"/>
+        <line num="175" count="11" type="stmt"/>
+        <line num="176" count="11" type="stmt"/>
+        <line num="177" count="11" type="cond" truecount="2" falsecount="0"/>
+        <line num="178" count="27" type="cond" truecount="5" falsecount="0"/>
+        <line num="179" count="17" type="stmt"/>
+        <line num="180" count="17" type="stmt"/>
+        <line num="181" count="17" type="stmt"/>
+        <line num="182" count="10" type="cond" truecount="4" falsecount="0"/>
+        <line num="183" count="3" type="stmt"/>
+        <line num="184" count="7" type="cond" truecount="3" falsecount="1"/>
+        <line num="185" count="7" type="stmt"/>
+        <line num="186" count="7" type="stmt"/>
+        <line num="187" count="7" type="cond" truecount="1" falsecount="1"/>
+        <line num="188" count="7" type="stmt"/>
+        <line num="190" count="7" type="stmt"/>
+        <line num="191" count="7" type="stmt"/>
+        <line num="193" count="0" type="stmt"/>
+        <line num="195" count="27" type="stmt"/>
+        <line num="196" count="27" type="stmt"/>
+        <line num="198" count="11" type="cond" truecount="2" falsecount="0"/>
+        <line num="199" count="10" type="stmt"/>
+        <line num="200" count="10" type="cond" truecount="1" falsecount="1"/>
+        <line num="201" count="10" type="stmt"/>
+        <line num="203" count="1" type="cond" truecount="1" falsecount="1"/>
+        <line num="204" count="1" type="stmt"/>
+        <line num="209" count="20" type="stmt"/>
+        <line num="210" count="20" type="stmt"/>
+        <line num="211" count="20" type="stmt"/>
+        <line num="215" count="9" type="stmt"/>
+        <line num="216" count="9" type="stmt"/>
+        <line num="217" count="9" type="stmt"/>
+        <line num="221" count="180" type="cond" truecount="2" falsecount="0"/>
+        <line num="222" count="55" type="stmt"/>
+        <line num="224" count="125" type="cond" truecount="2" falsecount="0"/>
+        <line num="225" count="45" type="stmt"/>
+        <line num="227" count="80" type="stmt"/>
+        <line num="231" count="27" type="stmt"/>
+        <line num="232" count="27" type="stmt"/>
+        <line num="233" count="27" type="stmt"/>
+        <line num="234" count="27" type="stmt"/>
+        <line num="235" count="27" type="stmt"/>
+      </file>
+      <file name="CallField.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\parser\logic\line\call\CallField.js">
+        <metrics statements="12" coveredstatements="10" conditionals="7" coveredconditionals="6" methods="5" coveredmethods="4"/>
+        <line num="1" count="27" type="stmt"/>
+        <line num="6" count="304" type="stmt"/>
+        <line num="7" count="304" type="stmt"/>
+        <line num="11" count="304" type="cond" truecount="2" falsecount="0"/>
+        <line num="12" count="293" type="stmt"/>
+        <line num="17" count="2" type="stmt"/>
+        <line num="21" count="21" type="stmt"/>
+        <line num="22" count="21" type="cond" truecount="4" falsecount="1"/>
+        <line num="23" count="0" type="stmt"/>
+        <line num="28" count="0" type="stmt"/>
+        <line num="32" count="27" type="stmt"/>
+        <line num="33" count="27" type="stmt"/>
+      </file>
+      <file name="CallFunction.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\parser\logic\line\call\CallFunction.js">
+        <metrics statements="65" coveredstatements="63" conditionals="40" coveredconditionals="39" methods="8" coveredmethods="7"/>
+        <line num="2" count="27" type="stmt"/>
+        <line num="6" count="15" type="stmt"/>
+        <line num="8" count="15" type="stmt"/>
+        <line num="9" count="15" type="stmt"/>
+        <line num="10" count="15" type="stmt"/>
+        <line num="11" count="15" type="stmt"/>
+        <line num="12" count="15" type="stmt"/>
+        <line num="14" count="15" type="stmt"/>
+        <line num="15" count="15" type="stmt"/>
+        <line num="19" count="15" type="stmt"/>
+        <line num="20" count="15" type="stmt"/>
+        <line num="21" count="15" type="stmt"/>
+        <line num="22" count="15" type="cond" truecount="2" falsecount="0"/>
+        <line num="23" count="44" type="cond" truecount="4" falsecount="0"/>
+        <line num="24" count="15" type="stmt"/>
+        <line num="25" count="29" type="cond" truecount="4" falsecount="0"/>
+        <line num="26" count="15" type="stmt"/>
+        <line num="27" count="15" type="stmt"/>
+        <line num="28" count="14" type="cond" truecount="4" falsecount="0"/>
+        <line num="29" count="13" type="stmt"/>
+        <line num="30" count="13" type="stmt"/>
+        <line num="32" count="1" type="stmt"/>
+        <line num="34" count="44" type="stmt"/>
+        <line num="35" count="44" type="stmt"/>
+        <line num="37" count="15" type="cond" truecount="2" falsecount="0"/>
+        <line num="38" count="2" type="stmt"/>
+        <line num="43" count="15" type="stmt"/>
+        <line num="44" count="15" type="stmt"/>
+        <line num="45" count="15" type="stmt"/>
+        <line num="46" count="15" type="cond" truecount="2" falsecount="0"/>
+        <line num="47" count="1" type="stmt"/>
+        <line num="50" count="15" type="stmt"/>
+        <line num="51" count="15" type="stmt"/>
+        <line num="52" count="15" type="stmt"/>
+        <line num="53" count="15" type="cond" truecount="2" falsecount="0"/>
+        <line num="54" count="26" type="cond" truecount="5" falsecount="0"/>
+        <line num="55" count="16" type="stmt"/>
+        <line num="56" count="16" type="stmt"/>
+        <line num="57" count="10" type="cond" truecount="4" falsecount="0"/>
+        <line num="58" count="9" type="stmt"/>
+        <line num="60" count="1" type="stmt"/>
+        <line num="62" count="26" type="stmt"/>
+        <line num="63" count="26" type="stmt"/>
+        <line num="66" count="15" type="cond" truecount="2" falsecount="0"/>
+        <line num="67" count="1" type="stmt"/>
+        <line num="70" count="15" type="stmt"/>
+        <line num="71" count="15" type="stmt"/>
+        <line num="72" count="16" type="cond" truecount="2" falsecount="0"/>
+        <line num="73" count="1" type="stmt"/>
+        <line num="79" count="13" type="stmt"/>
+        <line num="80" count="13" type="stmt"/>
+        <line num="81" count="13" type="cond" truecount="2" falsecount="0"/>
+        <line num="82" count="1" type="stmt"/>
+        <line num="87" count="20" type="stmt"/>
+        <line num="91" count="0" type="stmt"/>
+        <line num="95" count="2" type="stmt"/>
+        <line num="99" count="3" type="stmt"/>
+        <line num="100" count="3" type="cond" truecount="4" falsecount="1"/>
+        <line num="101" count="0" type="stmt"/>
+        <line num="106" count="27" type="stmt"/>
+        <line num="107" count="27" type="stmt"/>
+        <line num="108" count="27" type="stmt"/>
+        <line num="109" count="27" type="stmt"/>
+        <line num="110" count="27" type="stmt"/>
+        <line num="111" count="27" type="stmt"/>
+      </file>
+      <file name="CallGroup.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\parser\logic\line\call\CallGroup.js">
+        <metrics statements="19" coveredstatements="18" conditionals="11" coveredconditionals="10" methods="4" coveredmethods="4"/>
+        <line num="2" count="27" type="stmt"/>
+        <line num="6" count="9" type="stmt"/>
+        <line num="8" count="9" type="stmt"/>
+        <line num="11" count="9" type="stmt"/>
+        <line num="12" count="9" type="stmt"/>
+        <line num="13" count="9" type="cond" truecount="2" falsecount="0"/>
+        <line num="14" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="15" count="1" type="stmt"/>
+        <line num="17" count="2" type="stmt"/>
+        <line num="19" count="7" type="stmt"/>
+        <line num="20" count="7" type="cond" truecount="2" falsecount="0"/>
+        <line num="21" count="1" type="stmt"/>
+        <line num="27" count="4" type="stmt"/>
+        <line num="31" count="3" type="stmt"/>
+        <line num="32" count="3" type="cond" truecount="4" falsecount="1"/>
+        <line num="33" count="0" type="stmt"/>
+        <line num="38" count="27" type="stmt"/>
+        <line num="39" count="27" type="stmt"/>
+        <line num="40" count="27" type="stmt"/>
+      </file>
+      <file name="CallIndexer.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\parser\logic\line\call\CallIndexer.js">
+        <metrics statements="47" coveredstatements="46" conditionals="34" coveredconditionals="31" methods="4" coveredmethods="4"/>
+        <line num="2" count="27" type="stmt"/>
+        <line num="6" count="21" type="stmt"/>
+        <line num="8" count="21" type="stmt"/>
+        <line num="12" count="21" type="stmt"/>
+        <line num="13" count="21" type="stmt"/>
+        <line num="14" count="21" type="cond" truecount="2" falsecount="0"/>
+        <line num="15" count="2" type="stmt"/>
+        <line num="18" count="21" type="stmt"/>
+        <line num="19" count="21" type="stmt"/>
+        <line num="20" count="21" type="stmt"/>
+        <line num="21" count="21" type="stmt"/>
+        <line num="22" count="21" type="stmt"/>
+        <line num="23" count="21" type="cond" truecount="2" falsecount="0"/>
+        <line num="24" count="33" type="cond" truecount="5" falsecount="0"/>
+        <line num="25" count="24" type="stmt"/>
+        <line num="26" count="24" type="stmt"/>
+        <line num="27" count="24" type="stmt"/>
+        <line num="28" count="9" type="cond" truecount="4" falsecount="0"/>
+        <line num="29" count="2" type="stmt"/>
+        <line num="30" count="7" type="cond" truecount="4" falsecount="0"/>
+        <line num="31" count="6" type="stmt"/>
+        <line num="32" count="6" type="stmt"/>
+        <line num="33" count="6" type="cond" truecount="1" falsecount="1"/>
+        <line num="34" count="6" type="stmt"/>
+        <line num="36" count="6" type="stmt"/>
+        <line num="37" count="6" type="stmt"/>
+        <line num="39" count="1" type="stmt"/>
+        <line num="41" count="33" type="stmt"/>
+        <line num="42" count="33" type="stmt"/>
+        <line num="45" count="21" type="cond" truecount="2" falsecount="0"/>
+        <line num="46" count="18" type="stmt"/>
+        <line num="47" count="18" type="cond" truecount="1" falsecount="1"/>
+        <line num="48" count="18" type="stmt"/>
+        <line num="50" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="51" count="2" type="stmt"/>
+        <line num="54" count="21" type="cond" truecount="2" falsecount="0"/>
+        <line num="55" count="1" type="stmt"/>
+        <line num="56" count="20" type="cond" truecount="2" falsecount="0"/>
+        <line num="57" count="1" type="stmt"/>
+        <line num="62" count="3" type="stmt"/>
+        <line num="63" count="3" type="cond" truecount="4" falsecount="1"/>
+        <line num="64" count="0" type="stmt"/>
+        <line num="69" count="9" type="stmt"/>
+        <line num="73" count="27" type="stmt"/>
+        <line num="74" count="27" type="stmt"/>
+        <line num="75" count="27" type="stmt"/>
+        <line num="76" count="27" type="stmt"/>
+      </file>
+      <file name="CallMethod.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\parser\logic\line\call\CallMethod.js">
+        <metrics statements="43" coveredstatements="42" conditionals="30" coveredconditionals="27" methods="4" coveredmethods="4"/>
+        <line num="2" count="27" type="stmt"/>
+        <line num="6" count="29" type="stmt"/>
+        <line num="8" count="29" type="stmt"/>
+        <line num="12" count="29" type="stmt"/>
+        <line num="13" count="29" type="stmt"/>
+        <line num="14" count="29" type="cond" truecount="2" falsecount="0"/>
+        <line num="15" count="4" type="stmt"/>
+        <line num="18" count="29" type="stmt"/>
+        <line num="19" count="29" type="stmt"/>
+        <line num="20" count="29" type="stmt"/>
+        <line num="21" count="29" type="stmt"/>
+        <line num="22" count="29" type="stmt"/>
+        <line num="23" count="29" type="cond" truecount="2" falsecount="0"/>
+        <line num="24" count="29" type="cond" truecount="5" falsecount="0"/>
+        <line num="25" count="14" type="stmt"/>
+        <line num="26" count="14" type="stmt"/>
+        <line num="27" count="14" type="stmt"/>
+        <line num="28" count="15" type="cond" truecount="4" falsecount="0"/>
+        <line num="29" count="2" type="stmt"/>
+        <line num="30" count="13" type="cond" truecount="4" falsecount="0"/>
+        <line num="31" count="8" type="stmt"/>
+        <line num="32" count="8" type="stmt"/>
+        <line num="33" count="8" type="cond" truecount="1" falsecount="1"/>
+        <line num="34" count="8" type="stmt"/>
+        <line num="36" count="8" type="stmt"/>
+        <line num="37" count="8" type="stmt"/>
+        <line num="39" count="5" type="stmt"/>
+        <line num="41" count="29" type="stmt"/>
+        <line num="42" count="29" type="stmt"/>
+        <line num="44" count="29" type="cond" truecount="2" falsecount="0"/>
+        <line num="45" count="6" type="stmt"/>
+        <line num="46" count="6" type="cond" truecount="1" falsecount="1"/>
+        <line num="47" count="6" type="stmt"/>
+        <line num="49" count="23" type="cond" truecount="2" falsecount="0"/>
+        <line num="50" count="2" type="stmt"/>
+        <line num="55" count="13" type="stmt"/>
+        <line num="59" count="3" type="stmt"/>
+        <line num="60" count="3" type="cond" truecount="4" falsecount="1"/>
+        <line num="61" count="0" type="stmt"/>
+        <line num="66" count="27" type="stmt"/>
+        <line num="67" count="27" type="stmt"/>
+        <line num="68" count="27" type="stmt"/>
+        <line num="69" count="27" type="stmt"/>
+      </file>
+      <file name="CallStruct.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\parser\logic\line\call\CallStruct.js">
+        <metrics statements="48" coveredstatements="47" conditionals="39" coveredconditionals="38" methods="5" coveredmethods="5"/>
+        <line num="2" count="27" type="stmt"/>
+        <line num="6" count="16" type="stmt"/>
+        <line num="8" count="16" type="stmt"/>
+        <line num="12" count="16" type="stmt"/>
+        <line num="13" count="16" type="stmt"/>
+        <line num="14" count="16" type="cond" truecount="2" falsecount="0"/>
+        <line num="15" count="1" type="stmt"/>
+        <line num="18" count="16" type="stmt"/>
+        <line num="19" count="16" type="stmt"/>
+        <line num="20" count="16" type="stmt"/>
+        <line num="21" count="16" type="stmt"/>
+        <line num="22" count="16" type="stmt"/>
+        <line num="23" count="16" type="cond" truecount="2" falsecount="0"/>
+        <line num="24" count="58" type="cond" truecount="5" falsecount="0"/>
+        <line num="25" count="16" type="stmt"/>
+        <line num="26" count="16" type="stmt"/>
+        <line num="27" count="42" type="cond" truecount="5" falsecount="0"/>
+        <line num="28" count="1" type="stmt"/>
+        <line num="29" count="1" type="stmt"/>
+        <line num="30" count="1" type="stmt"/>
+        <line num="31" count="41" type="cond" truecount="4" falsecount="0"/>
+        <line num="32" count="16" type="stmt"/>
+        <line num="33" count="25" type="cond" truecount="4" falsecount="0"/>
+        <line num="34" count="15" type="stmt"/>
+        <line num="35" count="15" type="stmt"/>
+        <line num="36" count="10" type="cond" truecount="4" falsecount="0"/>
+        <line num="38" count="4" type="cond" truecount="4" falsecount="0"/>
+        <line num="39" count="3" type="stmt"/>
+        <line num="40" count="3" type="stmt"/>
+        <line num="41" count="3" type="stmt"/>
+        <line num="43" count="1" type="stmt"/>
+        <line num="45" count="58" type="stmt"/>
+        <line num="46" count="58" type="stmt"/>
+        <line num="49" count="16" type="cond" truecount="2" falsecount="0"/>
+        <line num="50" count="12" type="stmt"/>
+        <line num="51" count="12" type="stmt"/>
+        <line num="53" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="54" count="3" type="stmt"/>
+        <line num="59" count="3" type="stmt"/>
+        <line num="60" count="3" type="cond" truecount="4" falsecount="1"/>
+        <line num="61" count="0" type="stmt"/>
+        <line num="66" count="10" type="stmt"/>
+        <line num="72" count="15" type="stmt"/>
+        <line num="73" count="15" type="stmt"/>
+        <line num="77" count="27" type="stmt"/>
+        <line num="78" count="27" type="stmt"/>
+        <line num="79" count="27" type="stmt"/>
+        <line num="80" count="27" type="stmt"/>
+      </file>
+      <file name="CallValue.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\parser\logic\line\call\CallValue.js">
+        <metrics statements="55" coveredstatements="48" conditionals="34" coveredconditionals="27" methods="9" coveredmethods="6"/>
+        <line num="2" count="28" type="stmt"/>
+        <line num="6" count="142" type="stmt"/>
+        <line num="8" count="142" type="stmt"/>
+        <line num="9" count="142" type="stmt"/>
+        <line num="10" count="142" type="stmt"/>
+        <line num="14" count="142" type="cond" truecount="2" falsecount="0"/>
+        <line num="15" count="4" type="stmt"/>
+        <line num="16" count="4" type="stmt"/>
+        <line num="17" count="4" type="stmt"/>
+        <line num="18" count="4" type="stmt"/>
+        <line num="19" count="4" type="stmt"/>
+        <line num="20" count="4" type="stmt"/>
+        <line num="21" count="29" type="stmt"/>
+        <line num="22" count="29" type="cond" truecount="1" falsecount="1"/>
+        <line num="23" count="0" type="stmt"/>
+        <line num="24" count="0" type="stmt"/>
+        <line num="25" count="29" type="cond" truecount="2" falsecount="0"/>
+        <line num="26" count="4" type="stmt"/>
+        <line num="27" count="25" type="cond" truecount="2" falsecount="0"/>
+        <line num="28" count="1" type="stmt"/>
+        <line num="29" count="24" type="cond" truecount="4" falsecount="0"/>
+        <line num="30" count="2" type="stmt"/>
+        <line num="32" count="29" type="cond" truecount="1" falsecount="1"/>
+        <line num="33" count="0" type="stmt"/>
+        <line num="36" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="37" count="2" type="stmt"/>
+        <line num="38" count="2" type="stmt"/>
+        <line num="40" count="2" type="stmt"/>
+        <line num="42" count="138" type="cond" truecount="2" falsecount="0"/>
+        <line num="43" count="81" type="stmt"/>
+        <line num="44" count="81" type="cond" truecount="2" falsecount="0"/>
+        <line num="45" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="46" count="1" type="stmt"/>
+        <line num="48" count="1" type="stmt"/>
+        <line num="50" count="79" type="cond" truecount="2" falsecount="0"/>
+        <line num="51" count="78" type="stmt"/>
+        <line num="53" count="1" type="stmt"/>
+        <line num="55" count="57" type="cond" truecount="2" falsecount="0"/>
+        <line num="56" count="53" type="stmt"/>
+        <line num="58" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="59" count="2" type="stmt"/>
+        <line num="61" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="62" count="2" type="stmt"/>
+        <line num="67" count="11" type="stmt"/>
+        <line num="71" count="11" type="stmt"/>
+        <line num="75" count="11" type="stmt"/>
+        <line num="79" count="0" type="stmt"/>
+        <line num="80" count="0" type="stmt"/>
+        <line num="84" count="0" type="cond" truecount="0" falsecount="4"/>
+        <line num="88" count="0" type="stmt"/>
+        <line num="93" count="79" type="stmt"/>
+        <line num="96" count="28" type="stmt"/>
+        <line num="97" count="28" type="stmt"/>
+        <line num="98" count="28" type="stmt"/>
+        <line num="99" count="28" type="stmt"/>
+      </file>
+      <file name="LineCall.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\parser\logic\line\call\LineCall.js">
+        <metrics statements="25" coveredstatements="24" conditionals="0" coveredconditionals="0" methods="10" coveredmethods="8"/>
+        <line num="5" count="569" type="stmt"/>
+        <line num="6" count="569" type="stmt"/>
+        <line num="8" count="569" type="stmt"/>
+        <line num="9" count="569" type="stmt"/>
+        <line num="10" count="569" type="stmt"/>
+        <line num="14" count="39" type="stmt"/>
+        <line num="15" count="39" type="stmt"/>
+        <line num="19" count="734" type="stmt"/>
+        <line num="23" count="39" type="stmt"/>
+        <line num="27" count="304" type="stmt"/>
+        <line num="31" count="229" type="stmt"/>
+        <line num="35" count="1559" type="stmt"/>
+        <line num="39" count="899" type="stmt"/>
+        <line num="43" count="0" type="stmt"/>
+        <line num="51" count="28" type="stmt"/>
+        <line num="52" count="28" type="stmt"/>
+        <line num="53" count="28" type="stmt"/>
+        <line num="54" count="28" type="stmt"/>
+        <line num="55" count="28" type="stmt"/>
+        <line num="56" count="28" type="stmt"/>
+        <line num="57" count="28" type="stmt"/>
+        <line num="58" count="28" type="stmt"/>
+        <line num="60" count="28" type="stmt"/>
+        <line num="61" count="28" type="stmt"/>
+        <line num="62" count="28" type="stmt"/>
+      </file>
+    </package>
+    <package name="support">
+      <metrics statements="211" coveredstatements="163" conditionals="117" coveredconditionals="83" methods="36" coveredmethods="32"/>
+      <file name="AssertError.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\support\AssertError.js">
+        <metrics statements="11" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="7" coveredmethods="6"/>
+        <line num="3" count="0" type="stmt"/>
+        <line num="4" count="0" type="stmt"/>
+        <line num="8" count="23" type="stmt"/>
+        <line num="12" count="32" type="stmt"/>
+        <line num="16" count="19" type="stmt"/>
+        <line num="20" count="95" type="stmt"/>
+        <line num="24" count="60" type="stmt"/>
+        <line num="28" count="10" type="stmt"/>
+        <line num="29" count="10" type="stmt"/>
+        <line num="30" count="15" type="stmt"/>
+        <line num="34" count="29" type="stmt"/>
+      </file>
+      <file name="ContextSupport.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\support\ContextSupport.js">
+        <metrics statements="33" coveredstatements="15" conditionals="12" coveredconditionals="6" methods="2" coveredmethods="2"/>
+        <line num="5" count="28" type="stmt"/>
+        <line num="6" count="28" type="stmt"/>
+        <line num="7" count="28" type="stmt"/>
+        <line num="8" count="28" type="cond" truecount="1" falsecount="1"/>
+        <line num="9" count="28" type="stmt"/>
+        <line num="10" count="41" type="cond" truecount="1" falsecount="1"/>
+        <line num="11" count="0" type="stmt"/>
+        <line num="12" count="0" type="stmt"/>
+        <line num="16" count="28" type="cond" truecount="1" falsecount="1"/>
+        <line num="17" count="0" type="stmt"/>
+        <line num="18" count="0" type="stmt"/>
+        <line num="19" count="0" type="stmt"/>
+        <line num="21" count="0" type="stmt"/>
+        <line num="22" count="0" type="stmt"/>
+        <line num="23" count="0" type="stmt"/>
+        <line num="25" count="0" type="stmt"/>
+        <line num="30" count="286" type="stmt"/>
+        <line num="31" count="286" type="stmt"/>
+        <line num="32" count="286" type="cond" truecount="1" falsecount="1"/>
+        <line num="33" count="286" type="stmt"/>
+        <line num="34" count="175" type="cond" truecount="1" falsecount="1"/>
+        <line num="35" count="0" type="stmt"/>
+        <line num="36" count="0" type="stmt"/>
+        <line num="40" count="286" type="cond" truecount="1" falsecount="1"/>
+        <line num="41" count="0" type="stmt"/>
+        <line num="42" count="0" type="stmt"/>
+        <line num="43" count="0" type="stmt"/>
+        <line num="45" count="0" type="stmt"/>
+        <line num="46" count="0" type="stmt"/>
+        <line num="47" count="0" type="stmt"/>
+        <line num="49" count="0" type="stmt"/>
+        <line num="54" count="27" type="stmt"/>
+        <line num="55" count="27" type="stmt"/>
+      </file>
+      <file name="LineCallChain.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\support\LineCallChain.js">
+        <metrics statements="52" coveredstatements="44" conditionals="32" coveredconditionals="23" methods="5" coveredmethods="5"/>
+        <line num="1" count="2" type="stmt"/>
+        <line num="2" count="2" type="stmt"/>
+        <line num="3" count="2" type="stmt"/>
+        <line num="4" count="2" type="stmt"/>
+        <line num="5" count="2" type="stmt"/>
+        <line num="9" count="51" type="stmt"/>
+        <line num="13" count="132" type="cond" truecount="2" falsecount="0"/>
+        <line num="14" count="75" type="cond" truecount="4" falsecount="0"/>
+        <line num="15" count="5" type="stmt"/>
+        <line num="17" count="70" type="stmt"/>
+        <line num="20" count="57" type="stmt"/>
+        <line num="22" count="132" type="stmt"/>
+        <line num="26" count="51" type="cond" truecount="2" falsecount="0"/>
+        <line num="27" count="12" type="cond" truecount="1" falsecount="1"/>
+        <line num="28" count="0" type="stmt"/>
+        <line num="30" count="12" type="stmt"/>
+        <line num="31" count="12" type="stmt"/>
+        <line num="32" count="12" type="stmt"/>
+        <line num="34" count="39" type="cond" truecount="2" falsecount="0"/>
+        <line num="35" count="37" type="stmt"/>
+        <line num="36" count="37" type="stmt"/>
+        <line num="38" count="37" type="stmt"/>
+        <line num="39" count="120" type="stmt"/>
+        <line num="40" count="120" type="stmt"/>
+        <line num="41" count="120" type="cond" truecount="2" falsecount="0"/>
+        <line num="42" count="63" type="cond" truecount="1" falsecount="1"/>
+        <line num="43" count="63" type="stmt"/>
+        <line num="45" count="0" type="stmt"/>
+        <line num="47" count="57" type="cond" truecount="2" falsecount="0"/>
+        <line num="48" count="13" type="cond" truecount="1" falsecount="1"/>
+        <line num="49" count="13" type="stmt"/>
+        <line num="51" count="0" type="stmt"/>
+        <line num="53" count="44" type="cond" truecount="1" falsecount="1"/>
+        <line num="54" count="44" type="cond" truecount="1" falsecount="1"/>
+        <line num="55" count="44" type="stmt"/>
+        <line num="57" count="0" type="stmt"/>
+        <line num="61" count="2" type="cond" truecount="1" falsecount="1"/>
+        <line num="62" count="2" type="stmt"/>
+        <line num="64" count="0" type="stmt"/>
+        <line num="69" count="75" type="stmt"/>
+        <line num="70" count="75" type="stmt"/>
+        <line num="71" count="75" type="stmt"/>
+        <line num="72" count="82" type="cond" truecount="1" falsecount="1"/>
+        <line num="73" count="0" type="stmt"/>
+        <line num="75" count="82" type="cond" truecount="1" falsecount="1"/>
+        <line num="76" count="0" type="stmt"/>
+        <line num="78" count="82" type="stmt"/>
+        <line num="79" count="82" type="stmt"/>
+        <line num="81" count="75" type="cond" truecount="1" falsecount="1"/>
+        <line num="82" count="0" type="stmt"/>
+        <line num="87" count="49" type="stmt"/>
+        <line num="91" count="2" type="stmt"/>
+      </file>
+      <file name="TokenChain.js" path="D:\Github\Flat.Simplex\SimplexApp\simplex\support\TokenChain.js">
+        <metrics statements="115" coveredstatements="95" conditionals="73" coveredconditionals="54" methods="22" coveredmethods="19"/>
+        <line num="8" count="630" type="stmt"/>
+        <line num="9" count="630" type="stmt"/>
+        <line num="13" count="197" type="cond" truecount="2" falsecount="0"/>
+        <line num="14" count="86" type="stmt"/>
+        <line num="15" count="86" type="stmt"/>
+        <line num="17" count="111" type="stmt"/>
+        <line num="18" count="111" type="stmt"/>
+        <line num="20" count="197" type="stmt"/>
+        <line num="21" count="197" type="stmt"/>
+        <line num="22" count="199" type="stmt"/>
+        <line num="23" count="199" type="stmt"/>
+        <line num="28" count="999" type="stmt"/>
+        <line num="32" count="28" type="stmt"/>
+        <line num="33" count="28" type="cond" truecount="8" falsecount="0"/>
+        <line num="36" count="22" type="stmt"/>
+        <line num="38" count="28" type="stmt"/>
+        <line num="42" count="60" type="stmt"/>
+        <line num="43" count="60" type="stmt"/>
+        <line num="47" count="1943" type="stmt"/>
+        <line num="49" count="1943" type="cond" truecount="2" falsecount="0"/>
+        <line num="50" count="201" type="stmt"/>
+        <line num="51" count="201" type="cond" truecount="1" falsecount="1"/>
+        <line num="52" count="201" type="stmt"/>
+        <line num="53" count="201" type="stmt"/>
+        <line num="54" count="154" type="stmt"/>
+        <line num="56" count="201" type="stmt"/>
+        <line num="60" count="1943" type="stmt"/>
+        <line num="61" count="1943" type="stmt"/>
+        <line num="62" count="1943" type="stmt"/>
+        <line num="63" count="1682" type="stmt"/>
+        <line num="64" count="1682" type="stmt"/>
+        <line num="65" count="1682" type="stmt"/>
+        <line num="66" count="1682" type="stmt"/>
+        <line num="68" count="1943" type="stmt"/>
+        <line num="72" count="66" type="stmt"/>
+        <line num="73" count="66" type="stmt"/>
+        <line num="77" count="3" type="stmt"/>
+        <line num="78" count="3" type="stmt"/>
+        <line num="82" count="58" type="stmt"/>
+        <line num="83" count="58" type="stmt"/>
+        <line num="87" count="7" type="stmt"/>
+        <line num="88" count="7" type="stmt"/>
+        <line num="92" count="3" type="stmt"/>
+        <line num="93" count="3" type="stmt"/>
+        <line num="94" count="3" type="stmt"/>
+        <line num="98" count="544" type="stmt"/>
+        <line num="99" count="544" type="stmt"/>
+        <line num="100" count="544" type="stmt"/>
+        <line num="101" count="544" type="stmt"/>
+        <line num="102" count="1577" type="stmt"/>
+        <line num="103" count="1577" type="stmt"/>
+        <line num="105" count="544" type="stmt"/>
+        <line num="109" count="86" type="cond" truecount="2" falsecount="0"/>
+        <line num="110" count="23" type="stmt"/>
+        <line num="111" count="63" type="cond" truecount="1" falsecount="1"/>
+        <line num="112" count="0" type="stmt"/>
+        <line num="113" count="63" type="cond" truecount="2" falsecount="0"/>
+        <line num="114" count="1" type="stmt"/>
+        <line num="116" count="62" type="stmt"/>
+        <line num="121" count="58" type="cond" truecount="1" falsecount="1"/>
+        <line num="123" count="58" type="cond" truecount="3" falsecount="1"/>
+        <line num="124" count="58" type="cond" truecount="3" falsecount="1"/>
+        <line num="125" count="0" type="stmt"/>
+        <line num="127" count="58" type="cond" truecount="4" falsecount="0"/>
+        <line num="128" count="50" type="stmt"/>
+        <line num="131" count="58" type="cond" truecount="1" falsecount="1"/>
+        <line num="132" count="0" type="stmt"/>
+        <line num="137" count="33" type="stmt"/>
+        <line num="141" count="38" type="stmt"/>
+        <line num="142" count="38" type="stmt"/>
+        <line num="146" count="155" type="cond" truecount="1" falsecount="1"/>
+        <line num="147" count="155" type="stmt"/>
+        <line num="148" count="155" type="stmt"/>
+        <line num="149" count="155" type="cond" truecount="2" falsecount="0"/>
+        <line num="150" count="473" type="cond" truecount="3" falsecount="1"/>
+        <line num="151" count="0" type="stmt"/>
+        <line num="153" count="473" type="cond" truecount="4" falsecount="0"/>
+        <line num="154" count="72" type="stmt"/>
+        <line num="156" count="473" type="stmt"/>
+        <line num="157" count="473" type="stmt"/>
+        <line num="159" count="155" type="cond" truecount="1" falsecount="1"/>
+        <line num="160" count="0" type="stmt"/>
+        <line num="165" count="155" type="cond" truecount="3" falsecount="0"/>
+        <line num="167" count="33" type="stmt"/>
+        <line num="169" count="38" type="stmt"/>
+        <line num="171" count="84" type="stmt"/>
+        <line num="176" count="131" type="stmt"/>
+        <line num="177" count="131" type="stmt"/>
+        <line num="178" count="131" type="cond" truecount="2" falsecount="0"/>
+        <line num="179" count="318" type="cond" truecount="3" falsecount="1"/>
+        <line num="180" count="0" type="stmt"/>
+        <line num="182" count="318" type="cond" truecount="4" falsecount="0"/>
+        <line num="183" count="9" type="stmt"/>
+        <line num="185" count="318" type="stmt"/>
+        <line num="186" count="318" type="stmt"/>
+        <line num="188" count="131" type="cond" truecount="1" falsecount="1"/>
+        <line num="189" count="0" type="stmt"/>
+        <line num="194" count="0" type="stmt"/>
+        <line num="198" count="0" type="stmt"/>
+        <line num="199" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="200" count="0" type="stmt"/>
+        <line num="201" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="202" count="0" type="stmt"/>
+        <line num="204" count="0" type="stmt"/>
+        <line num="205" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="206" count="0" type="stmt"/>
+        <line num="209" count="0" type="stmt"/>
+        <line num="213" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="215" count="0" type="stmt"/>
+        <line num="217" count="0" type="stmt"/>
+        <line num="222" count="29" type="stmt"/>
+        <line num="223" count="29" type="stmt"/>
+        <line num="224" count="29" type="stmt"/>
+        <line num="225" count="29" type="stmt"/>
+        <line num="226" count="29" type="stmt"/>
+      </file>
+    </package>
+  </project>
+</coverage>

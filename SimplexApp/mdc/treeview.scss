@@ -1,0 +1,194 @@
+@use "colors";
+@use "main";
+@use "buttons";
+
+.tree-view {
+    overflow-y: hidden;
+    overflow-x: auto;
+    position: relative;
+    flex-grow: 1;
+    max-height: 100%;
+    background-color: var(--surface-color);
+
+    .no-animation {
+        transition: none !important;
+    }
+
+    .tree-item {
+        @extend %hbox;
+        justify-content: start;
+        align-items: center;
+        padding: 0 16px 0 8px;
+        position: relative;
+        overflow: hidden;
+        transition: background-color 0.25s ease-in,
+                    color 0.25s ease-in;
+
+        width: 100%;
+        height: 48px;
+        background-color: colors.$color-white;
+        user-select: none;
+        font-weight: 400;
+
+        &:not(.empty, .selected):hover {
+            background-color: var(--surface-an-color);
+        }
+
+        &.selected {
+            background-color : var(--surface-an-color-dark-a0);
+        }
+
+        > span {
+            min-width: 128px;
+            width: 100%;
+            height: 48px;
+            line-height: 48px;
+            flex-grow: 1;
+        }
+
+        > i {
+            font-size: 18px;
+            padding: 5px;
+            border-radius: 100%;
+        }
+
+        > .left {
+            margin-right: 8px;
+
+            color: var(--surface-color);
+            background-color : var(--on-surface-color-a1);
+        }
+
+        > .right {
+            opacity: 0;
+            font-size: 18px;
+            padding: 0;
+
+            color: var(--on-surface-color-a0);
+        }
+
+        > .right.folder {
+            opacity: 1;
+            cursor: pointer;
+        }
+
+        > .left.primary {
+            color : var(--pr-color);
+            background-color: var(--surface-color);
+        }
+
+        > .left.secondary {
+            color : var(--sc-color);
+            background-color: var(--surface-color);
+        }
+
+        > .left.on-primary {
+            color : var(--on-primary-color);
+            background-color: var(--pr-color);
+        }
+
+        > .left.on-secondary {
+            color : var(--on-secondary-color);
+            background-color: var(--sc-color);
+        }
+
+        .ripple {
+            background-color : var(--surface-an-color-dark-a0);
+        }
+
+        &.drag {
+            display: none;
+            opacity: 0.5;
+            background-color: var(--surface-an-color);
+        }
+
+        &.drag.dragged {
+            display: flex;
+            opacity: 0.85;
+            border-radius: 0px;
+            background-color: var(--surface-color);
+            box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.14);
+            z-index: 4;
+            cursor: grabbing;
+            width: 100%;
+        }
+
+        &.negative, &.empty {
+            i, span {
+                display: none;
+            }
+            > .ripple {
+                display: none;
+            }
+            background-color: var(--surface-color);
+        }
+        &.negative {
+            box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.14);
+        }
+    }
+
+    .tree-content {
+        position: relative;
+        top : 0;
+        min-width: fit-content;
+        width: 100%;
+    }
+
+    .tree-drop-line {
+        display: none;
+        position: absolute;
+        top: 0;
+        height: 4px;
+        background-color: var(--pr-color);
+        z-index: 0;
+
+        &.dragged {
+            display: flex;
+        }
+    }
+
+    .ident {
+        @extend %hbox;
+        height: 100%;
+        align-items: start;
+    }
+    .ident .line {
+        width: 1px;
+        height: 100%;
+        background-color: var(--on-surface-color-a1);
+        margin-left: 35px;
+        margin-right: 0;
+    }
+    .ident .line.end {
+        height: 60%;
+    }
+}
+
+.tree-view.dense {
+    .tree-item {
+        height: 36px;
+
+        > span {
+            height: 36px;
+            line-height: 36px;
+        }
+
+        > i {
+            font-size: 16px;
+            padding: 4px;
+            border-radius: 100%;
+        }
+
+        > .right {
+            font-size: 16px;
+            padding: 0;
+        }
+        .ident .line {
+            margin-left: 27px;
+        }
+    }
+    .tree-drop-line {
+        margin-left: calc(var(--drop-ident) * 28px);
+        width: calc(100% - var(--drop-ident) * 28px);
+    }
+}

@@ -85,9 +85,9 @@ class CallValueTest {
 
     @Test
     public void loadComplex() {
-        TokenChain chain = readChain("123.456e+2");
+        TokenChain chain = readChain("123.456e+2"); // -123.52    -123.52e-523
         Context context = new Context(chain.get());
-        CallValue value = new CallValue(context, chain.get());
+        CallValue value = new CallValue(context, chain.get()); // 1123   1123e52  +1123e52
         value.load();
 
         assertEquals(123.456e+2D,value.getDoubleValue(), "Invalid value");

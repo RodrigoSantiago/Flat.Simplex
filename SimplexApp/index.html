@@ -1,21 +1,75 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'"
-    />
-    <meta
-      http-equiv="X-Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'"
-    />
-    <title>Hello from Electron renderer!</title>
-  </head>
-  <body>
-    <h1>Hello from Electron renderer!</h1>
-    <p>👋</p>
-    <p id="info"></p>
-  </body>
-  <script src="./renderer.js"></script>
+    <head>
+        <meta charset="UTF-8" />
+        <!--meta
+            http-equiv="Content-Security-Policy"
+            content="default-src *; script-src 'self'; style-src 'self' https://fonts.googleapis.com/"
+        /!-->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Hello from Electron renderer!</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <!--link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" /-->
+        <link rel="stylesheet" href="index.css">
+    </head>
+    <script src="./libs/jquery-3.6.1.js"></script>
+    <body>
+    <div class="main scrolling">
+        <div class="navigator">
+            <div class="drawer">
+                <div class="drawer-header">
+                    <div class="icon"><img src="icons/VortexDesignIcon.svg"/></div>
+                    <div class="vbox">
+                        <div class="title">Vortex</div>
+                        <div class="subtitle">flatfusion.com/vortex</div></div>
+                </div>
+                <div class="separator"></div>
+            </div>
+        </div>
+        <div class="navigator-split">
+            <div class="toolbar prominent dense">
+                <div class="title"><span>Projeto Exemplo</span></div>
+                <div class="menu"></div>
+            </div>
+            <div class="content">
+                <div class="left-list">
+                    <div class="preview"><div class="preview-dummy"></div></div>
+                    <div class="tree-owner"><div class="tree-view dense"></div></div>
+                    <div id="floating-add" class="button floating secondary dense"><i class="material-icons">add</i></div>
+                    <div class="floating-creation" style="display: none">
+                        <div id="floating-add-sprite" class="button floating mini red"><i class="material-icons">palette</i><div class="tooltip">Sprite</div></div>
+                        <div id="floating-add-sound" class="button floating mini orange"><i class="material-icons">volume_up</i><div class="tooltip">Sound</div></div>
+                        <div id="floating-add-font" class="button floating mini yellow"><i class="material-icons">format_size</i><div class="tooltip">Font</div></div>
+                        <div id="floating-add-script" class="button floating mini green"><i class="material-icons">receipt</i><div class="tooltip">Script</div></div>
+                        <div id="floating-add-object" class="button floating mini blue"><i class="material-icons">center_focus_strong</i><div class="tooltip">Object</div></div>
+                        <div id="floating-add-scene" class="button floating mini purple"><i class="material-icons">dashboard</i><div class="tooltip">Scene</div></div>
+                    </div>
+                </div>
+                <div id="divider_center" class="divider"></div>
+                <div class="negative-floating">
+                    <div class="top-bar">
+                    </div>
+                    <div class="vbox" style="align-items: flex-start; margin: 8px">
+                        <div class="button contained"><span>Button</span></div>
+                        <div class="button contained disabled"><span>Button</span></div>
+                        <div class="button contained primary"><span>Button</span></div>
+                        <div class="button contained primary disabled"><span>Button</span></div>
+                        <div class="button contained secondary"><span>Button</span></div>
+                        <div class="button contained secondary disabled"><span>Button</span></div>
+                        <div class="button text"><span>Button</span></div>
+                        <div class="button text disabled"><span>Button</span></div>
+                        <div class="button text primary"><span>Button</span></div>
+                        <div class="button text primary disabled"><span>Button</span></div>
+                        <div class="button text secondary"><span>Button</span></div>
+                        <div class="button text secondary disabled"><span>Button</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="statusbar"></div>
+        </div>
+    </div>
+
+    </body>
+    <script src="./renderer.js"></script>
+    <script type="module" src="./index.js"></script>
 </html>

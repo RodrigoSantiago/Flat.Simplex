@@ -125,13 +125,13 @@ class BlockElseTest {
     private BlockIf getBlockIf(Context context) {
         TokenChain chain = readChain("if(true);");
 
-        return new BlockIf(null, chain.get(), null);
+        return new BlockIf(context, chain.get(), null);
     }
 
     private BlockElseIf getBlockElseIf(Context context) {
         TokenChain chain = readChain("else if(true);");
 
-        return new BlockElseIf(null, chain.get(), null);
+        return new BlockElseIf(context, chain.get(), null);
     }
 
     private BlockWhile getBlockWhile(Context context) {

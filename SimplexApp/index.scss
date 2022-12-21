@@ -1,0 +1,258 @@
+@use "mdc/main";
+@use "mdc/buttons";
+@use "mdc/navigation";
+@use "mdc/treeview";
+@use "mdc/dialogs";
+@use "mdc/colors";
+/*
+.material-icons {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+    font-variation-settings:
+            'FILL' 1,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24
+}*/
+* {
+    -webkit-app-region:no-drag;
+}
+.left-list {
+    @extend %vbox;
+    align-items: stretch;
+    justify-content: stretch;
+    width: 256px;
+    min-width: 256px;
+    max-width: 50%;
+    position: relative;
+}
+.preview {
+    width: 100%;
+    height: 200px;
+    min-height: 200px;
+
+    background-color: var(--surface-color);
+    border-bottom: 1px solid var(--on-surface-color-a2);
+}
+
+.tree-owner {
+    width: 100%;
+    flex-grow: 1;
+    display: flex;
+    align-items: stretch;
+    justify-content: stretch;
+    overflow: hidden;
+}
+
+.divider {
+    min-width: 8px;
+    width: 8px;
+    height: 100%;
+
+    cursor: ew-resize;
+}
+
+.negative-floating {
+    @extend %vbox;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.24);
+    z-index: 12;
+    margin-top: -48px;
+
+    position: relative;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    height: calc(100% + 40px);
+    width: 100%;
+    border-radius: 4px;
+    background-color: var(--background-color);
+
+    .top-bar {
+        width: 100%;
+        height: 48px;
+        background-color: var(--on-primary-color);
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+    }
+}
+
+//------
+#floating-menu {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+#floating-add {
+    i {
+        transition: all 0.5s ease;
+    }
+}
+#floating-add.open {
+    @extend .primary;
+    i {
+        transform: rotate(45deg);
+    }
+}
+
+.floating-creation {
+    @extend %vbox;
+    position: absolute;
+    right: 16px;
+    bottom: 56px;
+    border-radius: 100px;
+
+    width: 36px;
+
+    > .button {
+        position: relative;
+        margin-bottom: 8px;
+        color: white;
+        right: 0;
+        bottom: 0;
+        overflow: visible;
+
+        > .tooltip {
+            @extend %elevation-6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            position: absolute;
+            right: 48px;
+            background-color: var(--tooltip-color);
+            color: var(--on-tooltip-color);
+            border-radius: 2px;
+            font-weight: lighter;
+            padding: 2px 6px 2px 6px;
+            text-transform: capitalize;
+            pointer-events: none;
+        }
+    }
+    .button.red {
+        background-color: colors.$color-pink-300;
+        &:hover {
+            background-color: colors.$color-pink-400;
+        }
+        &:focus, &:active {
+            background-color: colors.$color-pink-500;
+        }
+    }
+    .button.orange {
+        background-color: colors.$color-red-300;
+        &:hover {
+            background-color: colors.$color-red-400;
+        }
+        &:focus, &:active {
+            background-color: colors.$color-red-500;
+        }
+    }
+    .button.yellow {
+        background-color: colors.$color-brown-300;
+        &:hover {
+            background-color: colors.$color-brown-400;
+        }
+        &:focus, &:active {
+            background-color: colors.$color-brown-500;
+        }
+    }
+    .button.grey {
+        background-color: colors.$color-blue-grey-300;
+        &:hover {
+            background-color: colors.$color-blue-grey-400;
+        }
+        &:focus, &:active {
+            background-color: colors.$color-blue-grey-500;
+        }
+    }
+    .button.green {
+        background-color: colors.$color-green-300;
+        &:hover {
+            background-color: colors.$color-green-400;
+        }
+        &:focus, &:active {
+            background-color: colors.$color-green-500;
+        }
+    }
+    .button.blue {
+        background-color: colors.$color-blue-300;
+        &:hover {
+            background-color: colors.$color-blue-400;
+        }
+        &:focus, &:active {
+            background-color: colors.$color-blue-500;
+        }
+    }
+    .button.purple {
+        background-color: colors.$color-purple-300;
+        &:hover {
+            background-color: colors.$color-purple-400;
+        }
+        &:focus, &:active {
+            background-color: colors.$color-purple-500;
+        }
+    }
+
+}
+//-----------------Drawer--------------------
+.drawer {
+}
+.drawer {
+    @extend %vbox;
+
+    > .button {
+        justify-content: start;
+        color: var(--on-surface-color);
+        margin: 0 8px 0 8px;
+
+        i {
+            margin-right: 32px;
+            font-size: 24px;
+            color: var(--on-surface-color-a0);
+        }
+
+        &:active, &:focus {
+            color: var(--pr-color);
+            i {
+                color: var(--pr-color);
+            }
+        }
+    }
+    > .separator {
+        width: 100%;
+        height: 1px;
+        margin: 8px 0 8px 0;
+        background-color: var(--on-surface-color-a1);
+    }
+}
+.drawer-header {
+    @extend %hbox;
+    background-color: var(--surface-color);
+    padding: 24px 16px 24px 16px;
+    height: 96px;
+
+    .icon {
+        margin-right: 8px;
+    }
+    > .vbox {
+        margin: 8px;
+        .title {
+            color: var(--on-surface-color);
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .subtitle {
+            color: var(--on-surface-color-a0);
+            font-size: 12px;
+        }
+    }
+}

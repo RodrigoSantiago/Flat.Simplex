@@ -1,0 +1,419 @@
+:root {
+  --pr-color: #2196f3;
+  --pr-color-light: #64b5f6;
+  --pr-color-dark: #1565c0;
+  --pr-an-color: #2979ff;
+  --pr-an-color-light: #448aff;
+  --pr-an-color-dark: #2962ff;
+  --sc-color: #e91e63;
+  --sc-color-light: #f06292;
+  --sc-color-dark: #c2185b;
+  --sc-an-color: #f50057;
+  --sc-an-color-light: #ff4081;
+  --sc-an-color-dark: #c51162;
+  --surface-color: #fff;
+  --surface-an-color: #eee;
+  --surface-an-color-light: #fff;
+  --surface-an-color-dark: #9e9e9e;
+  --background-color: #f5f5f5;
+  --error-color: #B00020;
+  --on-primary-color: #fff;
+  --on-secondary-color: #fff;
+  --on-background-color: #000;
+  --on-surface-color: #000;
+  --on-error-color: #fff;
+  --pr-color-a1: rgba(33, 150, 243, 0.25);
+  --pr-color-light-a1: rgba(100, 181, 246, 0.25);
+  --pr-color-dark-a1: rgba(21, 101, 192, 0.25);
+  --pr-an-color-a1: rgba(41, 121, 255, 0.25);
+  --pr-an-color-light-a1: rgba(68, 138, 255, 0.25);
+  --pr-an-color-dark-a1: rgba(41, 98, 255, 0.25);
+  --sc-color-a1: rgba(233, 30, 99, 0.25);
+  --sc-color-light-a1: rgba(240, 98, 146, 0.25);
+  --sc-color-dark-a1: rgba(194, 24, 91, 0.25);
+  --sc-an-color-a1: rgba(245, 0, 87, 0.25);
+  --sc-an-color-light-a1: rgba(255, 64, 129, 0.25);
+  --sc-an-color-dark-a1: rgba(197, 17, 98, 0.25);
+  --surface-color-a1: rgba(255, 255, 255, 0.25);
+  --surface-an-color-a1: rgba(238, 238, 238, 0.25);
+  --surface-an-color-light-a1: rgba(255, 255, 255, 0.25);
+  --surface-an-color-dark-a1: rgba(158, 158, 158, 0.25);
+  --background-color-a1: rgba(245, 245, 245, 0.25);
+  --error-color-a1: rgba(#B00020, 0.25);
+  --on-primary-color-a1: rgba(255, 255, 255, 0.25);
+  --on-secondary-color-a1: rgba(255, 255, 255, 0.25);
+  --on-background-color-a1: rgba(0, 0, 0, 0.25);
+  --on-surface-color-a1: rgba(0, 0, 0, 0.25);
+  --on-error-color-a1: rgba(255, 255, 255, 0.25);
+  --pr-color-a2: rgba(33, 150, 243, 0.15);
+  --pr-color-light-a2: rgba(100, 181, 246, 0.15);
+  --pr-color-dark-a2: rgba(21, 101, 192, 0.15);
+  --pr-an-color-a2: rgba(41, 121, 255, 0.15);
+  --pr-an-color-light-a2: rgba(68, 138, 255, 0.15);
+  --pr-an-color-dark-a2: rgba(41, 98, 255, 0.15);
+  --sc-color-a2: rgba(233, 30, 99, 0.15);
+  --sc-color-light-a2: rgba(240, 98, 146, 0.15);
+  --sc-color-dark-a2: rgba(194, 24, 91, 0.15);
+  --sc-an-color-a2: rgba(245, 0, 87, 0.15);
+  --sc-an-color-light-a2: rgba(255, 64, 129, 0.15);
+  --sc-an-color-dark-a2: rgba(197, 17, 98, 0.15);
+  --surface-color-a2: rgba(255, 255, 255, 0.15);
+  --surface-an-color-a2: rgba(238, 238, 238, 0.15);
+  --surface-an-color-light-a2: rgba(255, 255, 255, 0.15);
+  --surface-an-color-dark-a2: rgba(158, 158, 158, 0.15);
+  --background-color-a2: rgba(245, 245, 245, 0.15);
+  --error-color-a2: rgba(#B00020, 0.15);
+  --on-primary-color-a2: rgba(255, 255, 255, 0.15);
+  --on-secondary-color-a2: rgba(255, 255, 255, 0.15);
+  --on-background-color-a2: rgba(0, 0, 0, 0.15);
+  --on-surface-color-a2: rgba(0, 0, 0, 0.15);
+  --on-error-color-a2: rgba(255, 255, 255, 0.15);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.hbox {
+  display: flex;
+  flex-direction: row;
+}
+
+.button, .button.icon, .hbox-center {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+main, body, .vbox {
+  display: flex;
+  flex-direction: column;
+}
+
+.vbox-center {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+body {
+  position: relative;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  font-family: Roboto, sans-serif;
+  font-size: 0.875rem;
+  background-color: var(--background-color);
+}
+
+main {
+  align-items: flex-start;
+  width: 100%;
+  height: 100%;
+}
+
+main {
+  padding: 4px 4px 4px 4px;
+}
+main > * {
+  margin: 4px 4px 4px 4px;
+}
+
+main div {
+  padding: 4px 4px 4px 4px;
+}
+main div > * {
+  margin: 4px 4px 4px 4px;
+}
+
+@keyframes rippleExpand {
+  0% {
+    width: 20px;
+    padding-bottom: 20px;
+    opacity: 50%;
+  }
+  100% {
+    width: 150%;
+    padding-bottom: 150%;
+    opacity: 0;
+  }
+}
+@keyframes rippleExpandLimited {
+  0% {
+    width: 20px;
+    padding-bottom: 20px;
+    opacity: 50%;
+  }
+  100% {
+    width: 100%;
+    padding-bottom: 100%;
+    opacity: 0;
+  }
+}
+.ripple {
+  border-radius: 100%;
+  height: 0;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  z-index: 0;
+}
+
+.ripple.expand {
+  animation: rippleExpand 0.5s ease-out;
+}
+
+.button {
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.25s ease-in, color 0.25s ease-in, box-shadow 0.25s ease-in;
+  min-width: 64px;
+  min-height: 36px;
+  height: 36px;
+  border-radius: 4px;
+  padding: 0 16px 0 16px;
+  font-weight: bold;
+  text-transform: uppercase;
+  overflow: hidden;
+  user-select: none;
+}
+
+.button > span {
+  z-index: 1;
+}
+
+.button > i {
+  z-index: 1;
+  margin: 0 8px 0 -4px;
+  font-size: 18px;
+}
+
+.button.contained {
+  background-color: var(--surface-color);
+  color: var(--on-surface-color);
+  box-shadow: 0px 2px 1.125px rgba(0, 0, 0, 0.14);
+}
+.button.contained:hover {
+  box-shadow: 0px 3px 1.5px rgba(0, 0, 0, 0.14);
+}
+.button.contained:focus, .button.contained:active {
+  box-shadow: 0px 9px 9px rgba(0, 0, 0, 0.14);
+  background-color: var(--surface-an-color);
+}
+
+.button.dense {
+  min-height: 28px;
+  height: 28px;
+}
+
+.button.contained .ripple {
+  background-color: var(--surface-an-color-dark);
+}
+
+.button.contained.primary {
+  background-color: var(--pr-color);
+  color: var(--on-primary-color);
+}
+.button.contained.primary:focus, .button.contained.primary:active {
+  background-color: var(--pr-an-color);
+}
+
+.button.contained.primary .ripple {
+  background-color: var(--pr-an-color-dark);
+}
+
+.button.contained.secondary {
+  background-color: var(--sc-color);
+  color: var(--on-secondary-color);
+}
+.button.contained.secondary:focus, .button.contained.secondary:active {
+  background-color: var(--sc-an-color);
+}
+
+.button.contained.secondary .ripple {
+  background-color: var(--sc-an-color-dark);
+}
+
+.button.outline {
+  color: var(--pr-color);
+  border-radius: 4px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--pr-an-color-a1);
+}
+.button.outline:hover {
+  background-color: var(--pr-an-color-light-a2);
+}
+.button.outline:focus, .button.outline:active {
+  border-color: transparent;
+  background-color: var(--pr-an-color-a1);
+}
+
+.button.outline .ripple {
+  background-color: var(--pr-an-color-dark);
+  z-index: 0;
+}
+
+.button.outline.secondary {
+  color: var(--sc-color);
+  border-color: var(--sc-an-color-a1);
+}
+.button.outline.secondary:hover {
+  background-color: var(--sc-an-color-light-a2);
+}
+.button.outline.secondary:focus, .button.outline.secondary:active {
+  border-color: transparent;
+  background-color: var(--sc-an-color-a1);
+}
+
+.button.outline.secondary .ripple {
+  background-color: var(--sc-an-color-dark);
+}
+
+.button.text {
+  color: var(--pr-color);
+}
+.button.text:hover {
+  background-color: var(--pr-an-color-light-a2);
+}
+.button.text:focus, .button.text:active {
+  background-color: var(--pr-an-color-a1);
+}
+
+.button.text .ripple {
+  background-color: var(--pr-an-color-dark);
+  z-index: 0;
+}
+
+.button.text.secondary {
+  color: var(--sc-color);
+}
+.button.text.secondary:hover {
+  background-color: var(--sc-an-color-light-a2);
+}
+.button.text.secondary:focus, .button.text.secondary:active {
+  background-color: var(--sc-an-color-a1);
+}
+
+.button.text.secondary .ripple {
+  background-color: var(--sc-an-color-dark);
+}
+
+.button.icon {
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.25s ease-in, color 0.25s ease-in;
+  min-width: 36px;
+  min-height: 36px;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border-radius: 100%;
+  font-weight: unset;
+  text-transform: unset;
+  overflow: visible;
+}
+
+.button.icon > i {
+  padding: 6px;
+  border-radius: 100%;
+  font-size: 24px;
+  margin: 0;
+  transition: background-color 0.25s ease-in, color 0.25s ease-in;
+}
+
+.button.icon {
+  color: var(--pr-color);
+}
+.button.icon:hover {
+  background-color: unset;
+}
+.button.icon:focus, .button.icon:active {
+  background-color: unset;
+}
+
+.button.icon.dense {
+  min-width: 28px;
+  min-height: 28px;
+  width: 28px;
+  height: 28px;
+}
+
+.button.icon.dense > i {
+  font-size: 18px;
+  padding: 5px;
+}
+
+.button.icon .ripple {
+  background-color: var(--surface-an-color-dark);
+  left: 50% !important;
+  top: 50% !important;
+}
+
+.button.icon .ripple.expand {
+  animation: rippleExpandLimited 0.5s ease-out;
+}
+
+.button.icon.primary {
+  color: var(--pr-color);
+}
+.button.icon.primary:hover > i {
+  background-color: var(--pr-an-color-light-a2);
+}
+.button.icon.primary:focus > i, .button.icon.primary:active > i {
+  background-color: var(--pr-an-color-a1);
+}
+
+.button.icon.primary .ripple {
+  background-color: var(--pr-an-color-dark);
+}
+
+.button.icon.secondary {
+  color: var(--sc-color);
+}
+.button.icon.secondary:hover > i {
+  background-color: var(--sc-an-color-light-a2);
+}
+.button.icon.secondary:focus > i, .button.icon.secondary:active > i {
+  background-color: var(--sc-an-color-a1);
+}
+
+.button.icon.secondary .ripple {
+  background-color: var(--sc-an-color-dark);
+}
+
+.button.icon.on-primary {
+  color: var(--on-primary-color);
+}
+.button.icon.on-primary:hover > i {
+  background-color: var(--on-primary-color-a2);
+}
+.button.icon.on-primary:focus > i, .button.icon.on-primary:active > i {
+  background-color: var(--on-primary-color-a1);
+}
+
+.button.icon.on-primary .ripple {
+  background-color: var(--on-primary-color);
+}
+
+.button.icon.on-secondary {
+  color: var(--on-secondary-color);
+}
+.button.icon.on-secondary:hover > i {
+  background-color: var(--on-secondary-color-a2);
+}
+.button.icon.on-secondary:focus > i, .button.icon.on-secondary:active > i {
+  background-color: var(--on-secondary-color-a1);
+}
+
+.button.icon.on-secondary .ripple {
+  background-color: var(--on-secondary-color);
+}
+
+/*# sourceMappingURL=treeview.css.map */

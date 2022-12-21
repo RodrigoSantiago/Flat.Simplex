@@ -1,0 +1,118 @@
+@use "colors";
+@use "main";
+@use "buttons";
+
+.dropdown {
+    @extend %vbox-center;
+    @extend %elevation-8;
+    display: none;
+
+    position: absolute;
+    min-width: 112px;
+    max-width: 280px;
+    border-radius: 4px;
+
+    padding: 8px 0 8px 0;
+    z-index: 8;
+    overflow: hidden;
+
+    background-color: var(--surface-color);
+
+    > .menu-item:not(.separator) {
+        @extend %hbox;
+        align-items: center;
+        position: relative;
+        cursor: pointer;
+        transition: all 0.25s ease-in;
+
+        width: 100%;
+        min-width: 64px;
+        min-height: 36px;
+        height: 36px;
+        padding: 0 16px 0 16px;
+
+        overflow: hidden;
+
+        user-select: none;
+
+        color: var(--on-surface-color);
+        background-color: var(--surface-color);
+
+        &:hover {
+            background-color: var(--on-surface-color-a2);
+        }
+
+        &:focus, &:active {
+            background-color: var(--on-surface-color-a1);
+        }
+
+        i {
+            margin: 0 20px 0 4px;
+            color: var(--on-surface-color-a0);
+        }
+        &:has(> i) {
+            padding: 0 24px 0 16px;
+        }
+        &.disabled {
+            pointer-events: none;
+            opacity: 0.5;
+
+            &:hover, &:focus, &:active {
+                background-color: var(--surface-color);
+            }
+        }
+    }
+
+    > .menu-item.separator {
+        height: 1px;
+        min-height: 1px;
+        width: 100%;
+        margin: 8px 0px 8px 0px;
+        background-color: var(--on-surface-color-a1);
+    }
+}
+
+.dropdown.dense {
+> .menu-item:not(.separator) {
+        min-height: 32px;
+        height: 32px;
+    }
+}
+
+.dropdown.show {
+    display: flex;
+    animation-duration: 0.5s;
+    opacity: 1;
+}
+.dropdown.show.left {
+    animation-name: circleLeft;
+}
+.dropdown.show.top {
+    animation-name: circleTop;
+}
+.dropdown.show.right {
+    animation-name: circleRight;
+}
+.dropdown.show.bottom {
+    animation-name: circleBottom;
+}
+
+@keyframes circleLeft {
+    0% {clip-path: circle(10% at 0% 0%);}
+    100% {clip-path: circle(150%);}
+}
+
+@keyframes circleTop {
+    0% {clip-path: circle(10% at 150% 0%);}
+    100% {clip-path: circle(150%);}
+}
+
+@keyframes circleRight {
+    0% {clip-path: circle(10% at 0% 150%);}
+    100% {clip-path: circle(150%);}
+}
+
+@keyframes circleBottom {
+    0% {clip-path: circle(10% at 150% 150%);}
+    100% {clip-path: circle(150%);}
+}
