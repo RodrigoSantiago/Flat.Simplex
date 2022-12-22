@@ -26,11 +26,11 @@
     --btn-color-bg-hover : var(--surface-color-hover);
     --btn-color-bg-active : var(--surface-color-active);
     --btn-color-bg-ripple : var(--surface-color-ripple);
-    --btn-color-bg-hover-a : var(--surface-color-hover-a3);
-    --btn-color-bg-active-a : var(--surface-color-active-a3);
+    --btn-color-bg-hover-a : var(--surface-color-hover-a4);
+    --btn-color-bg-active-a : var(--surface-color-active-a2);
 
-    --btn-color-text-disabled : var(--on-surface-color);
-    --btn-color-bg-disabled : var(--surface-color-disabled);
+    --btn-color-text-disabled : var(--disabled-color);
+    --btn-color-bg-disabled : var(--on-disabled-color);
 }
 
 .button > span {
@@ -45,7 +45,7 @@
 
 .button.disabled {
     opacity: 0.5;
-    cursor: auto;
+    cursor: default;
     .ripple {
         display: none !important;
     }
@@ -92,8 +92,8 @@
     --btn-color-bg-hover-a : var(--primary-color-hover-a4);
     --btn-color-bg-active-a : var(--primary-color-active-a3);
 
-    --btn-color-text-disabled : var(--on-color);
-    --btn-color-bg-disabled : var(--primary-color-active);
+    --btn-color-text-disabled : var(--disabled-color);
+    --btn-color-bg-disabled : var(--on-disabled-color);
 }
 
 .button.secondary {
@@ -105,8 +105,8 @@
     --btn-color-bg-hover-a : var(--secondary-color-hover-a4);
     --btn-color-bg-active-a : var(--secondary-color-active-a3);
 
-    --btn-color-text-disabled : var(--on-color);
-    --btn-color-bg-disabled : var(--secondary-color-active);
+    --btn-color-text-disabled : var(--disabled-color);
+    --btn-color-bg-disabled : var(--on-disabled-color);
 }
 
 .button.surface {
@@ -116,20 +116,20 @@
     --btn-color-bg-active : var(--surface-color-active);
     --btn-color-bg-ripple : var(--surface-color-ripple);
     --btn-color-bg-hover-a : var(--surface-color-hover-a4);
-    --btn-color-bg-active-a : var(--surface-color-active-a3);
+    --btn-color-bg-active-a : var(--surface-color-active-a2);
 
-    --btn-color-text-disabled : var(--on-surface-color);
-    --btn-color-bg-disabled : var(--on-surface-color-disabled);
+    --btn-color-text-disabled : var(--disabled-color);
+    --btn-color-bg-disabled : var(--on-disabled-color);
 }
 
 .button.on-color {
-    --btn-color-text : var(--on-color);
-    --btn-color-bg : var(--primary-color);
+    --btn-color-text : var(--on-color-a4);
+    --btn-color-bg : var(--on-color);
     --btn-color-bg-hover : var(--on-color-hover);
     --btn-color-bg-active : var(--on-color-active);
     --btn-color-bg-ripple : var(--on-color-ripple);
     --btn-color-bg-hover-a : var(--on-color-hover-a4);
-    --btn-color-bg-active-a : var(--on-color-active-a3);
+    --btn-color-bg-active-a : var(--on-color-active-a2);
 
     --btn-color-text-disabled : var(--on-color);
     --btn-color-bg-disabled : var(--on-color-disabled);
@@ -173,7 +173,6 @@
 .button.icon {
     @extend %hbox-center;
     position: relative;
-    cursor: pointer;
     transition: background-color 0.25s ease-in,
                 color 0.25s ease-in;
 
@@ -188,7 +187,7 @@
     text-transform: unset;
     overflow: visible;
 
-    color: var(--btn-color-text);
+    color: var(--btn-color-bg);
 
     &:hover, &:focus {
         background-color: var(--btn-color-bg-hover-a);

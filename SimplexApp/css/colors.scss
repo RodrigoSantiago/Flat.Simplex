@@ -281,24 +281,24 @@ $color-white : #fff;
     --primary-color-hover: #{$color-blue-400};
     --primary-color-active: #{$color-blue-300};
     --primary-color-ripple: #{$color-blue-200};
-    --primary-color-disabled: #{$color-blue-600};
     --secondary-color: #{$color-pink-500};
     --secondary-color-hover: #{$color-pink-400};
     --secondary-color-active: #{$color-pink-300};
     --secondary-color-ripple: #{$color-pink-200};
-    --secondary-color-disabled: #{$color-pink-600};
     --on-color: #{$color-white};
     --on-color-hover: #{$color-grey-300};
     --on-color-active: #{$color-grey-400};
     --on-color-ripple: #{$color-white};
-    --on-color-disabled: #{$color-grey-700};
 
     --surface-color: #{$color-white};
     --surface-color-hover: #{$color-grey-300};
     --surface-color-active: #{$color-grey-400};
     --surface-color-ripple: #{$color-grey-500};
-    --surface-color-disabled: #{$color-grey-700};
+    --surface-color-disabled: #{$color-grey-500};
     --on-surface-color: #{$color-black};
+
+    --disabled-color: #{$color-black};
+    --on-disabled-color: #{$color-grey-500};
 
     --tooltip-color: #{$color-grey-700};
     --on-tooltip-color: #{$color-white};

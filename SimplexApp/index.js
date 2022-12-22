@@ -33,7 +33,7 @@ function clickRipple(e) {
     let position = $(this).offset();
     ripple.css({'left': e.pageX - position.left, 'top': e.pageY - position.top});
     ripple.addClass("expand");
-    setTimeout(function () {ripple.removeClass("expand")}, 250);
+    setTimeout(function () {ripple.removeClass("expand")}, 500);
 }
 
 function addRipple(e) {

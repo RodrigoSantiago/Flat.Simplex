@@ -2,7 +2,23 @@
 
 @font-face {
     font-family: 'Roboto-Flex';
-    src: url(css/fonts/Roboto.ttf) format("truetype");
+    src: url(css/fonts/Roboto-Regular.ttf) format("truetype");
+}
+@font-face {
+    font-family: 'Roboto-Flex';
+    src: url(css/fonts/Roboto-Bold.ttf) format("truetype");
+    font-weight: bold;
+}
+@font-face {
+    font-family: 'Roboto-Flex';
+    src: url(css/fonts/Roboto-Italic.ttf) format("truetype");
+    font-style: italic;
+}
+@font-face {
+    font-family: 'Roboto-Flex';
+    src: url(css/fonts/Roboto-BoldItalic.ttf) format("truetype");
+    font-weight: bold;
+    font-style: italic;
 }
 
 @font-face {
