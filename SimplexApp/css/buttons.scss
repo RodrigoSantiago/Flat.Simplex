@@ -58,16 +58,18 @@
 
     @extend %elevation-2;
 
-    &:hover {
+    &:hover, &:focus {
         background-color: var(--btn-color-bg-hover);
         @extend %elevation-4;
     }
-    &:focus, &:active {
+    &:active {
         background-color: var(--btn-color-bg-active);
         @extend %elevation-8;
     }
 
     &.disabled {
+        color: var(--btn-color-text-disabled);
+        background-color: var(--btn-color-bg-disabled) !important;
         opacity: 0.5;
         box-shadow: none !important;
     }
@@ -114,31 +116,31 @@
     border-style: solid;
     border-color: var(--btn-color-bg);
 
-    &:hover {
+    &:hover, &:focus {
         background-color: var(--btn-color-bg-hover-a);
     }
-    &:focus, &:active {
+    &:active {
         background-color: var(--btn-color-bg-active-a);
     }
     &.disabled {
-        color: var(--btn-color-text-disabled);
-        border-color: var(--btn-color-text-disabled);
-        background-color: transparent;
+        color: var(--btn-color-text-disabled) !important;
+        border-color: var(--btn-color-text-disabled) !important;
+        background-color: transparent !important;
     }
 }
 
 .button.text {
     color: var(--btn-color-bg);
 
-    &:hover {
+    &:hover, &:focus {
         background-color: var(--btn-color-bg-hover-a);
     }
-    &:focus, &:active {
+    &:active {
         background-color: var(--btn-color-bg-active-a);
     }
     &.disabled {
-        color: var(--btn-color-text-disabled);
-        background-color: transparent;
+        color: var(--btn-color-text-disabled) !important;
+        background-color: transparent !important;
     }
 }
 
@@ -203,56 +205,17 @@
     animation: rippleExpandLimited 0.5s ease-out;
 }
 
-.button.icon.primary {
-    color: var(--pr-color);
-
-    &:hover {
-        > i {
-            background-color: var(--pr-an-color-light-a2);
-        }
-    }
-    &:focus, &:active {
-        > i {
-            background-color: var(--pr-an-color-a1);
-        }
-    }
-}
-
-.button.icon.primary .ripple {
-    background-color: var(--pr-an-color-dark);
-}
-
-.button.icon.secondary {
-    color: var(--sc-color);
-
-    &:hover {
-        > i {
-            background-color: var(--sc-an-color-light-a2);
-        }
-    }
-    &:focus, &:active {
-        > i {
-            background-color: var(--sc-an-color-a1);
-        }
-    }
-}
-
-.button.icon.secondary .ripple {
-    background-color: var(--sc-an-color-dark);
-}
-
-
-
 
 .button.icon.on-primary {
     color: var(--on-primary-color);
 
-    &:hover {
+
+    &:hover, &:focus {
         > i {
             background-color: var(--on-primary-color-a2);
         }
     }
-    &:focus, &:active {
+    &:active {
         > i {
             background-color: var(--on-primary-color-a1);
         }
@@ -266,12 +229,12 @@
 .button.icon.on-secondary {
     color: var(--on-secondary-color);
 
-    &:hover {
+    &:hover, &:focus {
         > i {
             background-color: var(--on-secondary-color-a2);
         }
     }
-    &:focus, &:active {
+    &:active {
         > i {
             background-color: var(--on-secondary-color-a1);
         }
@@ -309,10 +272,10 @@
         font-size: 24px;
     }
 
-    &:hover {
+    &:hover, &:focus {
         background-color: var(--btn-color-bg-hover);
     }
-    &:focus, &:active {
+    &:active {
         background-color: var(--btn-color-bg-active);
         @extend %elevation-12;
     }

@@ -1,7 +1,10 @@
 import {TreeItem} from "../TreeView.js";
 import {DragSystem} from "../DragSystem.js";
 import {Dropdown, DropdownItem} from "../Dropdown.js";
-import {Asset, AssetType} from "./assets/Asset.js";
+import {Asset, AssetType} from "../assets/Asset.js";
+import {Tab, TabView} from "../TabView.js";
+import {SpriteEditor} from "../editors/sprite/SpriteEditor.js";
+import {Editor} from "../editors/Editor.js";
 
 export class Studio {
 
@@ -10,12 +13,12 @@ export class Studio {
     Toolbar = null;
     TreeView = null;
     Preview = null;
-    TabEditors = null;
+    TabView = null;
     OpenEditors = [];
     TransferenceAssets = [];
     TransferenceMode = "";
 
-    constructor(jqMain, Navigator, Toolbar, TreeView, Preview, TabEditors) {
+    constructor(jqMain, Navigator, Toolbar, TreeView, Preview, TabView) {
         const self = this;
 
         this.jqMain = jqMain;
@@ -23,7 +26,7 @@ export class Studio {
         this.Toolbar = Toolbar;
         this.TreeView = TreeView;
         this.Preview = Preview;
-        this.TabEditors = TabEditors;
+        this.TabView = TabView;
 
         this.Navigator.addItem("New", "insert_drive_file", null);
         this.Navigator.addItem("Save", "save", null);
@@ -42,8 +45,15 @@ export class Studio {
         this.Toolbar.addItem("_", null, null);
         this.Toolbar.addItem("Settings", null, null);
 
+        this.configureDivider();
         this.configureTreeView();
+        this.configureTabView();
         this.configureFloatingMenu();
+
+        this.onResize();
+    }
+
+    configureDivider() {
 
         let dc = $("#divider_center");
         dc.mousedown(function (e) {
@@ -59,13 +69,21 @@ export class Studio {
         });
         $(window).mousemove(function (e) {
             if (dc[0].drarStart) {
-                let m = Math.max(200, Math.min(400, e.pageX));
+                let m = Math.max(200, Math.min(400, e.pageX - dc.parent().offset().left));
+                console.log(e.pageX +"-"+ dc.parent().offset().left)
                 $(".left-list").css("min-width", m + "px").width(m);
             }
         });
     }
 
     configureTreeView() {
+        const self = this;
+
+        this.TreeView.onTreeItemClick = function (item) {
+            if (item && !item.isFolder()) {
+                self.editAsset(item);
+            }
+        }
 
         for (let i = 0; i < 15; i++) {
             if (i === 3 || i === 14) {
@@ -80,13 +98,11 @@ export class Studio {
                 this.TreeView.root.addChild(it);
             }
         }
-
-        const self = this;
         this.TreeView.onRequestContextMenu = function (e, item) {
             let arr = [
-                new DropdownItem("edit", "Edit", e => {}),
-                new DropdownItem("edit_note", "Rename", (e, item) => {}, false),
-                new DropdownItem("folder", "Create Folder", e => {self.createAsset("folder")}),
+                new DropdownItem("edit", "Edit", (e) => self.editAsset(item)),
+                new DropdownItem("edit_note", "Rename", (e) => {}, !!item),
+                new DropdownItem("folder", "Create Folder", e => self.createAsset("folder")),
                 new DropdownItem("_", "_"),
                 new DropdownItem("content_cut", "Cut", e => self.cutSelection(), !!item),
                 new DropdownItem("content_copy", "Copy", e => self.copySelection(), !!item),
@@ -94,9 +110,7 @@ export class Studio {
                 new DropdownItem("_", "_"),
                 new DropdownItem("delete", "Delete", e => self.deleteSelection(), !!item)
             ];
-            if (!item) {
-                arr.splice(0, 2);
-            } else if (item.isFolder()) {
+            if (!item || item.isFolder()) {
                 arr.splice(0, 1);
             }
             new Dropdown({
@@ -106,6 +120,10 @@ export class Studio {
         }
 
         this.TreeView.update();
+    }
+
+    configureTabView() {
+
     }
 
     configureFloatingMenu() {
@@ -192,7 +210,8 @@ export class Studio {
                 }
             } else if (this.TransferenceMode === "copy") {
                 for (let i = 0; i < this.TransferenceAssets.length; i++) {
-                    this.TransferenceAssets[i] = this.TransferenceAssets[i].content.makeCopy();
+                    let oldItem = this.TransferenceAssets[i];
+                    this.TransferenceAssets[i] = new TreeItem(oldItem.content.makeCopy(), oldItem.isFolder());
                 }
             }
 
@@ -224,9 +243,31 @@ export class Studio {
         this.TreeView.update();
     }
 
+    editAsset(item) {
+        const self = this;
+        let asset = item.content;
+
+        for (const tb of this.TabView.tabList) {
+            if (tb.asset === asset) {
+                this.TabView.selectTab(tb);
+                return;
+            }
+        }
+
+        let editor = asset.type === AssetType.sprite ? new SpriteEditor(asset) : new Editor(asset);
+
+        let tab = new Tab(asset.name, asset.type.icon, asset.type.className, function (e) {
+            self.TabView.removeTab(e);
+        }, editor.getJqRoot());
+        tab.asset = asset;
+        this.TabView.addTab(tab);
+        this.TabView.selectTab(tab);
+    }
+
     onResize() {
         this.Navigator.toClose();
         this.TreeView.update();
         this.Toolbar.update();
+        this.TabView.updateScroll();
     }
 }

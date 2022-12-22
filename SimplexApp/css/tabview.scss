@@ -1,0 +1,121 @@
+@use "colors";
+@use "main";
+@use "buttons";
+
+.tab-view {
+    @extend %hbox;
+    max-width: 100%;
+    width: 100%;
+    height: 100%;
+    background-color: var(--surface-color);
+    position: relative;
+    .tab-scroll {
+        @extend %hbox;
+        max-width: 100%;
+        width: 100%;
+        height: 100%;
+        background-color: var(--surface-color);
+        overflow-y: hidden;
+        overflow-x: scroll;
+    }
+
+    .left-handler {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        left: 0;
+        width: 24px;
+        height: 100%;
+        color: var(--on-surface-color);
+        background-color: var(--surface-an-color);
+        cursor: pointer;
+    }
+
+    .right-handler {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        right: 0;
+        width: 24px;
+        height: 100%;
+        color: var(--on-surface-color);
+        background-color: var(--surface-an-color);
+        cursor: pointer;
+    }
+
+    .tab-header {
+        @extend %hbox;
+        width: fit-content;
+        height: 100%;
+        background-color: var(--surface-color);
+    }
+
+    .hide {
+        display: none;
+    }
+
+    .tab-page {
+        @extend %hbox;
+        transition: all 0.25s ease;
+        align-items: center;
+        min-width: 90px;
+        max-width: 260px;
+        height: 100%;
+        padding: 0 16px 0 16px;
+        overflow: hidden;
+        position: relative;
+        cursor: pointer;
+        background-color: var(--surface-color);
+        &:hover {
+            background-color: var(--on-surface-color-a2);
+        }
+        &:active {
+            background-color: var(--on-surface-color-a1);
+        }
+
+        > i {
+            margin: 4px;
+            font-size: 18px;
+        }
+        .tab-close {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 100%;
+            background-color: transparent;
+            &:focus, &:hover {
+                background-color: var(--on-surface-color-a2);
+            }
+            &:active {
+                background-color: var(--on-surface-color-a1);
+            }
+            i {
+                font-size: 16px;
+                color: var(--on-surface-color);
+            }
+        }
+        .tab-title {
+            min-width: 48px;
+            margin-right: 8px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        &.selected {
+            background-color: var(--surface-color);
+            border-bottom: 2px solid var(--pr-color);
+            cursor: default;
+            .ripple {
+                display: none;
+            }
+            &:hover, &:active {
+                background-color: unset;
+            }
+        }
+    }
+}
+.tab-scroll::-webkit-scrollbar {
+    display: none;
+}

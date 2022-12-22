@@ -1,0 +1,45 @@
+@use "../../css/colors";
+@use "../../css/main";
+@use "../../css/buttons";
+
+#split-panel {
+    @extend %hbox;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+#animation-panel {
+    @extend %hbox;
+    width: 100%;
+    height: 128px;
+    max-width: 100%;
+    overflow: hidden;
+    background-color: lightgray;
+}
+
+#tools-view {
+    width: 36px;
+    height: 100%;
+    background-color: gray;
+}
+
+#canvas-view {
+    min-width: 64px;
+    height: 100%;
+    flex-grow: 1;
+    background-color: white;
+}
+
+#layers-view {
+    min-width: 64px;
+    height: 100%;
+    background-color: gray;
+}
+
+#colors-view {
+    min-width: 128px;
+    height: 100%;
+    background-color: darkgray;
+}

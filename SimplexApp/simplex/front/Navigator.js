@@ -1,4 +1,4 @@
-import {HideOnClickOutside} from "./Utils.js";
+import {DismissClickResize} from "./Utils.js";
 import {DragSystem} from "./DragSystem.js";
 
 export class Navigator {
@@ -76,7 +76,7 @@ export class Navigator {
                 backgroundColor : 'rgba(0, 0, 0, 0.5)'
             });
         }
-        HideOnClickOutside(this.drawer, function (selector) {
+        DismissClickResize(this.drawer, function (selector) {
             self.toClose(200);
         });
     }

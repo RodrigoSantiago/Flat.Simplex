@@ -1,30 +1,12 @@
-@use "mdc/main";
-@use "mdc/buttons";
-@use "mdc/navigation";
-@use "mdc/treeview";
-@use "mdc/dialogs";
-@use "mdc/colors";
-/*
-.material-icons {
-    font-family: 'Material Symbols Outlined';
-    font-weight: normal;
-    font-style: normal;
-    font-size: 24px;
-    line-height: 1;
-    letter-spacing: normal;
-    text-transform: none;
-    display: inline-block;
-    white-space: nowrap;
-    word-wrap: normal;
-    direction: ltr;
-    -webkit-font-feature-settings: 'liga';
-    -webkit-font-smoothing: antialiased;
-    font-variation-settings:
-            'FILL' 1,
-            'wght' 400,
-            'GRAD' 0,
-            'opsz' 24
-}*/
+@use "css/main";
+@use "css/buttons";
+@use "css/navigation";
+@use "css/treeview";
+@use "css/dialogs";
+@use "css/colors";
+@use "css/tabview";
+@use "pages/sprite/sprite";
+
 * {
     -webkit-app-region:no-drag;
 }
@@ -61,29 +43,6 @@
     height: 100%;
 
     cursor: ew-resize;
-}
-
-.negative-floating {
-    @extend %vbox;
-    box-shadow: 0 0 8px rgba(0, 0, 0, 0.24);
-    z-index: 12;
-    margin-top: -48px;
-
-    position: relative;
-    margin-right: 8px;
-    margin-bottom: 8px;
-    height: calc(100% + 40px);
-    width: 100%;
-    border-radius: 4px;
-    background-color: var(--background-color);
-
-    .top-bar {
-        width: 100%;
-        height: 48px;
-        background-color: var(--on-primary-color);
-        border-top-left-radius: 4px;
-        border-top-right-radius: 4px;
-    }
 }
 
 //------
@@ -205,14 +164,15 @@
 }
 //-----------------Drawer--------------------
 .drawer {
-}
-.drawer {
     @extend %vbox;
 
     > .button {
         justify-content: start;
         color: var(--on-surface-color);
         margin: 0 8px 0 8px;
+        font-size: 14px;
+        text-transform: capitalize;
+        font-weight: normal;
 
         i {
             margin-right: 32px;
@@ -256,3 +216,163 @@
         }
     }
 }
+//--------TabView
+.negative-floating {
+    @extend %vbox;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.24);
+    z-index: 12;
+    margin-top: -48px;
+    overflow: hidden;
+
+    position: relative;
+    margin-right: 8px;
+    margin-bottom: 8px;
+    height: calc(100% + 40px);
+    width: 100%;
+    border-radius: 4px;
+    background-color: var(--background-color);
+
+    .top-bar {
+        width: 100%;
+        height: 48px;
+        background-color: var(--on-primary-color);
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+        z-index: 14;
+    }
+}
+#main-tab-content {
+    width: 100%;
+    height: 100%;
+}
+.tab-view .tab-page.selected {
+    border-bottom: 0;
+
+    > i {
+        color: var(--on-primary-color);
+    }
+
+    .tab-close {
+        visibility: hidden;
+        pointer-events: none;
+    }
+
+    .tab-title {
+        color: var(--surface-color);
+    }
+}
+.tab-view .tab-page.sprite {
+    > i {
+        color: colors.$color-pink-400;
+    }
+    &.selected {
+        background-color: colors.$color-pink-400;
+        > i {
+            color: var(--on-primary-color);
+        }
+    }
+}
+.tab-view .tab-page.sound {
+    > i {
+        color: colors.$color-red-400;
+    }
+    &.selected {
+        background-color: colors.$color-red-400;
+        > i {
+            color: var(--on-primary-color);
+        }
+    }
+}
+.tab-view .tab-page.font {
+    > i {
+        color: colors.$color-brown-400;
+    }
+    &.selected {
+        background-color: colors.$color-brown-400;
+        > i {
+            color: var(--on-primary-color);
+        }
+    }
+}
+.tab-view .tab-page.script {
+    > i {
+        color: colors.$color-green-400;
+    }
+    &.selected {
+        background-color: colors.$color-green-400;
+        > i {
+            color: var(--on-primary-color);
+        }
+    }
+}
+.tab-view .tab-page.object {
+    > i {
+        color: colors.$color-blue-400;
+    }
+    &.selected {
+        background-color: colors.$color-blue-400;
+        > i {
+            color: var(--on-primary-color);
+        }
+    }
+}
+.tab-view .tab-page.scene {
+    > i {
+        color: colors.$color-purple-400;
+    }
+    &.selected {
+        background-color: colors.$color-purple-400;
+        > i {
+            color: var(--on-primary-color);
+        }
+    }
+}
+.editor {
+    @extend %vbox;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    align-items: start;
+    &.sprite > .toolbar {
+        background-color: colors.$color-pink-400;
+    }
+    &.sound > .toolbar {
+        background-color: colors.$color-red-400;
+    }
+    &.font > .toolbar {
+        background-color: colors.$color-brown-400;
+    }
+    &.script > .toolbar {
+        background-color: colors.$color-green-400;
+    }
+    &.object > .toolbar {
+        background-color: colors.$color-blue-400;
+    }
+    &.scene > .toolbar {
+        background-color: colors.$color-purple-400;
+    }
+}
+//--------Toolbar colors
+
+.toolbar.red {
+    background-color: colors.$color-pink-400;
+}
+.toolbar.orange {
+    background-color: colors.$color-red-400;
+}
+.toolbar.yellow {
+    background-color: colors.$color-brown-400;
+}
+.toolbar.grey {
+    background-color: colors.$color-blue-grey-400;
+}
+.toolbar.green {
+    background-color: colors.$color-green-400;
+}
+.toolbar.blue {
+    background-color: colors.$color-blue-400;
+}
+.toolbar.purple {
+    background-color: colors.$color-purple-400;
+}
+

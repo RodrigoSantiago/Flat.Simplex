@@ -2,12 +2,12 @@
 
 @font-face {
     font-family: 'Roboto-Flex';
-    src: url(mdc/fonts/Roboto.ttf) format("truetype");
+    src: url(css/fonts/Roboto.ttf) format("truetype");
 }
 
 $small-screen: 768px;
 $medium-screen: 992px;
-$big-screen: 2000px;
+$big-screen: 1900px;
 
 * {
     box-sizing: border-box;
@@ -73,6 +73,8 @@ html, body {
     text-rendering : optimizeLegibility;
 
     background-color: var(--background-color);
+
+    user-select: none;
 }
 
 main {
@@ -139,4 +141,25 @@ main div {
 
 .ripple.expand {
     animation: rippleExpand 0.5s ease-out;
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
 }

@@ -17,6 +17,7 @@ export class Toolbar {
     toolbar = null;
     menu = null;
     more = null;
+    prevCount = 0;
 
     constructor(jqMain, jqToolbar) {
         this.toolbar = jqToolbar;
@@ -31,18 +32,22 @@ export class Toolbar {
 
     update() {
         let count = (((this.menu.width() - 16) / 48) | 0) - 1;
-        this.menu.find(".menu-item").remove();
-        for (let i = 0; i < this.toolbarItems.length && i < count; i++) {
-            let tbItem = this.toolbarItems[i];
-            if (tbItem.icon != null) {
-                let btn = $('<div class="menu-item action on-primary"><i class="material-icons">'+ tbItem.icon + '</i><span>' + tbItem.name + '</span></div>');
-                btn.click(tbItem.event);
-                this.menu.append(btn);
-            } else {
-                break;
+        if (this.prevCount !== count) {
+            this.prevCount = count;
+
+            this.menu.find(".menu-item").remove();
+            for (let i = 0; i < this.toolbarItems.length && i < count; i++) {
+                let tbItem = this.toolbarItems[i];
+                if (tbItem.icon != null) {
+                    let btn = $('<div class="menu-item action on-primary"><i class="material-icons">'+ tbItem.icon + '</i><span>' + tbItem.name + '</span></div>');
+                    btn.click(tbItem.event);
+                    this.menu.append(btn);
+                } else {
+                    break;
+                }
             }
+            this.menu.append(this.more);
         }
-        this.menu.append(this.more);
     }
 
     onMoreClick(event) {
@@ -76,13 +81,16 @@ export class Toolbar {
 
     addItem(name, icon, event) {
         this.toolbarItems.push(new ToolbarIcon(name, icon, event));
+        this.prevCount = 0;
     }
 
     insertItem(index, name, icon, event) {
         this.toolbarItems.splice(index, 0, new ToolbarIcon(name, icon, event));
+        this.prevCount = 0;
     }
 
     removeItem(index) {
         this.toolbarItems.splice(index, 1);
+        this.prevCount = 0;
     }
 }

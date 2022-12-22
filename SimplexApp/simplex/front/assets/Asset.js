@@ -26,6 +26,7 @@ export class AssetType {
 
     constructor(name, icon, color) {
         this.name = name;
+        this.className = name.toLowerCase();
         this.icon = icon;
         this.color = color;
     }
@@ -44,5 +45,9 @@ export class Asset {
         this.text = name;
         this.icon = type.icon;
         this.color = type.color;
+    }
+
+    makeCopy() {
+        return new Asset(this.name, this.type);
     }
 }

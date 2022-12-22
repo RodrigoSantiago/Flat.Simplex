@@ -15,7 +15,7 @@
     <script src="./libs/jquery-3.6.1.js"></script>
     <body>
     <div class="main scrolling">
-        <div class="navigator">
+        <div id="main-navigator" class="navigator">
             <div class="drawer">
                 <div class="drawer-header">
                     <div class="icon"><img src="icons/VortexDesignIcon.svg"/></div>
@@ -27,14 +27,14 @@
             </div>
         </div>
         <div class="navigator-split">
-            <div class="toolbar prominent dense">
+            <div id="main-toolbar" class="toolbar prominent dense">
                 <div class="title"><span>Projeto Exemplo</span></div>
                 <div class="menu"></div>
             </div>
             <div class="content">
                 <div class="left-list">
                     <div class="preview"><div class="preview-dummy"></div></div>
-                    <div class="tree-owner"><div class="tree-view dense"></div></div>
+                    <div class="tree-owner"><div id="main-treeview" class="tree-view dense"></div></div>
                     <div id="floating-add" class="button floating secondary dense"><i class="material-icons">add</i></div>
                     <div class="floating-creation" style="display: none">
                         <div id="floating-add-sprite" class="button floating mini red"><i class="material-icons">palette</i><div class="tooltip">Sprite</div></div>
@@ -48,20 +48,9 @@
                 <div id="divider_center" class="divider"></div>
                 <div class="negative-floating">
                     <div class="top-bar">
+                        <div id="main-tabview" class="tab-view"></div>
                     </div>
-                    <div class="vbox" style="align-items: flex-start; margin: 8px">
-                        <div class="button contained"><span>Button</span></div>
-                        <div class="button contained disabled"><span>Button</span></div>
-                        <div class="button contained primary"><span>Button</span></div>
-                        <div class="button contained primary disabled"><span>Button</span></div>
-                        <div class="button contained secondary"><span>Button</span></div>
-                        <div class="button contained secondary disabled"><span>Button</span></div>
-                        <div class="button text"><span>Button</span></div>
-                        <div class="button text disabled"><span>Button</span></div>
-                        <div class="button text primary"><span>Button</span></div>
-                        <div class="button text primary disabled"><span>Button</span></div>
-                        <div class="button text secondary"><span>Button</span></div>
-                        <div class="button text secondary disabled"><span>Button</span></div>
+                    <div id="main-tab-content" class="vbox" style="align-items: flex-start;">
                     </div>
                 </div>
             </div>

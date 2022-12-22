@@ -14,19 +14,19 @@ export function HideOnClickOutside(selector, call) {
     document.addEventListener('mousedown', outsideClickListener);
 }
 
-export function DismissClickResize(jqObj, onDismiss) {
+export function DismissClickResize(jqObj, onDismiss, autoremove = true) {
     const outsideClickListener = (event) => {
         const $target = $(event.target);
         if (!$target.closest(jqObj).length) {
             onDismiss(jqObj);
-            removeClickListener();
+            if (autoremove) removeClickListener();
         }
     }
     const resizeListener = (event) => {
         const $target = $(event.target);
         if (!$target.closest(jqObj).length) {
             onDismiss(jqObj);
-            removeClickListener();
+            if (autoremove) removeClickListener();
         }
     }
 

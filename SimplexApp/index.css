@@ -99,7 +99,7 @@
   box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.18);
 }
 
-.toolbar, .button.contained:hover, .toolbar > .menu > .contained.menu-item:hover {
+.toolbar, .button.contained:hover, .button.contained:focus, .toolbar > .menu > .contained.menu-item:hover, .toolbar > .menu > .contained.menu-item:focus {
   box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.18);
 }
 
@@ -107,11 +107,11 @@
   box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.18);
 }
 
-.dropdown, .button.contained:focus, .button.contained:active, .toolbar > .menu > .contained.menu-item:focus, .toolbar > .menu > .contained.menu-item:active {
+.dropdown, .button.contained:active, .toolbar > .menu > .contained.menu-item:active {
   box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.18);
 }
 
-.button.floating:focus, .button.floating:active, .toolbar > .menu > .floating.menu-item:focus, .toolbar > .menu > .floating.menu-item:active {
+.button.floating:active, .toolbar > .menu > .floating.menu-item:active {
   box-shadow: 0px 7px 8px -4px rgba(0, 0, 0, 0.2), 0px 12px 17px 2px rgba(0, 0, 0, 0.18);
 }
 
@@ -121,13 +121,13 @@
 
 @font-face {
   font-family: "Roboto-Flex";
-  src: url(mdc/fonts/Roboto.ttf) format("truetype");
+  src: url(css/fonts/Roboto.ttf) format("truetype");
 }
 * {
   box-sizing: border-box;
 }
 
-.drawer-header, .dropdown > .menu-item:not(.separator), .tree-view .tree-item, .tree-view .ident, .main, .main > .navigator-split > .content, .toolbar, .toolbar > .menu, .toolbar > .title, .hbox {
+.drawer-header, #split-panel, #animation-panel, .tab-view, .tab-view .tab-scroll, .tab-view .tab-header, .tab-view .tab-page, .dropdown > .menu-item:not(.separator), .tree-view .tree-item, .tree-view .ident, .main, .main > .navigator-split > .content, .toolbar, .toolbar > .menu, .toolbar > .title, .hbox {
   display: flex;
   flex-direction: row;
 }
@@ -144,7 +144,7 @@
   text-align: center;
 }
 
-.left-list, .negative-floating, .floating-creation, .drawer, .main > .navigator-split, .main > .navigator, .main > .navigator .drawer, main, html, body, .vbox {
+.left-list, .floating-creation, .drawer, .negative-floating, .editor, .main > .navigator-split, .main > .navigator, .main > .navigator .drawer, main, html, body, .vbox {
   display: flex;
   flex-direction: column;
 }
@@ -167,6 +167,7 @@ html, body {
   font-size: 14px;
   text-rendering: optimizeLegibility;
   background-color: var(--background-color);
+  user-select: none;
 }
 
 main {
@@ -231,6 +232,27 @@ main div > * {
   animation: rippleExpand 0.5s ease-out;
 }
 
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
 .button, .toolbar > .menu > .menu-item {
   position: relative;
   cursor: pointer;
@@ -278,13 +300,15 @@ main div > * {
   background-color: var(--btn-color-bg);
   color: var(--btn-color-text);
 }
-.button.contained:hover, .toolbar > .menu > .contained.menu-item:hover {
+.button.contained:hover, .toolbar > .menu > .contained.menu-item:hover, .button.contained:focus, .toolbar > .menu > .contained.menu-item:focus {
   background-color: var(--btn-color-bg-hover);
 }
-.button.contained:focus, .toolbar > .menu > .contained.menu-item:focus, .button.contained:active, .toolbar > .menu > .contained.menu-item:active {
+.button.contained:active, .toolbar > .menu > .contained.menu-item:active {
   background-color: var(--btn-color-bg-active);
 }
 .button.contained.disabled, .toolbar > .menu > .contained.disabled.menu-item {
+  color: var(--btn-color-text-disabled);
+  background-color: var(--btn-color-bg-disabled) !important;
   opacity: 0.5;
   box-shadow: none !important;
 }
@@ -329,30 +353,30 @@ main div > * {
   border-style: solid;
   border-color: var(--btn-color-bg);
 }
-.button.outline:hover, .toolbar > .menu > .outline.menu-item:hover {
+.button.outline:hover, .toolbar > .menu > .outline.menu-item:hover, .button.outline:focus, .toolbar > .menu > .outline.menu-item:focus {
   background-color: var(--btn-color-bg-hover-a);
 }
-.button.outline:focus, .toolbar > .menu > .outline.menu-item:focus, .button.outline:active, .toolbar > .menu > .outline.menu-item:active {
+.button.outline:active, .toolbar > .menu > .outline.menu-item:active {
   background-color: var(--btn-color-bg-active-a);
 }
 .button.outline.disabled, .toolbar > .menu > .outline.disabled.menu-item {
-  color: var(--btn-color-text-disabled);
-  border-color: var(--btn-color-text-disabled);
-  background-color: transparent;
+  color: var(--btn-color-text-disabled) !important;
+  border-color: var(--btn-color-text-disabled) !important;
+  background-color: transparent !important;
 }
 
 .button.text, .toolbar > .menu > .text.menu-item {
   color: var(--btn-color-bg);
 }
-.button.text:hover, .toolbar > .menu > .text.menu-item:hover {
+.button.text:hover, .toolbar > .menu > .text.menu-item:hover, .button.text:focus, .toolbar > .menu > .text.menu-item:focus {
   background-color: var(--btn-color-bg-hover-a);
 }
-.button.text:focus, .toolbar > .menu > .text.menu-item:focus, .button.text:active, .toolbar > .menu > .text.menu-item:active {
+.button.text:active, .toolbar > .menu > .text.menu-item:active {
   background-color: var(--btn-color-bg-active-a);
 }
 .button.text.disabled, .toolbar > .menu > .text.disabled.menu-item {
-  color: var(--btn-color-text-disabled);
-  background-color: transparent;
+  color: var(--btn-color-text-disabled) !important;
+  background-color: transparent !important;
 }
 
 .button.icon, .toolbar > .menu > .menu-item {
@@ -410,41 +434,13 @@ main div > * {
   animation: rippleExpandLimited 0.5s ease-out;
 }
 
-.button.icon.primary, .toolbar > .menu > .primary.menu-item, .button.icon#floating-add.open, .toolbar > .menu > .menu-item#floating-add.open {
-  color: var(--pr-color);
-}
-.button.icon.primary:hover > i, .toolbar > .menu > .primary.menu-item:hover > i, .button.icon#floating-add.open:hover > i, .toolbar > .menu > .menu-item#floating-add.open:hover > i {
-  background-color: var(--pr-an-color-light-a2);
-}
-.button.icon.primary:focus > i, .toolbar > .menu > .primary.menu-item:focus > i, .button.icon#floating-add.open:focus > i, .toolbar > .menu > .menu-item#floating-add.open:focus > i, .button.icon.primary:active > i, .toolbar > .menu > .primary.menu-item:active > i, .button.icon#floating-add.open:active > i, .toolbar > .menu > .menu-item#floating-add.open:active > i {
-  background-color: var(--pr-an-color-a1);
-}
-
-.button.icon.primary .ripple, .toolbar > .menu > .primary.menu-item .ripple, .button.icon#floating-add.open .ripple, .toolbar > .menu > .menu-item#floating-add.open .ripple {
-  background-color: var(--pr-an-color-dark);
-}
-
-.button.icon.secondary, .toolbar > .menu > .secondary.menu-item {
-  color: var(--sc-color);
-}
-.button.icon.secondary:hover > i, .toolbar > .menu > .secondary.menu-item:hover > i {
-  background-color: var(--sc-an-color-light-a2);
-}
-.button.icon.secondary:focus > i, .toolbar > .menu > .secondary.menu-item:focus > i, .button.icon.secondary:active > i, .toolbar > .menu > .secondary.menu-item:active > i {
-  background-color: var(--sc-an-color-a1);
-}
-
-.button.icon.secondary .ripple, .toolbar > .menu > .secondary.menu-item .ripple {
-  background-color: var(--sc-an-color-dark);
-}
-
 .button.icon.on-primary, .toolbar > .menu > .on-primary.menu-item {
   color: var(--on-primary-color);
 }
-.button.icon.on-primary:hover > i, .toolbar > .menu > .on-primary.menu-item:hover > i {
+.button.icon.on-primary:hover > i, .toolbar > .menu > .on-primary.menu-item:hover > i, .button.icon.on-primary:focus > i, .toolbar > .menu > .on-primary.menu-item:focus > i {
   background-color: var(--on-primary-color-a2);
 }
-.button.icon.on-primary:focus > i, .toolbar > .menu > .on-primary.menu-item:focus > i, .button.icon.on-primary:active > i, .toolbar > .menu > .on-primary.menu-item:active > i {
+.button.icon.on-primary:active > i, .toolbar > .menu > .on-primary.menu-item:active > i {
   background-color: var(--on-primary-color-a1);
 }
 
@@ -455,10 +451,10 @@ main div > * {
 .button.icon.on-secondary, .toolbar > .menu > .on-secondary.menu-item {
   color: var(--on-secondary-color);
 }
-.button.icon.on-secondary:hover > i, .toolbar > .menu > .on-secondary.menu-item:hover > i {
+.button.icon.on-secondary:hover > i, .toolbar > .menu > .on-secondary.menu-item:hover > i, .button.icon.on-secondary:focus > i, .toolbar > .menu > .on-secondary.menu-item:focus > i {
   background-color: var(--on-secondary-color-a2);
 }
-.button.icon.on-secondary:focus > i, .toolbar > .menu > .on-secondary.menu-item:focus > i, .button.icon.on-secondary:active > i, .toolbar > .menu > .on-secondary.menu-item:active > i {
+.button.icon.on-secondary:active > i, .toolbar > .menu > .on-secondary.menu-item:active > i {
   background-color: var(--on-secondary-color-a1);
 }
 
@@ -488,10 +484,10 @@ main div > * {
   margin: 0;
   font-size: 24px;
 }
-.button.floating:hover, .toolbar > .menu > .floating.menu-item:hover {
+.button.floating:hover, .toolbar > .menu > .floating.menu-item:hover, .button.floating:focus, .toolbar > .menu > .floating.menu-item:focus {
   background-color: var(--btn-color-bg-hover);
 }
-.button.floating:focus, .toolbar > .menu > .floating.menu-item:focus, .button.floating:active, .toolbar > .menu > .floating.menu-item:active {
+.button.floating:active, .toolbar > .menu > .floating.menu-item:active {
   background-color: var(--btn-color-bg-active);
 }
 .button.floating.disabled, .toolbar > .menu > .floating.disabled.menu-item {
@@ -538,6 +534,7 @@ main div > * {
   align-items: stretch;
   position: relative;
   flex-grow: 1;
+  max-width: 100%;
 }
 .main > .navigator-split > .content {
   flex: 1;
@@ -576,12 +573,15 @@ main div > * {
   left: 0;
   top: 0;
   width: 100%;
-  height: 56px;
+  height: 52px;
   background-color: var(--pr-color);
   z-index: 8;
 }
-.toolbar > .hamburger {
+.toolbar > .button, .toolbar > .menu.toolbar > .menu-item {
   margin: 8px;
+}
+.toolbar > .button:last-of-type, .toolbar > .menu.toolbar > .menu-item:last-of-type {
+  margin: 8px -8px 8px 8px;
 }
 .toolbar > .menu {
   height: 56px;
@@ -606,6 +606,7 @@ main div > * {
   flex-grow: 1;
   font-size: 24px;
   height: 56px;
+  margin-left: 16px;
   color: var(--on-primary-color);
 }
 .toolbar.dense {
@@ -618,6 +619,12 @@ main div > * {
 .toolbar.dense > .title {
   font-size: 18px;
   height: 48px;
+}
+.toolbar.dense > .button, .toolbar > .menu.toolbar.dense > .menu-item {
+  margin: 6px;
+}
+.toolbar.dense > .button:last-of-type, .toolbar > .menu.toolbar.dense > .menu-item:last-of-type {
+  margin: 6px -8px 6px 6px;
 }
 .toolbar.prominent {
   height: 128px;
@@ -635,7 +642,10 @@ main div > * {
   height: 48px;
 }
 
-@media (min-width: 2000px) {
+@media (min-width: 1900px) {
+  .main > .navigator-split {
+    max-width: calc(100% - 256px);
+  }
   .main > .navigator-split > .statusbar {
     width: calc(100% + 256px);
     height: 16px;
@@ -657,9 +667,6 @@ main div > * {
   }
   .toolbar .hamburger {
     display: none;
-  }
-  .toolbar > .title {
-    margin-left: 16px;
   }
 }
 @keyframes toDisplayNone {
@@ -942,27 +949,155 @@ main div > * {
     clip-path: circle(150%);
   }
 }
-/*
-.material-icons {
-    font-family: 'Material Symbols Outlined';
-    font-weight: normal;
-    font-style: normal;
-    font-size: 24px;
-    line-height: 1;
-    letter-spacing: normal;
-    text-transform: none;
-    display: inline-block;
-    white-space: nowrap;
-    word-wrap: normal;
-    direction: ltr;
-    -webkit-font-feature-settings: 'liga';
-    -webkit-font-smoothing: antialiased;
-    font-variation-settings:
-            'FILL' 1,
-            'wght' 400,
-            'GRAD' 0,
-            'opsz' 24
-}*/
+.tab-view {
+  max-width: 100%;
+  width: 100%;
+  height: 100%;
+  background-color: var(--surface-color);
+  position: relative;
+}
+.tab-view .tab-scroll {
+  max-width: 100%;
+  width: 100%;
+  height: 100%;
+  background-color: var(--surface-color);
+  overflow-y: hidden;
+  overflow-x: scroll;
+}
+.tab-view .left-handler {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  left: 0;
+  width: 24px;
+  height: 100%;
+  color: var(--on-surface-color);
+  background-color: var(--surface-an-color);
+  cursor: pointer;
+}
+.tab-view .right-handler {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  right: 0;
+  width: 24px;
+  height: 100%;
+  color: var(--on-surface-color);
+  background-color: var(--surface-an-color);
+  cursor: pointer;
+}
+.tab-view .tab-header {
+  width: fit-content;
+  height: 100%;
+  background-color: var(--surface-color);
+}
+.tab-view .hide {
+  display: none;
+}
+.tab-view .tab-page {
+  transition: all 0.25s ease;
+  align-items: center;
+  min-width: 90px;
+  max-width: 260px;
+  height: 100%;
+  padding: 0 16px 0 16px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  background-color: var(--surface-color);
+}
+.tab-view .tab-page:hover {
+  background-color: var(--on-surface-color-a2);
+}
+.tab-view .tab-page:active {
+  background-color: var(--on-surface-color-a1);
+}
+.tab-view .tab-page > i {
+  margin: 4px;
+  font-size: 18px;
+}
+.tab-view .tab-page .tab-close {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+  background-color: transparent;
+}
+.tab-view .tab-page .tab-close:focus, .tab-view .tab-page .tab-close:hover {
+  background-color: var(--on-surface-color-a2);
+}
+.tab-view .tab-page .tab-close:active {
+  background-color: var(--on-surface-color-a1);
+}
+.tab-view .tab-page .tab-close i {
+  font-size: 16px;
+  color: var(--on-surface-color);
+}
+.tab-view .tab-page .tab-title {
+  min-width: 48px;
+  margin-right: 8px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.tab-view .tab-page.selected {
+  background-color: var(--surface-color);
+  border-bottom: 2px solid var(--pr-color);
+  cursor: default;
+}
+.tab-view .tab-page.selected .ripple {
+  display: none;
+}
+.tab-view .tab-page.selected:hover, .tab-view .tab-page.selected:active {
+  background-color: unset;
+}
+
+.tab-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+#split-panel {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+#animation-panel {
+  width: 100%;
+  height: 128px;
+  max-width: 100%;
+  overflow: hidden;
+  background-color: lightgray;
+}
+
+#tools-view {
+  width: 36px;
+  height: 100%;
+  background-color: gray;
+}
+
+#canvas-view {
+  min-width: 64px;
+  height: 100%;
+  flex-grow: 1;
+  background-color: white;
+}
+
+#layers-view {
+  min-width: 64px;
+  height: 100%;
+  background-color: gray;
+}
+
+#colors-view {
+  min-width: 128px;
+  height: 100%;
+  background-color: darkgray;
+}
+
 * {
   -webkit-app-region: no-drag;
 }
@@ -998,26 +1133,6 @@ main div > * {
   width: 8px;
   height: 100%;
   cursor: ew-resize;
-}
-
-.negative-floating {
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.24);
-  z-index: 12;
-  margin-top: -48px;
-  position: relative;
-  margin-right: 8px;
-  margin-bottom: 8px;
-  height: calc(100% + 40px);
-  width: 100%;
-  border-radius: 4px;
-  background-color: var(--background-color);
-}
-.negative-floating .top-bar {
-  width: 100%;
-  height: 48px;
-  background-color: var(--on-primary-color);
-  border-top-left-radius: 4px;
-  border-top-right-radius: 4px;
 }
 
 #floating-menu {
@@ -1132,6 +1247,9 @@ main div > * {
   justify-content: start;
   color: var(--on-surface-color);
   margin: 0 8px 0 8px;
+  font-size: 14px;
+  text-transform: capitalize;
+  font-weight: normal;
 }
 .drawer > .button i {
   margin-right: 32px;
@@ -1170,6 +1288,160 @@ main div > * {
 .drawer-header > .vbox .subtitle {
   color: var(--on-surface-color-a0);
   font-size: 12px;
+}
+
+.negative-floating {
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.24);
+  z-index: 12;
+  margin-top: -48px;
+  overflow: hidden;
+  position: relative;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  height: calc(100% + 40px);
+  width: 100%;
+  border-radius: 4px;
+  background-color: var(--background-color);
+}
+.negative-floating .top-bar {
+  width: 100%;
+  height: 48px;
+  background-color: var(--on-primary-color);
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  z-index: 14;
+}
+
+#main-tab-content {
+  width: 100%;
+  height: 100%;
+}
+
+.tab-view .tab-page.selected {
+  border-bottom: 0;
+}
+.tab-view .tab-page.selected > i {
+  color: var(--on-primary-color);
+}
+.tab-view .tab-page.selected .tab-close {
+  visibility: hidden;
+  pointer-events: none;
+}
+.tab-view .tab-page.selected .tab-title {
+  color: var(--surface-color);
+}
+
+.tab-view .tab-page.sprite > i {
+  color: #ec407a;
+}
+.tab-view .tab-page.sprite.selected {
+  background-color: #ec407a;
+}
+.tab-view .tab-page.sprite.selected > i {
+  color: var(--on-primary-color);
+}
+
+.tab-view .tab-page.sound > i {
+  color: #ef5350;
+}
+.tab-view .tab-page.sound.selected {
+  background-color: #ef5350;
+}
+.tab-view .tab-page.sound.selected > i {
+  color: var(--on-primary-color);
+}
+
+.tab-view .tab-page.font > i {
+  color: #8d6e63;
+}
+.tab-view .tab-page.font.selected {
+  background-color: #8d6e63;
+}
+.tab-view .tab-page.font.selected > i {
+  color: var(--on-primary-color);
+}
+
+.tab-view .tab-page.script > i {
+  color: #66bb6a;
+}
+.tab-view .tab-page.script.selected {
+  background-color: #66bb6a;
+}
+.tab-view .tab-page.script.selected > i {
+  color: var(--on-primary-color);
+}
+
+.tab-view .tab-page.object > i {
+  color: #42a5f5;
+}
+.tab-view .tab-page.object.selected {
+  background-color: #42a5f5;
+}
+.tab-view .tab-page.object.selected > i {
+  color: var(--on-primary-color);
+}
+
+.tab-view .tab-page.scene > i {
+  color: #ab47bc;
+}
+.tab-view .tab-page.scene.selected {
+  background-color: #ab47bc;
+}
+.tab-view .tab-page.scene.selected > i {
+  color: var(--on-primary-color);
+}
+
+.editor {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  align-items: start;
+}
+.editor.sprite > .toolbar {
+  background-color: #ec407a;
+}
+.editor.sound > .toolbar {
+  background-color: #ef5350;
+}
+.editor.font > .toolbar {
+  background-color: #8d6e63;
+}
+.editor.script > .toolbar {
+  background-color: #66bb6a;
+}
+.editor.object > .toolbar {
+  background-color: #42a5f5;
+}
+.editor.scene > .toolbar {
+  background-color: #ab47bc;
+}
+
+.toolbar.red {
+  background-color: #ec407a;
+}
+
+.toolbar.orange {
+  background-color: #ef5350;
+}
+
+.toolbar.yellow {
+  background-color: #8d6e63;
+}
+
+.toolbar.grey {
+  background-color: #78909c;
+}
+
+.toolbar.green {
+  background-color: #66bb6a;
+}
+
+.toolbar.blue {
+  background-color: #42a5f5;
+}
+
+.toolbar.purple {
+  background-color: #ab47bc;
 }
 
 /*# sourceMappingURL=index.css.map */
