@@ -13,7 +13,7 @@ export class Navigator {
         this.toolbar = jqToolbar;
         this.nav = jqNavigator;
         this.drawer = jqNavigator.find('.drawer');
-        this.hamburger = $('<div class="hamburger button icon on-primary"><i class="material-icons">menu</i></div>');
+        this.hamburger = $('<div class="hamburger button icon on-color"><i class="material-icons">menu</i></div>');
 
         this.toolbar.prepend(this.hamburger);
         this.hamburger.click(function (e) {

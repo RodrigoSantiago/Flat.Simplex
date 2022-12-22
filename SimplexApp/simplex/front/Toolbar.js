@@ -22,7 +22,7 @@ export class Toolbar {
     constructor(jqToolbar) {
         this.toolbar = jqToolbar;
         this.menu = jqToolbar.find(".menu");
-        this.more = $('<div class="more button icon on-primary"><i class="material-icons">more_vert</i></div>');
+        this.more = $('<div class="more button icon on-color"><i class="material-icons">more_vert</i></div>');
         const self = this;
         this.more.click(function (e) {
             self.onMoreClick(e);
@@ -40,7 +40,7 @@ export class Toolbar {
             for (let i = 0; i < this.toolbarItems.length && i < count; i++) {
                 let tbItem = this.toolbarItems[i];
                 if (tbItem.icon != null) {
-                    let btn = $('<div class="menu-item action on-primary"><i class="material-icons">'+ tbItem.icon + '</i><span>' + tbItem.name + '</span></div>');
+                    let btn = $('<div class="menu-item action on-color"><i class="material-icons">'+ tbItem.icon + '</i><span>' + tbItem.name + '</span></div>');
                     btn.click(tbItem.event);
                     this.menu.append(btn);
                 } else {

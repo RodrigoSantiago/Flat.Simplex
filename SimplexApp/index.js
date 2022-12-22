@@ -37,9 +37,24 @@ function clickRipple(e) {
 }
 
 function addRipple(e) {
-    if (e.is(".button, .hamburger, .menu-item, .tree-item, .tab-page") && e.children('.ripple').length === 0) {
+    if (e.children('.ripple').length === 0) {
         e.attr('tabindex', 0);
         e.prepend($('<div class="ripple"></div>'));
+        e.mousedown(clickRipple);
+        if (e.css("z-index") === "auto") {
+            e.css("z-index", 0);
+        }
+    }
+}
+
+
+function hoverTooltip(e) {
+
+}
+function addTooltip(e) {
+    if (e.children('.tooltip').length === 0) {
+        e.prepend($('<div class="ripple"></div>'));
+        e.mousedown(clickRipple);
         e.mousedown(clickRipple);
     }
 }

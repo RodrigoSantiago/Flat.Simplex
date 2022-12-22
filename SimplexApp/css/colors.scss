@@ -277,122 +277,69 @@ $color-black : #000;
 $color-white : #fff;
 
 :root {
-    --pr-color: #{$color-blue-500};
-    --pr-color-light: #{$color-blue-300};
-    --pr-color-dark: #{$color-blue-800};
-    --pr-an-color: #{$color-blue-a400};
-    --pr-an-color-light: #{$color-blue-a200};
-    --pr-an-color-dark: #{$color-blue-a700};
-
-    --sc-color: #{$color-pink-500};
-    --sc-color-light: #{$color-pink-300};
-    --sc-color-dark: #{$color-pink-700};
-    --sc-an-color: #{$color-pink-a400};
-    --sc-an-color-light: #{$color-pink-a200};
-    --sc-an-color-dark: #{$color-pink-a700};
+    --primary-color: #{$color-blue-500};
+    --primary-color-hover: #{$color-blue-400};
+    --primary-color-active: #{$color-blue-300};
+    --primary-color-ripple: #{$color-blue-200};
+    --primary-color-disabled: #{$color-blue-600};
+    --secondary-color: #{$color-pink-500};
+    --secondary-color-hover: #{$color-pink-400};
+    --secondary-color-active: #{$color-pink-300};
+    --secondary-color-ripple: #{$color-pink-200};
+    --secondary-color-disabled: #{$color-pink-600};
+    --on-color: #{$color-white};
+    --on-color-hover: #{$color-grey-300};
+    --on-color-active: #{$color-grey-400};
+    --on-color-ripple: #{$color-white};
+    --on-color-disabled: #{$color-grey-700};
 
     --surface-color: #{$color-white};
-    --surface-an-color: #{$color-grey-200};
-    --surface-an-color-light: #{$color-white};
-    --surface-an-color-dark: #{$color-grey-300};
+    --surface-color-hover: #{$color-grey-300};
+    --surface-color-active: #{$color-grey-400};
+    --surface-color-ripple: #{$color-grey-500};
+    --surface-color-disabled: #{$color-grey-700};
+    --on-surface-color: #{$color-black};
+
     --tooltip-color: #{$color-grey-700};
     --on-tooltip-color: #{$color-white};
 
-    --background-color: #{$color-grey-100};
     --error-color: #B00020;
-
-    --on-primary-color: #{$color-white};
-    --on-secondary-color: #{$color-white};
-    --on-background-color: #{$color-black};
-    --on-surface-color: #{$color-black};
     --on-error-color: #{$color-white};
 
+    --background-color: #{$color-grey-100};
+    --on-background-color: #{$color-black};
 
-    --pr-color-a0 : #{fade-out($color-blue-500, 0.50)};
-    --pr-color-light-a0 : #{fade-out($color-blue-300, 0.50)};
-    --pr-color-dark-a0 : #{fade-out($color-blue-800, 0.50)};
-    --pr-an-color-a0 : #{fade-out($color-blue-a400, 0.50)};
-    --pr-an-color-light-a0 : #{fade-out($color-blue-a200, 0.50)};
-    --pr-an-color-dark-a0 : #{fade-out($color-blue-a700, 0.50)};
+    // 25 50 75 85 [ 1 2 3 4 ]
+    $alpha : 0.25, 0.50, 0.75, 0.85;
+    $i : 0;
+    @each $a in $alpha {
+        $i : $i + 1;
+        #{"--primary-color-a"+$i}: #{fade-out($color-blue-500, $a)};
+        #{"--primary-color-hover-a"+$i}: #{fade-out($color-blue-400, $a)};
+        #{"--primary-color-active-a"+$i}: #{fade-out($color-blue-300, $a)};
+        #{"--secondary-color-a"+$i}: #{fade-out($color-pink-500, $a)};
+        #{"--secondary-color-hover-a"+$i}: #{fade-out($color-pink-400, $a)};
+        #{"--secondary-color-active-a"+$i}: #{fade-out($color-pink-300, $a)};
+        #{"--on-color-a"+$i}: #{fade-out($color-white, $a)};
+        #{"--on-color-hover-a"+$i}: #{fade-out($color-grey-50, $a)};
+        #{"--on-color-active-a"+$i}: #{fade-out($color-grey-200, $a)};
 
-    --sc-color-a0 : #{fade-out($color-pink-500, 0.50)};
-    --sc-color-light-a0 : #{fade-out($color-pink-300, 0.50)};
-    --sc-color-dark-a0 : #{fade-out($color-pink-700, 0.50)};
-    --sc-an-color-a0 : #{fade-out($color-pink-a400, 0.50)};
-    --sc-an-color-light-a0 : #{fade-out($color-pink-a200, 0.50)};
-    --sc-an-color-dark-a0 : #{fade-out($color-pink-a700, 0.50)};
+        #{"--surface-color-a"+$i}: #{fade-out($color-white, $a)};
+        #{"--surface-color-hover-a"+$i}: #{fade-out($color-grey-50, $a)};
+        #{"--surface-color-active-a"+$i}: #{fade-out($color-grey-200, $a)};
+        #{"--on-surface-color-a"+$i}: #{fade-out($color-black, $a)};
 
-    --surface-color-a0 : #{fade-out($color-white, 0.50)};
-    --surface-an-color-a0 : #{fade-out($color-grey-200, 0.50)};
-    --surface-an-color-light-a0 : #{fade-out($color-white, 0.50)};
-    --surface-an-color-dark-a0 : #{fade-out($color-grey-500, 0.50)};
+        #{"--tooltip-color-a"+$i}: #{fade-out($color-grey-700, $a)};
+        #{"--on-tooltip-color-a"+$i}: #{fade-out($color-white, $a)};
 
-    --background-color-a0 : #{fade-out($color-grey-100, 0.50)};
-    --error-color-a0 : rgba(#B00020, 0.50);
+        #{"--error-color-a"+$i}: #{fade-out(#B00020, $a)};
+        #{"--on-error-color-a"+$i}: #{fade-out($color-white, $a)};
 
-    --on-primary-color-a0 : #{fade-out($color-white, 0.50)};
-    --on-secondary-color-a0 : #{fade-out($color-white, 0.50)};
-    --on-background-color-a0 : #{fade-out($color-black, 0.50)};
-    --on-surface-color-a0 : #{fade-out($color-black, 0.50)};
-    --on-error-color-a0 : #{fade-out($color-white, 0.50)};
-
-
-    --pr-color-a1 : #{fade-out($color-blue-500, 0.75)};
-    --pr-color-light-a1 : #{fade-out($color-blue-300, 0.75)};
-    --pr-color-dark-a1 : #{fade-out($color-blue-800, 0.75)};
-    --pr-an-color-a1 : #{fade-out($color-blue-a400, 0.75)};
-    --pr-an-color-light-a1 : #{fade-out($color-blue-a200, 0.75)};
-    --pr-an-color-dark-a1 : #{fade-out($color-blue-a700, 0.75)};
-
-    --sc-color-a1 : #{fade-out($color-pink-500, 0.75)};
-    --sc-color-light-a1 : #{fade-out($color-pink-300, 0.75)};
-    --sc-color-dark-a1 : #{fade-out($color-pink-700, 0.75)};
-    --sc-an-color-a1 : #{fade-out($color-pink-a400, 0.75)};
-    --sc-an-color-light-a1 : #{fade-out($color-pink-a200, 0.75)};
-    --sc-an-color-dark-a1 : #{fade-out($color-pink-a700, 0.75)};
-
-    --surface-color-a1 : #{fade-out($color-white, 0.75)};
-    --surface-an-color-a1 : #{fade-out($color-grey-200, 0.75)};
-    --surface-an-color-light-a1 : #{fade-out($color-white, 0.75)};
-    --surface-an-color-dark-a1 : #{fade-out($color-grey-500, 0.75)};
-
-    --background-color-a1 : #{fade-out($color-grey-100, 0.75)};
-    --error-color-a1 : rgba(#B00020, 0.25);
-
-    --on-primary-color-a1 : #{fade-out($color-white, 0.75)};
-    --on-secondary-color-a1 : #{fade-out($color-white, 0.75)};
-    --on-background-color-a1 : #{fade-out($color-black, 0.75)};
-    --on-surface-color-a1 : #{fade-out($color-black, 0.75)};
-    --on-error-color-a1 : #{fade-out($color-white, 0.75)};
+        #{"--background-color-a"+$i}: #{fade-out($color-grey-100, $a)};
+        #{"--on-background-color-a"+$i}: #{fade-out($color-black, $a)};
+    }
 
 
-    --pr-color-a2 : #{fade-out($color-blue-500, 0.85)};
-    --pr-color-light-a2 : #{fade-out($color-blue-300, 0.85)};
-    --pr-color-dark-a2 : #{fade-out($color-blue-800, 0.85)};
-    --pr-an-color-a2 : #{fade-out($color-blue-a400, 0.85)};
-    --pr-an-color-light-a2 : #{fade-out($color-blue-a200, 0.85)};
-    --pr-an-color-dark-a2 : #{fade-out($color-blue-a700, 0.85)};
-
-    --sc-color-a2 : #{fade-out($color-pink-500, 0.85)};
-    --sc-color-light-a2 : #{fade-out($color-pink-300, 0.85)};
-    --sc-color-dark-a2 : #{fade-out($color-pink-700, 0.85)};
-    --sc-an-color-a2 : #{fade-out($color-pink-a400, 0.85)};
-    --sc-an-color-light-a2 : #{fade-out($color-pink-a200, 0.85)};
-    --sc-an-color-dark-a2 : #{fade-out($color-pink-a700, 0.85)};
-
-    --surface-color-a2 : #{fade-out($color-white, 0.85)};
-    --surface-an-color-a2 : #{fade-out($color-grey-200, 0.85)};
-    --surface-an-color-light-a2 : #{fade-out($color-white, 0.85)};
-    --surface-an-color-dark-a2 : #{fade-out($color-grey-500, 0.85)};
-
-    --background-color-a2 : #{fade-out($color-grey-100, 0.85)};
-    --error-color-a2 : rgba(#B00020, 0.15);
-
-    --on-primary-color-a2 : #{fade-out($color-white, 0.85)};
-    --on-secondary-color-a2 : #{fade-out($color-white, 0.85)};
-    --on-background-color-a2 : #{fade-out($color-black, 0.85)};
-    --on-surface-color-a2 : #{fade-out($color-black, 0.85)};
-    --on-error-color-a2 : #{fade-out($color-white, 0.85)};
 }
 
 $baseline-color: black !default;

@@ -12,8 +12,8 @@ export class Editor {
     getJqRoot() {
         return $(
             '<div class="editor '+ this.assetType.className +' "><div class="toolbar dense">' +
-            '    <div class="button icon on-primary"><i class="material-icons">check</i></div>' +
-            '    <div class="button icon on-primary"><i class="material-icons">close</i></div>' +
+            '    <div class="button icon on-color"><i class="material-icons">check</i></div>' +
+            '    <div class="button icon on-color"><i class="material-icons">close</i></div>' +
             '    <div class="title"><span></span></div>' +
             '    <div class="menu"></div>' +
             '</div></div>')

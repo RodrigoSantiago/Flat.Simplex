@@ -158,9 +158,9 @@ main div {
     top: 0;
     opacity: 0;
 
-    background-color: var(--on-surface-color-a1);
+    background-color: var(--surface-color-ripple);
     transform: translate(-50%, -50%);
-    z-index: 0;
+    z-index: -1;
     pointer-events: none;
 }
 
@@ -176,7 +176,7 @@ main div {
 
 /* Track */
 ::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    background: #BBB;
 }
 
 /* Handle */

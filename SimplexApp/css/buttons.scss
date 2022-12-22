@@ -23,15 +23,14 @@
 
     --btn-color-text : var(--on-surface-color);
     --btn-color-bg : var(--surface-color);
-    --btn-color-bg-hover : var(--surface-an-color);
-    --btn-color-bg-active : var(--surface-an-color-dark);
-    --btn-color-bg-ripple : var(--surface-an-color-dark);
-    --btn-color-bg-hover-a : var(--surface-an-color-a1);
-    --btn-color-bg-active-a : var(--surface-an-color-dark-a1);
-    --btn-color-bg-ripple-a : var(--surface-an-color-dark-a1);
+    --btn-color-bg-hover : var(--surface-color-hover);
+    --btn-color-bg-active : var(--surface-color-active);
+    --btn-color-bg-ripple : var(--surface-color-ripple);
+    --btn-color-bg-hover-a : var(--surface-color-hover-a3);
+    --btn-color-bg-active-a : var(--surface-color-active-a3);
 
     --btn-color-text-disabled : var(--on-surface-color);
-    --btn-color-bg-disabled : var(--on-surface-color-a1);
+    --btn-color-bg-disabled : var(--surface-color-disabled);
 }
 
 .button > span {
@@ -53,8 +52,8 @@
 }
 
 .button.contained {
+    color: var(--btn-color-text);
     background-color: var(--btn-color-bg);
-    color: var(--btn-color-text );
 
     @extend %elevation-2;
 
@@ -80,57 +79,60 @@
     height: 28px;
 }
 
-.button.contained .ripple {
+.button .ripple {
     background-color: var(--btn-color-bg-ripple);
 }
 
 .button.primary {
-    --btn-color-text : var(--on-primary-color);
-    --btn-color-bg : var(--pr-color);
-    --btn-color-bg-hover : var(--pr-an-color);
-    --btn-color-bg-active : var(--pr-an-color-dark);
-    --btn-color-bg-ripple : var(--pr-an-color-dark);
-    --btn-color-bg-hover-a : var(--pr-an-color-a2);
-    --btn-color-bg-active-a : var(--pr-an-color-dark-a1);
+    --btn-color-text : var(--on-color);
+    --btn-color-bg : var(--primary-color);
+    --btn-color-bg-hover : var(--primary-color-hover);
+    --btn-color-bg-active : var(--primary-color-active);
+    --btn-color-bg-ripple : var(--primary-color-ripple);
+    --btn-color-bg-hover-a : var(--primary-color-hover-a4);
+    --btn-color-bg-active-a : var(--primary-color-active-a3);
 
-    --btn-color-text-disabled : var(--on-surface-color);
-    --btn-color-bg-disabled : var(--on-surface-color-a1);
+    --btn-color-text-disabled : var(--on-color);
+    --btn-color-bg-disabled : var(--primary-color-active);
 }
+
 .button.secondary {
-    --btn-color-text : var(--on-secondary-color);
-    --btn-color-bg : var(--sc-color);
-    --btn-color-bg-hover : var(--sc-an-color);
-    --btn-color-bg-active : var(--sc-an-color-dark);
-    --btn-color-bg-ripple : var(--sc-an-color-dark);
-    --btn-color-bg-hover-a : var(--sc-an-color-a2);
-    --btn-color-bg-active-a : var(--sc-an-color-dark-a1);
+    --btn-color-text : var(--on-color);
+    --btn-color-bg : var(--secondary-color);
+    --btn-color-bg-hover : var(--secondary-color-hover);
+    --btn-color-bg-active : var(--secondary-color-active);
+    --btn-color-bg-ripple : var(--secondary-color-ripple);
+    --btn-color-bg-hover-a : var(--secondary-color-hover-a4);
+    --btn-color-bg-active-a : var(--secondary-color-active-a3);
+
+    --btn-color-text-disabled : var(--on-color);
+    --btn-color-bg-disabled : var(--secondary-color-active);
+}
+
+.button.surface {
+    --btn-color-text : var(--on-surface-color);
+    --btn-color-bg : var(--surface-color);
+    --btn-color-bg-hover : var(--surface-color-hover);
+    --btn-color-bg-active : var(--surface-color-active);
+    --btn-color-bg-ripple : var(--surface-color-ripple);
+    --btn-color-bg-hover-a : var(--surface-color-hover-a4);
+    --btn-color-bg-active-a : var(--surface-color-active-a3);
 
     --btn-color-text-disabled : var(--on-surface-color);
-    --btn-color-bg-disabled : var(--on-surface-color-a1);
+    --btn-color-bg-disabled : var(--on-surface-color-disabled);
 }
-.button.on-surface {
-    --btn-color-text : var(--on-secondary-color);
-    --btn-color-bg : var(--sc-color);
-    --btn-color-bg-hover : var(--sc-an-color);
-    --btn-color-bg-active : var(--sc-an-color-dark);
-    --btn-color-bg-ripple : var(--sc-an-color-dark);
-    --btn-color-bg-hover-a : var(--sc-an-color-a2);
-    --btn-color-bg-active-a : var(--sc-an-color-dark-a1);
 
-    --btn-color-text-disabled : var(--on-surface-color);
-    --btn-color-bg-disabled : var(--on-surface-color-a1);
-}
 .button.on-color {
-    --btn-color-text : var(--on-secondary-color);
-    --btn-color-bg : var(--sc-color);
-    --btn-color-bg-hover : var(--sc-an-color);
-    --btn-color-bg-active : var(--sc-an-color-dark);
-    --btn-color-bg-ripple : var(--sc-an-color-dark);
-    --btn-color-bg-hover-a : var(--sc-an-color-a2);
-    --btn-color-bg-active-a : var(--sc-an-color-dark-a1);
+    --btn-color-text : var(--on-color);
+    --btn-color-bg : var(--primary-color);
+    --btn-color-bg-hover : var(--on-color-hover);
+    --btn-color-bg-active : var(--on-color-active);
+    --btn-color-bg-ripple : var(--on-color-ripple);
+    --btn-color-bg-hover-a : var(--on-color-hover-a4);
+    --btn-color-bg-active-a : var(--on-color-active-a3);
 
-    --btn-color-text-disabled : var(--on-surface-color);
-    --btn-color-bg-disabled : var(--on-surface-color-a1);
+    --btn-color-text-disabled : var(--on-color);
+    --btn-color-bg-disabled : var(--on-color-disabled);
 }
 
 .button.outline {
@@ -185,6 +187,19 @@
     font-weight: unset;
     text-transform: unset;
     overflow: visible;
+
+    color: var(--btn-color-text);
+
+    &:hover, &:focus {
+        background-color: var(--btn-color-bg-hover-a);
+    }
+    &:active {
+        background-color: var(--btn-color-bg-active-a);
+    }
+    &.disabled {
+        color: var(--btn-color-text-disabled) !important;
+        background-color: transparent !important;
+    }
 }
 
 .button.icon > i {
@@ -194,17 +209,6 @@
     margin: 0;
     transition: background-color 0.25s ease-in,
                 color 0.25s ease-in;
-}
-
-.button.icon {
-    color: var(--pr-color);
-
-    &:hover {
-        background-color: unset;
-    }
-    &:focus, &:active {
-        background-color: unset;
-    }
 }
 
 .button.icon.dense {
@@ -220,53 +224,12 @@
 }
 
 .button.icon .ripple {
-    background-color: var(--surface-an-color-dark);
     left: 50% !important;
     top: 50% !important;
 }
 
 .button.icon .ripple.expand {
     animation: rippleExpandLimited 0.5s ease-out;
-}
-
-
-.button.icon.on-primary {
-    color: var(--on-primary-color);
-
-
-    &:hover, &:focus {
-        > i {
-            background-color: var(--on-primary-color-a2);
-        }
-    }
-    &:active {
-        > i {
-            background-color: var(--on-primary-color-a1);
-        }
-    }
-}
-
-.button.icon.on-primary .ripple {
-    background-color: var(--on-primary-color);
-}
-
-.button.icon.on-secondary {
-    color: var(--on-secondary-color);
-
-    &:hover, &:focus {
-        > i {
-            background-color: var(--on-secondary-color-a2);
-        }
-    }
-    &:active {
-        > i {
-            background-color: var(--on-secondary-color-a1);
-        }
-    }
-}
-
-.button.icon.on-secondary .ripple {
-    background-color: var(--on-secondary-color);
 }
 
 .button.floating {

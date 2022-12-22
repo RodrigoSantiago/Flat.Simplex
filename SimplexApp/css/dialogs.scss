@@ -39,16 +39,16 @@
         background-color: var(--surface-color);
 
         &:hover {
-            background-color: var(--on-surface-color-a2);
+            background-color: var(--surface-color-hover);
         }
 
         &:focus, &:active {
-            background-color: var(--on-surface-color-a1);
+            background-color: var(--surface-color-active);
         }
 
         i {
             margin: 0 20px 0 4px;
-            color: var(--on-surface-color-a0);
+            color: var(--on-surface-color-a3);
         }
         &:has(> i) {
             padding: 0 24px 0 16px;
@@ -58,7 +58,7 @@
             opacity: 0.5;
 
             &:hover, &:focus, &:active {
-                background-color: var(--surface-color);
+                background-color: var(--surface-color-disabled);
             }
         }
     }
@@ -68,7 +68,7 @@
         min-height: 1px;
         width: 100%;
         margin: 8px 0px 8px 0px;
-        background-color: var(--on-surface-color-a1);
+        background-color: var(--on-surface-color-a3);
     }
 }
 

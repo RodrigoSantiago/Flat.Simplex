@@ -31,11 +31,11 @@
         font-weight: 400;
 
         &:not(.empty, .selected):hover {
-            background-color: var(--surface-an-color);
+            background-color: var(--surface-color-hover);
         }
 
         &.selected {
-            background-color : var(--surface-an-color-dark-a0);
+            background-color : var(--surface-color-active);
         }
 
         > span {
@@ -72,34 +72,14 @@
             cursor: pointer;
         }
 
-        > .left.primary {
-            color : var(--pr-color);
-            background-color: var(--surface-color);
-        }
-
-        > .left.secondary {
-            color : var(--sc-color);
-            background-color: var(--surface-color);
-        }
-
-        > .left.on-primary {
-            color : var(--on-primary-color);
-            background-color: var(--pr-color);
-        }
-
-        > .left.on-secondary {
-            color : var(--on-secondary-color);
-            background-color: var(--sc-color);
-        }
-
         .ripple {
-            background-color : var(--surface-an-color-dark-a0);
+            background-color : var(--surface-color-ripple);
         }
 
         &.drag {
             display: none;
             opacity: 0.5;
-            background-color: var(--surface-an-color);
+            background-color: var(--on-surface-color-a3);
         }
 
         &.drag.dragged {
@@ -139,7 +119,7 @@
         position: absolute;
         top: 0;
         height: 4px;
-        background-color: var(--pr-color);
+        background-color: var(--primary-color);
         z-index: 0;
 
         &.dragged {

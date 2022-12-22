@@ -28,7 +28,7 @@
         width: 24px;
         height: 100%;
         color: var(--on-surface-color);
-        background-color: var(--surface-an-color);
+        background-color: var(--surface-color);
         cursor: pointer;
     }
 
@@ -41,7 +41,7 @@
         width: 24px;
         height: 100%;
         color: var(--on-surface-color);
-        background-color: var(--surface-an-color);
+        background-color: var(--surface-color);
         cursor: pointer;
     }
 
@@ -69,10 +69,10 @@
         cursor: pointer;
         background-color: var(--surface-color);
         &:hover {
-            background-color: var(--on-surface-color-a2);
+            background-color: var(--surface-color-hover);
         }
         &:active {
-            background-color: var(--on-surface-color-a1);
+            background-color: var(--surface-color-active);
         }
 
         > i {
@@ -86,10 +86,10 @@
             border-radius: 100%;
             background-color: transparent;
             &:focus, &:hover {
-                background-color: var(--on-surface-color-a2);
+                background-color: var(--on-surface-color-a3);
             }
             &:active {
-                background-color: var(--on-surface-color-a1);
+                background-color: var(--on-surface-color-a2);
             }
             i {
                 font-size: 16px;
@@ -105,7 +105,7 @@
         }
         &.selected {
             background-color: var(--surface-color);
-            border-bottom: 2px solid var(--pr-color);
+            border-bottom: 2px solid var(--primary-color);
             cursor: default;
             .ripple {
                 display: none;

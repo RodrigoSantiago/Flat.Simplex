@@ -1,98 +1,107 @@
 :root {
-  --pr-color: #2196f3;
-  --pr-color-light: #64b5f6;
-  --pr-color-dark: #1565c0;
-  --pr-an-color: #2979ff;
-  --pr-an-color-light: #448aff;
-  --pr-an-color-dark: #2962ff;
-  --sc-color: #e91e63;
-  --sc-color-light: #f06292;
-  --sc-color-dark: #c2185b;
-  --sc-an-color: #f50057;
-  --sc-an-color-light: #ff4081;
-  --sc-an-color-dark: #c51162;
+  --primary-color: #2196f3;
+  --primary-color-hover: #42a5f5;
+  --primary-color-active: #64b5f6;
+  --primary-color-ripple: #90caf9;
+  --primary-color-disabled: #1e88e5;
+  --secondary-color: #e91e63;
+  --secondary-color-hover: #ec407a;
+  --secondary-color-active: #f06292;
+  --secondary-color-ripple: #f48fb1;
+  --secondary-color-disabled: #d81b60;
+  --on-color: #fff;
+  --on-color-hover: #e0e0e0;
+  --on-color-active: #bdbdbd;
+  --on-color-ripple: #fff;
+  --on-color-disabled: #616161;
   --surface-color: #fff;
-  --surface-an-color: #eee;
-  --surface-an-color-light: #fff;
-  --surface-an-color-dark: #e0e0e0;
+  --surface-color-hover: #e0e0e0;
+  --surface-color-active: #bdbdbd;
+  --surface-color-ripple: #9e9e9e;
+  --surface-color-disabled: #616161;
+  --on-surface-color: #000;
   --tooltip-color: #616161;
   --on-tooltip-color: #fff;
-  --background-color: #f5f5f5;
   --error-color: #B00020;
-  --on-primary-color: #fff;
-  --on-secondary-color: #fff;
-  --on-background-color: #000;
-  --on-surface-color: #000;
   --on-error-color: #fff;
-  --pr-color-a0: rgba(33, 150, 243, 0.5);
-  --pr-color-light-a0: rgba(100, 181, 246, 0.5);
-  --pr-color-dark-a0: rgba(21, 101, 192, 0.5);
-  --pr-an-color-a0: rgba(41, 121, 255, 0.5);
-  --pr-an-color-light-a0: rgba(68, 138, 255, 0.5);
-  --pr-an-color-dark-a0: rgba(41, 98, 255, 0.5);
-  --sc-color-a0: rgba(233, 30, 99, 0.5);
-  --sc-color-light-a0: rgba(240, 98, 146, 0.5);
-  --sc-color-dark-a0: rgba(194, 24, 91, 0.5);
-  --sc-an-color-a0: rgba(245, 0, 87, 0.5);
-  --sc-an-color-light-a0: rgba(255, 64, 129, 0.5);
-  --sc-an-color-dark-a0: rgba(197, 17, 98, 0.5);
-  --surface-color-a0: rgba(255, 255, 255, 0.5);
-  --surface-an-color-a0: rgba(238, 238, 238, 0.5);
-  --surface-an-color-light-a0: rgba(255, 255, 255, 0.5);
-  --surface-an-color-dark-a0: rgba(158, 158, 158, 0.5);
-  --background-color-a0: rgba(245, 245, 245, 0.5);
-  --error-color-a0: rgba(#B00020, 0.50);
-  --on-primary-color-a0: rgba(255, 255, 255, 0.5);
-  --on-secondary-color-a0: rgba(255, 255, 255, 0.5);
-  --on-background-color-a0: rgba(0, 0, 0, 0.5);
-  --on-surface-color-a0: rgba(0, 0, 0, 0.5);
-  --on-error-color-a0: rgba(255, 255, 255, 0.5);
-  --pr-color-a1: rgba(33, 150, 243, 0.25);
-  --pr-color-light-a1: rgba(100, 181, 246, 0.25);
-  --pr-color-dark-a1: rgba(21, 101, 192, 0.25);
-  --pr-an-color-a1: rgba(41, 121, 255, 0.25);
-  --pr-an-color-light-a1: rgba(68, 138, 255, 0.25);
-  --pr-an-color-dark-a1: rgba(41, 98, 255, 0.25);
-  --sc-color-a1: rgba(233, 30, 99, 0.25);
-  --sc-color-light-a1: rgba(240, 98, 146, 0.25);
-  --sc-color-dark-a1: rgba(194, 24, 91, 0.25);
-  --sc-an-color-a1: rgba(245, 0, 87, 0.25);
-  --sc-an-color-light-a1: rgba(255, 64, 129, 0.25);
-  --sc-an-color-dark-a1: rgba(197, 17, 98, 0.25);
-  --surface-color-a1: rgba(255, 255, 255, 0.25);
-  --surface-an-color-a1: rgba(238, 238, 238, 0.25);
-  --surface-an-color-light-a1: rgba(255, 255, 255, 0.25);
-  --surface-an-color-dark-a1: rgba(158, 158, 158, 0.25);
-  --background-color-a1: rgba(245, 245, 245, 0.25);
-  --error-color-a1: rgba(#B00020, 0.25);
-  --on-primary-color-a1: rgba(255, 255, 255, 0.25);
-  --on-secondary-color-a1: rgba(255, 255, 255, 0.25);
-  --on-background-color-a1: rgba(0, 0, 0, 0.25);
-  --on-surface-color-a1: rgba(0, 0, 0, 0.25);
-  --on-error-color-a1: rgba(255, 255, 255, 0.25);
-  --pr-color-a2: rgba(33, 150, 243, 0.15);
-  --pr-color-light-a2: rgba(100, 181, 246, 0.15);
-  --pr-color-dark-a2: rgba(21, 101, 192, 0.15);
-  --pr-an-color-a2: rgba(41, 121, 255, 0.15);
-  --pr-an-color-light-a2: rgba(68, 138, 255, 0.15);
-  --pr-an-color-dark-a2: rgba(41, 98, 255, 0.15);
-  --sc-color-a2: rgba(233, 30, 99, 0.15);
-  --sc-color-light-a2: rgba(240, 98, 146, 0.15);
-  --sc-color-dark-a2: rgba(194, 24, 91, 0.15);
-  --sc-an-color-a2: rgba(245, 0, 87, 0.15);
-  --sc-an-color-light-a2: rgba(255, 64, 129, 0.15);
-  --sc-an-color-dark-a2: rgba(197, 17, 98, 0.15);
-  --surface-color-a2: rgba(255, 255, 255, 0.15);
-  --surface-an-color-a2: rgba(238, 238, 238, 0.15);
-  --surface-an-color-light-a2: rgba(255, 255, 255, 0.15);
-  --surface-an-color-dark-a2: rgba(158, 158, 158, 0.15);
-  --background-color-a2: rgba(245, 245, 245, 0.15);
-  --error-color-a2: rgba(#B00020, 0.15);
-  --on-primary-color-a2: rgba(255, 255, 255, 0.15);
-  --on-secondary-color-a2: rgba(255, 255, 255, 0.15);
-  --on-background-color-a2: rgba(0, 0, 0, 0.15);
-  --on-surface-color-a2: rgba(0, 0, 0, 0.15);
-  --on-error-color-a2: rgba(255, 255, 255, 0.15);
+  --background-color: #f5f5f5;
+  --on-background-color: #000;
+  --primary-color-a1: rgba(33, 150, 243, 0.75);
+  --primary-color-hover-a1: rgba(66, 165, 245, 0.75);
+  --primary-color-active-a1: rgba(100, 181, 246, 0.75);
+  --secondary-color-a1: rgba(233, 30, 99, 0.75);
+  --secondary-color-hover-a1: rgba(236, 64, 122, 0.75);
+  --secondary-color-active-a1: rgba(240, 98, 146, 0.75);
+  --on-color-a1: rgba(255, 255, 255, 0.75);
+  --on-color-hover-a1: rgba(250, 250, 250, 0.75);
+  --on-color-active-a1: rgba(238, 238, 238, 0.75);
+  --surface-color-a1: rgba(255, 255, 255, 0.75);
+  --surface-color-hover-a1: rgba(250, 250, 250, 0.75);
+  --surface-color-active-a1: rgba(238, 238, 238, 0.75);
+  --on-surface-color-a1: rgba(0, 0, 0, 0.75);
+  --tooltip-color-a1: rgba(97, 97, 97, 0.75);
+  --on-tooltip-color-a1: rgba(255, 255, 255, 0.75);
+  --error-color-a1: rgba(176, 0, 32, 0.75);
+  --on-error-color-a1: rgba(255, 255, 255, 0.75);
+  --background-color-a1: rgba(245, 245, 245, 0.75);
+  --on-background-color-a1: rgba(0, 0, 0, 0.75);
+  --primary-color-a2: rgba(33, 150, 243, 0.5);
+  --primary-color-hover-a2: rgba(66, 165, 245, 0.5);
+  --primary-color-active-a2: rgba(100, 181, 246, 0.5);
+  --secondary-color-a2: rgba(233, 30, 99, 0.5);
+  --secondary-color-hover-a2: rgba(236, 64, 122, 0.5);
+  --secondary-color-active-a2: rgba(240, 98, 146, 0.5);
+  --on-color-a2: rgba(255, 255, 255, 0.5);
+  --on-color-hover-a2: rgba(250, 250, 250, 0.5);
+  --on-color-active-a2: rgba(238, 238, 238, 0.5);
+  --surface-color-a2: rgba(255, 255, 255, 0.5);
+  --surface-color-hover-a2: rgba(250, 250, 250, 0.5);
+  --surface-color-active-a2: rgba(238, 238, 238, 0.5);
+  --on-surface-color-a2: rgba(0, 0, 0, 0.5);
+  --tooltip-color-a2: rgba(97, 97, 97, 0.5);
+  --on-tooltip-color-a2: rgba(255, 255, 255, 0.5);
+  --error-color-a2: rgba(176, 0, 32, 0.5);
+  --on-error-color-a2: rgba(255, 255, 255, 0.5);
+  --background-color-a2: rgba(245, 245, 245, 0.5);
+  --on-background-color-a2: rgba(0, 0, 0, 0.5);
+  --primary-color-a3: rgba(33, 150, 243, 0.25);
+  --primary-color-hover-a3: rgba(66, 165, 245, 0.25);
+  --primary-color-active-a3: rgba(100, 181, 246, 0.25);
+  --secondary-color-a3: rgba(233, 30, 99, 0.25);
+  --secondary-color-hover-a3: rgba(236, 64, 122, 0.25);
+  --secondary-color-active-a3: rgba(240, 98, 146, 0.25);
+  --on-color-a3: rgba(255, 255, 255, 0.25);
+  --on-color-hover-a3: rgba(250, 250, 250, 0.25);
+  --on-color-active-a3: rgba(238, 238, 238, 0.25);
+  --surface-color-a3: rgba(255, 255, 255, 0.25);
+  --surface-color-hover-a3: rgba(250, 250, 250, 0.25);
+  --surface-color-active-a3: rgba(238, 238, 238, 0.25);
+  --on-surface-color-a3: rgba(0, 0, 0, 0.25);
+  --tooltip-color-a3: rgba(97, 97, 97, 0.25);
+  --on-tooltip-color-a3: rgba(255, 255, 255, 0.25);
+  --error-color-a3: rgba(176, 0, 32, 0.25);
+  --on-error-color-a3: rgba(255, 255, 255, 0.25);
+  --background-color-a3: rgba(245, 245, 245, 0.25);
+  --on-background-color-a3: rgba(0, 0, 0, 0.25);
+  --primary-color-a4: rgba(33, 150, 243, 0.15);
+  --primary-color-hover-a4: rgba(66, 165, 245, 0.15);
+  --primary-color-active-a4: rgba(100, 181, 246, 0.15);
+  --secondary-color-a4: rgba(233, 30, 99, 0.15);
+  --secondary-color-hover-a4: rgba(236, 64, 122, 0.15);
+  --secondary-color-active-a4: rgba(240, 98, 146, 0.15);
+  --on-color-a4: rgba(255, 255, 255, 0.15);
+  --on-color-hover-a4: rgba(250, 250, 250, 0.15);
+  --on-color-active-a4: rgba(238, 238, 238, 0.15);
+  --surface-color-a4: rgba(255, 255, 255, 0.15);
+  --surface-color-hover-a4: rgba(250, 250, 250, 0.15);
+  --surface-color-active-a4: rgba(238, 238, 238, 0.15);
+  --on-surface-color-a4: rgba(0, 0, 0, 0.15);
+  --tooltip-color-a4: rgba(97, 97, 97, 0.15);
+  --on-tooltip-color-a4: rgba(255, 255, 255, 0.15);
+  --error-color-a4: rgba(176, 0, 32, 0.15);
+  --on-error-color-a4: rgba(255, 255, 255, 0.15);
+  --background-color-a4: rgba(245, 245, 245, 0.15);
+  --on-background-color-a4: rgba(0, 0, 0, 0.15);
 }
 
 .button.contained, .toolbar > .menu > .contained.menu-item {
@@ -244,9 +253,9 @@ main div > * {
   left: 0;
   top: 0;
   opacity: 0;
-  background-color: var(--on-surface-color-a1);
+  background-color: var(--surface-color-ripple);
   transform: translate(-50%, -50%);
-  z-index: 0;
+  z-index: -1;
   pointer-events: none;
 }
 
@@ -262,7 +271,7 @@ main div > * {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #BBB;
 }
 
 /* Handle */
@@ -290,14 +299,13 @@ main div > * {
   user-select: none;
   --btn-color-text: var(--on-surface-color);
   --btn-color-bg: var(--surface-color);
-  --btn-color-bg-hover: var(--surface-an-color);
-  --btn-color-bg-active: var(--surface-an-color-dark);
-  --btn-color-bg-ripple: var(--surface-an-color-dark);
-  --btn-color-bg-hover-a: var(--surface-an-color-a1);
-  --btn-color-bg-active-a: var(--surface-an-color-dark-a1);
-  --btn-color-bg-ripple-a: var(--surface-an-color-dark-a1);
+  --btn-color-bg-hover: var(--surface-color-hover);
+  --btn-color-bg-active: var(--surface-color-active);
+  --btn-color-bg-ripple: var(--surface-color-ripple);
+  --btn-color-bg-hover-a: var(--surface-color-hover-a3);
+  --btn-color-bg-active-a: var(--surface-color-active-a3);
   --btn-color-text-disabled: var(--on-surface-color);
-  --btn-color-bg-disabled: var(--on-surface-color-a1);
+  --btn-color-bg-disabled: var(--surface-color-disabled);
 }
 
 .button > span, .toolbar > .menu > .menu-item > span {
@@ -319,8 +327,8 @@ main div > * {
 }
 
 .button.contained, .toolbar > .menu > .contained.menu-item {
-  background-color: var(--btn-color-bg);
   color: var(--btn-color-text);
+  background-color: var(--btn-color-bg);
 }
 .button.contained:hover, .toolbar > .menu > .contained.menu-item:hover, .button.contained:focus, .toolbar > .menu > .contained.menu-item:focus {
   background-color: var(--btn-color-bg-hover);
@@ -340,56 +348,56 @@ main div > * {
   height: 28px;
 }
 
-.button.contained .ripple, .toolbar > .menu > .contained.menu-item .ripple {
+.button .ripple, .toolbar > .menu > .menu-item .ripple {
   background-color: var(--btn-color-bg-ripple);
 }
 
 .button.primary, .toolbar > .menu > .primary.menu-item, .button#floating-add.open, .toolbar > .menu > .menu-item#floating-add.open {
-  --btn-color-text: var(--on-primary-color);
-  --btn-color-bg: var(--pr-color);
-  --btn-color-bg-hover: var(--pr-an-color);
-  --btn-color-bg-active: var(--pr-an-color-dark);
-  --btn-color-bg-ripple: var(--pr-an-color-dark);
-  --btn-color-bg-hover-a: var(--pr-an-color-a2);
-  --btn-color-bg-active-a: var(--pr-an-color-dark-a1);
-  --btn-color-text-disabled: var(--on-surface-color);
-  --btn-color-bg-disabled: var(--on-surface-color-a1);
+  --btn-color-text: var(--on-color);
+  --btn-color-bg: var(--primary-color);
+  --btn-color-bg-hover: var(--primary-color-hover);
+  --btn-color-bg-active: var(--primary-color-active);
+  --btn-color-bg-ripple: var(--primary-color-ripple);
+  --btn-color-bg-hover-a: var(--primary-color-hover-a4);
+  --btn-color-bg-active-a: var(--primary-color-active-a3);
+  --btn-color-text-disabled: var(--on-color);
+  --btn-color-bg-disabled: var(--primary-color-active);
 }
 
 .button.secondary, .toolbar > .menu > .secondary.menu-item {
-  --btn-color-text: var(--on-secondary-color);
-  --btn-color-bg: var(--sc-color);
-  --btn-color-bg-hover: var(--sc-an-color);
-  --btn-color-bg-active: var(--sc-an-color-dark);
-  --btn-color-bg-ripple: var(--sc-an-color-dark);
-  --btn-color-bg-hover-a: var(--sc-an-color-a2);
-  --btn-color-bg-active-a: var(--sc-an-color-dark-a1);
-  --btn-color-text-disabled: var(--on-surface-color);
-  --btn-color-bg-disabled: var(--on-surface-color-a1);
+  --btn-color-text: var(--on-color);
+  --btn-color-bg: var(--secondary-color);
+  --btn-color-bg-hover: var(--secondary-color-hover);
+  --btn-color-bg-active: var(--secondary-color-active);
+  --btn-color-bg-ripple: var(--secondary-color-ripple);
+  --btn-color-bg-hover-a: var(--secondary-color-hover-a4);
+  --btn-color-bg-active-a: var(--secondary-color-active-a3);
+  --btn-color-text-disabled: var(--on-color);
+  --btn-color-bg-disabled: var(--secondary-color-active);
 }
 
-.button.on-surface, .toolbar > .menu > .on-surface.menu-item {
-  --btn-color-text: var(--on-secondary-color);
-  --btn-color-bg: var(--sc-color);
-  --btn-color-bg-hover: var(--sc-an-color);
-  --btn-color-bg-active: var(--sc-an-color-dark);
-  --btn-color-bg-ripple: var(--sc-an-color-dark);
-  --btn-color-bg-hover-a: var(--sc-an-color-a2);
-  --btn-color-bg-active-a: var(--sc-an-color-dark-a1);
+.button.surface, .toolbar > .menu > .surface.menu-item {
+  --btn-color-text: var(--on-surface-color);
+  --btn-color-bg: var(--surface-color);
+  --btn-color-bg-hover: var(--surface-color-hover);
+  --btn-color-bg-active: var(--surface-color-active);
+  --btn-color-bg-ripple: var(--surface-color-ripple);
+  --btn-color-bg-hover-a: var(--surface-color-hover-a4);
+  --btn-color-bg-active-a: var(--surface-color-active-a3);
   --btn-color-text-disabled: var(--on-surface-color);
-  --btn-color-bg-disabled: var(--on-surface-color-a1);
+  --btn-color-bg-disabled: var(--on-surface-color-disabled);
 }
 
 .button.on-color, .toolbar > .menu > .on-color.menu-item {
-  --btn-color-text: var(--on-secondary-color);
-  --btn-color-bg: var(--sc-color);
-  --btn-color-bg-hover: var(--sc-an-color);
-  --btn-color-bg-active: var(--sc-an-color-dark);
-  --btn-color-bg-ripple: var(--sc-an-color-dark);
-  --btn-color-bg-hover-a: var(--sc-an-color-a2);
-  --btn-color-bg-active-a: var(--sc-an-color-dark-a1);
-  --btn-color-text-disabled: var(--on-surface-color);
-  --btn-color-bg-disabled: var(--on-surface-color-a1);
+  --btn-color-text: var(--on-color);
+  --btn-color-bg: var(--primary-color);
+  --btn-color-bg-hover: var(--on-color-hover);
+  --btn-color-bg-active: var(--on-color-active);
+  --btn-color-bg-ripple: var(--on-color-ripple);
+  --btn-color-bg-hover-a: var(--on-color-hover-a4);
+  --btn-color-bg-active-a: var(--on-color-active-a3);
+  --btn-color-text-disabled: var(--on-color);
+  --btn-color-bg-disabled: var(--on-color-disabled);
 }
 
 .button.outline, .toolbar > .menu > .outline.menu-item {
@@ -438,6 +446,17 @@ main div > * {
   font-weight: unset;
   text-transform: unset;
   overflow: visible;
+  color: var(--btn-color-text);
+}
+.button.icon:hover, .toolbar > .menu > .menu-item:hover, .button.icon:focus, .toolbar > .menu > .menu-item:focus {
+  background-color: var(--btn-color-bg-hover-a);
+}
+.button.icon:active, .toolbar > .menu > .menu-item:active {
+  background-color: var(--btn-color-bg-active-a);
+}
+.button.icon.disabled, .toolbar > .menu > .disabled.menu-item {
+  color: var(--btn-color-text-disabled) !important;
+  background-color: transparent !important;
 }
 
 .button.icon > i, .toolbar > .menu > .menu-item > i {
@@ -446,16 +465,6 @@ main div > * {
   font-size: 24px;
   margin: 0;
   transition: background-color 0.25s ease-in, color 0.25s ease-in;
-}
-
-.button.icon, .toolbar > .menu > .menu-item {
-  color: var(--pr-color);
-}
-.button.icon:hover, .toolbar > .menu > .menu-item:hover {
-  background-color: unset;
-}
-.button.icon:focus, .toolbar > .menu > .menu-item:focus, .button.icon:active, .toolbar > .menu > .menu-item:active {
-  background-color: unset;
 }
 
 .button.icon.dense, .toolbar > .menu > .dense.menu-item {
@@ -471,41 +480,12 @@ main div > * {
 }
 
 .button.icon .ripple, .toolbar > .menu > .menu-item .ripple {
-  background-color: var(--surface-an-color-dark);
   left: 50% !important;
   top: 50% !important;
 }
 
 .button.icon .ripple.expand, .toolbar > .menu > .menu-item .ripple.expand {
   animation: rippleExpandLimited 0.5s ease-out;
-}
-
-.button.icon.on-primary, .toolbar > .menu > .on-primary.menu-item {
-  color: var(--on-primary-color);
-}
-.button.icon.on-primary:hover > i, .toolbar > .menu > .on-primary.menu-item:hover > i, .button.icon.on-primary:focus > i, .toolbar > .menu > .on-primary.menu-item:focus > i {
-  background-color: var(--on-primary-color-a2);
-}
-.button.icon.on-primary:active > i, .toolbar > .menu > .on-primary.menu-item:active > i {
-  background-color: var(--on-primary-color-a1);
-}
-
-.button.icon.on-primary .ripple, .toolbar > .menu > .on-primary.menu-item .ripple {
-  background-color: var(--on-primary-color);
-}
-
-.button.icon.on-secondary, .toolbar > .menu > .on-secondary.menu-item {
-  color: var(--on-secondary-color);
-}
-.button.icon.on-secondary:hover > i, .toolbar > .menu > .on-secondary.menu-item:hover > i, .button.icon.on-secondary:focus > i, .toolbar > .menu > .on-secondary.menu-item:focus > i {
-  background-color: var(--on-secondary-color-a2);
-}
-.button.icon.on-secondary:active > i, .toolbar > .menu > .on-secondary.menu-item:active > i {
-  background-color: var(--on-secondary-color-a1);
-}
-
-.button.icon.on-secondary .ripple, .toolbar > .menu > .on-secondary.menu-item .ripple {
-  background-color: var(--on-secondary-color);
 }
 
 .button.floating, .toolbar > .menu > .floating.menu-item {
@@ -591,7 +571,7 @@ main div > * {
 .main > .navigator-split > .statusbar {
   width: 100%;
   height: 16px;
-  background-color: var(--pr-color-dark);
+  background-color: var(--primary-color-active);
 }
 .main > .navigator {
   position: absolute;
@@ -620,7 +600,7 @@ main div > * {
   top: 0;
   width: 100%;
   height: 52px;
-  background-color: var(--pr-color);
+  background-color: var(--primary-color);
   z-index: 8;
 }
 .toolbar > .button, .toolbar > .menu.toolbar > .menu-item {
@@ -653,7 +633,7 @@ main div > * {
   font-size: 24px;
   height: 56px;
   margin-left: 16px;
-  color: var(--on-primary-color);
+  color: var(--on-color);
 }
 .toolbar.dense {
   height: 48px;
@@ -703,7 +683,7 @@ main div > * {
     visibility: visible !important;
     max-width: min(256px, 100% - 56px);
     position: relative;
-    border-right: 1px var(--on-surface-color-a1) solid;
+    border-right: 1px var(--on-surface-color-a3) solid;
     background-color: transparent !important;
     z-index: 1;
   }
@@ -748,10 +728,10 @@ main div > * {
   font-weight: 400;
 }
 .tree-view .tree-item:not(.empty, .selected):hover {
-  background-color: var(--surface-an-color);
+  background-color: var(--surface-color-hover);
 }
 .tree-view .tree-item.selected {
-  background-color: var(--surface-an-color-dark-a0);
+  background-color: var(--surface-color-active);
 }
 .tree-view .tree-item > span {
   min-width: 128px;
@@ -780,29 +760,13 @@ main div > * {
   opacity: 1;
   cursor: pointer;
 }
-.tree-view .tree-item > .left.primary, .tree-view .tree-item > .left#floating-add.open {
-  color: var(--pr-color);
-  background-color: var(--surface-color);
-}
-.tree-view .tree-item > .left.secondary {
-  color: var(--sc-color);
-  background-color: var(--surface-color);
-}
-.tree-view .tree-item > .left.on-primary {
-  color: var(--on-primary-color);
-  background-color: var(--pr-color);
-}
-.tree-view .tree-item > .left.on-secondary {
-  color: var(--on-secondary-color);
-  background-color: var(--sc-color);
-}
 .tree-view .tree-item .ripple {
-  background-color: var(--surface-an-color-dark-a0);
+  background-color: var(--surface-color-ripple);
 }
 .tree-view .tree-item.drag {
   display: none;
   opacity: 0.5;
-  background-color: var(--surface-an-color);
+  background-color: var(--on-surface-color-a3);
 }
 .tree-view .tree-item.drag.dragged {
   display: flex;
@@ -837,7 +801,7 @@ main div > * {
   position: absolute;
   top: 0;
   height: 4px;
-  background-color: var(--pr-color);
+  background-color: var(--primary-color);
   z-index: 0;
 }
 .tree-view .tree-drop-line.dragged {
@@ -909,14 +873,14 @@ main div > * {
   background-color: var(--surface-color);
 }
 .dropdown > .menu-item:not(.separator):hover {
-  background-color: var(--on-surface-color-a2);
+  background-color: var(--surface-color-hover);
 }
 .dropdown > .menu-item:not(.separator):focus, .dropdown > .menu-item:not(.separator):active {
-  background-color: var(--on-surface-color-a1);
+  background-color: var(--surface-color-active);
 }
 .dropdown > .menu-item:not(.separator) i {
   margin: 0 20px 0 4px;
-  color: var(--on-surface-color-a0);
+  color: var(--on-surface-color-a3);
 }
 .dropdown > .menu-item:not(.separator):has(> i) {
   padding: 0 24px 0 16px;
@@ -926,14 +890,14 @@ main div > * {
   opacity: 0.5;
 }
 .dropdown > .menu-item:not(.separator).disabled:hover, .dropdown > .menu-item:not(.separator).disabled:focus, .dropdown > .menu-item:not(.separator).disabled:active {
-  background-color: var(--surface-color);
+  background-color: var(--surface-color-disabled);
 }
 .dropdown > .menu-item.separator {
   height: 1px;
   min-height: 1px;
   width: 100%;
   margin: 8px 0px 8px 0px;
-  background-color: var(--on-surface-color-a1);
+  background-color: var(--on-surface-color-a3);
 }
 
 .dropdown.dense > .menu-item:not(.separator) {
@@ -1019,7 +983,7 @@ main div > * {
   width: 24px;
   height: 100%;
   color: var(--on-surface-color);
-  background-color: var(--surface-an-color);
+  background-color: var(--surface-color);
   cursor: pointer;
 }
 .tab-view .right-handler {
@@ -1031,7 +995,7 @@ main div > * {
   width: 24px;
   height: 100%;
   color: var(--on-surface-color);
-  background-color: var(--surface-an-color);
+  background-color: var(--surface-color);
   cursor: pointer;
 }
 .tab-view .tab-header {
@@ -1055,10 +1019,10 @@ main div > * {
   background-color: var(--surface-color);
 }
 .tab-view .tab-page:hover {
-  background-color: var(--on-surface-color-a2);
+  background-color: var(--surface-color-hover);
 }
 .tab-view .tab-page:active {
-  background-color: var(--on-surface-color-a1);
+  background-color: var(--surface-color-active);
 }
 .tab-view .tab-page > i {
   margin: 4px;
@@ -1072,10 +1036,10 @@ main div > * {
   background-color: transparent;
 }
 .tab-view .tab-page .tab-close:focus, .tab-view .tab-page .tab-close:hover {
-  background-color: var(--on-surface-color-a2);
+  background-color: var(--on-surface-color-a3);
 }
 .tab-view .tab-page .tab-close:active {
-  background-color: var(--on-surface-color-a1);
+  background-color: var(--on-surface-color-a2);
 }
 .tab-view .tab-page .tab-close i {
   font-size: 16px;
@@ -1090,7 +1054,7 @@ main div > * {
 }
 .tab-view .tab-page.selected {
   background-color: var(--surface-color);
-  border-bottom: 2px solid var(--pr-color);
+  border-bottom: 2px solid var(--primary-color);
   cursor: default;
 }
 .tab-view .tab-page.selected .ripple {
@@ -1204,7 +1168,7 @@ main div > * {
   height: 200px;
   min-height: 200px;
   background-color: var(--surface-color);
-  border-bottom: 1px solid var(--on-surface-color-a2);
+  border-bottom: 1px solid var(--on-surface-color-a3);
 }
 
 .tree-owner {
@@ -1263,7 +1227,7 @@ main div > * {
   color: var(--on-tooltip-color);
   border-radius: 2px;
   font-weight: lighter;
-  padding: 2px 6px 2px 6px;
+  padding: 4px 8px 4px 8px;
   text-transform: capitalize;
   pointer-events: none;
 }
@@ -1341,19 +1305,19 @@ main div > * {
 .drawer > .button i {
   margin-right: 32px;
   font-size: 24px;
-  color: var(--on-surface-color-a0);
+  color: var(--on-surface-color-a1);
 }
 .drawer > .button:active, .drawer > .button:focus {
-  color: var(--pr-color);
+  color: var(--primary-color);
 }
 .drawer > .button:active i, .drawer > .button:focus i {
-  color: var(--pr-color);
+  color: var(--primary-color);
 }
 .drawer > .separator {
   width: 100%;
   height: 1px;
   margin: 8px 0 8px 0;
-  background-color: var(--on-surface-color-a1);
+  background-color: var(--on-surface-color-a3);
 }
 
 .drawer-header {
@@ -1373,7 +1337,7 @@ main div > * {
   font-weight: bold;
 }
 .drawer-header > .vbox .subtitle {
-  color: var(--on-surface-color-a0);
+  color: var(--on-surface-color-a1);
   font-size: 12px;
 }
 
@@ -1393,7 +1357,7 @@ main div > * {
 .negative-floating .top-bar {
   width: 100%;
   height: 48px;
-  background-color: var(--on-primary-color);
+  background-color: var(--on-color);
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
   z-index: 14;
@@ -1408,7 +1372,7 @@ main div > * {
   border-bottom: 0;
 }
 .tab-view .tab-page.selected > i {
-  color: var(--on-primary-color);
+  color: var(--on-color);
 }
 .tab-view .tab-page.selected .tab-close {
   visibility: hidden;
@@ -1425,7 +1389,7 @@ main div > * {
   background-color: #ec407a;
 }
 .tab-view .tab-page.sprite.selected > i {
-  color: var(--on-primary-color);
+  color: var(--on-color);
 }
 
 .tab-view .tab-page.sound > i {
@@ -1435,7 +1399,7 @@ main div > * {
   background-color: #ef5350;
 }
 .tab-view .tab-page.sound.selected > i {
-  color: var(--on-primary-color);
+  color: var(--on-color);
 }
 
 .tab-view .tab-page.font > i {
@@ -1445,7 +1409,7 @@ main div > * {
   background-color: #8d6e63;
 }
 .tab-view .tab-page.font.selected > i {
-  color: var(--on-primary-color);
+  color: var(--on-color);
 }
 
 .tab-view .tab-page.script > i {
@@ -1455,7 +1419,7 @@ main div > * {
   background-color: #66bb6a;
 }
 .tab-view .tab-page.script.selected > i {
-  color: var(--on-primary-color);
+  color: var(--on-color);
 }
 
 .tab-view .tab-page.object > i {
@@ -1465,7 +1429,7 @@ main div > * {
   background-color: #42a5f5;
 }
 .tab-view .tab-page.object.selected > i {
-  color: var(--on-primary-color);
+  color: var(--on-color);
 }
 
 .tab-view .tab-page.scene > i {
@@ -1475,7 +1439,7 @@ main div > * {
   background-color: #ab47bc;
 }
 .tab-view .tab-page.scene.selected > i {
-  color: var(--on-primary-color);
+  color: var(--on-color);
 }
 
 .editor {

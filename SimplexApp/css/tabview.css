@@ -1,13 +1,13 @@
 :root {
-  --pr-color: #2196f3;
-  --pr-color-light: #64b5f6;
-  --pr-color-dark: #1565c0;
+  --primary-color: #2196f3;
+  --primary-color-hover: #64b5f6;
+  --primary-color-active: #1565c0;
   --pr-an-color: #2979ff;
   --pr-an-color-light: #448aff;
   --pr-an-color-dark: #2962ff;
-  --sc-color: #e91e63;
-  --sc-color-light: #f06292;
-  --sc-color-dark: #c2185b;
+  --secondary-color: #e91e63;
+  --secondary-color-hover: #f06292;
+  --secondary-color-active: #c2185b;
   --sc-an-color: #f50057;
   --sc-an-color-light: #ff4081;
   --sc-an-color-dark: #c51162;
@@ -298,7 +298,7 @@ main div > * {
 
 .button.primary {
   --btn-color-text: var(--on-primary-color);
-  --btn-color-bg: var(--pr-color);
+  --btn-color-bg: var(--primary-color);
   --btn-color-bg-hover: var(--pr-an-color);
   --btn-color-bg-active: var(--pr-an-color-dark);
   --btn-color-bg-ripple: var(--pr-an-color-dark);
@@ -310,7 +310,7 @@ main div > * {
 
 .button.secondary {
   --btn-color-text: var(--on-secondary-color);
-  --btn-color-bg: var(--sc-color);
+  --btn-color-bg: var(--secondary-color);
   --btn-color-bg-hover: var(--sc-an-color);
   --btn-color-bg-active: var(--sc-an-color-dark);
   --btn-color-bg-ripple: var(--sc-an-color-dark);
@@ -377,7 +377,7 @@ main div > * {
 }
 
 .button.icon {
-  color: var(--pr-color);
+  color: var(--primary-color);
 }
 .button.icon:hover {
   background-color: unset;
@@ -409,7 +409,7 @@ main div > * {
 }
 
 .button.icon.primary {
-  color: var(--pr-color);
+  color: var(--primary-color);
 }
 .button.icon.primary:hover > i, .button.icon.primary:focus > i {
   background-color: var(--pr-an-color-light-a2);
@@ -423,7 +423,7 @@ main div > * {
 }
 
 .button.icon.secondary {
-  color: var(--sc-color);
+  color: var(--secondary-color);
 }
 .button.icon.secondary:hover > i, .button.icon.secondary:focus > i {
   background-color: var(--sc-an-color-light-a2);
