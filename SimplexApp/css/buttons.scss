@@ -108,6 +108,30 @@
     --btn-color-text-disabled : var(--on-surface-color);
     --btn-color-bg-disabled : var(--on-surface-color-a1);
 }
+.button.on-surface {
+    --btn-color-text : var(--on-secondary-color);
+    --btn-color-bg : var(--sc-color);
+    --btn-color-bg-hover : var(--sc-an-color);
+    --btn-color-bg-active : var(--sc-an-color-dark);
+    --btn-color-bg-ripple : var(--sc-an-color-dark);
+    --btn-color-bg-hover-a : var(--sc-an-color-a2);
+    --btn-color-bg-active-a : var(--sc-an-color-dark-a1);
+
+    --btn-color-text-disabled : var(--on-surface-color);
+    --btn-color-bg-disabled : var(--on-surface-color-a1);
+}
+.button.on-color {
+    --btn-color-text : var(--on-secondary-color);
+    --btn-color-bg : var(--sc-color);
+    --btn-color-bg-hover : var(--sc-an-color);
+    --btn-color-bg-active : var(--sc-an-color-dark);
+    --btn-color-bg-ripple : var(--sc-an-color-dark);
+    --btn-color-bg-hover-a : var(--sc-an-color-a2);
+    --btn-color-bg-active-a : var(--sc-an-color-dark-a1);
+
+    --btn-color-text-disabled : var(--on-surface-color);
+    --btn-color-bg-disabled : var(--on-surface-color-a1);
+}
 
 .button.outline {
     color: var(--btn-color-bg);

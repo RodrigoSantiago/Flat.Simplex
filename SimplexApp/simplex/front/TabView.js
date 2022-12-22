@@ -50,6 +50,13 @@ export class TabView {
         });
     }
 
+    onResize() {
+        this.updateScroll();
+        if (this.selectedTab !== null) {
+            this.selectedTab.jqContent.onResize?.();
+        }
+    }
+
     updateScroll() {
         if (this.jqScroll.scrollLeft() <= 16) {
             this.jqLeftHandler.addClass("hide");
@@ -83,7 +90,7 @@ export class TabView {
         if (this.tabList.length === 1) {
             this.selectTab(tab);
         }
-        this.updateScroll();
+        this.onResize();
     }
 
     removeTab(tab) {
@@ -91,7 +98,7 @@ export class TabView {
         tab.jqContent.remove();
         let index = this.tabList.indexOf(tab);
         this.tabList.splice(index, 1);
-        this.updateScroll();
+        this.onResize();
     }
 
     selectTab(tab) {
@@ -104,7 +111,8 @@ export class TabView {
             this.selectedTab = tab;
             this.jqBody.append(tab.jqContent);
         }
-        this.scrollToTab(tab)
+        this.scrollToTab(tab);
+        this.onResize();
     }
 
     scrollToTab(tab) {

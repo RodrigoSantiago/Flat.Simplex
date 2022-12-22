@@ -17,9 +17,9 @@ export class Toolbar {
     toolbar = null;
     menu = null;
     more = null;
-    prevCount = 0;
+    prevCount = -1;
 
-    constructor(jqMain, jqToolbar) {
+    constructor(jqToolbar) {
         this.toolbar = jqToolbar;
         this.menu = jqToolbar.find(".menu");
         this.more = $('<div class="more button icon on-primary"><i class="material-icons">more_vert</i></div>');
@@ -35,6 +35,7 @@ export class Toolbar {
         if (this.prevCount !== count) {
             this.prevCount = count;
 
+            console.log(this.toolbarItems.length)
             this.menu.find(".menu-item").remove();
             for (let i = 0; i < this.toolbarItems.length && i < count; i++) {
                 let tbItem = this.toolbarItems[i];
@@ -81,16 +82,16 @@ export class Toolbar {
 
     addItem(name, icon, event) {
         this.toolbarItems.push(new ToolbarIcon(name, icon, event));
-        this.prevCount = 0;
+        this.prevCount = -1;
     }
 
     insertItem(index, name, icon, event) {
         this.toolbarItems.splice(index, 0, new ToolbarIcon(name, icon, event));
-        this.prevCount = 0;
+        this.prevCount = -1;
     }
 
     removeItem(index) {
         this.toolbarItems.splice(index, 1);
-        this.prevCount = 0;
+        this.prevCount = -1;
     }
 }

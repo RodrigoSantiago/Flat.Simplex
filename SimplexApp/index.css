@@ -123,6 +123,28 @@
   font-family: "Roboto-Flex";
   src: url(css/fonts/Roboto.ttf) format("truetype");
 }
+@font-face {
+  font-family: "Material Symbols Outlined";
+  font-style: normal;
+  font-weight: 100 700;
+  src: url(css/fonts/MaterialSymbols.woff2) format("woff2");
+}
+.material-icons {
+  font-family: "Material Symbols Outlined";
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-block;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: "liga";
+  font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 24;
+}
+
 * {
   box-sizing: border-box;
 }
@@ -144,7 +166,7 @@
   text-align: center;
 }
 
-.left-list, .floating-creation, .drawer, .negative-floating, .editor, .main > .navigator-split, .main > .navigator, .main > .navigator .drawer, main, html, body, .vbox {
+.left-list, .floating-creation, .drawer, .negative-floating, .editor, #tools-view, .main > .navigator-split, .main > .navigator, .main > .navigator .drawer, main, html, body, .vbox {
   display: flex;
   flex-direction: column;
 }
@@ -335,6 +357,30 @@ main div > * {
 }
 
 .button.secondary, .toolbar > .menu > .secondary.menu-item {
+  --btn-color-text: var(--on-secondary-color);
+  --btn-color-bg: var(--sc-color);
+  --btn-color-bg-hover: var(--sc-an-color);
+  --btn-color-bg-active: var(--sc-an-color-dark);
+  --btn-color-bg-ripple: var(--sc-an-color-dark);
+  --btn-color-bg-hover-a: var(--sc-an-color-a2);
+  --btn-color-bg-active-a: var(--sc-an-color-dark-a1);
+  --btn-color-text-disabled: var(--on-surface-color);
+  --btn-color-bg-disabled: var(--on-surface-color-a1);
+}
+
+.button.on-surface, .toolbar > .menu > .on-surface.menu-item {
+  --btn-color-text: var(--on-secondary-color);
+  --btn-color-bg: var(--sc-color);
+  --btn-color-bg-hover: var(--sc-an-color);
+  --btn-color-bg-active: var(--sc-an-color-dark);
+  --btn-color-bg-ripple: var(--sc-an-color-dark);
+  --btn-color-bg-hover-a: var(--sc-an-color-a2);
+  --btn-color-bg-active-a: var(--sc-an-color-dark-a1);
+  --btn-color-text-disabled: var(--on-surface-color);
+  --btn-color-bg-disabled: var(--on-surface-color-a1);
+}
+
+.button.on-color, .toolbar > .menu > .on-color.menu-item {
   --btn-color-text: var(--on-secondary-color);
   --btn-color-bg: var(--sc-color);
   --btn-color-bg-hover: var(--sc-an-color);
@@ -1074,9 +1120,11 @@ main div > * {
 }
 
 #tools-view {
-  width: 36px;
+  align-items: center;
+  width: 48px;
   height: 100%;
-  background-color: gray;
+  padding: 16px 4px 16px 4px;
+  background-color: #757575;
 }
 
 #canvas-view {
@@ -1096,6 +1144,46 @@ main div > * {
   min-width: 128px;
   height: 100%;
   background-color: darkgray;
+}
+
+.tool-icon {
+  display: flex;
+  color: #fff;
+  width: 32px;
+  height: 32px;
+  padding: 4px;
+  margin: 4px;
+  border-radius: 100%;
+  cursor: pointer;
+}
+.tool-icon:hover {
+  background-color: #616161;
+}
+.tool-icon:active {
+  background-color: #424242;
+}
+
+.tool-icon.selected {
+  background-color: #616161;
+}
+.tool-icon.selected:active {
+  background-color: #424242;
+}
+
+.tool-icon.disabled {
+  opacity: 0.5;
+  background-color: transparent;
+  cursor: default;
+}
+
+#tool-color, #tool-alt-color {
+  width: 24px;
+  height: 24px;
+  margin: 8px;
+  border: 2px solid white;
+  cursor: pointer;
+  border-radius: 100%;
+  background-color: #9c27b0;
 }
 
 * {
@@ -1247,7 +1335,6 @@ main div > * {
   justify-content: start;
   color: var(--on-surface-color);
   margin: 0 8px 0 8px;
-  font-size: 14px;
   text-transform: capitalize;
   font-weight: normal;
 }

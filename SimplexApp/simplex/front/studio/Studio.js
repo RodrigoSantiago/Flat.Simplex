@@ -268,6 +268,6 @@ export class Studio {
         this.Navigator.toClose();
         this.TreeView.update();
         this.Toolbar.update();
-        this.TabView.updateScroll();
+        this.TabView.onResize();
     }
 }

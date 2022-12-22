@@ -53,7 +53,7 @@ let tabcontent = $("#main-tab-content");
 const studio = new Studio(
     main,
     new Navigator(main, toolbar, navigator),
-    new Toolbar(main, toolbar),
+    new Toolbar(toolbar),
     new TreeView(treeview),
     null,
     new TabView(tabview, tabcontent)

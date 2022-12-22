@@ -20,9 +20,12 @@
 }
 
 #tools-view {
-    width: 36px;
+    @extend %vbox;
+    align-items: center;
+    width: 48px;
     height: 100%;
-    background-color: gray;
+    padding: 16px 4px 16px 4px;
+    background-color: colors.$color-grey-600;
 }
 
 #canvas-view {
@@ -42,4 +45,44 @@
     min-width: 128px;
     height: 100%;
     background-color: darkgray;
+}
+
+.tool-icon {
+    display: flex;
+    color: colors.$color-white;
+    width: 32px;
+    height: 32px;
+    padding: 4px;
+    margin: 4px;
+    border-radius: 100%;
+    cursor: pointer;
+
+    &:hover {
+        background-color: colors.$color-grey-700;
+    }
+    &:active {
+        background-color: colors.$color-grey-800;
+    }
+}
+.tool-icon.selected {
+    background-color: colors.$color-grey-700;
+    &:active {
+        background-color: colors.$color-grey-800;
+    }
+}
+.tool-icon.disabled {
+    opacity: 0.5;
+    background-color: transparent;
+    cursor: default;
+}
+
+#tool-color, #tool-alt-color {
+    width: 24px;
+    height: 24px;
+    margin: 8px;
+    border: 2px solid white;
+    cursor: pointer;
+
+    border-radius: 100%;
+    background-color: colors.$color-purple;
 }

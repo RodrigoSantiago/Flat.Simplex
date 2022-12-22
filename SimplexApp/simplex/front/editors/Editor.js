@@ -18,4 +18,8 @@ export class Editor {
             '    <div class="menu"></div>' +
             '</div></div>')
     }
+
+    onResize() {
+
+    }
 }
