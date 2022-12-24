@@ -111,16 +111,20 @@ export class TreeView {
     jQItemElement;
     jQItemDragElement;
     jQLineDropElement;
+    jQScroll;
     convertFunction;
 
     jQItems = [];
     offsetY = 0;
     visibleOffsetY = 0;
     itemHeight = 0;
+    itemWidth = 0;
     computedMaxHeight = 0;
     selection = [];
     onTreeItemClick = null;
     onSingleItemSelected = null;
+
+    prevIndex = -1;
 
     constructor(jQRootElement, onTreeItemClick, onSingleItemSelected, onRequestContextMenu) {
         this.root = new TreeItem(null);
@@ -128,12 +132,18 @@ export class TreeView {
         this.root.open = true;
 
         this.jQRootElement = jQRootElement;
-        this.jQItemElement = $("<div class='tree-item'><div class='ident'></div><i class='right material-icons'>expand_more</i><i class='left material-icons'>folder</i><span class='text'></span></div>");
+        this.jQItemElement = $("<div class='tree-item'><div class='ident'></div><i class='fold material-icons'>expand_more</i><i class='left material-icons'>folder</i><span class='text'></span></div>");
         this.jQContentElement = $("<div class='tree-content'></div>");
-        this.jQRootElement.append(this.jQContentElement);
 
-        this.jQItemDragElement = this.jQItemElement.clone();
-        this.jQItemDragElement.addClass("drag");
+        this.jQScrollArea = $("<div class='tree-scroll-area'></div>");
+        this.jQScroll = $("<div class='tree-scroll'><div class='tree-scroll-bar'></div></div>");
+        this.jQScrollBar = this.jQScroll.find(".tree-scroll-bar");
+        this.jQScrollArea.append(this.jQContentElement);
+        this.jQRootElement.append(this.jQScrollArea);
+        this.jQRootElement.append(this.jQScroll);
+
+        this.jQItemDragElement = $("<div class='tree-drag-item'></div>");
+        this.jQItemDragElement.append(this.jQItemElement.clone());
         this.jQRootElement.append(this.jQItemDragElement);
 
         this.jQLineDropElement = $("<div class='tree-drop-line'></div>");
@@ -144,6 +154,8 @@ export class TreeView {
         this.onRequestContextMenu = onRequestContextMenu;
         this.addVisibleItem();
         this.itemHeight = this.jQItems[0].outerHeight();
+        this.itemWidth = this.jQItems[0].outerWidth();
+
         this.dragData = {
             item : null,
             drop : null,
@@ -172,7 +184,7 @@ export class TreeView {
             if (jQElement.span === undefined) {
                 jQElement.span = jQElement.find('span');
                 jQElement.icon = jQElement.find('.left');
-                jQElement.fold = jQElement.find('.right');
+                jQElement.fold = jQElement.find('.fold');
                 jQElement.line = jQElement.find('.ident');
             }
             let span = jQElement.span;
@@ -198,22 +210,9 @@ export class TreeView {
             }
 
             if (treeItem.isSelected()) {
-                if (treeItem.selectedJq !== undefined || jQElement.hasClass("selected")) {
-                    jQElement.addClass("no-animation");
-                }
                 jQElement.addClass("selected");
-                jQElement.width();
-                jQElement.removeClass("no-animation");
-                treeItem.selectedJq = jQElement;
-
-            } else if (!treeItem.isSelected() && jQElement.hasClass("selected")) {
-                if (treeItem.selectedJq !== jQElement) {
-                    jQElement.addClass("no-animation");
-                }
+            } else {
                 jQElement.removeClass("selected");
-                jQElement.width();
-                jQElement.removeClass("no-animation");
-                treeItem.selectedJq = undefined;
             }
 
             span.text(treeItem.content.text);
@@ -222,22 +221,22 @@ export class TreeView {
 
             let prevHtml = line.html();
             let html = "";
-            let it = treeItem;
-            let meLast = !(it.isFolder() && it.isOpen() && it.children.length > 0) &&
-                it.parent !== null &&
-                it.parent.parent !== null &&
-                it.parent.children.indexOf(it) === it.parent.children.length - 1;
+            let ti = treeItem;
+            let meLast = !(ti.isFolder() && ti.isOpen() && ti.children.length > 0) &&
+                ti.parent !== null &&
+                ti.parent.parent !== null &&
+                ti.parent.children.indexOf(ti) === ti.parent.children.length - 1;
 
-            while (it !== null && it.parent !== null && it.parent.parent !== null && ident > 0 && !treeItem.isDragged()) {
-                if (it === treeItem && meLast) {
+            while (ti !== null && ti.parent !== null && ti.parent.parent !== null && ident > 0 && !treeItem.isDragged()) {
+                if (ti === treeItem && meLast) {
                     html = "<div class='line end'></div>" + html;
-                } else if (meLast && it.isFolder() && it.isOpen() && it.children.length > 0 && it.parent.children.indexOf(it) === it.parent.children.length - 1) {
+                } else if (meLast && ti.isFolder() && ti.isOpen() && ti.children.length > 0 && ti.parent.children.indexOf(ti) === ti.parent.children.length - 1) {
                     html = "<div class='line end'></div>" + html;
                 } else {
                     meLast = false;
                     html = "<div class='line'></div>" + html;
                 }
-                it = it.parent;
+                ti = ti.parent;
             }
             if (html !== prevHtml) {
                 line.empty();
@@ -252,42 +251,80 @@ export class TreeView {
                 fold.removeClass("folder");
             }
         };
+
+        this.configureScrollbar();
+    }
+
+    mouseDown(e, jqItem, item) {
+        this.dragData.item = item;
+        this.dragData.pressed = true;
+        this.dragData.start = {x: e.pageX - jqItem.offset().left, y: e.pageY - jqItem.offset().top};
+        this.dragData.relative = {x: e.pageX, y: e.pageY};
     }
 
     mouseMove(e) {
-        if (!this.dragData.dragged && this.dragData.pressed) {
+        if (this.dragData.pressed) {
             let xd = this.dragData.relative.x - e.pageX;
             let yd = this.dragData.relative.y - e.pageY;
-            if (xd * xd + yd * yd > this.itemHeight/2 * this.itemHeight/2) {
+            if (xd * xd + yd * yd > this.itemHeight / 2 * this.itemHeight / 2) {
                 if (DragSystem.drag(this)) {
-                    this.dragData.dragged = true;
-                    this.jQItemDragElement.addClass("dragged");
-                    this.jQLineDropElement.addClass("dragged");
-                    this.convertFunction(this.jQItemDragElement, this.dragData.item, 0);
-                    this.dragData.item.setDragged(true);
-                    this.selectionAdd(this.dragData.item, false);
-                    this.update();
-                } else {
-                    this.dragData.pressed = false;
+                    this.onDragStart(e);
                 }
+
+                this.dragData.pressed = false;
             }
         }
+    }
 
-        if (!this.dragData.dragged) {
-            return;
+    mouseUp(e) {
+        this.dragData.item = null;
+        this.dragData.pressed = false;
+        this.dragData.drop = null;
+        this.dragData.where = null;
+        this.jQItemDragElement.removeClass("dragged");
+        this.jQLineDropElement.removeClass("dragged");
+        if (this.dragData.scrollTimerUp !== null) {
+            clearInterval(this.dragData.scrollTimerUp);
         }
+        if (this.dragData.scrollTimerDown !== null) {
+            clearInterval(this.dragData.scrollTimerDown);
+        }
+        this.dragData.scrollTimerUp = null;
+        this.dragData.scrollTimerDown = null;
+    }
 
-        this.jQItemDragElement.offset({top: e.pageY - this.itemHeight / 2});
+    onDragStart(e) {
+        this.jQItemDragElement.addClass("dragged");
+        this.jQLineDropElement.addClass("dragged");
+        this.convertFunction(this.jQItemDragElement.find(".tree-item"), this.dragData.item, 0);
+        this.dragData.item.setDragged(true);
+        this.selectionAdd(this.dragData.item, false);
+        this.update();
+    }
+
+    onDragMove(e) {
+        this.jQItemDragElement.offset({top: e.pageY - this.itemHeight / 2, left : e.pageX - this.itemWidth / 2});
+
         let rTop = this.jQRootElement.offset().top;
         let visOff = (this.itemHeight - this.visibleOffsetY) % this.itemHeight;
         let offY = e.pageY - rTop + visOff;
         this.dragData.drop = null;
         this.dragData.where = null;
         let halfLine = this.jQLineDropElement.height() / 2;
+
+        if (e.pageX - this.itemWidth / 2 > this.jQRootElement.width()) {
+            this.jQLineDropElement.removeClass("dragged");
+            this.clearAutoScroll();
+            return;
+        } else {
+            this.jQLineDropElement.addClass("dragged");
+        }
+
         for (let i = 0; i < this.jQItems.length; i++) {
+            let start = offY < 0;
             let pos = (offY >= this.itemHeight * i && offY < this.itemHeight * (i + 1));
             let end = (i + 1 < this.jQItems.length && this.jQItems[i + 1].treeItem === null);
-            if (pos || end) {
+            if (start || pos || end) {
 
                 let treeItem = this.jQItems[i].treeItem;
                 this.dragData.drop = treeItem;
@@ -341,23 +378,12 @@ export class TreeView {
             }
         }
         if (!(e.pageY - rTop < 16) && !(e.pageY - rTop > this.visibleHeight() - 16)) {
-            if (this.dragData.scrollTimerUp !== null) {
-                clearInterval(this.dragData.scrollTimerUp);
-            }
-            if (this.dragData.scrollTimerDown !== null) {
-                clearInterval(this.dragData.scrollTimerDown);
-            }
-            this.dragData.scrollTimerUp = null;
-            this.dragData.scrollTimerDown = null;
+            this.clearAutoScroll();
         }
     }
 
-    mouseUp(e) {
-        if (this.dragData.dragged) {
-            DragSystem.drop(this);
-        }
-
-        if (this.dragData.dragged && this.dragData.item !== null) {
+    onDragDrop(e) {
+        if (this.dragData.item !== null) {
             this.dragData.item.setDragged(false);
             if (this.dragData.drop !== null && !this.dragData.drop.isChildOf(this.dragData.item)) {
                 this.dragData.item.parent.removeChild(this.dragData.item);
@@ -372,17 +398,69 @@ export class TreeView {
                 }
 
                 this.selectionAdd(this.dragData.item, false);
+            } else {
+                this.update();
             }
-            this.update();
         }
+    }
 
-        this.dragData.item = null;
-        this.dragData.pressed = false;
-        this.dragData.dragged = false;
-        this.dragData.drop = null;
-        this.dragData.where = null;
-        this.jQItemDragElement.removeClass("dragged");
-        this.jQLineDropElement.removeClass("dragged");
+    onDragCancel(e) {
+        if (this.dragData.item !== null) {
+            this.dragData.item.setDragged(false);
+        }
+        this.mouseUp();
+        this.update();
+    }
+
+    configureScrollbar() {
+        const self = this;
+        this.jQScrollBar.dragged = false;
+        this.jQScroll.mousedown(function (e) {
+            if ($(e.target).is(".tree-scroll-bar")) return;
+
+            let maxHeight = self.computedMaxHeight;
+            let height = self.jQScroll.height();
+            let barPosY = (-self.offsetY/maxHeight * height);
+            let mouseX = e.pageX - self.jQScroll.offset().left;
+            let mouseY = e.pageY - self.jQScroll.offset().top;
+
+            if (mouseY < barPosY) {
+                self.scrollSet(-mouseY/height * maxHeight);
+            } else if (mouseY > barPosY + height * height/maxHeight) {
+                self.scrollSet(-(mouseY-height * height/maxHeight)/height * maxHeight);
+            }
+            if (DragSystem.drag(self.jQScrollBar)) {
+                barPosY = (-self.offsetY/maxHeight * height);
+                self.jQScrollBar.grabPos = {
+                    x: mouseX,
+                    y: mouseY,
+                    p: barPosY / height
+                };
+            }
+        });
+        this.jQScrollBar.mousedown(function (e) {
+            if (DragSystem.drag(self.jQScrollBar)) {
+                let maxHeight = self.computedMaxHeight;
+                let height = self.jQScroll.height();
+                let yPos = (-self.offsetY/maxHeight * height);
+                self.jQScrollBar.grabPos = {
+                    x : e.pageX - self.jQScroll.offset().left,
+                    y : e.pageY - self.jQScroll.offset().top,
+                    p : yPos/height
+                };
+            }
+        });
+        this.jQScrollBar.onDragMove = function (e) {
+            let maxHeight = self.computedMaxHeight;
+            let height = self.jQScroll.height();
+            let offx = e.pageX - self.jQScroll.offset().left;
+            let offy = e.pageY - self.jQScroll.offset().top - self.jQScrollBar.grabPos.y;
+            let yDist = (offy)/(height);
+            self.scrollSet( -( (self.jQScrollBar.grabPos.p + yDist) * maxHeight));
+        }
+    }
+
+    clearAutoScroll() {
         if (this.dragData.scrollTimerUp !== null) {
             clearInterval(this.dragData.scrollTimerUp);
         }
@@ -391,6 +469,27 @@ export class TreeView {
         }
         this.dragData.scrollTimerUp = null;
         this.dragData.scrollTimerDown = null;
+    }
+
+    updateScrollBar() {
+        let maxHeight = this.computedMaxHeight;
+        let height = this.jQScroll.height();
+        if (height >= maxHeight) {
+            this.jQScroll.css("display", "none");
+        } else {
+            this.jQScroll.css("display", "");
+            this.jQScrollBar.css("height", ((height/maxHeight) * 100)+"%");
+            this.jQScrollBar.css("top", (-this.offsetY/maxHeight * height) + "px");
+        }
+    }
+
+    scrollSet(scroll) {
+        let prevOffset = this.offsetY;
+        this.offsetY = scroll;
+        this.limiteOffset();
+        if (prevOffset !== this.offsetY) {
+            this.update();
+        }
     }
 
     scrollBy(scroll) {
@@ -414,6 +513,11 @@ export class TreeView {
         }
         this.visibleOffsetY = this.offsetY % this.itemHeight;
         this.jQContentElement.css({top : this.visibleOffsetY});
+        this.updateScrollBar();
+    }
+
+    getFirstItemIndex() {
+        return -Math.floor((-this.offsetY) / this.itemHeight);
     }
 
     update() {
@@ -428,7 +532,8 @@ export class TreeView {
             currentHeight += this.itemHeight;
         }
 
-        let index = {i : -Math.floor((-this.offsetY) / this.itemHeight)};
+        this.prevIndex = this.getFirstItemIndex();
+        let index = {i : this.prevIndex};
         for (const child of this.root.children) {
             if (!this.updateItem(child, index, 0)) {
                 break;
@@ -470,7 +575,7 @@ export class TreeView {
         jqItem.treeItem = null;
         jqItem.span = jqItem.find('span');
         jqItem.icon = jqItem.find('.left');
-        jqItem.fold = jqItem.find('.right');
+        jqItem.fold = jqItem.find('.fold');
         jqItem.line = jqItem.find('.ident');
 
         jqItem.click(function (e) {
@@ -489,7 +594,7 @@ export class TreeView {
             }
         }).dblclick(function (e) {
             if (jqItem.treeItem !== null) {
-                if (jqItem.treeItem.folder && !$(e.target).is(".right")) {
+                if (jqItem.treeItem.folder && !$(e.target).is(".fold")) {
                     jqItem.treeItem.setOpen(!jqItem.treeItem.isOpen());
                     self.update();
                 } else  {
@@ -498,10 +603,7 @@ export class TreeView {
             }
         }).mousedown(function (e) {
             if (jqItem.treeItem !== null) {
-                self.dragData.item = jqItem.treeItem;
-                self.dragData.pressed = true;
-                self.dragData.start = {x: e.pageX - jqItem.offset().left, y: e.pageY - jqItem.offset().top};
-                self.dragData.relative = {x: e.pageX, y: e.pageY};
+                self.mouseDown(e, jqItem, jqItem.treeItem);
             }
         }).contextmenu(function (e) {
             if (jqItem.treeItem && (self.selection.length === 0 || self.selection.indexOf(jqItem.treeItem) === -1)) {
@@ -509,7 +611,7 @@ export class TreeView {
             }
             self.onRequestContextMenu(e, jqItem.treeItem);
         });
-        jqItem.find(".right").click(function (e) {
+        jqItem.find(".fold").click(function (e) {
             if (jqItem.treeItem !== null) {
                 if (jqItem.treeItem.folder) {
                     jqItem.treeItem.setOpen(!jqItem.treeItem.isOpen());

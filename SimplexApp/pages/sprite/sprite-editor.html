@@ -5,31 +5,61 @@
         <div class="title"><span></span></div>
         <div class="menu"></div>
     </div>
-    <div class="button icon" style="margin: 8px"><i class="material-icons">check</i></div>
-    <div class="button icon primary" style="margin: 8px"><i class="material-icons">check</i></div>
-    <div class="button icon secondary" style="margin: 8px"><i class="material-icons">check</i></div>
-    <div class="button icon on-surface" style="margin: 8px"><i class="material-icons">check</i></div>
-    <div class="button icon on-color" style="margin: 8px"><i class="material-icons">check</i></div>
-    <div class="button icon disabled" style="margin: 8px"><i class="material-icons">check</i></div>
-    <div class="button icon primary disabled" style="margin: 8px"><i class="material-icons">check</i></div>
-    <div class="button icon secondary disabled" style="margin: 8px"><i class="material-icons">check</i></div>
-    <div class="button icon on-surface disabled" style="margin: 8px"><i class="material-icons">check</i></div>
-    <div class="button icon on-color disabled" style="margin: 8px"><i class="material-icons">check</i></div>
-    <div id="split-panel">
-        <div id="tools-view">
-            <div id="tool-select" class="tool-icon"><i class="material-icons">select_all</i></div>
-            <div id="tool-pencil" class="tool-icon"><i class="material-icons">edit</i></div>
-            <div id="tool-brush" class="tool-icon"><i class="material-icons">brush</i></div>
-            <div id="tool-spray" class="tool-icon"><i class="material-icons" style="transform: rotate(180deg);">auto_fix_normal</i></div>
-            <div id="tool-bucket" class="tool-icon"><i class="material-icons">humidity_high</i></div>
-            <div id="tool-eraser" class="tool-icon selected"><i class="material-icons" style="transform: rotate(-45deg);">width_normal</i></div>
-            <div id="tool-smudge" class="tool-icon"><i class="material-icons">blur_on</i></div>
-            <div id="tool-color"></div>
-            <div id="tool-alt-color"></div>
+    <div class="split-panel-ver">
+        <div class="split-panel-hor">
+            <div class="tools-view draggable-view">
+                <div class="drag"><i class="material-icons">more_horiz</i></div>
+                <div class="tool-select button icon on-color tool-button"><i class="material-icons">select_all</i></div>
+                <div class="tool-pencil button icon on-color tool-button"><i class="material-icons">edit</i></div>
+                <div class="tool-brush button icon on-color tool-button"><i class="material-icons">brush</i></div>
+                <div class="tool-spray button icon on-color tool-button"><i class="material-icons" style="transform: rotate(180deg);">auto_fix_normal</i></div>
+                <div class="tool-bucket button icon on-color tool-button"><i class="material-icons">humidity_high</i></div>
+                <div class="tool-eraser button icon on-color tool-button"><i class="material-icons" style="transform: rotate(-45deg);">width_normal</i></div>
+                <div class="tool-smudge button icon on-color tool-button"><i class="material-icons">blur_on</i></div>
+                <div class="tool-color"><div class="color-circle"></div></div>
+                <div class="tool-alt-color"><div class="alt-color-circle"></div></div>
+            </div>
+            <div class="layers-view draggable-view">
+                <div class="drag"><i class="material-icons">more_horiz</i></div>
+                <div class="layer-add-button button chip on-color tool-button dense"><i class="material-icons">add</i></div>
+                <div class="layers-container">
+                    <div class="layer"><div class="image"></div></div>
+                    <div class="layer"><div class="image"></div></div>
+                    <div class="layer"><div class="image"></div></div>
+                    <div class="layer"><div class="image"></div></div>
+                    <div class="layer"><div class="image"></div></div>
+                    <div class="layer"><div class="image"></div></div>
+                    <div class="layer"><div class="image"></div></div>
+                    <div class="layer"><div class="image"></div></div>
+                </div>
+            </div>
+            <div class="canvas-view"></div>
+
+            <div class="frames-view draggable-view">
+                <div class="drag"><i class="material-icons">more_horiz</i></div>
+                <div class="frame-buttons">
+                    <div class="button chip on-color tool-button"><i class="material-icons">add</i></div>
+                    <div class="button chip on-color tool-button"><i class="material-icons">play_arrow</i></div>
+                    <div class="button chip on-color tool-button"><i class="material-icons-outline">library_add</i></div>
+                    <div class="button chip on-color tool-button"><i class="material-icons">animation</i></div>
+                </div>
+                <div class="frames-container">
+                    <div class="frame">
+                        <div class="image">
+                            <div class="frame-remove"><i class="material-icons">do_not_disturb_on</i></div>
+                            <div class="frame-hide"><i class="material-icons">visibility</i></div>
+                        </div>
+                    </div>
+                    <div class="frame"><div class="image"></div></div>
+                    <div class="frame"><div class="image"></div></div>
+                    <div class="frame"><div class="image"></div></div>
+                    <div class="frame"><div class="image"></div></div>
+                    <div class="frame"><div class="image"></div></div>
+                    <div class="frame"><div class="image"></div></div>
+                    <div class="frame"><div class="image"></div></div>
+                </div>
+            </div>
         </div>
-        <div id="canvas-view"></div>
-        <div id="layers-view"></div>
-        <div id="colors-view"></div>
     </div>
-    <div id="animation-panel"></div>
+
 </div>

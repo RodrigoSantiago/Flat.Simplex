@@ -31,7 +31,7 @@
         > .statusbar {
             width: 100%;
             height: 16px;
-            background-color: var(--primary-color-active);
+            background-color: var(--primary-color-dark);
         }
     }
 
@@ -66,101 +66,6 @@
     }
 }
 
-.toolbar {
-    @extend %hbox;
-    @extend %elevation-4;
-    align-items: start;
-    left: 0;
-    top: 0;
-
-    width: 100%;
-    height: 52px;
-    background-color: var(--primary-color);
-    z-index: 8;
-
-    > .button {
-        margin: 8px;
-    }
-    > .button:last-of-type {
-        margin: 8px -8px 8px 8px;
-    }
-
-    > .menu {
-        @extend %hbox;
-        height: 56px;
-        min-width: 56px;
-        flex-grow: 1;
-
-        align-items: center;
-        justify-content: flex-end;
-        position: relative;
-    }
-
-    > .menu > .menu-item {
-        @extend .button, .icon;
-        margin: 6px;
-
-        > i {
-            padding: 6px;
-        }
-        > span {
-            display: none;
-        }
-    }
-
-    > .title {
-        @extend %hbox;
-        align-items: center;
-        min-width: 128px;
-        flex-grow: 1;
-        font-size: 24px;
-        height: 56px;
-        margin-left: 16px;
-
-        color: var(--on-color);
-    }
-
-    &.dense {
-        height: 48px;
-        min-height: 48px;
-
-        > .menu {
-            height: 48px;
-        }
-
-        > .title {
-            font-size: 18px;
-            height: 48px;
-        }
-
-        > .button {
-            margin: 6px;
-        }
-        > .button:last-of-type {
-            margin: 6px -8px 6px 6px;
-        }
-    }
-
-    &.prominent {
-        height: 128px;
-        min-height: 128px;
-    }
-
-    &.prominent.dense {
-        height: 96px;
-        min-height: 96px;
-
-        > .menu {
-            height: 48px;
-        }
-
-        > .title {
-            font-size: 18px;
-            height: 48px;
-        }
-    }
-}
-
 @media (min-width: main.$big-screen) {
     .main {
         > .navigator-split {
@@ -186,9 +91,6 @@
                 box-shadow: none !important;
             }
         }
-    }
-
-    .toolbar {
         .hamburger {
             display: none;
         }

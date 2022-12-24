@@ -278,6 +278,7 @@ $color-white : #fff;
 
 :root {
     --primary-color: #{$color-blue-500};
+    --primary-color-dark: #{$color-blue-700};
     --primary-color-hover: #{$color-blue-400};
     --primary-color-active: #{$color-blue-300};
     --primary-color-ripple: #{$color-blue-200};
@@ -291,8 +292,8 @@ $color-white : #fff;
     --on-color-ripple: #{$color-white};
 
     --surface-color: #{$color-white};
-    --surface-color-hover: #{$color-grey-300};
-    --surface-color-active: #{$color-grey-400};
+    --surface-color-hover: #{$color-grey-200};
+    --surface-color-active: #{$color-grey-300};
     --surface-color-ripple: #{$color-grey-500};
     --surface-color-disabled: #{$color-grey-500};
     --on-surface-color: #{$color-black};
@@ -339,7 +340,10 @@ $color-white : #fff;
         #{"--on-background-color-a"+$i}: #{fade-out($color-black, $a)};
     }
 
-
+    --scroll-size : 8px;
+    --scroll-color: #6A6A6A;
+    --scroll-color-active: #606060;
+    --scroll-bg: #BBB;
 }
 
 $baseline-color: black !default;

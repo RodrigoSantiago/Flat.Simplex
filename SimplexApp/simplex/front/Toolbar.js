@@ -35,7 +35,6 @@ export class Toolbar {
         if (this.prevCount !== count) {
             this.prevCount = count;
 
-            console.log(this.toolbarItems.length)
             this.menu.find(".menu-item").remove();
             for (let i = 0; i < this.toolbarItems.length && i < count; i++) {
                 let tbItem = this.toolbarItems[i];

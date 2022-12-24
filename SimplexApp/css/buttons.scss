@@ -296,3 +296,57 @@
 .button.floating .ripple.expand {
     animation: rippleExpandLimited 0.5s ease-out;
 }
+
+
+.button.chip {
+    @extend %hbox-center;
+    position: relative;
+    transition: background-color 0.25s ease-in,
+    color 0.25s ease-in;
+
+    min-width: 32px;
+    min-height: 32px;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border-radius: 100px;
+
+    font-weight: unset;
+    text-transform: unset;
+    overflow: hidden;
+
+    color: var(--btn-color-bg);
+    background-color: var(--btn-color-bg-hover-a);
+
+    &:hover, &:focus {
+        background-color: var(--btn-color-bg-hover-a);
+    }
+    &:active {
+        background-color: var(--btn-color-bg-active-a);
+    }
+    &.disabled {
+        color: var(--btn-color-text-disabled) !important;
+        background-color: var(--btn-color-bg-disabled);
+    }
+}
+
+.button.chip > i {
+    padding: 4px;
+    border-radius: 100%;
+    font-size: 24px;
+    margin: 0;
+    transition: background-color 0.25s ease-in,
+    color 0.25s ease-in;
+}
+
+.button.chip.dense {
+    min-width: 24px;
+    min-height: 24px;
+    width: 24px;
+    height: 24px;
+}
+
+.button.chip.dense > i {
+    font-size: 18px;
+    padding: 3px;
+}

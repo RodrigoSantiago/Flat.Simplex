@@ -22,13 +22,13 @@ export class Navigator {
 
         self.toClose();
 
-        window.addEventListener('mousedown', function (e) {
+        $(window).mousedown(function (e) {
             self.mouseDown(e);
         });
-        window.addEventListener('mousemove', function (e) {
+        $(window).mousemove(function (e) {
             self.mouseMove(e);
         });
-        window.addEventListener('mouseup', function (e) {
+        $(window).mouseup(function (e) {
             self.mouseUp(e);
         });
     }
@@ -136,23 +136,34 @@ export class Navigator {
                 }
             }
         }
-        if (this.drag) {
-            this.nav.offset({left: Math.min(this.open ? (e.pageX - this.start.x) : (e.pageX - this.drawer.width()), 0)});
-            this.updateNavigatorBackout();
-        }
     }
 
     mouseUp(e) {
-        if (this.drag) {
-            if (e.pageX > this.drawer.width() / 2) {
-                this.toOpen(200);
-            } else {
-                this.toClose(200);
-            }
-            DragSystem.drop(this);
-        }
-        this.drag = false;
         this.down = false;
         this.start = {x: 0, y: 0};
+    }
+
+    onDragMove(e) {
+        this.nav.offset({left: Math.min(this.open ? (e.pageX - this.start.x) : (e.pageX - this.drawer.width()), 0)});
+        this.updateNavigatorBackout();
+    }
+
+    onDragDrop(e) {
+        if (e.pageX > this.drawer.width() / 2) {
+            this.toOpen(200);
+        } else {
+            this.toClose(200);
+        }
+        this.drag = false;
+    }
+
+    onDragCancel(e) {
+        if (this.open) {
+            this.toOpen(200);
+        } else {
+            this.toClose(200);
+        }
+        this.drag = false;
+        this.mouseUp(e);
     }
 }

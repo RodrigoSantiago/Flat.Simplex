@@ -30,6 +30,12 @@
         color: var(--on-surface-color);
         background-color: var(--surface-color);
         cursor: pointer;
+        &:hover {
+            background-color: var(--surface-color-hover);
+        }
+        &:active {
+            background-color: var(--surface-color-active);
+        }
     }
 
     .right-handler {
@@ -43,6 +49,12 @@
         color: var(--on-surface-color);
         background-color: var(--surface-color);
         cursor: pointer;
+        &:hover {
+            background-color: var(--surface-color-hover);
+        }
+        &:active {
+            background-color: var(--surface-color-active);
+        }
     }
 
     .tab-header {
@@ -86,10 +98,10 @@
             border-radius: 100%;
             background-color: transparent;
             &:focus, &:hover {
-                background-color: var(--on-surface-color-a3);
+                background-color: var(--on-surface-color-a4);
             }
             &:active {
-                background-color: var(--on-surface-color-a2);
+                background-color: var(--on-surface-color-a3);
             }
             i {
                 font-size: 16px;

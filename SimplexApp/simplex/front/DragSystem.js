@@ -8,14 +8,29 @@ export class DragSystem {
         DragSystem.draggedItem = item;
         return true;
     }
-
-    static drop(item) {
-        if (DragSystem.draggedItem === item) {
-            DragSystem.draggedItem = null;
-        }
-    }
 }
-
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'Escape' && DragSystem.draggedItem !== null) {
+        DragSystem.draggedItem.onDragCancel?.(event);
+        DragSystem.draggedItem = null;
+    }
+});
+window.addEventListener('mousemove', function (e) {
+    if (DragSystem.draggedItem !== null) {
+        DragSystem.draggedItem.onDragMove?.(e);
+    }
+});
+window.addEventListener('mousemove', function (e) {
+    if (DragSystem.draggedItem !== null) {
+        DragSystem.draggedItem.onDragMove?.(e);
+    }
+});
+window.addEventListener('mouseup', function (e) {
+    if (DragSystem.draggedItem !== null) {
+        DragSystem.draggedItem.onDragDrop?.(e);
+        DragSystem.draggedItem = null;
+    }
+});
 window.addEventListener('click', function (e) {
     if (DragSystem.draggedItem !== null) {
         e.preventDefault();

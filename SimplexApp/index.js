@@ -51,6 +51,7 @@ function addRipple(e) {
 function hoverTooltip(e) {
 
 }
+
 function addTooltip(e) {
     if (e.children('.tooltip').length === 0) {
         e.prepend($('<div class="ripple"></div>'));

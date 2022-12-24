@@ -54,25 +54,13 @@ export class Studio {
     }
 
     configureDivider() {
-
         let dc = $("#divider_center");
+        dc[0].onDragMove = function (e) {
+            let m = Math.max(200, Math.min(400, e.pageX - dc.parent().offset().left));
+            $(".left-list").css("min-width", m + "px").width(m);
+        }
         dc.mousedown(function (e) {
-            if (DragSystem.drag(dc[0])) {
-                dc[0].drarStart = true;
-            }
-        });
-        $(window).mouseup(function (e) {
-            if (dc[0].drarStart) {
-                DragSystem.drop(dc[0]);
-                dc[0].drarStart = false;
-            }
-        });
-        $(window).mousemove(function (e) {
-            if (dc[0].drarStart) {
-                let m = Math.max(200, Math.min(400, e.pageX - dc.parent().offset().left));
-                console.log(e.pageX +"-"+ dc.parent().offset().left)
-                $(".left-list").css("min-width", m + "px").width(m);
-            }
+            DragSystem.drag(dc[0]);
         });
     }
 

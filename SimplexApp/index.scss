@@ -5,11 +5,13 @@
 @use "css/dialogs";
 @use "css/colors";
 @use "css/tabview";
+@use "css/toolbar";
 @use "pages/sprite/sprite";
 
 * {
     -webkit-app-region:no-drag;
 }
+
 .left-list {
     @extend %vbox;
     align-items: stretch;
@@ -19,6 +21,7 @@
     max-width: 50%;
     position: relative;
 }
+
 .preview {
     width: 100%;
     height: 200px;
@@ -45,7 +48,7 @@
     cursor: ew-resize;
 }
 
-//------
+//-------------------------FLOATING BUTTON MENU-------------------------//
 #floating-menu {
     position: absolute;
     left: 0;
@@ -57,7 +60,8 @@
     }
 }
 #floating-add.open {
-    @extend .primary;
+    --btn-color-bg : var(--on-surface-color);
+    --btn-color-text : var(--surface-color);
     i {
         transform: rotate(45deg);
     }
@@ -85,7 +89,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
+            font-size: 14px;
             position: absolute;
             right: 48px;
             background-color: var(--tooltip-color);
@@ -162,7 +166,7 @@
     }
 
 }
-//-----------------Drawer--------------------
+//-------------------------NAVIGATION DRAWER-------------------------//
 .drawer {
     @extend %vbox;
 
@@ -176,7 +180,7 @@
         i {
             margin-right: 32px;
             font-size: 24px;
-            color: var(--on-surface-color-a1);
+            color: var(--on-surface-color-a2);
         }
 
         &:active, &:focus {
@@ -215,7 +219,8 @@
         }
     }
 }
-//--------TabView
+
+//-------------------------EDITORS TABS-------------------------//
 .negative-floating {
     @extend %vbox;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.24);
@@ -243,6 +248,9 @@
 #main-tab-content {
     width: 100%;
     height: 100%;
+    max-width: 100%;
+    max-height: 100%;
+    overflow: hidden;
 }
 .tab-view .tab-page.selected {
     border-bottom: 0;
@@ -351,27 +359,3 @@
         background-color: colors.$color-purple-400;
     }
 }
-//--------Toolbar colors
-
-.toolbar.red {
-    background-color: colors.$color-pink-400;
-}
-.toolbar.orange {
-    background-color: colors.$color-red-400;
-}
-.toolbar.yellow {
-    background-color: colors.$color-brown-400;
-}
-.toolbar.grey {
-    background-color: colors.$color-blue-grey-400;
-}
-.toolbar.green {
-    background-color: colors.$color-green-400;
-}
-.toolbar.blue {
-    background-color: colors.$color-blue-400;
-}
-.toolbar.purple {
-    background-color: colors.$color-purple-400;
-}
-
