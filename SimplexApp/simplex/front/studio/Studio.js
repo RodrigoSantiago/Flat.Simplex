@@ -54,10 +54,12 @@ export class Studio {
     }
 
     configureDivider() {
+        const self = this;
         let dc = $("#divider_center");
         dc[0].onDragMove = function (e) {
             let m = Math.max(200, Math.min(400, e.pageX - dc.parent().offset().left));
             $(".left-list").css("min-width", m + "px").width(m);
+            self.onResize();
         }
         dc.mousedown(function (e) {
             DragSystem.drag(dc[0]);

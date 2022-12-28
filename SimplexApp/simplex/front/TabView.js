@@ -45,8 +45,8 @@ export class TabView {
         this.jqScroll.scroll(function (e) {
             self.updateScroll();
         });
-        this.jqScroll.bind('mousewheel', function(e){
-            self.jqScroll.stop().scrollLeft(self.jqScroll.scrollLeft() + e.originalEvent.wheelDelta * -0.5);
+        this.jqScroll[0].addEventListener('wheel', function(e){
+            self.jqScroll.stop().scrollLeft(self.jqScroll.scrollLeft() + Math.sign(e.deltaY) * -30);
         });
     }
 

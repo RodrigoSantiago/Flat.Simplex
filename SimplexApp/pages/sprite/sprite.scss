@@ -6,10 +6,18 @@ $sprite-menu-line: colors.$color-grey-800;
 $sprite-menu-bg: colors.$color-grey-600;
 $sprite-menu-bg-hover: mix(colors.$color-grey-600, colors.$color-grey-500, 50%);
 $sprite-menu-bg-active: colors.$color-grey-500;
+$sprite-menu-bg-fade: fade-out(colors.$color-grey-600, 0.5);
+
+/*$sprite-menu-line: var(--on-surface-color-a3);//colors.$color-grey-800;
+$sprite-menu-bg: var(--surface-color);//colors.$color-grey-600;
+$sprite-menu-bg-hover: var(--surface-color-hover);//mix(colors.$color-grey-600, colors.$color-grey-500, 50%);
+$sprite-menu-bg-active: var(--surface-color-active);//colors.$color-grey-500;
+$sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600, 0.5);*/
 
 .split-panel-hor {
     @extend %hbox;
     justify-content: start;
+    position: relative;
     width: 100%;
     height: 100%;
     max-width: 100%;
@@ -19,6 +27,7 @@ $sprite-menu-bg-active: colors.$color-grey-500;
 .split-panel-ver {
     @extend %vbox;
     justify-content: start;
+    position: relative;
     width: 100%;
     height: 100%;
     max-width: 100%;
@@ -35,17 +44,103 @@ $sprite-menu-bg-active: colors.$color-grey-500;
 }
 
 .canvas-view {
+    display: flex;
     min-height: 64px;
     min-width: 64px;
     height: 100%;
     width: 100%;
     flex-grow: 1;
-    background-color: white;
+    background-color: var(--background-color);
+    position: relative;
+
+    .canvas-position {
+        display: flex;
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        max-width: 1px;
+        max-height: 1px;
+        overflow: visible;
+
+        .canvas-owner {
+            display: flex;
+            position: absolute;
+            align-items: center;
+            justify-content: center;
+            transform: translate(-50%, -50%);
+        }
+
+        .canvas-background {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("pages/canvas-bg.png");
+            image-rendering: pixelated;
+            z-index: 1;
+        }
+
+        img {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            image-rendering: pixelated;
+            z-index: 5;
+        }
+
+        canvas {
+            position: absolute;
+            image-rendering: pixelated;
+            z-index: 7;
+        }
+    }
 }
+
+//<editor-fold desc="DRAG-DROP">
 
 .draggable-view {
     z-index: 5;
     background-color: $sprite-menu-bg;
+    position: relative;
+    &.dragging {
+        z-index: unset;
+    }
+}
+
+.draggable-view:has(>.drag-holder) {
+    background-color: $sprite-menu-bg-fade;
+}
+
+.drag-holder {
+    @extend %elevation-8;
+    border-radius: 4px;
+    z-index: 10;
+    position: absolute;
+    max-width: 100%;
+    max-height: 100%;
+    overflow: hidden;
+    background-color: $sprite-menu-bg;
+}
+
+.sprite-drop-line {
+    display: none;
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background-color: var(--primary-color);
+}
+.sprite-drop-line.dragged {
+    display: flex;
+    z-index: 6;
+}
+.sprite-drop-line.horizontal {
+    width: 100%;
+}
+.sprite-drop-line.vertical {
+    height: 100%;
 }
 
 .split-panel-hor > .draggable-view {
@@ -56,6 +151,7 @@ $sprite-menu-bg-active: colors.$color-grey-500;
         display: flex;
         align-items: center;
         justify-content: center;
+        align-self: center;
         color: $sprite-menu-line;
         width: 100%;
         max-height: 24px;
@@ -79,6 +175,7 @@ $sprite-menu-bg-active: colors.$color-grey-500;
         display: flex;
         align-items: center;
         justify-content: center;
+        align-self: center;
         color: $sprite-menu-line;
         height: 100%;
         max-width: 24px;
@@ -94,6 +191,101 @@ $sprite-menu-bg-active: colors.$color-grey-500;
         border-top: solid 1px $sprite-menu-line;
     }
 }
+
+//</editor-fold>
+
+//<editor-fold desc="TOOLS">
+
+.tools-view {
+    .tool-button {
+        display: flex;
+        width: 32px;
+        height: 32px;
+        padding: 2px;
+        margin: 6px;
+        font-size: 24px;
+        border-radius: 100%;
+        cursor: pointer;
+    }
+
+    .tool-button.selected {
+        background-color: var(--btn-color-bg-hover-a);
+
+        &:hover, &:focus {
+            background-color: var(--btn-color-bg-hover-a);
+        }
+
+        &:active {
+            background-color: var(--btn-color-bg-active-a);
+        }
+    }
+
+    .tool-button.disabled {
+        opacity: 0.5;
+        background-color: transparent;
+        cursor: default;
+    }
+
+    .color-circle, .alt-color-circle {
+        width: 24px;
+        height: 24px;
+        min-width: 24px;
+        min-height: 24px;
+        border: 2px solid white;
+        background-color: colors.$color-purple;
+        border-radius: 100%;
+    }
+    .color-circle {
+        margin: -2px 0 0 -2px;
+        z-index: 2;
+    }
+    .alt-color-circle {
+        width: 12px;
+        height: 12px;
+        min-width: 12px;
+        min-height: 12px;
+        position: absolute;
+        top: 19px;
+        left: 19px;
+        z-index: 1;
+    }
+
+&.dragging {
+        overflow: visible !important;
+    }
+}
+
+.tools-view::-webkit-scrollbar {
+    display: none;
+}
+
+.split-panel-hor > .tools-view {
+    @extend %vbox;
+    height: 100%;
+    width: 48px;
+    min-width: 48px;
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    .drag-holder {
+        @extend %vbox;
+    }
+}
+
+.split-panel-ver > .tools-view {
+    @extend %hbox;
+    width: 100%;
+    height: 48px;
+    min-height: 48px;
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    .drag-holder {
+        @extend %hbox;
+    }
+}
+
+//</editor-fold>
 
 //<editor-fold desc="FRAMES">
 
@@ -119,24 +311,12 @@ $sprite-menu-bg-active: colors.$color-grey-500;
                 width: 64px;
                 height: 64px;
                 position: relative;
-                background: repeating-conic-gradient(#c0c0c0 0% 25%, #FFFFFF 0% 50%) 50% / 16px 16px;
+                background-image : url("pages/canvas-bg.png");
+                background-size : 16px;
                 border: 1px solid $sprite-menu-bg;
             }
 
             .frame-remove {
-                position: absolute;
-                display: flex;
-                left: 0;
-                top: 0;
-                cursor: pointer;
-                color: $sprite-menu-line;
-
-                i {
-                    font-size: 18px;
-                }
-            }
-
-            .frame-hide {
                 position: absolute;
                 display: flex;
                 right: 0;
@@ -178,6 +358,8 @@ $sprite-menu-bg-active: colors.$color-grey-500;
         @extend %vbox;
         overflow-x: hidden;
         overflow-y: auto;
+        width: 96px;
+        height: 100%;
 
         .frame {
             width: 100%;
@@ -196,6 +378,17 @@ $sprite-menu-bg-active: colors.$color-grey-500;
         width: 64px;
         margin: 8px;
     }
+
+    &.dragging {
+        overflow: visible !important;
+    }
+
+    .drag-holder {
+        @extend %vbox;
+        min-width: 96px;
+        max-width: 96px;
+        align-items: center;
+    }
 }
 
 .split-panel-ver > .frames-view {
@@ -211,6 +404,8 @@ $sprite-menu-bg-active: colors.$color-grey-500;
         @extend %hbox;
         overflow-x: auto;
         overflow-y: hidden;
+        width: 100%;
+        height: 96px;
 
         .frame {
             width: 80px;
@@ -228,6 +423,13 @@ $sprite-menu-bg-active: colors.$color-grey-500;
         @extend %hbox;
         height: 64px;
         margin: 8px;
+    }
+
+    .drag-holder {
+        @extend %hbox;
+        min-height: 96px;
+        max-height: 96px;
+        align-items: center;
     }
 }
 
@@ -256,8 +458,36 @@ $sprite-menu-bg-active: colors.$color-grey-500;
             .image {
                 width: 64px;
                 height: 64px;
-                background: repeating-conic-gradient(#c0c0c0 0% 25%, #FFFFFF 0% 50%) 50% / 16px 16px;
+                position: relative;
+                background-image : url("pages/canvas-bg.png");
+                background-size : 16px;
                 border: 1px solid $sprite-menu-bg;
+            }
+
+            .layer-remove {
+                position: absolute;
+                display: flex;
+                right: 0;
+                bottom: 0;
+                cursor: pointer;
+                color: $sprite-menu-line;
+
+                i {
+                    font-size: 18px;
+                }
+            }
+
+            .layer-hide {
+                position: absolute;
+                display: flex;
+                cursor: pointer;
+                left: 0;
+                top: 0;
+                color: $sprite-menu-line;
+
+                i {
+                    font-size: 18px;
+                }
             }
         }
     }
@@ -267,15 +497,6 @@ $sprite-menu-bg-active: colors.$color-grey-500;
         justify-content: center;
         border-radius: 100px;
         cursor: pointer;
-        background-color: $sprite-menu-bg-hover;
-
-        &:active {
-            background-color: $sprite-menu-bg-active;
-        }
-
-        i {
-            color: colors.$color-white;
-        }
     }
 }
 
@@ -292,6 +513,8 @@ $sprite-menu-bg-active: colors.$color-grey-500;
         @extend %vbox;
         overflow-x: hidden;
         overflow-y: auto;
+        width: 96px;
+        height: 100%;
 
         .layer {
             width: 100%;
@@ -310,6 +533,16 @@ $sprite-menu-bg-active: colors.$color-grey-500;
         width: 64px;
         margin: 8px;
     }
+
+    &.dragging {
+        overflow: visible !important;
+    }
+    .drag-holder {
+        @extend %vbox;
+        min-width: 96px;
+        max-width: 96px;
+        align-items: center;
+    }
 }
 
 .split-panel-ver > .layers-view {
@@ -325,6 +558,8 @@ $sprite-menu-bg-active: colors.$color-grey-500;
         @extend %hbox;
         overflow-x: auto;
         overflow-y: hidden;
+        width: 100%;
+        height: 96px;
 
         .layer {
             width: 80px;
@@ -343,11 +578,22 @@ $sprite-menu-bg-active: colors.$color-grey-500;
         height: 64px;
         margin: 8px;
     }
+
+    &.dragging {
+        overflow: visible !important;
+    }
+    .drag-holder {
+        @extend %hbox;
+        min-height: 96px;
+        max-height: 96px;
+        align-items: center;
+    }
 }
 
 //</editor-fold>
 
 //<editor-fold desc="COLORS">
+
 .colors-view {
     .color-matrix {
         border-radius: 100%;
@@ -372,91 +618,6 @@ $sprite-menu-bg-active: colors.$color-grey-500;
     align-items: center;
     min-height: 128px;
     width: 100%;
-}
-
-//</editor-fold>
-
-//<editor-fold desc="TOOLS">
-.tools-view {
-    .tool-button {
-        display: flex;
-        color: colors.$color-white;
-        width: 32px;
-        height: 32px;
-        padding: 2px;
-        margin: 6px;
-        font-size: 24px;
-        border-radius: 100%;
-        cursor: pointer;
-        background-color: transparent;
-
-        &:hover, &:focus {
-            background-color: var(--on-color-active-a3);
-        }
-
-        &:active {
-            background-color: var(--on-color-active-a3);
-        }
-    }
-
-    .tool-button.selected {
-        background-color: var(--on-color-active-a3);
-
-        &:hover, &:focus {
-            background-color: var(--on-color-active-a3);
-        }
-
-        &:active {
-            background-color: var(--on-color-active-a3);
-        }
-    }
-
-    .tool-button.disabled {
-        opacity: 0.5;
-        background-color: transparent;
-        cursor: default;
-    }
-
-    .tool-color, .tool-alt-color {
-        display: flex;
-        padding: 6px;
-        margin: 6px;
-        cursor: pointer;
-
-        border-radius: 100%;
-    }
-
-    .color-circle, .alt-color-circle {
-        width: 24px;
-        height: 24px;
-        min-width: 24px;
-        min-height: 24px;
-        border: 2px solid white;
-        background-color: colors.$color-purple;
-        border-radius: 100%;
-    }
-}
-
-.tools-view::-webkit-scrollbar {
-    display: none;
-}
-
-.split-panel-hor > .tools-view {
-    @extend %vbox;
-    height: 100%;
-    width: 48px;
-    min-width: 48px;
-    overflow-x: hidden;
-    overflow-y: auto;
-}
-
-.split-panel-ver > .tools-view {
-    @extend %hbox;
-    width: 100%;
-    height: 48px;
-    min-height: 48px;
-    overflow-x: auto;
-    overflow-y: hidden;
 }
 
 //</editor-fold>

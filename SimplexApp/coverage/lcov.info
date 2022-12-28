@@ -1,5 +1,5 @@
 TN:
-SF:simplex\lexer\Key.js
+SF:simplex\lang\lexer\Key.js
 FN:2,(anonymous_0)
 FN:7,(anonymous_1)
 FN:20,(anonymous_2)
@@ -114,7 +114,7 @@ BRF:16
 BRH:16
 end_of_record
 TN:
-SF:simplex\lexer\Lexer.js
+SF:simplex\lang\lexer\Lexer.js
 FN:4,(anonymous_0)
 FN:13,(anonymous_1)
 FN:23,(anonymous_2)
@@ -455,7 +455,7 @@ BRF:131
 BRH:125
 end_of_record
 TN:
-SF:simplex\lexer\Token.js
+SF:simplex\lang\lexer\Token.js
 FN:4,(anonymous_0)
 FN:22,(anonymous_1)
 FN:26,(anonymous_2)
@@ -551,7 +551,7 @@ BRF:18
 BRH:13
 end_of_record
 TN:
-SF:simplex\lexer\TokenGroup.js
+SF:simplex\lang\lexer\TokenGroup.js
 FN:4,(anonymous_0)
 FN:9,(anonymous_1)
 FN:13,(anonymous_2)
@@ -572,7 +572,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:simplex\parser\Parser.js
+SF:simplex\lang\parser\Parser.js
 FN:5,(anonymous_0)
 FN:13,(anonymous_1)
 FN:17,(anonymous_2)
@@ -846,7 +846,7 @@ BRF:117
 BRH:114
 end_of_record
 TN:
-SF:simplex\parser\logic\Block.js
+SF:simplex\lang\parser\logic\Block.js
 FN:2,(anonymous_0)
 FN:11,(anonymous_1)
 FN:15,(anonymous_2)
@@ -930,7 +930,7 @@ BRF:12
 BRH:11
 end_of_record
 TN:
-SF:simplex\parser\logic\Context.js
+SF:simplex\lang\parser\logic\Context.js
 FN:5,(anonymous_0)
 FN:11,(anonymous_1)
 FN:16,(anonymous_2)
@@ -967,7 +967,7 @@ BRF:2
 BRH:2
 end_of_record
 TN:
-SF:simplex\parser\logic\Field.js
+SF:simplex\lang\parser\logic\Field.js
 FN:2,(anonymous_0)
 FN:9,(anonymous_1)
 FN:13,(anonymous_2)
@@ -995,7 +995,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:simplex\parser\logic\LineBinder.js
+SF:simplex\lang\parser\logic\LineBinder.js
 FN:4,(anonymous_0)
 FN:11,(anonymous_1)
 FN:28,(anonymous_2)
@@ -1289,7 +1289,7 @@ BRF:130
 BRH:130
 end_of_record
 TN:
-SF:simplex\parser\logic\LineParser.js
+SF:simplex\lang\parser\logic\LineParser.js
 FN:4,(anonymous_0)
 FN:9,(anonymous_1)
 FNF:2
@@ -1311,7 +1311,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:simplex\parser\logic\LineReader.js
+SF:simplex\lang\parser\logic\LineReader.js
 FN:4,(anonymous_0)
 FN:14,(anonymous_1)
 FN:49,(anonymous_2)
@@ -1507,7 +1507,7 @@ BRF:64
 BRH:61
 end_of_record
 TN:
-SF:simplex\parser\logic\block\BlockBreak.js
+SF:simplex\lang\parser\logic\block\BlockBreak.js
 FN:5,(anonymous_0)
 FNF:1
 FNH:1
@@ -1554,7 +1554,7 @@ BRF:16
 BRH:16
 end_of_record
 TN:
-SF:simplex\parser\logic\block\BlockCase.js
+SF:simplex\lang\parser\logic\block\BlockCase.js
 FN:5,(anonymous_0)
 FN:43,(anonymous_1)
 FN:53,(anonymous_2)
@@ -1636,7 +1636,7 @@ BRF:24
 BRH:23
 end_of_record
 TN:
-SF:simplex\parser\logic\block\BlockContinue.js
+SF:simplex\lang\parser\logic\block\BlockContinue.js
 FN:5,(anonymous_0)
 FNF:1
 FNH:1
@@ -1681,7 +1681,7 @@ BRF:14
 BRH:14
 end_of_record
 TN:
-SF:simplex\parser\logic\block\BlockDefault.js
+SF:simplex\lang\parser\logic\block\BlockDefault.js
 FN:5,(anonymous_0)
 FNF:1
 FNH:1
@@ -1728,7 +1728,7 @@ BRF:14
 BRH:14
 end_of_record
 TN:
-SF:simplex\parser\logic\block\BlockDo.js
+SF:simplex\lang\parser\logic\block\BlockDo.js
 FN:5,(anonymous_0)
 FN:41,(anonymous_1)
 FN:54,(anonymous_2)
@@ -1830,7 +1830,7 @@ BRF:24
 BRH:24
 end_of_record
 TN:
-SF:simplex\parser\logic\block\BlockElse.js
+SF:simplex\lang\parser\logic\block\BlockElse.js
 FN:5,(anonymous_0)
 FN:40,(anonymous_1)
 FN:53,(anonymous_2)
@@ -1921,7 +1921,7 @@ BRF:24
 BRH:24
 end_of_record
 TN:
-SF:simplex\parser\logic\block\BlockElseIf.js
+SF:simplex\lang\parser\logic\block\BlockElseIf.js
 FN:5,(anonymous_0)
 FN:47,(anonymous_1)
 FN:67,(anonymous_2)
@@ -2042,7 +2042,7 @@ BRF:36
 BRH:35
 end_of_record
 TN:
-SF:simplex\parser\logic\block\BlockFor.js
+SF:simplex\lang\parser\logic\block\BlockFor.js
 FN:5,(anonymous_0)
 FN:51,(anonymous_1)
 FN:97,(anonymous_2)
@@ -2273,7 +2273,7 @@ BRF:84
 BRH:83
 end_of_record
 TN:
-SF:simplex\parser\logic\block\BlockIf.js
+SF:simplex\lang\parser\logic\block\BlockIf.js
 FN:5,(anonymous_0)
 FN:45,(anonymous_1)
 FN:65,(anonymous_2)
@@ -2373,7 +2373,7 @@ BRF:28
 BRH:27
 end_of_record
 TN:
-SF:simplex\parser\logic\block\BlockLine.js
+SF:simplex\lang\parser\logic\block\BlockLine.js
 FN:5,(anonymous_0)
 FN:32,(anonymous_1)
 FN:36,(anonymous_2)
@@ -2426,7 +2426,7 @@ BRF:10
 BRH:10
 end_of_record
 TN:
-SF:simplex\parser\logic\block\BlockReturn.js
+SF:simplex\lang\parser\logic\block\BlockReturn.js
 FN:5,(anonymous_0)
 FN:37,(anonymous_1)
 FN:44,(anonymous_2)
@@ -2491,7 +2491,7 @@ BRF:16
 BRH:16
 end_of_record
 TN:
-SF:simplex\parser\logic\block\BlockScope.js
+SF:simplex\lang\parser\logic\block\BlockScope.js
 FN:5,(anonymous_0)
 FN:30,(anonymous_1)
 FN:39,(anonymous_2)
@@ -2543,7 +2543,7 @@ BRF:12
 BRH:12
 end_of_record
 TN:
-SF:simplex\parser\logic\block\BlockSwitch.js
+SF:simplex\lang\parser\logic\block\BlockSwitch.js
 FN:5,(anonymous_0)
 FN:39,(anonymous_1)
 FN:55,(anonymous_2)
@@ -2668,7 +2668,7 @@ BRF:36
 BRH:32
 end_of_record
 TN:
-SF:simplex\parser\logic\block\BlockVar.js
+SF:simplex\lang\parser\logic\block\BlockVar.js
 FN:5,(anonymous_0)
 FN:86,(anonymous_1)
 FN:104,(anonymous_2)
@@ -2835,7 +2835,7 @@ BRF:63
 BRH:60
 end_of_record
 TN:
-SF:simplex\parser\logic\block\BlockWhile.js
+SF:simplex\lang\parser\logic\block\BlockWhile.js
 FN:5,(anonymous_0)
 FN:45,(anonymous_1)
 FN:65,(anonymous_2)
@@ -2944,7 +2944,7 @@ BRF:28
 BRH:27
 end_of_record
 TN:
-SF:simplex\parser\logic\block\BlockWith.js
+SF:simplex\lang\parser\logic\block\BlockWith.js
 FN:5,(anonymous_0)
 FN:45,(anonymous_1)
 FN:65,(anonymous_2)
@@ -3050,7 +3050,7 @@ BRF:28
 BRH:27
 end_of_record
 TN:
-SF:simplex\parser\logic\error\Error.js
+SF:simplex\lang\parser\logic\error\Error.js
 FN:2,(anonymous_0)
 FN:9,(anonymous_1)
 FN:13,(anonymous_2)
@@ -3116,7 +3116,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:simplex\parser\logic\line\Line.js
+SF:simplex\lang\parser\logic\line\Line.js
 FN:2,(anonymous_0)
 FN:7,(anonymous_1)
 FN:11,(anonymous_2)
@@ -3145,7 +3145,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:simplex\parser\logic\line\LineChain.js
+SF:simplex\lang\parser\logic\line\LineChain.js
 FN:5,(anonymous_0)
 FN:18,(anonymous_1)
 FN:22,(anonymous_2)
@@ -3205,7 +3205,7 @@ BRF:12
 BRH:3
 end_of_record
 TN:
-SF:simplex\parser\logic\line\LineGroup.js
+SF:simplex\lang\parser\logic\line\LineGroup.js
 FN:6,(anonymous_0)
 FN:25,(anonymous_1)
 FN:31,(anonymous_2)
@@ -3382,7 +3382,7 @@ BRF:51
 BRH:25
 end_of_record
 TN:
-SF:simplex\parser\logic\line\LineOp.js
+SF:simplex\lang\parser\logic\line\LineOp.js
 FN:4,(anonymous_0)
 FN:7,(anonymous_1)
 FN:10,(anonymous_2)
@@ -3412,7 +3412,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:simplex\parser\logic\line\LineValue.js
+SF:simplex\lang\parser\logic\line\LineValue.js
 FN:4,(anonymous_0)
 FN:8,(anonymous_1)
 FN:12,(anonymous_2)
@@ -3449,7 +3449,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:simplex\parser\logic\line\call\CallArray.js
+SF:simplex\lang\parser\logic\line\call\CallArray.js
 FN:5,(anonymous_0)
 FN:11,(anonymous_1)
 FN:98,(anonymous_2)
@@ -3753,7 +3753,7 @@ BRF:126
 BRH:120
 end_of_record
 TN:
-SF:simplex\parser\logic\line\call\CallField.js
+SF:simplex\lang\parser\logic\line\call\CallField.js
 FN:5,(anonymous_0)
 FN:10,(anonymous_1)
 FN:16,(anonymous_2)
@@ -3791,7 +3791,7 @@ BRF:7
 BRH:6
 end_of_record
 TN:
-SF:simplex\parser\logic\line\call\CallFunction.js
+SF:simplex\lang\parser\logic\line\call\CallFunction.js
 FN:5,(anonymous_0)
 FN:18,(anonymous_1)
 FN:42,(anonymous_2)
@@ -3921,7 +3921,7 @@ BRF:40
 BRH:39
 end_of_record
 TN:
-SF:simplex\parser\logic\line\call\CallGroup.js
+SF:simplex\lang\parser\logic\line\call\CallGroup.js
 FN:5,(anonymous_0)
 FN:10,(anonymous_1)
 FN:26,(anonymous_2)
@@ -3968,7 +3968,7 @@ BRF:11
 BRH:10
 end_of_record
 TN:
-SF:simplex\parser\logic\line\call\CallIndexer.js
+SF:simplex\lang\parser\logic\line\call\CallIndexer.js
 FN:5,(anonymous_0)
 FN:11,(anonymous_1)
 FN:61,(anonymous_2)
@@ -4066,7 +4066,7 @@ BRF:34
 BRH:31
 end_of_record
 TN:
-SF:simplex\parser\logic\line\call\CallMethod.js
+SF:simplex\lang\parser\logic\line\call\CallMethod.js
 FN:5,(anonymous_0)
 FN:11,(anonymous_1)
 FN:54,(anonymous_2)
@@ -4156,7 +4156,7 @@ BRF:30
 BRH:27
 end_of_record
 TN:
-SF:simplex\parser\logic\line\call\CallStruct.js
+SF:simplex\lang\parser\logic\line\call\CallStruct.js
 FN:5,(anonymous_0)
 FN:11,(anonymous_1)
 FN:58,(anonymous_2)
@@ -4262,7 +4262,7 @@ BRF:39
 BRH:38
 end_of_record
 TN:
-SF:simplex\parser\logic\line\call\CallValue.js
+SF:simplex\lang\parser\logic\line\call\CallValue.js
 FN:5,(anonymous_0)
 FN:13,(anonymous_1)
 FN:66,(anonymous_2)
@@ -4378,7 +4378,7 @@ BRF:34
 BRH:27
 end_of_record
 TN:
-SF:simplex\parser\logic\line\call\LineCall.js
+SF:simplex\lang\parser\logic\line\call\LineCall.js
 FN:4,(anonymous_0)
 FN:13,(anonymous_1)
 FN:18,(anonymous_2)
@@ -4432,7 +4432,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:simplex\support\AssertError.js
+SF:simplex\lang\support\AssertError.js
 FN:2,(anonymous_0)
 FN:7,(anonymous_1)
 FN:11,(anonymous_2)
@@ -4466,7 +4466,7 @@ BRF:0
 BRH:0
 end_of_record
 TN:
-SF:simplex\support\ContextSupport.js
+SF:simplex\lang\support\ContextSupport.js
 FN:4,(anonymous_0)
 FN:29,(anonymous_1)
 FNF:2
@@ -4524,7 +4524,7 @@ BRF:12
 BRH:6
 end_of_record
 TN:
-SF:simplex\support\LineCallChain.js
+SF:simplex\lang\support\LineCallChain.js
 FN:8,(anonymous_0)
 FN:12,(anonymous_1)
 FN:25,(anonymous_2)
@@ -4627,7 +4627,7 @@ BRF:32
 BRH:23
 end_of_record
 TN:
-SF:simplex\support\TokenChain.js
+SF:simplex\lang\support\TokenChain.js
 FN:7,(anonymous_0)
 FN:12,(anonymous_1)
 FN:27,(anonymous_2)

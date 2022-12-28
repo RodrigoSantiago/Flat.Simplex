@@ -297,6 +297,9 @@ $color-white : #fff;
     --surface-color-ripple: #{$color-grey-500};
     --surface-color-disabled: #{$color-grey-500};
     --on-surface-color: #{$color-black};
+    --on-surface-color-hover: #{$color-grey-300};
+    --on-surface-color-active: #{$color-grey-500};
+    --on-surface-color-ripple: #{$color-grey-800};
 
     --disabled-color: #{$color-black};
     --on-disabled-color: #{$color-grey-500};
@@ -329,6 +332,9 @@ $color-white : #fff;
         #{"--surface-color-hover-a"+$i}: #{fade-out($color-grey-50, $a)};
         #{"--surface-color-active-a"+$i}: #{fade-out($color-grey-200, $a)};
         #{"--on-surface-color-a"+$i}: #{fade-out($color-black, $a)};
+        #{"--on-surface-color-hover-a"+$i}: #{fade-out($color-grey-300, $a)};
+        #{"--on-surface-color-active-a"+$i}: #{fade-out($color-grey-500, $a)};
+        #{"--on-surface-color-ripple-a"+$i}:#{fade-out($color-grey-800, $a)};
 
         #{"--tooltip-color-a"+$i}: #{fade-out($color-grey-700, $a)};
         #{"--on-tooltip-color-a"+$i}: #{fade-out($color-white, $a)};

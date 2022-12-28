@@ -176,8 +176,8 @@ export class TreeView {
             self.mouseUp(e);
         });
 
-        jQRootElement.bind('mousewheel', function(e){
-            self.scrollBy(e.originalEvent.wheelDelta * 0.25);
+        jQRootElement[0].addEventListener('wheel', function(e){
+            self.scrollBy(Math.sign(e.deltaY) * -30);
         });
 
         this.convertFunction = function (jQElement, treeItem, ident) {
