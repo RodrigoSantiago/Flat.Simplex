@@ -4,6 +4,9 @@ export class Editor {
 
     assetType;
     asset;
+
+    clearEvents = [];
+
     constructor(asset) {
         this.assetType = asset.type;
         this.asset = asset;
@@ -19,7 +22,35 @@ export class Editor {
             '</div></div>')
     }
 
+    onShow() {
+        for (const event of this.clearEvents) {
+            if (!event.i) {
+                window.addEventListener(event.e, event.f);
+                event.i = true;
+            }
+        }
+    }
+
     onResize() {
 
+    }
+
+    onHide() {
+        for (const event of this.clearEvents) {
+            window.removeEventListener(event.e, event.f);
+            event.i = false;
+        }
+    }
+
+    onRemove() {
+        for (const event of this.clearEvents) {
+            window.removeEventListener(event.e, event.f);
+            event.i = false;
+        }
+    }
+
+    addWindowListener(event, func) {
+        window.addEventListener(event, func);
+        this.clearEvents.push({e:event, f:func, i:true});
     }
 }

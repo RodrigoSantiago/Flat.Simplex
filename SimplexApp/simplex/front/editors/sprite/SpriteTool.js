@@ -15,6 +15,10 @@ export class SpriteTool {
         }
     }
 
+    updateCanvasCursor(pos) {
+
+    }
+
     mouseDown(pos) {
 
     }

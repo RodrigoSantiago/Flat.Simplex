@@ -17,7 +17,7 @@ class SpriteMenu {
         this.jqDragView = jqDragView;
         this.className = className;
         this.jqDragView.find(".drag").mousedown(function (e) {
-            if (DragSystem.drag(self)) {
+            if (DragSystem.drag(self, e.button)) {
                 self.onDragStart(e);
             }
         });
@@ -32,25 +32,25 @@ class SpriteMenu {
         child.detach();
         this.jqDragHolder.append(child);
         this.jqDragHolder.offset({
-            left : e.clientX - this.jqDragView.offset().left -this.offX ,
-            top : e.clientY - this.jqDragView.offset().top - this.offY
+            left: e.clientX - this.jqDragView.offset().left - this.offX,
+            top: e.clientY - this.jqDragView.offset().top - this.offY
         });
         this.jqDragView.append(this.jqDragHolder);
     }
 
     onDragMove(e) {
-        this.jqDragHolder.offset({left : e.pageX - this.offX, top : e.pageY - this.offY});
+        this.jqDragHolder.offset({left: e.pageX - this.offX, top: e.pageY - this.offY});
         this.editor.dragMenuUpdateLine({
-            x : e.clientX - this.editor.splitVer.offset().left,
-            y : e.clientY - this.editor.splitVer.offset().top
+            x: e.clientX - this.editor.splitVer.offset().left,
+            y: e.clientY - this.editor.splitVer.offset().top
         });
     }
 
     onDragDrop(e) {
         this.editor.dragDropMenu({
-            menu : this,
-            x : e.clientX - this.editor.splitVer.offset().left,
-            y : e.clientY - this.editor.splitVer.offset().top
+            menu: this,
+            x: e.clientX - this.editor.splitVer.offset().left,
+            y: e.clientY - this.editor.splitVer.offset().top
         });
         this.onDragCancel(e);
     }
@@ -70,7 +70,7 @@ export class SpriteEditor extends Editor {
     static pageModel = null;
 
     static loadModel() {
-        $('<div></div>').load("pages/sprite/sprite-editor.html", function(response, status, xhr) {
+        $('<div></div>').load("pages/sprite/sprite-editor.html", function (response, status, xhr) {
             SpriteEditor.pageModel = response;
         });
     }
@@ -82,14 +82,25 @@ export class SpriteEditor extends Editor {
     toolMenus = [];
     zoomStep = 1;
     zoomPos = {};
-    imageWidth = 100;
-    imageHeight = 100;
+    imageWidth = 400;
+    imageHeight = 400;
+
+    // Brushes Settings
+    color = "#000000";
+    altColor = "#FFFFFF";
+    brushSize = 16;
+    brushHardness = 0.80;
+    brushSpacing = 0.25;
 
     constructor(asset) {
         super(asset);
         const self = this;
         this.jqRoot = $(SpriteEditor.pageModel);
-        this.jqRoot.onResize = function (e) { self.onResize(); }
+        this.jqRoot.onResize = e => self.onResize();
+        this.jqRoot.onShow = e => self.onShow();
+        this.jqRoot.onHide = e => self.onHide();
+        this.jqRoot.onRemove = e => self.onHide();
+
         this.Toolbar = new Toolbar(this.jqRoot.find(".toolbar"));
         this.splitVer = this.jqRoot.find(".split-panel-ver");
         this.splitHor = this.jqRoot.find(".split-panel-hor");
@@ -98,6 +109,7 @@ export class SpriteEditor extends Editor {
         this.canvasScl = this.jqRoot.find(".canvas-owner");
         this.canvasView = this.jqRoot.find(".canvas-view");
         this.canvasBg = this.jqRoot.find(".canvas-background");
+        this.canvasCursor = this.jqRoot.find(".canvas-cursor");
         this.canvas[0].width = this.imageWidth;
         this.canvas[0].height = this.imageHeight;
     }
@@ -107,14 +119,24 @@ export class SpriteEditor extends Editor {
     }
 
     onResize() {
+        this.canvasPosition({x: 0, y: 0}, {x: 0, y: 0});
+        this.Toolbar.update();
+    }
+
+    onShow() {
         if (!this.ready) {
             this.configureToolbar();
             this.configureTools();
             this.ready = true;
         }
+    }
 
-        this.canvasPosition({x:0, y:0}, {x:0, y:0});
-        this.Toolbar.update();
+    onHide() {
+
+    }
+
+    onRemove() {
+
     }
 
     getCanvas() {
@@ -156,7 +178,7 @@ export class SpriteEditor extends Editor {
 
         this.zoomStep = 0;
         this.canvasZoom(1);
-        this.canvasPosition({ x : this.canvasView.width() / 2, y : this.canvasView.height() / 2});
+        this.canvasPosition({x: this.canvasView.width() / 2, y: this.canvasView.height() / 2});
 
         this.canvasView[0].addEventListener('wheel', function (e) {
             self.canvasScroll({
@@ -165,7 +187,9 @@ export class SpriteEditor extends Editor {
             }, Math.sign(e.deltaY) * 30);
         });
         this.canvasView.mousedown(function (e) {
-            if (e.which === 2) {
+            if (self.dragZoom || self.dragPaint) return;
+
+            if (e.button === 1) {
                 self.dragZoom = true;
                 self.dragZoomStart = {
                     x: e.pageX - self.canvasView.offset().left,
@@ -174,36 +198,51 @@ export class SpriteEditor extends Editor {
             } else {
                 self.dragPaint = true;
                 self.dragPaintPos = self.convertCanvasPosition(e);
-                if (e.which === 1) {
-                    self.dragPaintCol = 1;
-                } else if (e.which === 3) {
-                    self.dragPaintCol = 2;
+                self.dragButton = e.button;
+                if (e.button === 0) {
+                    self.dragPaintCol = self.color;
+                } else if (e.button === 2) {
+                    self.dragPaintCol = self.altColor;
                 }
                 self.selectedTool.mouseDown(self.dragPaintPos, self.dragPaintCol);
             }
         });
-        $(window).mousemove(function (e) {
+        this.canvasView.mousemove(function (e) {
+            let off = self.canvasView.offset();
+            self.updateCanvasCursor({x : e.pageX - off.left, y : e.pageY - off.top})
+        });
+        this.canvasView.mouseleave(function (e) {
+            self.canvasCursor.css("display", "none");
+        });
+        this.canvasView.mouseenter(function (e) {
+            self.canvasCursor.css("display", "");
+        });
+        this.addWindowListener('mousemove', function (e) {
             if (self.dragZoom) {
+                let off = self.canvasView.offset();
                 let old = self.dragZoomStart;
                 self.dragZoomStart = {
-                    x: e.pageX - self.canvasView.offset().left,
-                    y: e.pageY - self.canvasView.offset().top
+                    x: e.pageX - off.left,
+                    y: e.pageY - off.top
                 };
                 self.canvasPosition(old, self.dragZoomStart);
-            } else if (self.dragPaint) {
-                self.dragPaintPos = self.convertCanvasPosition(e);
-                self.selectedTool.mouseMove(self.dragPaintPos, self.dragPaintCol);
+            } else {
+                if (self.dragPaint) {
+                    self.dragPaintPos = self.convertCanvasPosition(e);
+                    self.selectedTool.mouseMove(self.dragPaintPos, self.dragPaintCol);
+                }
             }
         });
-        $(window).mouseup(function (e) {
-            if (self.dragPaint) {
+        this.addWindowListener('mouseup', function (e) {
+            if (self.dragPaint && e.button === self.dragButton) {
                 self.dragPaintPos = self.convertCanvasPosition(e);
                 self.selectedTool.mouseUp(self.dragPaintPos, self.dragPaintCol);
+                self.dragPaint = false;
             }
-            self.dragZoom = false;
-            self.dragPaint = false;
+            if (self.dragZoom && e.button === 1) {
+                self.dragZoom = false;
+            }
         });
-
         this.selectTool(this.toolPencil);
     }
 
@@ -230,8 +269,9 @@ export class SpriteEditor extends Editor {
             let screenX = pixelCenterX * zoomAfter;
             let screenY = pixelCenterY * zoomAfter;
 
-            this.canvasPosition({ x :bScreenX - screenX, y : bScreenY - screenY});
+            this.canvasPosition({x: bScreenX - screenX, y: bScreenY - screenY});
         }
+        this.updateCanvasCursor(pos);
     }
 
     canvasPosition(posA, posB) {
@@ -268,12 +308,12 @@ export class SpriteEditor extends Editor {
 
         this.zoomStep = Math.min(32, Math.max(1, this.zoomStep + step));
         this.canvasScl.css({
-            "min-width" : this.imageWidth * this.zoomStep,
-            "max-width" : this.imageWidth * this.zoomStep,
-            "min-height" : this.imageHeight * this.zoomStep,
-            "max-height" : this.imageHeight * this.zoomStep
+            "min-width": this.imageWidth * this.zoomStep,
+            "max-width": this.imageWidth * this.zoomStep,
+            "min-height": this.imageHeight * this.zoomStep,
+            "max-height": this.imageHeight * this.zoomStep
         });
-        this.canvas.css("transform" , "scale(" + this.zoomStep + ")");
+        this.canvas.css("transform", "scale(" + this.zoomStep + ")");
 
         let bgSize = 16;
         if (this.zoomStep >= 4 && this.zoomStep < 8) {
@@ -290,6 +330,11 @@ export class SpriteEditor extends Editor {
         this.canvasBg.css("background-size", bgSize + "px");
     }
 
+    updateCanvasCursor(pos) {
+        this.canvasCursor.css({left: pos.x, top: pos.y});
+        this.selectedTool.updateCanvasCursor(pos);
+    }
+
     dragFindBestFit(position) {
         let width = this.splitVer.width();
         let height = this.splitVer.height();
@@ -301,6 +346,8 @@ export class SpriteEditor extends Editor {
         let point = 0;
         let type = "";
         for (const menu of this.toolMenus) {
+            if (menu.jqDragView.hasClass("floating")) continue;
+
             if (menu.jqDragView.parent()[0] === this.splitVer[0]) {
                 let y1 = menu.jqDragView.position().top;
                 let y2 = y1 + menu.jqDragView.height();
@@ -337,41 +384,49 @@ export class SpriteEditor extends Editor {
                 }
             }
         }
-        if (best > 48) {
-            if (position.y < 48) {
-                obj = null;
-                point = 1;
-                type = "horizontal";
-                pos = 0;
-            } else if (position.y > height - 48) {
-                obj = null;
-                point = 2;
-                type = "horizontal";
-                pos = height - lineWidth * 2;
-            } else if (position.x < 48) {
-                obj = null;
-                point = 1;
-                type = "vertical";
-                pos = 0;
-            } else if (position.x > width - 48) {
-                obj = null;
-                point = 2;
-                type = "vertical";
-                pos = width - lineWidth * 2;
+        if (best <= 48) {
+            if (type === "vertical") {
+                pos = Math.max(0, Math.min(pos, width - lineWidth * 2));
+            } else if (type === "horizontal") {
+                pos = Math.max(0, Math.min(pos, height - lineWidth * 2));
             }
-            best = 48;
-        } else if (type === "vertical") {
-            pos = Math.max(0, Math.min(pos, width - lineWidth * 2));
-        } else if (type === "horizontal") {
-            pos = Math.max(0, Math.min(pos, height - lineWidth * 2));
+        } else if (position.y < 48) {
+            obj = null;
+            best = position.y;
+            point = 1;
+            type = "horizontal";
+            pos = 0;
+        } else if (position.y > height - 48) {
+            obj = null;
+            best = height - position.y;
+            point = 2;
+            type = "horizontal";
+            pos = height - lineWidth * 2;
+        } else if (position.x < 48) {
+            obj = null;
+            best = position.x;
+            point = 1;
+            type = "vertical";
+            pos = 0;
+        } else if (position.x > width - 48) {
+            obj = null;
+            best = width - position.x;
+            point = 2;
+            type = "vertical";
+            pos = width - lineWidth * 2;
+        } else {
+            obj = null;
+            point = 0;
+            type = "float";
+            pos = position;
         }
 
         return {
-            obj : obj,
-            point : point,
-            type : type,
-            pos : pos,
-            best : best
+            obj: obj,
+            point: point,
+            type: type,
+            pos: pos,
+            best: best
         };
     }
 
@@ -379,14 +434,15 @@ export class SpriteEditor extends Editor {
         this.dropLine.addClass("dragged");
 
         let bestFit = this.dragFindBestFit(position);
-        if (bestFit.best > 256) {
+
+        if (bestFit.best > 48) {
             this.dropLine.removeClass("dragged");
         } else if (bestFit.type === "horizontal") {
-            this.dropLine.css({left : 0, top : bestFit.pos});
+            this.dropLine.css({left: 0, top: bestFit.pos});
             this.dropLine.removeClass("vertical");
             this.dropLine.addClass("horizontal");
         } else {
-            this.dropLine.css({left : bestFit.pos, top : 0});
+            this.dropLine.css({left: bestFit.pos, top: 0});
             this.dropLine.removeClass("horizontal");
             this.dropLine.addClass("vertical");
         }
@@ -399,31 +455,38 @@ export class SpriteEditor extends Editor {
         }
 
         let bestFit = this.dragFindBestFit(data);
-        if (bestFit.best > 256) {
-            return;
-        }
-
-        if (bestFit.obj === null) {
-            data.menu.jqDragView.detach();
-            if (bestFit.type === "vertical") {
-                if (bestFit.point === 1) {
-                    this.splitHor.prepend(data.menu.jqDragView);
-                } else {
-                    this.splitHor.append(data.menu.jqDragView);
-                }
+        if (bestFit.best > 48) {
+            data.menu.jqDragView.addClass("floating");
+            if (data.menu.jqDragView.parent()[0] === this.splitVer[0]) {
+                data.menu.jqDragView.css({left : bestFit.pos.x, top : bestFit.pos.y - data.menu.jqDragView.height() /2});
             } else {
-                if (bestFit.point === 1) {
-                    this.splitVer.prepend(data.menu.jqDragView);
-                } else {
-                    this.splitVer.append(data.menu.jqDragView);
-                }
+                data.menu.jqDragView.css({left : bestFit.pos.x - data.menu.jqDragView.width() /2, top : bestFit.pos.y});
             }
-        } else if (bestFit.obj[0] !== data.menu.jqDragView[0]) {
-            data.menu.jqDragView.detach();
-            if (bestFit.point === 1) {
-                bestFit.obj.before(data.menu.jqDragView);
-            } else {
-                bestFit.obj.after(data.menu.jqDragView);
+        } else {
+            data.menu.jqDragView.removeClass("floating");
+            data.menu.jqDragView.css({left : 0, top : 0});
+            if (bestFit.obj === null) {
+                data.menu.jqDragView.detach();
+                if (bestFit.type === "vertical") {
+                    if (bestFit.point === 1) {
+                        this.splitHor.prepend(data.menu.jqDragView);
+                    } else {
+                        this.splitHor.append(data.menu.jqDragView);
+                    }
+                } else {
+                    if (bestFit.point === 1) {
+                        this.splitVer.prepend(data.menu.jqDragView);
+                    } else {
+                        this.splitVer.append(data.menu.jqDragView);
+                    }
+                }
+            } else if (bestFit.obj[0] !== data.menu.jqDragView[0]) {
+                data.menu.jqDragView.detach();
+                if (bestFit.point === 1) {
+                    bestFit.obj.before(data.menu.jqDragView);
+                } else {
+                    bestFit.obj.after(data.menu.jqDragView);
+                }
             }
         }
     }

@@ -6,7 +6,11 @@ $sprite-menu-line: colors.$color-grey-800;
 $sprite-menu-bg: colors.$color-grey-600;
 $sprite-menu-bg-hover: mix(colors.$color-grey-600, colors.$color-grey-500, 50%);
 $sprite-menu-bg-active: colors.$color-grey-500;
-$sprite-menu-bg-fade: fade-out(colors.$color-grey-600, 0.5);
+$sprite-menu-bg-fade: fade-out(colors.$color-grey-600, 0.25);
+
+$zindex-canvas: 1;
+$zindex-tools-docked: 2;
+$zindex-tools-floating: 3;
 
 /*$sprite-menu-line: var(--on-surface-color-a3);//colors.$color-grey-800;
 $sprite-menu-bg: var(--surface-color);//colors.$color-grey-600;
@@ -32,71 +36,6 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
     height: 100%;
     max-width: 100%;
     overflow: hidden;
-}
-
-.animation-panel {
-    @extend %hbox;
-    width: 100%;
-    height: 128px;
-    max-width: 100%;
-    overflow: hidden;
-    background-color: lightgray;
-}
-
-.canvas-view {
-    display: flex;
-    min-height: 64px;
-    min-width: 64px;
-    height: 100%;
-    width: 100%;
-    flex-grow: 1;
-    background-color: var(--background-color);
-    position: relative;
-
-    .canvas-position {
-        display: flex;
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        max-width: 1px;
-        max-height: 1px;
-        overflow: visible;
-
-        .canvas-owner {
-            display: flex;
-            position: absolute;
-            align-items: center;
-            justify-content: center;
-            transform: translate(-50%, -50%);
-        }
-
-        .canvas-background {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-image: url("pages/canvas-bg.png");
-            image-rendering: pixelated;
-            z-index: 1;
-        }
-
-        img {
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            image-rendering: pixelated;
-            z-index: 5;
-        }
-
-        canvas {
-            position: absolute;
-            image-rendering: pixelated;
-            z-index: 7;
-        }
-    }
 }
 
 //<editor-fold desc="DRAG-DROP">
@@ -250,7 +189,7 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
         z-index: 1;
     }
 
-&.dragging {
+    &.dragging {
         overflow: visible !important;
     }
 }
@@ -267,6 +206,17 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
     overflow-x: hidden;
     overflow-y: auto;
 
+    &.floating {
+        position: absolute;
+        height: fit-content;
+        max-height: 100%;
+        border-radius: 4px;
+        @extend %elevation-8;
+    }
+    &.floating:has(>.drag-holder) {
+        height: 100%;
+    }
+
     .drag-holder {
         @extend %vbox;
     }
@@ -279,6 +229,12 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
     min-height: 48px;
     overflow-x: auto;
     overflow-y: hidden;
+
+    &.floating {
+        position: absolute;
+        max-width: 100%;
+        @extend %elevation-8;
+    }
 
     .drag-holder {
         @extend %hbox;
@@ -620,4 +576,74 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
     width: 100%;
 }
 
+//</editor-fold>
+
+//<editor-fold desc="CANVAS">
+.canvas-view {
+    display: flex;
+    min-height: 64px;
+    min-width: 64px;
+    height: 100%;
+    width: 100%;
+    flex-grow: 1;
+    background-color: var(--background-color);
+    position: relative;
+
+    .canvas-cursor {
+        display: flex;
+        position: absolute;
+        transform: translate(-50%, -50%);
+        z-index: 4;
+        pointer-events: none;
+        mix-blend-mode: difference;
+        border-radius : 200px;
+        border : 0.5px solid #FFFFFF;
+        outline : 0.5px solid #88888880;
+    }
+
+    .canvas-position {
+        display: flex;
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        max-width: 1px;
+        max-height: 1px;
+        overflow: visible;
+
+        .canvas-owner {
+            display: flex;
+            position: absolute;
+            align-items: center;
+            justify-content: center;
+            transform: translate(-50%, -50%);
+        }
+
+        .canvas-background {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("pages/canvas-bg.png");
+            image-rendering: pixelated;
+            z-index: 1;
+        }
+
+        img {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            image-rendering: pixelated;
+            z-index: 5;
+        }
+
+        canvas {
+            position: absolute;
+            image-rendering: pixelated;
+            z-index: 7;
+        }
+    }
+}
 //</editor-fold>

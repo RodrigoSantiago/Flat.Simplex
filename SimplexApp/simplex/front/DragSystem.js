@@ -1,11 +1,13 @@
 export class DragSystem {
     static draggedItem = null;
+    static draggedKey = null;
 
-    static drag(item) {
+    static drag(item, key) {
         if (DragSystem.draggedItem !== null) {
             return false;
         }
         DragSystem.draggedItem = item;
+        DragSystem.draggedKey = key;
         return true;
     }
 }
@@ -26,7 +28,7 @@ window.addEventListener('mousemove', function (e) {
     }
 });
 window.addEventListener('mouseup', function (e) {
-    if (DragSystem.draggedItem !== null) {
+    if (DragSystem.draggedItem !== null && DragSystem.draggedKey === e.button) {
         DragSystem.draggedItem.onDragDrop?.(e);
         DragSystem.draggedItem = null;
     }

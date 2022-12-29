@@ -62,7 +62,7 @@ export class Studio {
             self.onResize();
         }
         dc.mousedown(function (e) {
-            DragSystem.drag(dc[0]);
+            DragSystem.drag(dc[0], e.button);
         });
     }
 

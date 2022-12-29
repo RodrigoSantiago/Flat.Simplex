@@ -94,6 +94,16 @@ export class TabView {
     }
 
     removeTab(tab) {
+        if (this.selectedTab === tab) {
+            let index = this.tabList.indexOf(tab);
+            if (this.tabList.length > 0) {
+                this.selectTab(this.tabList[Math.max(this.tabList.length - 1, index)]);
+            } else {
+                this.selectedTab = null;
+            }
+        }
+        tab.jqContent.onRemove?.();
+
         tab.jqTab.remove();
         tab.jqContent.remove();
         let index = this.tabList.indexOf(tab);
@@ -106,16 +116,20 @@ export class TabView {
             tab.jqTab.addClass("selected");
             if (this.selectedTab !== null) {
                 this.selectedTab.jqTab.removeClass("selected");
+                this.selectedTab.jqContent.onHide?.();
                 this.selectedTab.jqContent.detach();
             }
             this.selectedTab = tab;
             this.jqBody.append(tab.jqContent);
+            tab.jqContent.onShow?.();
         }
         this.scrollToTab(tab);
         this.onResize();
     }
 
     scrollToTab(tab) {
-        tab.jqTab[0].scrollIntoView();
+        if (tab) {
+            tab.jqTab[0].scrollIntoView();
+        }
     }
 }

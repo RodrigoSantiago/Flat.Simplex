@@ -115,11 +115,12 @@ export class Navigator {
     }
 
     mouseDown(e) {
-        if ((this.open && e.pageX > 0 && e.pageX < this.drawer.width()) ||
-            (!this.open && e.pageX > 0 && e.pageX < 16)) {
+        if (!this.down &&
+            ((this.open && e.pageX > 0 && e.pageX < this.drawer.width()) || (!this.open && e.pageX > 0 && e.pageX < 16))) {
             this.down = true;
             this.start.x = e.pageX;
             this.start.y = e.pageY;
+            this.dragButton = e.button;
         }
     }
 
@@ -127,7 +128,7 @@ export class Navigator {
         if (this.down && !this.drag) {
             if ((this.open && Math.abs(e.pageX - this.start.x) > 16) ||
                 (!this.open && e.pageX > this.start.x + 16)) {
-                if (DragSystem.drag(this)) {
+                if (DragSystem.drag(this, this.dragButton)) {
                     this.drag = true;
                     this.nav.addClass("open");
                     this.nav.removeClass("close");

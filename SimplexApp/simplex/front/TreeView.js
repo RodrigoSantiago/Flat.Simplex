@@ -260,6 +260,7 @@ export class TreeView {
         this.dragData.pressed = true;
         this.dragData.start = {x: e.pageX - jqItem.offset().left, y: e.pageY - jqItem.offset().top};
         this.dragData.relative = {x: e.pageX, y: e.pageY};
+        this.dragData.button = e.button;
     }
 
     mouseMove(e) {
@@ -267,7 +268,7 @@ export class TreeView {
             let xd = this.dragData.relative.x - e.pageX;
             let yd = this.dragData.relative.y - e.pageY;
             if (xd * xd + yd * yd > this.itemHeight / 2 * this.itemHeight / 2) {
-                if (DragSystem.drag(this)) {
+                if (DragSystem.drag(this, this.dragData.button)) {
                     this.onDragStart(e);
                 }
 
@@ -277,20 +278,22 @@ export class TreeView {
     }
 
     mouseUp(e) {
-        this.dragData.item = null;
-        this.dragData.pressed = false;
-        this.dragData.drop = null;
-        this.dragData.where = null;
-        this.jQItemDragElement.removeClass("dragged");
-        this.jQLineDropElement.removeClass("dragged");
-        if (this.dragData.scrollTimerUp !== null) {
-            clearInterval(this.dragData.scrollTimerUp);
+        if (this.dragData.button === e.button) {
+            this.dragData.item = null;
+            this.dragData.pressed = false;
+            this.dragData.drop = null;
+            this.dragData.where = null;
+            this.jQItemDragElement.removeClass("dragged");
+            this.jQLineDropElement.removeClass("dragged");
+            if (this.dragData.scrollTimerUp !== null) {
+                clearInterval(this.dragData.scrollTimerUp);
+            }
+            if (this.dragData.scrollTimerDown !== null) {
+                clearInterval(this.dragData.scrollTimerDown);
+            }
+            this.dragData.scrollTimerUp = null;
+            this.dragData.scrollTimerDown = null;
         }
-        if (this.dragData.scrollTimerDown !== null) {
-            clearInterval(this.dragData.scrollTimerDown);
-        }
-        this.dragData.scrollTimerUp = null;
-        this.dragData.scrollTimerDown = null;
     }
 
     onDragStart(e) {
@@ -429,7 +432,7 @@ export class TreeView {
             } else if (mouseY > barPosY + height * height/maxHeight) {
                 self.scrollSet(-(mouseY-height * height/maxHeight)/height * maxHeight);
             }
-            if (DragSystem.drag(self.jQScrollBar)) {
+            if (DragSystem.drag(self.jQScrollBar, e.button)) {
                 barPosY = (-self.offsetY/maxHeight * height);
                 self.jQScrollBar.grabPos = {
                     x: mouseX,
@@ -439,7 +442,7 @@ export class TreeView {
             }
         });
         this.jQScrollBar.mousedown(function (e) {
-            if (DragSystem.drag(self.jQScrollBar)) {
+            if (DragSystem.drag(self.jQScrollBar, e.button)) {
                 let maxHeight = self.computedMaxHeight;
                 let height = self.jQScroll.height();
                 let yPos = (-self.offsetY/maxHeight * height);
