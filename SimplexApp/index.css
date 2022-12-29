@@ -135,7 +135,7 @@
   box-shadow: 0px 3px 5px -1px rgba(0, 0, 0, 0.2), 0px 6px 10px 0px rgba(0, 0, 0, 0.18);
 }
 
-.drag-holder, .split-panel-hor > .tools-view.floating, .split-panel-ver > .tools-view.floating, .dropdown, .button.contained:active, .toolbar > .menu > .contained.menu-item:active {
+.draggable-view.floating, .drag-holder, .dropdown, .button.contained:active, .toolbar > .menu > .contained.menu-item:active {
   box-shadow: 0px 5px 5px -3px rgba(0, 0, 0, 0.2), 0px 8px 10px 1px rgba(0, 0, 0, 0.18);
 }
 
@@ -1195,7 +1195,6 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
   width: 100%;
   height: 100%;
   max-width: 100%;
-  overflow: hidden;
 }
 
 .split-panel-ver {
@@ -1204,29 +1203,38 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
   width: 100%;
   height: 100%;
   max-width: 100%;
-  overflow: hidden;
 }
 
 .draggable-view {
-  z-index: 5;
   background-color: #757575;
   position: relative;
+  z-index: 2;
 }
 .draggable-view.dragging {
-  z-index: unset;
+  z-index: 6;
+  overflow: visible !important;
 }
-
 .draggable-view:has(> .drag-holder) {
   background-color: rgba(117, 117, 117, 0.75);
 }
+.draggable-view.floating {
+  position: absolute;
+  border-radius: 4px;
+  z-index: 3;
+}
+.draggable-view.floating:has(> .drag-holder) {
+  border: unset;
+  background-color: transparent;
+  box-shadow: none;
+}
 
 .drag-holder {
-  border-radius: 4px;
-  z-index: 10;
   position: absolute;
   max-width: 100%;
   max-height: 100%;
+  border-radius: 4px;
   overflow: hidden;
+  z-index: 6;
   background-color: #757575;
 }
 
@@ -1237,16 +1245,13 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
   height: 4px;
   background-color: var(--primary-color);
 }
-
 .sprite-drop-line.dragged {
   display: flex;
   z-index: 6;
 }
-
 .sprite-drop-line.horizontal {
   width: 100%;
 }
-
 .sprite-drop-line.vertical {
   height: 100%;
 }
@@ -1271,6 +1276,13 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
 .split-panel-hor > .draggable-view + .draggable-view {
   border-left: solid 1px #424242;
 }
+.split-panel-hor > .draggable-view.floating {
+  height: fit-content;
+  max-height: 100%;
+}
+.split-panel-hor > .draggable-view.floating:has(> .drag-holder) {
+  height: 100%;
+}
 
 .split-panel-ver > .draggable-view {
   border-left: solid 2px #424242;
@@ -1292,6 +1304,13 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
 }
 .split-panel-ver > .draggable-view + .draggable-view {
   border-top: solid 1px #424242;
+}
+.split-panel-ver > .draggable-view.floating {
+  width: fit-content;
+  max-width: 100%;
+}
+.split-panel-ver > .draggable-view.floating:has(> .drag-holder) {
+  width: 100%;
 }
 
 .tools-view .tool-button {
@@ -1356,25 +1375,12 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
   overflow-x: hidden;
   overflow-y: auto;
 }
-.split-panel-hor > .tools-view.floating {
-  position: absolute;
-  height: fit-content;
-  max-height: 100%;
-  border-radius: 4px;
-}
-.split-panel-hor > .tools-view.floating:has(> .drag-holder) {
-  height: 100%;
-}
 .split-panel-ver > .tools-view {
   width: 100%;
   height: 48px;
   min-height: 48px;
   overflow-x: auto;
   overflow-y: hidden;
-}
-.split-panel-ver > .tools-view.floating {
-  position: absolute;
-  max-width: 100%;
 }
 .frames-view .frames-container {
   width: 100%;
@@ -1448,9 +1454,6 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
 .split-panel-hor > .frames-view .frame-add-button {
   width: 64px;
   margin: 8px;
-}
-.split-panel-hor > .frames-view.dragging {
-  overflow: visible !important;
 }
 .split-panel-hor > .frames-view .drag-holder {
   min-width: 96px;
@@ -1570,9 +1573,6 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
   width: 64px;
   margin: 8px;
 }
-.split-panel-hor > .layers-view.dragging {
-  overflow: visible !important;
-}
 .split-panel-hor > .layers-view .drag-holder {
   min-width: 96px;
   max-width: 96px;
@@ -1605,9 +1605,6 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
 .split-panel-ver > .layers-view .layer-add-button {
   height: 64px;
   margin: 8px;
-}
-.split-panel-ver > .layers-view.dragging {
-  overflow: visible !important;
 }
 .split-panel-ver > .layers-view .drag-holder {
   min-height: 96px;
@@ -1645,12 +1642,13 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
   flex-grow: 1;
   background-color: var(--background-color);
   position: relative;
+  z-index: 1;
 }
 .canvas-view .canvas-cursor {
   display: flex;
   position: absolute;
   transform: translate(-50%, -50%);
-  z-index: 4;
+  z-index: 100;
   pointer-events: none;
   mix-blend-mode: difference;
   border-radius: 200px;
@@ -1681,7 +1679,7 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
   height: 100%;
   background-image: url("pages/canvas-bg.png");
   image-rendering: pixelated;
-  z-index: 1;
+  z-index: 0;
 }
 .canvas-view .canvas-position img {
   position: absolute;
@@ -1690,12 +1688,12 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
   width: 100%;
   height: 100%;
   image-rendering: pixelated;
-  z-index: 5;
+  z-index: 1;
 }
 .canvas-view .canvas-position canvas {
   position: absolute;
   image-rendering: pixelated;
-  z-index: 7;
+  z-index: 2;
 }
 
 * {

@@ -9,53 +9,61 @@ class SpriteMenu {
 
     jqDragView = null;
     jqDragHolder = null;
-    className = "";
+    dragged = false;
+    floating = false;
+    type = null;
 
-    constructor(editor, jqDragView, className) {
+    _updateTimer = null;
+
+    constructor(editor, jqDragView) {
         const self = this;
         this.editor = editor;
         this.jqDragView = jqDragView;
-        this.className = className;
         this.jqDragView.find(".drag").mousedown(function (e) {
             if (DragSystem.drag(self, e.button)) {
                 self.onDragStart(e);
             }
         });
+        this.floating = this.jqDragView.is(".floating");
+        this.type = this.jqDragView.parent()[0] === editor.splitVer[0] ? "horizontal" : "vertical"
     }
 
     onDragStart(e) {
-        this.offX = e.clientX - this.jqDragView.offset().left;
-        this.offY = e.clientY - this.jqDragView.offset().top;
+        let off = this.jqDragView.offset();
+        this.offX = e.pageX - off.left;
+        this.offY = e.pageY - off.top;
+        this.dragged = true;
         this.jqDragView.addClass("dragging");
         this.jqDragHolder = $("<div class='drag-holder'></div>");
         let child = this.jqDragView.children();
         child.detach();
         this.jqDragHolder.append(child);
-        this.jqDragHolder.offset({
-            left: e.clientX - this.jqDragView.offset().left - this.offX,
-            top: e.clientY - this.jqDragView.offset().top - this.offY
-        });
         this.jqDragView.append(this.jqDragHolder);
     }
 
     onDragMove(e) {
         this.jqDragHolder.offset({left: e.pageX - this.offX, top: e.pageY - this.offY});
-        this.editor.dragMenuUpdateLine({
-            x: e.clientX - this.editor.splitVer.offset().left,
-            y: e.clientY - this.editor.splitVer.offset().top
-        });
+        this._updateE = e;
+        if (this._updateTimer === null) {
+            const self = this;
+            self._updateTimer = setTimeout(t => {
+                self.editor.dragMenuUpdateLine(self, self._updateE.pageX - self.offX, self._updateE.pageY - self.offY);
+                self._updateTimer = null;
+            }, 100);
+        }
     }
 
     onDragDrop(e) {
-        this.editor.dragDropMenu({
-            menu: this,
-            x: e.clientX - this.editor.splitVer.offset().left,
-            y: e.clientY - this.editor.splitVer.offset().top
-        });
+        if (!(this.once === 2)) {
+            if (this.once) this.once ++;
+            else this.once = 1;
+        }
+        this.editor.dragDropMenu(this, e.pageX - this.offX, e.pageY - this.offY);
         this.onDragCancel(e);
     }
 
     onDragCancel(e) {
+        this.dragged = false;
         this.editor.dragDropMenu();
         this.jqDragView.removeClass("dragging");
         let child = this.jqDragHolder.children();
@@ -63,6 +71,10 @@ class SpriteMenu {
         this.jqDragView.append(child);
         this.jqDragHolder.remove();
         this.jqDragHolder = null;
+        if (this._updateTimer !== null) {
+            clearTimeout(this._updateTimer);
+            this._updateTimer = null;
+        }
     }
 }
 
@@ -127,6 +139,8 @@ export class SpriteEditor extends Editor {
         if (!this.ready) {
             this.configureToolbar();
             this.configureTools();
+            this.configureCanvas();
+            this.selectTool(this.toolPencil);
             this.ready = true;
         }
     }
@@ -157,12 +171,13 @@ export class SpriteEditor extends Editor {
     }
 
     configureTools() {
-        this.toolMenus.push(new SpriteMenu(this, this.jqRoot.find(".tools-view"), "tools-view"));
-        this.toolMenus.push(new SpriteMenu(this, this.jqRoot.find(".layers-view"), "layers-view"));
-        this.toolMenus.push(new SpriteMenu(this, this.jqRoot.find(".frames-view"), "frames-view"));
+        const self = this;
+
+        this.toolMenus.push(new SpriteMenu(this, this.jqRoot.find(".tools-view")));
+        this.toolMenus.push(new SpriteMenu(this, this.jqRoot.find(".layers-view")));
+        this.toolMenus.push(new SpriteMenu(this, this.jqRoot.find(".frames-view")));
         this.dropLine = this.jqRoot.find(".sprite-drop-line");
 
-        const self = this;
         this.toolSelect = new SpriteTool(this, this.jqRoot.find(".tool-select"));
         this.toolPencil = new SpriteToolPencil(this, this.jqRoot.find(".tool-pencil"));
         this.toolBrush = new SpriteToolBrush(this, this.jqRoot.find(".tool-brush"));
@@ -173,77 +188,26 @@ export class SpriteEditor extends Editor {
         this.toolSmudge = new SpriteTool(this, this.jqRoot.find(".tool-smudge"));
         this.toolText = new SpriteTool(this, this.jqRoot.find(".tool-text"));
         this.toolZoom = new SpriteTool(this, this.jqRoot.find(".tool-zoom"));
+    }
 
-        this.jqRoot.width();
+    configureCanvas() {
+        const self = this;
 
         this.zoomStep = 0;
         this.canvasZoom(1);
         this.canvasPosition({x: this.canvasView.width() / 2, y: this.canvasView.height() / 2});
 
-        this.canvasView[0].addEventListener('wheel', function (e) {
-            self.canvasScroll({
-                x: e.pageX - self.canvasView.offset().left,
-                y: e.pageY - self.canvasView.offset().top
-            }, Math.sign(e.deltaY) * 30);
-        });
-        this.canvasView.mousedown(function (e) {
-            if (self.dragZoom || self.dragPaint) return;
+        this.canvasView.mousedown(e => self.canvasOnMouseDown(e));
+        this.addWindowListener('mousemove', e => self.canvasOnMouseMove(e));
+        this.addWindowListener('mouseup', e => self.canvasOnMouseUp(e));
+        this.canvasView[0].addEventListener('wheel', e => self.canvasOnMouseScroll(e));
 
-            if (e.button === 1) {
-                self.dragZoom = true;
-                self.dragZoomStart = {
-                    x: e.pageX - self.canvasView.offset().left,
-                    y: e.pageY - self.canvasView.offset().top
-                };
-            } else {
-                self.dragPaint = true;
-                self.dragPaintPos = self.convertCanvasPosition(e);
-                self.dragButton = e.button;
-                if (e.button === 0) {
-                    self.dragPaintCol = self.color;
-                } else if (e.button === 2) {
-                    self.dragPaintCol = self.altColor;
-                }
-                self.selectedTool.mouseDown(self.dragPaintPos, self.dragPaintCol);
-            }
-        });
-        this.canvasView.mousemove(function (e) {
+        this.canvasView.mousemove(e => {
             let off = self.canvasView.offset();
-            self.updateCanvasCursor({x : e.pageX - off.left, y : e.pageY - off.top})
+            self.updateCanvasCursor({x: e.pageX - off.left, y: e.pageY - off.top});
         });
-        this.canvasView.mouseleave(function (e) {
-            self.canvasCursor.css("display", "none");
-        });
-        this.canvasView.mouseenter(function (e) {
-            self.canvasCursor.css("display", "");
-        });
-        this.addWindowListener('mousemove', function (e) {
-            if (self.dragZoom) {
-                let off = self.canvasView.offset();
-                let old = self.dragZoomStart;
-                self.dragZoomStart = {
-                    x: e.pageX - off.left,
-                    y: e.pageY - off.top
-                };
-                self.canvasPosition(old, self.dragZoomStart);
-            } else {
-                if (self.dragPaint) {
-                    self.dragPaintPos = self.convertCanvasPosition(e);
-                    self.selectedTool.mouseMove(self.dragPaintPos, self.dragPaintCol);
-                }
-            }
-        });
-        this.addWindowListener('mouseup', function (e) {
-            if (self.dragPaint && e.button === self.dragButton) {
-                self.dragPaintPos = self.convertCanvasPosition(e);
-                self.selectedTool.mouseUp(self.dragPaintPos, self.dragPaintCol);
-                self.dragPaint = false;
-            }
-            if (self.dragZoom && e.button === 1) {
-                self.dragZoom = false;
-            }
-        });
-        this.selectTool(this.toolPencil);
+        this.canvasView.mouseleave(e => self.canvasCursor.css("display", "none"));
+        this.canvasView.mouseenter(e => self.canvasCursor.css("display", ""));
     }
 
     convertCanvasPosition(e) {
@@ -255,6 +219,62 @@ export class SpriteEditor extends Editor {
         obj.x = Math.floor(obj.x);
         obj.y = Math.floor(obj.y);
         return obj;
+    }
+
+    canvasOnMouseDown(e) {
+        if (this.dragZoom || this.dragPaint) return;
+
+        if (e.button === 1) {
+            this.dragZoom = true;
+            this.dragZoomStart = {
+                x: e.pageX - this.canvasView.offset().left,
+                y: e.pageY - this.canvasView.offset().top
+            };
+        } else {
+            this.dragPaint = true;
+            this.dragPaintPos = this.convertCanvasPosition(e);
+            this.dragButton = e.button;
+            if (e.button === 0) {
+                this.dragPaintCol = this.color;
+            } else if (e.button === 2) {
+                this.dragPaintCol = this.altColor;
+            }
+            this.selectedTool.mouseDown(this.dragPaintPos, this.dragPaintCol);
+        }
+    }
+
+    canvasOnMouseMove(e) {
+        if (this.dragZoom) {
+            let off = this.canvasView.offset();
+            let old = this.dragZoomStart;
+            this.dragZoomStart = {
+                x: e.pageX - off.left,
+                y: e.pageY - off.top
+            };
+            this.canvasPosition(old, this.dragZoomStart);
+        } else if (this.dragPaint) {
+            this.dragPaintPos = this.convertCanvasPosition(e);
+            this.selectedTool.mouseMove(this.dragPaintPos, this.dragPaintCol);
+        }
+    }
+
+    canvasOnMouseUp(e) {
+        if (this.dragPaint && e.button === this.dragButton) {
+            this.dragPaintPos = this.convertCanvasPosition(e);
+            this.selectedTool.mouseUp(this.dragPaintPos, this.dragPaintCol);
+            this.dragPaint = false;
+        }
+        if (this.dragZoom && e.button === 1) {
+            this.dragZoom = false;
+        }
+    }
+
+    canvasOnMouseScroll(e) {
+        let off = this.canvasView.offset();
+        this.canvasScroll({
+            x: e.pageX - off.left,
+            y: e.pageY - off.top
+        }, Math.sign(e.deltaY) * 30);
     }
 
     canvasScroll(pos, delta) {
@@ -335,157 +355,130 @@ export class SpriteEditor extends Editor {
         this.selectedTool.updateCanvasCursor(pos);
     }
 
-    dragFindBestFit(position) {
+    dragFindBestFit(menu, x, y) {
         let width = this.splitVer.width();
         let height = this.splitVer.height();
-        let lineWidth = Math.min(this.dropLine.width(), this.dropLine.height()) / 2;
+        let off = this.splitVer.offset();
 
-        let obj = null;
-        let best = 9999;
-        let pos = 9999;
-        let point = 0;
-        let type = "";
+        let lines = [
+            {o: null, type: "horizontal", p: off.top, a: 1},
+            {o: null, type: "horizontal", p: off.top + height, a: 2},
+            {o: null, type: "vertical", p: off.left, a: 1},
+            {o: null, type: "vertical", p: off.left + width, a: 2}
+        ];
         for (const menu of this.toolMenus) {
-            if (menu.jqDragView.hasClass("floating")) continue;
-
-            if (menu.jqDragView.parent()[0] === this.splitVer[0]) {
-                let y1 = menu.jqDragView.position().top;
-                let y2 = y1 + menu.jqDragView.height();
-                if (best > Math.abs(position.y - y1)) {
-                    obj = menu.jqDragView;
-                    best = Math.abs(position.y - y1);
-                    point = 1;
-                    type = "horizontal";
-                    pos = y1;
-                }
-                if (best > Math.abs(position.y - y2)) {
-                    obj = menu.jqDragView;
-                    best = Math.abs(position.y - y2);
-                    point = 2;
-                    type = "horizontal";
-                    pos = y2;
-                }
+            if (menu.floating) continue;
+            let mOff = menu.jqDragView.offset();
+            if (menu.type === "horizontal") {
+                lines.push({o: menu, type: menu.type, p: mOff.top, a: 1});
+                lines.push({o: menu, type: menu.type, p: mOff.top + menu.jqDragView.height(), a: 2});
             } else {
-                let x1 = menu.jqDragView.position().left;
-                let x2 = x1 + menu.jqDragView.width();
-                if (best > Math.abs(position.x - x1)) {
-                    obj = menu.jqDragView;
-                    best = Math.abs(position.x - x1);
-                    point = 1;
-                    type = "vertical";
-                    pos = x1;
-                }
-                if (best > Math.abs(position.x - x2)) {
-                    obj = menu.jqDragView;
-                    best = Math.abs(position.x - x2);
-                    point = 2;
-                    type = "vertical";
-                    pos = x2;
-                }
+                lines.push({o: menu, type: menu.type, p: mOff.left, a: 1});
+                lines.push({o: menu, type: menu.type, p: mOff.left + menu.jqDragView.width(), a: 2});
             }
         }
-        if (best <= 48) {
-            if (type === "vertical") {
-                pos = Math.max(0, Math.min(pos, width - lineWidth * 2));
-            } else if (type === "horizontal") {
-                pos = Math.max(0, Math.min(pos, height - lineWidth * 2));
+
+        let best = 64;
+        let pos = {x: x, y: y};
+        let bestLine = null;
+        for (const line of lines) {
+            if (line.type === "horizontal") {
+                if (Math.abs(y - line.p) < best) {
+                    bestLine = line;
+                    best = Math.abs(y - line.p);
+                }
+            } else if (Math.abs(x - line.p) < best) {
+                bestLine = line;
+                best = Math.abs(x - line.p);
             }
-        } else if (position.y < 48) {
-            obj = null;
-            best = position.y;
-            point = 1;
-            type = "horizontal";
-            pos = 0;
-        } else if (position.y > height - 48) {
-            obj = null;
-            best = height - position.y;
-            point = 2;
-            type = "horizontal";
-            pos = height - lineWidth * 2;
-        } else if (position.x < 48) {
-            obj = null;
-            best = position.x;
-            point = 1;
-            type = "vertical";
-            pos = 0;
-        } else if (position.x > width - 48) {
-            obj = null;
-            best = width - position.x;
-            point = 2;
-            type = "vertical";
-            pos = width - lineWidth * 2;
-        } else {
-            obj = null;
-            point = 0;
-            type = "float";
-            pos = position;
+        }
+
+        if (bestLine === null) {
+            if (y < off.top) {
+                bestLine = lines[0];
+            } else if (y > off.top + height) {
+                bestLine = lines[1];
+            } else if (x < off.left) {
+                bestLine = lines[2];
+            } else if (x > off.left + width) {
+                bestLine = lines[3];
+            }
+        }
+
+        if (bestLine !== null) {
+            if (bestLine.type === "horizontal") {
+                pos.x = off.left;
+                pos.y = bestLine.p;
+            } else {
+                pos.x = bestLine.p;
+                pos.y = off.top;
+            }
         }
 
         return {
-            obj: obj,
-            point: point,
-            type: type,
-            pos: pos,
-            best: best
+            type : bestLine ? bestLine.type : "floating",
+            menu : bestLine ? bestLine.o : null,
+            a : bestLine ? bestLine.a : 0,
+            pos: pos
         };
     }
 
-    dragMenuUpdateLine(position) {
-        this.dropLine.addClass("dragged");
-
-        let bestFit = this.dragFindBestFit(position);
-
-        if (bestFit.best > 48) {
+    dragMenuUpdateLine(menu, x, y) {
+        let bestFit = this.dragFindBestFit(menu, x, y);
+        if (bestFit.type === "floating") {
             this.dropLine.removeClass("dragged");
-        } else if (bestFit.type === "horizontal") {
-            this.dropLine.css({left: 0, top: bestFit.pos});
-            this.dropLine.removeClass("vertical");
-            this.dropLine.addClass("horizontal");
         } else {
-            this.dropLine.css({left: bestFit.pos, top: 0});
-            this.dropLine.removeClass("horizontal");
-            this.dropLine.addClass("vertical");
+            this.dropLine.addClass("dragged");
+            if (bestFit.type === "horizontal") {
+                this.dropLine.offset({left: bestFit.pos.x, top: bestFit.pos.y + (!bestFit.menu && bestFit.a === 2? -4 : 0)});
+                this.dropLine.addClass("horizontal");
+                this.dropLine.removeClass("vertical");
+            } else {
+                this.dropLine.offset({left: bestFit.pos.x + (!bestFit.menu && bestFit.a === 2? -4 : 0), top: bestFit.pos.y});
+                this.dropLine.addClass("vertical");
+                this.dropLine.removeClass("horizontal");
+            }
         }
     }
 
-    dragDropMenu(data) {
+    dragDropMenu(menu, x, y) {
         this.dropLine.removeClass("dragged");
-        if (data === undefined) {
+        if (menu === undefined) {
             return;
         }
 
-        let bestFit = this.dragFindBestFit(data);
-        if (bestFit.best > 48) {
-            data.menu.jqDragView.addClass("floating");
-            if (data.menu.jqDragView.parent()[0] === this.splitVer[0]) {
-                data.menu.jqDragView.css({left : bestFit.pos.x, top : bestFit.pos.y - data.menu.jqDragView.height() /2});
-            } else {
-                data.menu.jqDragView.css({left : bestFit.pos.x - data.menu.jqDragView.width() /2, top : bestFit.pos.y});
-            }
+        let bestFit = this.dragFindBestFit(menu, x, y);
+        if (bestFit.type === "floating") {
+            menu.floating = true;
+            menu.jqDragView.addClass("floating");
+            menu.jqDragView.offset({left: bestFit.pos.x, top: bestFit.pos.y});
         } else {
-            data.menu.jqDragView.removeClass("floating");
-            data.menu.jqDragView.css({left : 0, top : 0});
-            if (bestFit.obj === null) {
-                data.menu.jqDragView.detach();
+            menu.floating = false;
+            menu.jqDragView.removeClass("floating");
+            menu.jqDragView.css({left: 0, top: 0});
+            menu.type = bestFit.type;
+
+            if (bestFit.menu === null) {
+                menu.jqDragView.detach();
                 if (bestFit.type === "vertical") {
-                    if (bestFit.point === 1) {
-                        this.splitHor.prepend(data.menu.jqDragView);
+                    if (bestFit.a === 1) {
+                        this.splitHor.prepend(menu.jqDragView);
                     } else {
-                        this.splitHor.append(data.menu.jqDragView);
+                        this.splitHor.append(menu.jqDragView);
                     }
                 } else {
-                    if (bestFit.point === 1) {
-                        this.splitVer.prepend(data.menu.jqDragView);
+                    if (bestFit.a === 1) {
+                        this.splitVer.prepend(menu.jqDragView);
                     } else {
-                        this.splitVer.append(data.menu.jqDragView);
+                        this.splitVer.append(menu.jqDragView);
                     }
                 }
-            } else if (bestFit.obj[0] !== data.menu.jqDragView[0]) {
-                data.menu.jqDragView.detach();
-                if (bestFit.point === 1) {
-                    bestFit.obj.before(data.menu.jqDragView);
+            } else if (bestFit.menu !== menu) {
+                menu.jqDragView.detach();
+                if (bestFit.a === 1) {
+                    bestFit.menu.jqDragView.before(menu.jqDragView);
                 } else {
-                    bestFit.obj.after(data.menu.jqDragView);
+                    bestFit.menu.jqDragView.after(menu.jqDragView);
                 }
             }
         }

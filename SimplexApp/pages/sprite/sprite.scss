@@ -11,6 +11,9 @@ $sprite-menu-bg-fade: fade-out(colors.$color-grey-600, 0.25);
 $zindex-canvas: 1;
 $zindex-tools-docked: 2;
 $zindex-tools-floating: 3;
+$zindex-tools-floating-selected: 4;
+$zindex-tools-line: 6;
+$zindex-tools-drag: 6;
 
 /*$sprite-menu-line: var(--on-surface-color-a3);//colors.$color-grey-800;
 $sprite-menu-bg: var(--surface-color);//colors.$color-grey-600;
@@ -25,7 +28,6 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
     width: 100%;
     height: 100%;
     max-width: 100%;
-    overflow: hidden;
 }
 
 .split-panel-ver {
@@ -35,32 +37,43 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
     width: 100%;
     height: 100%;
     max-width: 100%;
-    overflow: hidden;
 }
 
 //<editor-fold desc="DRAG-DROP">
 
 .draggable-view {
-    z-index: 5;
     background-color: $sprite-menu-bg;
     position: relative;
-    &.dragging {
-        z-index: unset;
-    }
-}
+    z-index: $zindex-tools-docked;
 
-.draggable-view:has(>.drag-holder) {
-    background-color: $sprite-menu-bg-fade;
+    &.dragging {
+        z-index : $zindex-tools-drag;
+        overflow: visible !important;
+    }
+    &:has(>.drag-holder) {
+        background-color: $sprite-menu-bg-fade;
+    }
+    &.floating {
+        @extend %elevation-8;
+        position: absolute;
+        border-radius: 4px;
+        z-index : $zindex-tools-floating;
+    }
+    &.floating:has(>.drag-holder) {
+        border: unset;
+        background-color: transparent;
+        box-shadow: none;
+    }
 }
 
 .drag-holder {
     @extend %elevation-8;
-    border-radius: 4px;
-    z-index: 10;
     position: absolute;
     max-width: 100%;
     max-height: 100%;
+    border-radius: 4px;
     overflow: hidden;
+    z-index: $zindex-tools-drag;
     background-color: $sprite-menu-bg;
 }
 
@@ -70,16 +83,17 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
     width: 4px;
     height: 4px;
     background-color: var(--primary-color);
-}
-.sprite-drop-line.dragged {
-    display: flex;
-    z-index: 6;
-}
-.sprite-drop-line.horizontal {
-    width: 100%;
-}
-.sprite-drop-line.vertical {
-    height: 100%;
+
+    &.dragged {
+        display: flex;
+        z-index: $zindex-tools-line;
+    }
+    &.horizontal {
+        width: 100%;
+    }
+    &.vertical {
+        height: 100%;
+    }
 }
 
 .split-panel-hor > .draggable-view {
@@ -103,6 +117,14 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
 
     + .draggable-view {
         border-left: solid 1px $sprite-menu-line;
+    }
+
+    &.floating {
+        height: fit-content;
+        max-height: 100%;
+    }
+    &.floating:has(>.drag-holder) {
+        height: 100%;
     }
 }
 
@@ -128,6 +150,14 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
 
     + .draggable-view {
         border-top: solid 1px $sprite-menu-line;
+    }
+
+    &.floating {
+        width: fit-content;
+        max-width: 100%;
+    }
+    &.floating:has(>.drag-holder) {
+        width: 100%;
     }
 }
 
@@ -206,17 +236,6 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
     overflow-x: hidden;
     overflow-y: auto;
 
-    &.floating {
-        position: absolute;
-        height: fit-content;
-        max-height: 100%;
-        border-radius: 4px;
-        @extend %elevation-8;
-    }
-    &.floating:has(>.drag-holder) {
-        height: 100%;
-    }
-
     .drag-holder {
         @extend %vbox;
     }
@@ -229,12 +248,6 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
     min-height: 48px;
     overflow-x: auto;
     overflow-y: hidden;
-
-    &.floating {
-        position: absolute;
-        max-width: 100%;
-        @extend %elevation-8;
-    }
 
     .drag-holder {
         @extend %hbox;
@@ -333,10 +346,6 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
         @extend %vbox;
         width: 64px;
         margin: 8px;
-    }
-
-    &.dragging {
-        overflow: visible !important;
     }
 
     .drag-holder {
@@ -490,9 +499,6 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
         margin: 8px;
     }
 
-    &.dragging {
-        overflow: visible !important;
-    }
     .drag-holder {
         @extend %vbox;
         min-width: 96px;
@@ -535,9 +541,6 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
         margin: 8px;
     }
 
-    &.dragging {
-        overflow: visible !important;
-    }
     .drag-holder {
         @extend %hbox;
         min-height: 96px;
@@ -588,12 +591,13 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
     flex-grow: 1;
     background-color: var(--background-color);
     position: relative;
+    z-index: $zindex-canvas;
 
     .canvas-cursor {
         display: flex;
         position: absolute;
         transform: translate(-50%, -50%);
-        z-index: 4;
+        z-index: 100;
         pointer-events: none;
         mix-blend-mode: difference;
         border-radius : 200px;
@@ -626,7 +630,7 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
             height: 100%;
             background-image: url("pages/canvas-bg.png");
             image-rendering: pixelated;
-            z-index: 1;
+            z-index: 0;
         }
 
         img {
@@ -636,13 +640,13 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
             width: 100%;
             height: 100%;
             image-rendering: pixelated;
-            z-index: 5;
+            z-index: 1;
         }
 
         canvas {
             position: absolute;
             image-rendering: pixelated;
-            z-index: 7;
+            z-index: 2;
         }
     }
 }

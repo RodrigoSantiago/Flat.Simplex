@@ -9,7 +9,9 @@ let globalDomInsert = null;
 $(document).on('DOMNodeInserted', function() {
     if (globalDomInsert === null) {
         globalDomInsert = setTimeout(function () {
-            $(".button, .hamburger, .menu-item, .tree-item, .tab-page").each(function (e) {addRipple($(this))});
+            $(".button, .hamburger, .menu-item, .tree-item, .tab-page").each(function (e) {
+                addRipple($(this))
+            });
             globalDomInsert = null;
         }, 200);
     }
@@ -18,8 +20,8 @@ $(document).on('DOMNodeInserted', function() {
 let globalResize = null;
 $(window).on('resize', function () {
     if (globalResize === null) {
-        studio.onResize();
         globalResize = setTimeout(function () {
+            studio.onResize();
             globalResize = null;
         }, 200);
     }
