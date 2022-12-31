@@ -1,82 +1,12 @@
 import {Editor} from "../Editor.js";
 import {Toolbar} from "../../Toolbar.js";
-import {DragSystem} from "../../DragSystem.js";
-import {SpriteTool} from "./SpriteTool.js";
-import {SpriteToolPencil} from "./SpriteToolPencil.js";
-import {SpriteToolBrush} from "./SpriteToolBrush.js";
-
-class SpriteMenu {
-
-    jqDragView = null;
-    jqDragHolder = null;
-    dragged = false;
-    floating = false;
-    type = null;
-
-    _updateTimer = null;
-
-    constructor(editor, jqDragView) {
-        const self = this;
-        this.editor = editor;
-        this.jqDragView = jqDragView;
-        this.jqDragView.find(".drag").mousedown(function (e) {
-            if (DragSystem.drag(self, e.button)) {
-                self.onDragStart(e);
-            }
-        });
-        this.floating = this.jqDragView.is(".floating");
-        this.type = this.jqDragView.parent()[0] === editor.splitVer[0] ? "horizontal" : "vertical"
-    }
-
-    onDragStart(e) {
-        let off = this.jqDragView.offset();
-        this.offX = e.pageX - off.left;
-        this.offY = e.pageY - off.top;
-        this.dragged = true;
-        this.jqDragView.addClass("dragging");
-        this.jqDragHolder = $("<div class='drag-holder'></div>");
-        let child = this.jqDragView.children();
-        child.detach();
-        this.jqDragHolder.append(child);
-        this.jqDragView.append(this.jqDragHolder);
-    }
-
-    onDragMove(e) {
-        this.jqDragHolder.offset({left: e.pageX - this.offX, top: e.pageY - this.offY});
-        this._updateE = e;
-        if (this._updateTimer === null) {
-            const self = this;
-            self._updateTimer = setTimeout(t => {
-                self.editor.dragMenuUpdateLine(self, self._updateE.pageX - self.offX, self._updateE.pageY - self.offY);
-                self._updateTimer = null;
-            }, 100);
-        }
-    }
-
-    onDragDrop(e) {
-        if (!(this.once === 2)) {
-            if (this.once) this.once ++;
-            else this.once = 1;
-        }
-        this.editor.dragDropMenu(this, e.pageX - this.offX, e.pageY - this.offY);
-        this.onDragCancel(e);
-    }
-
-    onDragCancel(e) {
-        this.dragged = false;
-        this.editor.dragDropMenu();
-        this.jqDragView.removeClass("dragging");
-        let child = this.jqDragHolder.children();
-        child.detach();
-        this.jqDragView.append(child);
-        this.jqDragHolder.remove();
-        this.jqDragHolder = null;
-        if (this._updateTimer !== null) {
-            clearTimeout(this._updateTimer);
-            this._updateTimer = null;
-        }
-    }
-}
+import {SpriteTool} from "./tools/SpriteTool.js";
+import {SpriteToolPencil} from "./tools/SpriteToolPencil.js";
+import {SpriteToolBrush} from "./tools/SpriteToolBrush.js";
+import {SpriteMenu} from "./SpriteMenu.js";
+import {SpriteMenuLayers} from "./SpriteMenuLayers.js";
+import {SpriteMenuBrush} from "./SpriteMenuBrush.js";
+import {SpriteMenuFrames} from "./SpriteMenuFrames.js";
 
 export class SpriteEditor extends Editor {
     static pageModel = null;
@@ -95,14 +25,16 @@ export class SpriteEditor extends Editor {
     zoomStep = 1;
     zoomPos = {};
     imageWidth = 400;
-    imageHeight = 400;
+    imageHeight = 200;
+    layers = [];
+    frames = [];
+    selectedLayer = null;
+    selectedFrame = null;
+    canvasLayer = null;
 
     // Brushes Settings
     color = "#000000";
-    altColor = "#FFFFFF";
-    brushSize = 16;
-    brushHardness = 0.80;
-    brushSpacing = 0.25;
+    altColor = "#808080";
 
     constructor(asset) {
         super(asset);
@@ -140,6 +72,7 @@ export class SpriteEditor extends Editor {
             this.configureToolbar();
             this.configureTools();
             this.configureCanvas();
+            this.configureLayers();
             this.selectTool(this.toolPencil);
             this.ready = true;
         }
@@ -154,7 +87,7 @@ export class SpriteEditor extends Editor {
     }
 
     getCanvas() {
-        return this.canvas[0];
+        return this.canvasContext;
     }
 
     configureToolbar() {
@@ -173,9 +106,14 @@ export class SpriteEditor extends Editor {
     configureTools() {
         const self = this;
 
-        this.toolMenus.push(new SpriteMenu(this, this.jqRoot.find(".tools-view")));
-        this.toolMenus.push(new SpriteMenu(this, this.jqRoot.find(".layers-view")));
-        this.toolMenus.push(new SpriteMenu(this, this.jqRoot.find(".frames-view")));
+        this.toolMenu = new SpriteMenu(this, this.jqRoot.find(".tools-view"), true);
+        this.layersMenu = new SpriteMenuLayers(this, this.jqRoot.find(".layers-view"), true);
+        this.framesMenu = new SpriteMenuFrames(this, this.jqRoot.find(".frames-view"), true);
+        this.brushMenu = new SpriteMenuBrush(this, this.jqRoot.find(".brush-view"), false);
+        this.toolMenus.push(this.toolMenu);
+        this.toolMenus.push(this.layersMenu);
+        this.toolMenus.push(this.framesMenu);
+        this.toolMenus.push(this.brushMenu);
         this.dropLine = this.jqRoot.find(".sprite-drop-line");
 
         this.toolSelect = new SpriteTool(this, this.jqRoot.find(".tool-select"));
@@ -183,11 +121,10 @@ export class SpriteEditor extends Editor {
         this.toolBrush = new SpriteToolBrush(this, this.jqRoot.find(".tool-brush"));
         this.toolSpray = new SpriteTool(this, this.jqRoot.find(".tool-spray"));
         this.toolEraser = new SpriteTool(this, this.jqRoot.find(".tool-eraser"));
+        this.toolSmudge = new SpriteTool(this, this.jqRoot.find(".tool-smudge"));
         this.toolBucket = new SpriteTool(this, this.jqRoot.find(".tool-bucket"));
         this.toolShapes = new SpriteTool(this, this.jqRoot.find(".tool-shapes"));
-        this.toolSmudge = new SpriteTool(this, this.jqRoot.find(".tool-smudge"));
         this.toolText = new SpriteTool(this, this.jqRoot.find(".tool-text"));
-        this.toolZoom = new SpriteTool(this, this.jqRoot.find(".tool-zoom"));
     }
 
     configureCanvas() {
@@ -208,6 +145,13 @@ export class SpriteEditor extends Editor {
         });
         this.canvasView.mouseleave(e => self.canvasCursor.css("display", "none"));
         this.canvasView.mouseenter(e => self.canvasCursor.css("display", ""));
+
+
+        this.canvasContext = this.canvas[0].getContext("2d");
+    }
+
+    configureLayers() {
+        this.frameAdd();
     }
 
     convertCanvasPosition(e) {
@@ -239,7 +183,8 @@ export class SpriteEditor extends Editor {
             } else if (e.button === 2) {
                 this.dragPaintCol = this.altColor;
             }
-            this.selectedTool.mouseDown(this.dragPaintPos, this.dragPaintCol);
+            this.toolStart();
+            this.selectedTool.mouseDown(this.dragPaintPos, this.dragPaintCol, this.selectedLayer);
         }
     }
 
@@ -263,6 +208,7 @@ export class SpriteEditor extends Editor {
             this.dragPaintPos = this.convertCanvasPosition(e);
             this.selectedTool.mouseUp(this.dragPaintPos, this.dragPaintCol);
             this.dragPaint = false;
+            this.toolEnd();
         }
         if (this.dragZoom && e.button === 1) {
             this.dragZoom = false;
@@ -336,9 +282,9 @@ export class SpriteEditor extends Editor {
         this.canvas.css("transform", "scale(" + this.zoomStep + ")");
 
         let bgSize = 16;
-        if (this.zoomStep >= 4 && this.zoomStep < 8) {
+        if (this.zoomStep >= 4 && this.zoomStep < 12) {
             bgSize = this.zoomStep * 4;
-        } else if (this.zoomStep >= 8 && this.zoomStep < 16) {
+        } else if (this.zoomStep >= 12 && this.zoomStep < 16) {
             bgSize = this.zoomStep * 2;
         } else if (this.zoomStep >= 16 && this.zoomStep < 24) {
             bgSize = this.zoomStep;
@@ -351,11 +297,14 @@ export class SpriteEditor extends Editor {
     }
 
     updateCanvasCursor(pos) {
-        this.canvasCursor.css({left: pos.x, top: pos.y});
         this.selectedTool.updateCanvasCursor(pos);
     }
 
     dragFindBestFit(menu, x, y) {
+        if (!menu.dockeable) {
+            return {type: "floating", menu: null, a: 0, pos: {x: x - menu.offX, y: y- menu.offY}};
+        }
+
         let width = this.splitVer.width();
         let height = this.splitVer.height();
         let off = this.splitVer.offset();
@@ -366,20 +315,20 @@ export class SpriteEditor extends Editor {
             {o: null, type: "vertical", p: off.left, a: 1},
             {o: null, type: "vertical", p: off.left + width, a: 2}
         ];
-        for (const menu of this.toolMenus) {
-            if (menu.floating) continue;
-            let mOff = menu.jqDragView.offset();
-            if (menu.type === "horizontal") {
-                lines.push({o: menu, type: menu.type, p: mOff.top, a: 1});
-                lines.push({o: menu, type: menu.type, p: mOff.top + menu.jqDragView.height(), a: 2});
+        for (const tMenu of this.toolMenus) {
+            if (tMenu.floating || tMenu === menu) continue;
+            let mOff = tMenu.jqDragView.offset();
+            if (tMenu.type === "horizontal") {
+                lines.push({o: tMenu, type: tMenu.type, p: mOff.top, a: 1});
+                lines.push({o: tMenu, type: tMenu.type, p: mOff.top + tMenu.jqDragView.height(), a: 2});
             } else {
-                lines.push({o: menu, type: menu.type, p: mOff.left, a: 1});
-                lines.push({o: menu, type: menu.type, p: mOff.left + menu.jqDragView.width(), a: 2});
+                lines.push({o: tMenu, type: tMenu.type, p: mOff.left, a: 1});
+                lines.push({o: tMenu, type: tMenu.type, p: mOff.left + tMenu.jqDragView.width(), a: 2});
             }
         }
 
-        let best = 64;
-        let pos = {x: x, y: y};
+        let best = 32;
+        let pos = {x: x - menu.offX, y: y- menu.offY};
         let bestLine = null;
         for (const line of lines) {
             if (line.type === "horizontal") {
@@ -431,12 +380,12 @@ export class SpriteEditor extends Editor {
             this.dropLine.addClass("dragged");
             if (bestFit.type === "horizontal") {
                 this.dropLine.offset({left: bestFit.pos.x, top: bestFit.pos.y + (!bestFit.menu && bestFit.a === 2? -4 : 0)});
-                this.dropLine.addClass("horizontal");
-                this.dropLine.removeClass("vertical");
-            } else {
-                this.dropLine.offset({left: bestFit.pos.x + (!bestFit.menu && bestFit.a === 2? -4 : 0), top: bestFit.pos.y});
                 this.dropLine.addClass("vertical");
                 this.dropLine.removeClass("horizontal");
+            } else {
+                this.dropLine.offset({left: bestFit.pos.x + (!bestFit.menu && bestFit.a === 2? -4 : 0), top: bestFit.pos.y});
+                this.dropLine.addClass("horizontal");
+                this.dropLine.removeClass("vertical");
             }
         }
     }
@@ -449,13 +398,23 @@ export class SpriteEditor extends Editor {
 
         let bestFit = this.dragFindBestFit(menu, x, y);
         if (bestFit.type === "floating") {
+
+            let width = this.splitVer.width();
+            let height = this.splitVer.height();
+            let off = this.splitVer.offset();
+
             menu.floating = true;
             menu.jqDragView.addClass("floating");
-            menu.jqDragView.offset({left: bestFit.pos.x, top: bestFit.pos.y});
+            menu.jqDragView.offset({
+                left: Math.min(off.left + width - menu.jqDragView.width(), Math.max(off.left, bestFit.pos.x)),
+                top: Math.min(off.top + height - menu.jqDragView.height(), Math.max(off.top, bestFit.pos.y))
+            });
         } else {
             menu.floating = false;
             menu.jqDragView.removeClass("floating");
             menu.jqDragView.css({left: 0, top: 0});
+            menu.jqDragView.removeClass(menu.type);
+            menu.jqDragView.addClass(bestFit.type);
             menu.type = bestFit.type;
 
             if (bestFit.menu === null) {
@@ -488,5 +447,66 @@ export class SpriteEditor extends Editor {
         this.selectedTool?.setSelected(false);
         this.selectedTool = tool;
         this.selectedTool.setSelected(true);
+    }
+
+    selectLayer(layer) {
+        this.layersMenu.layerSelect(layer);
+    }
+
+    selectFrame(frame) {
+        this.framesMenu.frameSelect(frame);
+    }
+
+    getBrushConfig() {
+        return this.toolMenus[3].getBrushConfig();
+    }
+
+    // Historic
+
+    toolStart() {
+        this.canvas.css({"visibility" : "visible", "z-index" : this.selectedLayer.zindex});
+        this.selectedLayer.jqImg.css({"display" : "none"});
+
+        if (this.canvasLayer !== this.selectedLayer) {
+            this.canvasLayer = this.selectedLayer;
+            let ctx = this.getCanvas();
+            ctx.clearRect(0, 0, this.imageWidth, this.imageHeight);
+            ctx.drawImage(this.selectedLayer.img, 0, 0);
+        }
+    }
+
+    toolEnd() {
+        this.selectedLayer.jqImg.css({"display" : ""});
+        this.canvas.css({"visibility" : "hidden"});
+        this.selectedLayer.canvasDraw(this.canvas[0]);
+
+        const self = this;
+        setTimeout(function (e) {
+            self.selectedFrame.updateThumbnail();
+        }, 5);
+    }
+
+    layerAdd(image, index) {
+        this.layersMenu.layerAdd(image, index);
+    }
+
+    layerMove(layerA, layerB) {
+        this.layersMenu.layerMove(layerA, layerB);
+    }
+
+    layerRemove(layer) {
+        this.layersMenu.layerRemove(layer);
+    }
+
+    frameAdd() {
+        this.framesMenu.frameAdd();
+    }
+
+    frameMove() {
+
+    }
+
+    frameRemove(frame) {
+        this.framesMenu.frameRemove(frame);
     }
 }

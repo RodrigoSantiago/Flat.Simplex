@@ -4,7 +4,7 @@
         <meta charset="UTF-8" />
         <meta
             http-equiv="Content-Security-Policy"
-            content="default-src *; script-src 'self'; style-src 'self' 'unsafe-inline';">
+            content="default-src *; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:;">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Hello from Electron renderer!</title>
         <link rel="stylesheet" href="index.css">
@@ -27,6 +27,7 @@
             <div id="main-toolbar" class="toolbar prominent dense">
                 <div class="title"><span>Projeto Exemplo</span></div>
                 <div class="menu"></div>
+                <div class="low-height"></div>
             </div>
             <div class="content">
                 <div class="left-list">

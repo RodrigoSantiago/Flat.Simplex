@@ -221,6 +221,7 @@
 }
 
 //-------------------------EDITORS TABS-------------------------//
+
 .negative-floating {
     @extend %vbox;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.24);
@@ -357,5 +358,21 @@
     }
     &.scene > .toolbar {
         background-color: colors.$color-purple-400;
+    }
+}
+
+.low-height {
+    height: 100%;
+    width: 0;
+    display: none;
+}
+
+@media (max-height: main.$low-height) {
+    .low-height {
+        display: flex;
+    }
+    .negative-floating {
+        margin-top: -88px;
+        height: calc(100% + 80px);
     }
 }

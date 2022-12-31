@@ -12,7 +12,7 @@ $zindex-canvas: 1;
 $zindex-tools-docked: 2;
 $zindex-tools-floating: 3;
 $zindex-tools-floating-selected: 4;
-$zindex-tools-line: 6;
+$zindex-tools-line: 5;
 $zindex-tools-drag: 6;
 
 /*$sprite-menu-line: var(--on-surface-color-a3);//colors.$color-grey-800;
@@ -28,6 +28,8 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
     width: 100%;
     height: 100%;
     max-width: 100%;
+    max-height: 100%;
+    overflow: hidden;
 }
 
 .split-panel-ver {
@@ -37,6 +39,8 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
     width: 100%;
     height: 100%;
     max-width: 100%;
+    max-height: 100%;
+    overflow: hidden;
 }
 
 //<editor-fold desc="DRAG-DROP">
@@ -46,61 +50,25 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
     position: relative;
     z-index: $zindex-tools-docked;
 
-    &.dragging {
-        z-index : $zindex-tools-drag;
-        overflow: visible !important;
-    }
-    &:has(>.drag-holder) {
-        background-color: $sprite-menu-bg-fade;
-    }
     &.floating {
         @extend %elevation-8;
         position: absolute;
         border-radius: 4px;
         z-index : $zindex-tools-floating;
     }
-    &.floating:has(>.drag-holder) {
-        border: unset;
-        background-color: transparent;
-        box-shadow: none;
+    &.dragging {
+        z-index : $zindex-tools-drag;
     }
 }
 
-.drag-holder {
-    @extend %elevation-8;
-    position: absolute;
-    max-width: 100%;
+.draggable-view.vertical {
+    @extend %vbox;
+    height: 100%;
     max-height: 100%;
-    border-radius: 4px;
-    overflow: hidden;
-    z-index: $zindex-tools-drag;
-    background-color: $sprite-menu-bg;
-}
-
-.sprite-drop-line {
-    display: none;
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background-color: var(--primary-color);
-
-    &.dragged {
-        display: flex;
-        z-index: $zindex-tools-line;
-    }
-    &.horizontal {
-        width: 100%;
-    }
-    &.vertical {
-        height: 100%;
-    }
-}
-
-.split-panel-hor > .draggable-view {
     border-top: solid 2px $sprite-menu-line;
     border-bottom: solid 1px $sprite-menu-line;
 
-    .drag {
+    .drag, .close-view {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -114,8 +82,31 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
             font-size: 18px;
         }
     }
+    .close-view {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-top: 1px solid $sprite-menu-line;
+        height: 18px;
+        cursor: default;
+        margin-top: 8px;
+        > div {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 12px;
+            width: 12px;
+            cursor: pointer;
+            border-radius: 100px;
+            background-color: var(--on-color);
+            > i {
+                font-size: 12px;
+                color: var($sprite-menu-bg);
+            }
+        }
+    }
 
-    + .draggable-view {
+    &:not(.floating) + .draggable-view:not(.floating) {
         border-left: solid 1px $sprite-menu-line;
     }
 
@@ -123,16 +114,16 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
         height: fit-content;
         max-height: 100%;
     }
-    &.floating:has(>.drag-holder) {
-        height: 100%;
-    }
 }
 
-.split-panel-ver > .draggable-view {
+.draggable-view.horizontal {
+    @extend %hbox;
+    width: 100%;
+    max-width: 100%;
     border-left: solid 2px $sprite-menu-line;
     border-right: solid 1px $sprite-menu-line;
 
-    .drag {
+    .drag, .close-view {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -147,6 +138,26 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
             transform: rotate(90deg);
         }
     }
+    .close-view {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-top: 1px solid $sprite-menu-line;
+        width: 18px;
+        margin-left: 8px;
+        cursor: default;
+        > div {
+            height: 12px;
+            width: 12px;
+            cursor: pointer;
+            border-radius: 100px;
+            background-color: var(--on-color);
+            > i {
+                font-size: 12px;
+                color: var($sprite-menu-bg);
+            }
+        }
+    }
 
     + .draggable-view {
         border-top: solid 1px $sprite-menu-line;
@@ -156,8 +167,24 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
         width: fit-content;
         max-width: 100%;
     }
-    &.floating:has(>.drag-holder) {
+}
+
+.sprite-drop-line {
+    display: none;
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background-color: var(--primary-color);
+
+    &.dragged {
+        display: flex;
+        z-index: $zindex-tools-line;
+    }
+    &.vertical {
         width: 100%;
+    }
+    &.horizontal {
+        height: 100%;
     }
 }
 
@@ -218,40 +245,24 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
         left: 19px;
         z-index: 1;
     }
-
-    &.dragging {
-        overflow: visible !important;
-    }
 }
 
 .tools-view::-webkit-scrollbar {
     display: none;
 }
 
-.split-panel-hor > .tools-view {
-    @extend %vbox;
-    height: 100%;
+.tools-view.vertical {
     width: 48px;
     min-width: 48px;
     overflow-x: hidden;
     overflow-y: auto;
-
-    .drag-holder {
-        @extend %vbox;
-    }
 }
 
-.split-panel-ver > .tools-view {
-    @extend %hbox;
-    width: 100%;
+.tools-view.horizontal {
     height: 48px;
     min-height: 48px;
     overflow-x: auto;
     overflow-y: hidden;
-
-    .drag-holder {
-        @extend %hbox;
-    }
 }
 
 //</editor-fold>
@@ -272,7 +283,7 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
                 background-color: $sprite-menu-bg-hover;
             }
 
-            &:active {
+            &:active, &.selected {
                 background-color: $sprite-menu-bg-active;
             }
 
@@ -283,18 +294,9 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
                 background-image : url("pages/canvas-bg.png");
                 background-size : 16px;
                 border: 1px solid $sprite-menu-bg;
-            }
-
-            .frame-remove {
-                position: absolute;
-                display: flex;
-                right: 0;
-                bottom: 0;
-                cursor: pointer;
-                color: $sprite-menu-line;
-
-                i {
-                    font-size: 18px;
+                img {
+                    width: 100%;
+                    height: 100%;
                 }
             }
         }
@@ -314,8 +316,7 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
     }
 }
 
-.split-panel-hor > .frames-view {
-    @extend %vbox;
+.frames-view.vertical {
     align-items: center;
     min-width: 96px;
     max-width: 96px;
@@ -347,22 +348,13 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
         width: 64px;
         margin: 8px;
     }
-
-    .drag-holder {
-        @extend %vbox;
-        min-width: 96px;
-        max-width: 96px;
-        align-items: center;
-    }
 }
 
-.split-panel-ver > .frames-view {
-    @extend %hbox;
+.frames-view.horizontal {
     align-items: center;
     min-height: 96px;
     max-height: 96px;
     width: 100%;
-    max-width: 100%;
     padding-right: 16px;
 
     .frames-container {
@@ -388,13 +380,6 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
         @extend %hbox;
         height: 64px;
         margin: 8px;
-    }
-
-    .drag-holder {
-        @extend %hbox;
-        min-height: 96px;
-        max-height: 96px;
-        align-items: center;
     }
 }
 
@@ -416,7 +401,7 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
                 background-color: $sprite-menu-bg-hover;
             }
 
-            &:active {
+            &:active, &.selected {
                 background-color: $sprite-menu-bg-active;
             }
 
@@ -427,25 +412,15 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
                 background-image : url("pages/canvas-bg.png");
                 background-size : 16px;
                 border: 1px solid $sprite-menu-bg;
-            }
-
-            .layer-remove {
-                position: absolute;
-                display: flex;
-                right: 0;
-                bottom: 0;
-                cursor: pointer;
-                color: $sprite-menu-line;
-
-                i {
-                    font-size: 18px;
+                img {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: contain;
                 }
             }
-
             .layer-hide {
                 position: absolute;
                 display: flex;
-                cursor: pointer;
                 left: 0;
                 top: 0;
                 color: $sprite-menu-line;
@@ -465,13 +440,10 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
     }
 }
 
-.split-panel-hor > .layers-view {
-    @extend %vbox;
+.layers-view.vertical {
     align-items: center;
     min-width: 96px;
     max-width: 96px;
-    height: 100%;
-    max-height: 100%;
     padding-bottom: 16px;
 
     .layers-container {
@@ -498,22 +470,12 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
         width: 64px;
         margin: 8px;
     }
-
-    .drag-holder {
-        @extend %vbox;
-        min-width: 96px;
-        max-width: 96px;
-        align-items: center;
-    }
 }
 
-.split-panel-ver > .layers-view {
-    @extend %hbox;
+.layers-view.horizontal {
     align-items: center;
     min-height: 96px;
     max-height: 96px;
-    width: 100%;
-    max-width: 100%;
     padding-right: 16px;
 
     .layers-container {
@@ -540,13 +502,6 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
         height: 64px;
         margin: 8px;
     }
-
-    .drag-holder {
-        @extend %hbox;
-        min-height: 96px;
-        max-height: 96px;
-        align-items: center;
-    }
 }
 
 //</editor-fold>
@@ -565,14 +520,14 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
     }
 }
 
-.split-panel-hor > .colors-view {
+.colors-view.vertical {
     @extend %vbox;
     align-items: center;
     min-width: 256px;
     height: 100%;
 }
 
-.split-panel-ver > .colors-view {
+.colors-view.horizontal {
     @extend %hbox;
     align-items: center;
     min-height: 128px;
@@ -600,9 +555,23 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
         z-index: 100;
         pointer-events: none;
         mix-blend-mode: difference;
-        border-radius : 200px;
         border : 0.5px solid #FFFFFF;
         outline : 0.5px solid #88888880;
+        border-radius : 100%;
+        image-rendering: auto;
+        svg {
+            display: none;
+        }
+    }
+    .canvas-cursor.pencil {
+        border : none;
+        outline : none;
+        svg {
+            display: flex;
+            width : 100%;
+            height : 100%;
+            filter: drop-shadow(0 0 0 #88888880);
+        }
     }
 
     .canvas-position {
@@ -640,7 +609,6 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
             width: 100%;
             height: 100%;
             image-rendering: pixelated;
-            z-index: 1;
         }
 
         canvas {
@@ -650,4 +618,115 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
         }
     }
 }
+//</editor-fold>
+
+
+//<editor-fold desc="BRUSH">
+
+.brush-view {
+}
+
+.brush-view.vertical {
+    align-items: center;
+    min-width: 96px;
+    max-width: 96px;
+    height: 100%;
+    max-height: 100%;
+
+    .brush-container {
+        @extend %vbox;
+        overflow-x: hidden;
+        overflow-y: auto;
+        width: 96px;
+        height: 100%;
+
+    }
+
+    .brush-sliders {
+        @extend %vbox;
+        align-items: center;
+        justify-content: space-between;
+        width: 128px;
+        height: 80px;
+        margin-top: 32px;
+        margin-bottom: 32px;
+        transform: rotate(-90deg);
+        .slider {
+            margin: 8px 0 8px 0;
+        }
+    }
+    .brush-icons {
+        @extend %hbox;
+        width: 100%;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 8px 0 8px;
+        .brush-icon {
+            > i {
+                color: var(--on-color);
+                font-size: 18px;
+            }
+        }
+        .brush-text {
+            width: 18px;
+            text-align: center;
+        }
+        > span {
+            font-size: 10px;
+            color: var(--on-color);
+        }
+    }
+
+    .brush-preview {
+        width: 80px;
+        height: 80px;
+        margin: 8px;
+        background-color: white;
+    }
+    .brush-image {
+        width: calc(100% - 16px);
+        margin: 8px 8px 0 8px;
+    }
+}
+
+.brush-view.horizontal {
+    align-items: center;
+    min-height: 96px;
+    max-height: 96px;
+    width: 100%;
+
+    .brush-container {
+        @extend %hbox;
+        overflow-x: auto;
+        overflow-y: hidden;
+        width: 100%;
+        height: 96px;
+    }
+
+    .sliders {
+        height: 80px;
+        margin: 16px 8px 16px 8px;
+    }
+}
+
+.slider {
+    appearance: none;
+    width: 100%;
+    height: 2px;
+    background: var(--on-color);
+    outline: none;
+    border-radius: 4px;
+}
+.slider::-webkit-slider-thumb {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 16px;
+    background: var(--on-color);
+    cursor: pointer;
+}
+.slider::-webkit-slider-thumb:active {
+    outline: 4px solid var(--on-color-a3);
+}
+
 //</editor-fold>

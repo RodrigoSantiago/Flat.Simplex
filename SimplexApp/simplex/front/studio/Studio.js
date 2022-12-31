@@ -18,6 +18,8 @@ export class Studio {
     TransferenceAssets = [];
     TransferenceMode = "";
 
+    jqLowHeight;
+
     constructor(jqMain, Navigator, Toolbar, TreeView, Preview, TabView) {
         const self = this;
 
@@ -44,6 +46,8 @@ export class Studio {
         this.Toolbar.addItem("Plugins", null, null);
         this.Toolbar.addItem("_", null, null);
         this.Toolbar.addItem("Settings", null, null);
+
+        this.jqLowHeight = this.jqMain.find(".low-height");
 
         this.configureDivider();
         this.configureTreeView();
@@ -259,5 +263,7 @@ export class Studio {
         this.TreeView.update();
         this.Toolbar.update();
         this.TabView.onResize();
+
+        this.jqLowHeight.css("min-width", this.jqMain.find(".negative-floating").width());
     }
 }
