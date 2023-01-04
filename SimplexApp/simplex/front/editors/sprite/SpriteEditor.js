@@ -7,6 +7,9 @@ import {SpriteMenu} from "./SpriteMenu.js";
 import {SpriteMenuLayers} from "./SpriteMenuLayers.js";
 import {SpriteMenuBrush} from "./SpriteMenuBrush.js";
 import {SpriteMenuFrames} from "./SpriteMenuFrames.js";
+import {SpriteToolSpray} from "./tools/SpriteToolSpray.js";
+import {SpriteToolEraser} from "./tools/SpriteToolEraser.js";
+import {SpriteToolSmudge} from "./tools/SpriteToolSmudge.js";
 
 export class SpriteEditor extends Editor {
     static pageModel = null;
@@ -34,21 +37,21 @@ export class SpriteEditor extends Editor {
 
     // Brushes Settings
     color = "#000000";
-    altColor = "#808080";
+    altColor = "#FF0040";
 
     constructor(asset) {
         super(asset);
-        const self = this;
         this.jqRoot = $(SpriteEditor.pageModel);
-        this.jqRoot.onResize = e => self.onResize();
-        this.jqRoot.onShow = e => self.onShow();
-        this.jqRoot.onHide = e => self.onHide();
-        this.jqRoot.onRemove = e => self.onHide();
+        this.jqRoot.onResize = () => this.onResize();
+        this.jqRoot.onShow = () => this.onShow();
+        this.jqRoot.onHide = () => this.onHide();
+        this.jqRoot.onRemove = () => this.onHide();
 
         this.Toolbar = new Toolbar(this.jqRoot.find(".toolbar"));
         this.splitVer = this.jqRoot.find(".split-panel-ver");
         this.splitHor = this.jqRoot.find(".split-panel-hor");
-        this.canvas = this.jqRoot.find("canvas");
+        this.canvas = this.jqRoot.find(".canvasA");
+        this.canvasB = this.jqRoot.find(".canvasB");
         this.canvasPos = this.jqRoot.find(".canvas-position");
         this.canvasScl = this.jqRoot.find(".canvas-owner");
         this.canvasView = this.jqRoot.find(".canvas-view");
@@ -56,6 +59,8 @@ export class SpriteEditor extends Editor {
         this.canvasCursor = this.jqRoot.find(".canvas-cursor");
         this.canvas[0].width = this.imageWidth;
         this.canvas[0].height = this.imageHeight;
+        this.canvasB[0].width = this.imageWidth;
+        this.canvasB[0].height = this.imageHeight;
     }
 
     getJqRoot() {
@@ -90,6 +95,10 @@ export class SpriteEditor extends Editor {
         return this.canvasContext;
     }
 
+    getCanvasB() {
+        return this.canvasContextB;
+    }
+
     configureToolbar() {
         this.Toolbar.addItem("Undo", "undo", null);
         this.Toolbar.addItem("Redo", "redo", null);
@@ -119,35 +128,33 @@ export class SpriteEditor extends Editor {
         this.toolSelect = new SpriteTool(this, this.jqRoot.find(".tool-select"));
         this.toolPencil = new SpriteToolPencil(this, this.jqRoot.find(".tool-pencil"));
         this.toolBrush = new SpriteToolBrush(this, this.jqRoot.find(".tool-brush"));
-        this.toolSpray = new SpriteTool(this, this.jqRoot.find(".tool-spray"));
-        this.toolEraser = new SpriteTool(this, this.jqRoot.find(".tool-eraser"));
-        this.toolSmudge = new SpriteTool(this, this.jqRoot.find(".tool-smudge"));
+        this.toolSpray = new SpriteToolSpray(this, this.jqRoot.find(".tool-spray"));
+        this.toolEraser = new SpriteToolEraser(this, this.jqRoot.find(".tool-eraser"));
+        this.toolSmudge = new SpriteToolSmudge(this, this.jqRoot.find(".tool-smudge"));
         this.toolBucket = new SpriteTool(this, this.jqRoot.find(".tool-bucket"));
         this.toolShapes = new SpriteTool(this, this.jqRoot.find(".tool-shapes"));
         this.toolText = new SpriteTool(this, this.jqRoot.find(".tool-text"));
     }
 
     configureCanvas() {
-        const self = this;
-
         this.zoomStep = 0;
         this.canvasZoom(1);
         this.canvasPosition({x: this.canvasView.width() / 2, y: this.canvasView.height() / 2});
 
-        this.canvasView.mousedown(e => self.canvasOnMouseDown(e));
-        this.addWindowListener('mousemove', e => self.canvasOnMouseMove(e));
-        this.addWindowListener('mouseup', e => self.canvasOnMouseUp(e));
-        this.canvasView[0].addEventListener('wheel', e => self.canvasOnMouseScroll(e));
+        this.canvasView.mousedown(e => this.canvasOnMouseDown(e));
+        this.addWindowListener('mousemove', e => this.canvasOnMouseMove(e));
+        this.addWindowListener('mouseup', e => this.canvasOnMouseUp(e));
+        this.canvasView[0].addEventListener('wheel', e => this.canvasOnMouseScroll(e));
 
         this.canvasView.mousemove(e => {
-            let off = self.canvasView.offset();
-            self.updateCanvasCursor({x: e.pageX - off.left, y: e.pageY - off.top});
+            let off = this.canvasView.offset();
+            this.updateCanvasCursor({x: e.pageX - off.left, y: e.pageY - off.top});
         });
-        this.canvasView.mouseleave(e => self.canvasCursor.css("display", "none"));
-        this.canvasView.mouseenter(e => self.canvasCursor.css("display", ""));
-
+        this.canvasView.mouseleave(e => this.canvasCursor.css("display", "none"));
+        this.canvasView.mouseenter(e => this.canvasCursor.css("display", ""));
 
         this.canvasContext = this.canvas[0].getContext("2d");
+        this.canvasContextB = this.canvasB[0].getContext("2d");
     }
 
     configureLayers() {
@@ -280,6 +287,7 @@ export class SpriteEditor extends Editor {
             "max-height": this.imageHeight * this.zoomStep
         });
         this.canvas.css("transform", "scale(" + this.zoomStep + ")");
+        this.canvasB.css("transform", "scale(" + this.zoomStep + ")");
 
         let bgSize = 16;
         if (this.zoomStep >= 4 && this.zoomStep < 12) {
@@ -447,6 +455,7 @@ export class SpriteEditor extends Editor {
         this.selectedTool?.setSelected(false);
         this.selectedTool = tool;
         this.selectedTool.setSelected(true);
+        this.brushMenu.updatePreview();
     }
 
     selectLayer(layer) {
@@ -464,7 +473,8 @@ export class SpriteEditor extends Editor {
     // Historic
 
     toolStart() {
-        this.canvas.css({"visibility" : "visible", "z-index" : this.selectedLayer.zindex});
+        this.canvas.css({"visibility" : "visible", "z-index" : this.selectedLayer.zindex+1});
+        this.canvasB.css({"visibility" : "visible", "z-index" : this.selectedLayer.zindex+2});
         this.selectedLayer.jqImg.css({"display" : "none"});
 
         if (this.canvasLayer !== this.selectedLayer) {
@@ -478,12 +488,10 @@ export class SpriteEditor extends Editor {
     toolEnd() {
         this.selectedLayer.jqImg.css({"display" : ""});
         this.canvas.css({"visibility" : "hidden"});
+        this.canvasB.css({"visibility" : "hidden"});
         this.selectedLayer.canvasDraw(this.canvas[0]);
 
-        const self = this;
-        setTimeout(function (e) {
-            self.selectedFrame.updateThumbnail();
-        }, 5);
+        setTimeout(() => this.selectedFrame.updateThumbnail(), 5);
     }
 
     layerAdd(image, index) {

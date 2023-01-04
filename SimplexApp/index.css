@@ -1737,10 +1737,16 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
   color: var(--on-color);
 }
 .brush-view.vertical .brush-preview {
+  display: flex;
   width: 80px;
   height: 80px;
   margin: 8px;
-  background-color: white;
+  background-image: url("pages/canvas-bg.png");
+  background-size: 16px;
+}
+.brush-view.vertical .brush-preview canvas {
+  width: 100%;
+  height: 100%;
 }
 .brush-view.vertical .brush-image {
   width: calc(100% - 16px);

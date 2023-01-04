@@ -68,8 +68,8 @@ export class SpriteMenuLayers extends SpriteMenu {
 
     resetZIndex() {
         for (let i = 0; i < this.editor.layers.length; i++) {
-            this.editor.layers[i].jqImg.css("z-index", (this.editor.layers.length - i) + 1);
-            this.editor.layers[i].zindex = (this.editor.layers.length - i) + 1;
+            this.editor.layers[i].zindex = ((this.editor.layers.length - i) + 1) * 3;
+            this.editor.layers[i].jqImg.css("z-index", this.editor.layers[i].zindex);
         }
     }
 
