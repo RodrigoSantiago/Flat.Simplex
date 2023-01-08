@@ -2,45 +2,36 @@ import {SpriteToolBrush} from "./SpriteToolBrush.js";
 
 export class SpriteToolPencil extends SpriteToolBrush {
 
-    static brushCanvas = null;
-
-    constructor(editor, jqButton) {
-        super(editor, jqButton);
+    constructor(editor, jqButton, configMenu) {
+        super(editor, jqButton, configMenu);
         this.pixelMode = true;
+        this.size = 1;
+        this.flow = 1.00;
+        this.hardness = 1.00;
     }
 
-    updateBrushCanvas() {
-        if (SpriteToolPencil.brushCanvas === null) {
-            SpriteToolPencil.brushCanvas = document.createElement('canvas');
-            SpriteToolPencil.brushCanvas.width = 100;
-            SpriteToolPencil.brushCanvas.height = 100;
-            SpriteToolPencil.brushCanvas.setup = {size : 0, color : ""};
-        }
-
-        this.brushCanvas = SpriteToolPencil.brushCanvas;
-        if (this.brushCanvas.setup.size !== this.size ||
-            this.brushCanvas.setup.color !== this.color) {
-
-            this.brushCanvas.setup.size = this.size;
-            this.brushCanvas.setup.color = this.color;
-
-            this.generatePixelImage(this.brushCanvas);
-        }
+    onSelected() {
+        this.brushData = {};
+        this.editor.brushMenu.setSize(this.size);
+        this.editor.brushMenu.setSizeEnabled(true);
+        this.editor.brushMenu.setFlow(this.flow);
+        this.editor.brushMenu.setFlowEnabled(false);
+        this.editor.brushMenu.setHardness(this.hardness);
+        this.editor.brushMenu.setHardnessEnabled(false);
+        this.editor.brushMenu.setOptionMode("Replace", false);
     }
 
     updatePreview(ctx) {
         let config = this.editor.getBrushConfig();
         this.size = config.size;
-        this.spacing = config.spacing;
+        this.flow = config.flow;
         this.hardness = config.hardness;
         this.color = "#000000FF";
-        this.dist = this.size * this.spacing;
         this.ctx = ctx;
         this.ctx.filter = "url(#stroke-alpha-1)";
 
         ctx.fillStyle = "#FFFFFF";
-        ctx.rect(0, 0, 80, 80);
-        ctx.fill();
+        ctx.fillRect(0, 0, 80, 80);
 
         this.updateBrushCanvas();
 
@@ -66,21 +57,8 @@ export class SpriteToolPencil extends SpriteToolBrush {
         }
     }
 
-    configureContext(color) {
-        let config = this.editor.getBrushConfig();
-        this.size = config.size;
-        this.spacing = config.spacing;
-        this.hardness = config.hardness;
-        this.color = color.length === 9 ? color : color + "FF";
-        this.dist = 0;
-
-        this.ctx = this.editor.getCanvas();
+    start(color, ctx, ctxTemp) {
+        super.start(color, ctx, ctxTemp);
         this.ctx.filter = "url(#stroke-alpha-1)";
-
-        this.updateBrushCanvas();
-    }
-
-    updateCanvasCursor(pos) {
-        this.cursorAsPixel(pos);
     }
 }

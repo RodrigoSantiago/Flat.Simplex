@@ -2,43 +2,12 @@ import {SpriteToolBrush} from "./SpriteToolBrush.js";
 
 export class SpriteToolSmudge extends SpriteToolBrush {
 
-    static brushCanvas = null;
-
-    constructor(editor, jqButton) {
-        super(editor, jqButton);
-    }
-
-    updateBrushCanvas() {
-        if (!SpriteToolSmudge.brushCanvas) {
-            SpriteToolSmudge.brushCanvas = document.createElement('canvas');
-            SpriteToolSmudge.brushCanvas.width = 100;
-            SpriteToolSmudge.brushCanvas.height = 100;
-            SpriteToolSmudge.brushCanvas.setup = {size : 0, color :"", hardness : 0};
-            SpriteToolSmudge.brSrc = document.createElement('canvas');
-            SpriteToolSmudge.brSrc.width = 100;
-            SpriteToolSmudge.brSrc.height = 100;
-            SpriteToolSmudge.brDst = document.createElement('canvas');
-            SpriteToolSmudge.brDst.width = 100;
-            SpriteToolSmudge.brDst.height = 100;
-            SpriteToolSmudge.brTemp = document.createElement('canvas');
-            SpriteToolSmudge.brTemp.width = 100;
-            SpriteToolSmudge.brTemp.height = 100;
-        }
-
-        this.brushCanvas = SpriteToolSmudge.brushCanvas;
-        this.brSrc = SpriteToolSmudge.brSrc;
-        this.brDst = SpriteToolSmudge.brDst
-        this.brTemp = SpriteToolSmudge.brTemp;
-        if (this.brushCanvas.setup.size !== this.size ||
-            this.brushCanvas.setup.hardness !== this.hardness ||
-            this.brushCanvas.setup.color !== this.color) {
-
-            this.brushCanvas.setup.size = this.size;
-            this.brushCanvas.setup.hardness = this.hardness;
-            this.brushCanvas.setup.color = this.color;
-
-            this.generateBrushImage(this.brushCanvas);
-        }
+    constructor(editor, jqButton, configMenu) {
+        super(editor, jqButton, configMenu);
+        this.size = 16;
+        this.flow = 0.85;
+        this.opacity = 0.60;
+        this.hardness = 0.50;
     }
 
     generateBrushImage(canvas) {
@@ -46,19 +15,35 @@ export class SpriteToolSmudge extends SpriteToolBrush {
         ctx.clearRect(0, 0, 100, 100);
 
         const grd = ctx.createRadialGradient(this.size / 2, this.size / 2, 0, this.size / 2, this.size / 2, this.size / 2);
-        grd.addColorStop(Math.min(0.99, this.hardness), this.color);
+        grd.addColorStop(Math.min(0.99, this.hardness * 0.85), this.color);
         grd.addColorStop(1, "#000000FF");
 
         ctx.fillStyle = grd;
         ctx.fillRect(0, 0, 100, 100);
     }
 
+    getBrushCanvas() {
+        return super.getBrushCanvas();
+    }
+
+    onSelected() {
+        this.brushData = {};
+        this.editor.brushMenu.setSize(this.size);
+        this.editor.brushMenu.setSizeEnabled(true);
+        this.editor.brushMenu.setFlow(this.opacity);
+        this.editor.brushMenu.setFlowEnabled(true);
+        this.editor.brushMenu.setHardness(this.hardness);
+        this.editor.brushMenu.setHardnessEnabled(true);
+        this.editor.brushMenu.setImageMode();
+    }
+
     updatePreview(ctx) {
         let config = this.editor.getBrushConfig();
         this.size = Math.min(30, config.size);
-        this.spacing = 0.15;
-        this.hardness = config.hardness * 0.85;
-        this.color = "#000000" + Math.round(( (1 - config.spacing) / 2 + 0.25) * 255).toString(16);
+        this.flow = 0.85;
+        this.opacity = config.flow;
+        this.hardness = config.hardness;
+        this.color = "#000000" + Math.round(((1 - config.flow) * 0.5 + 0.25) * 255).toString(16);
         this.dist = Math.max(1, this.size / 10);
         this.updateBrushCanvas();
 
@@ -84,15 +69,19 @@ export class SpriteToolSmudge extends SpriteToolBrush {
 
     }
 
-    configureContext(color) {
+    start(color, ctx, ctxTemp) {
         let config = this.editor.getBrushConfig();
         this.size = config.size;
-        this.spacing = 0.15;
-        this.hardness = config.hardness * 0.85;
-        this.color = "#000000" + Math.round(( (1 - config.spacing) / 2 + 0.25) * 255).toString(16);
+        this.flow = 0.85;
+        this.opacity = config.flow;
+        this.hardness = config.hardness;
+        this.color = "#000000" + Math.round(((1 - this.opacity) * 0.5 + 0.25) * 255).toString(16);
         this.dist = 0;
+        this.resetContext(this.getSrcCanvas().getContext("2d"));
+        this.resetContext(this.getDstCanvas().getContext("2d"));
+        this.resetContext(this.getTmpCanvas().getContext("2d"));
 
-        this.ctx = this.editor.getCanvas();
+        this.ctx = ctx;
         this.lastP = null;
         this.updateBrushCanvas();
     }
@@ -120,7 +109,7 @@ export class SpriteToolSmudge extends SpriteToolBrush {
         // Mixing Alpha
 
         // Create a black-white from old position
-        let src = this.brSrc.getContext("2d");
+        let src = this.getSrcCanvas().getContext("2d");
         src.globalCompositeOperation = "source-over";
         src.clearRect(0, 0, w, h);
         src.filter = "url(#alpha-to-color)";
@@ -132,7 +121,7 @@ export class SpriteToolSmudge extends SpriteToolBrush {
         src.drawImage(this.brushCanvas, 0, 0);
 
         // Create a black-white from new position
-        let dst = this.brDst.getContext("2d");
+        let dst = this.getDstCanvas().getContext("2d");
         dst.globalCompositeOperation = "source-over";
         dst.clearRect(0, 0, w, h);
         dst.filter = "url(#alpha-to-color)";
@@ -163,7 +152,7 @@ export class SpriteToolSmudge extends SpriteToolBrush {
         dst.globalCompositeOperation = "destination-over";
         dst.drawImage(this.ctx.canvas, x1, y1, w, h, 0, 0, w, h);
 
-        let tmp = this.brTemp.getContext("2d");
+        let tmp = this.getTmpCanvas().getContext("2d");
         tmp.globalCompositeOperation = "source-over";
         tmp.clearRect(0, 0, w, h);
         tmp.filter = "url(#alpha-to-opaque)";
@@ -180,16 +169,6 @@ export class SpriteToolSmudge extends SpriteToolBrush {
         this.lastP.y = y;
     }
 
-    _toBlackWhite(ctx, w, h) {
-        ctx.globalCompositeOperation = "source-atop";
-        ctx.fillStyle = "#FFFFFFFF";
-        ctx.fillRect(0, 0, w, h);
-        ctx.globalCompositeOperation = "destination-over";
-        ctx.fillStyle = "#000000FF";
-        ctx.fillRect(0, 0, w, h);
-        ctx.globalCompositeOperation = "source-over";
-    }
-
     drawBrushLine(pointA, pointB) {
         let d = Math.sqrt((pointA.x - pointB.x) * (pointA.x - pointB.x) + (pointA.y - pointB.y) * (pointA.y - pointB.y));
         if (d <= 0.001) {
@@ -198,7 +177,7 @@ export class SpriteToolSmudge extends SpriteToolBrush {
         }
 
         let n = {x: (pointB.x - pointA.x) / d, y: (pointB.y - pointA.y) / d};
-        let spc = Math.min(5, this.size < 10 ? 1 : this.size / 10);
+        let spc = Math.min(5, Math.max(1, 0.1 * this.size));
         let pD = 0;
         while (d > spc - this.dist) {
             pD += (spc - this.dist);

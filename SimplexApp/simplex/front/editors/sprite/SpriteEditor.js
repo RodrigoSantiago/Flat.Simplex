@@ -10,6 +10,10 @@ import {SpriteMenuFrames} from "./SpriteMenuFrames.js";
 import {SpriteToolSpray} from "./tools/SpriteToolSpray.js";
 import {SpriteToolEraser} from "./tools/SpriteToolEraser.js";
 import {SpriteToolSmudge} from "./tools/SpriteToolSmudge.js";
+import {SpriteToolBucket} from "./tools/SpriteToolBucket.js";
+import {SpriteMenuColor} from "./SpriteMenuColor.js";
+import {SpriteMenuTools} from "./SpriteMenuTools.js";
+import {SpriteToolColor} from "./tools/SpriteToolColor.js";
 
 export class SpriteEditor extends Editor {
     static pageModel = null;
@@ -80,6 +84,8 @@ export class SpriteEditor extends Editor {
             this.configureLayers();
             this.selectTool(this.toolPencil);
             this.ready = true;
+        } else {
+            this.selectedTool.onSelected();
         }
     }
 
@@ -88,14 +94,13 @@ export class SpriteEditor extends Editor {
     }
 
     onRemove() {
-
     }
 
-    getCanvas() {
+    getMainContext() {
         return this.canvasContext;
     }
 
-    getCanvasB() {
+    getTempContext() {
         return this.canvasContextB;
     }
 
@@ -113,27 +118,28 @@ export class SpriteEditor extends Editor {
     }
 
     configureTools() {
-        const self = this;
-
-        this.toolMenu = new SpriteMenu(this, this.jqRoot.find(".tools-view"), true);
+        this.toolMenu = new SpriteMenuTools(this, this.jqRoot.find(".tools-view"), true);
         this.layersMenu = new SpriteMenuLayers(this, this.jqRoot.find(".layers-view"), true);
         this.framesMenu = new SpriteMenuFrames(this, this.jqRoot.find(".frames-view"), true);
         this.brushMenu = new SpriteMenuBrush(this, this.jqRoot.find(".brush-view"), false);
+        this.colorMenu = new SpriteMenuColor(this, this.jqRoot.find(".color-picker-view"), false);
         this.toolMenus.push(this.toolMenu);
         this.toolMenus.push(this.layersMenu);
         this.toolMenus.push(this.framesMenu);
         this.toolMenus.push(this.brushMenu);
+        this.toolMenus.push(this.colorMenu);
         this.dropLine = this.jqRoot.find(".sprite-drop-line");
 
         this.toolSelect = new SpriteTool(this, this.jqRoot.find(".tool-select"));
-        this.toolPencil = new SpriteToolPencil(this, this.jqRoot.find(".tool-pencil"));
-        this.toolBrush = new SpriteToolBrush(this, this.jqRoot.find(".tool-brush"));
-        this.toolSpray = new SpriteToolSpray(this, this.jqRoot.find(".tool-spray"));
-        this.toolEraser = new SpriteToolEraser(this, this.jqRoot.find(".tool-eraser"));
-        this.toolSmudge = new SpriteToolSmudge(this, this.jqRoot.find(".tool-smudge"));
-        this.toolBucket = new SpriteTool(this, this.jqRoot.find(".tool-bucket"));
+        this.toolPencil = new SpriteToolPencil(this, this.jqRoot.find(".tool-pencil"), this.brushMenu);
+        this.toolBrush = new SpriteToolBrush(this, this.jqRoot.find(".tool-brush"), this.brushMenu);
+        this.toolSpray = new SpriteToolSpray(this, this.jqRoot.find(".tool-spray"), this.brushMenu);
+        this.toolEraser = new SpriteToolEraser(this, this.jqRoot.find(".tool-eraser"), this.brushMenu);
+        this.toolSmudge = new SpriteToolSmudge(this, this.jqRoot.find(".tool-smudge"), this.brushMenu);
+        this.toolBucket = new SpriteToolBucket(this, this.jqRoot.find(".tool-bucket"));
         this.toolShapes = new SpriteTool(this, this.jqRoot.find(".tool-shapes"));
         this.toolText = new SpriteTool(this, this.jqRoot.find(".tool-text"));
+        this.toolColor = new SpriteToolColor(this, this.jqRoot.find(".tool-color"), this.colorMenu);
     }
 
     configureCanvas() {
@@ -174,6 +180,10 @@ export class SpriteEditor extends Editor {
 
     canvasOnMouseDown(e) {
         if (this.dragZoom || this.dragPaint) return;
+        if (this.colorMenu.dropper) {
+            this.colorMenu.getDropperColor(this.convertCanvasPosition(e));
+            return;
+        }
 
         if (e.button === 1) {
             this.dragZoom = true;
@@ -190,8 +200,8 @@ export class SpriteEditor extends Editor {
             } else if (e.button === 2) {
                 this.dragPaintCol = this.altColor;
             }
-            this.toolStart();
-            this.selectedTool.mouseDown(this.dragPaintPos, this.dragPaintCol, this.selectedLayer);
+            this.toolStart(this.dragPaintCol);
+            this.selectedTool.mouseDown(this.dragPaintPos);
         }
     }
 
@@ -304,8 +314,26 @@ export class SpriteEditor extends Editor {
         this.canvasBg.css("background-size", bgSize + "px");
     }
 
+    canvasBakeImage() {
+        if (!this.canvasBaked) {
+            let ctx = this.getMainContext();
+            ctx.clearRect(0, 0, this.imageWidth, this.imageHeight);
+            for (let i = this.layers.length - 1; i >= 0; i--){
+                let layer = this.layers[i];
+                ctx.drawImage(layer.img, 0, 0);
+            }
+            this.canvasLayer = null;
+            this.canvasBaked = true;
+        }
+    }
+
     updateCanvasCursor(pos) {
-        this.selectedTool.updateCanvasCursor(pos);
+        if (this.colorMenu.dropper) {
+            this.canvasView.css("cursor", "default");
+            this.canvasCursor.css("display", "none");
+        } else {
+            this.selectedTool.updateCanvasCursor(pos);
+        }
     }
 
     dragFindBestFit(menu, x, y) {
@@ -463,6 +491,8 @@ export class SpriteEditor extends Editor {
     }
 
     selectFrame(frame) {
+        this.canvasBaked = false;
+        this.canvasLayer = null;
         this.framesMenu.frameSelect(frame);
     }
 
@@ -472,20 +502,25 @@ export class SpriteEditor extends Editor {
 
     // Historic
 
-    toolStart() {
+    toolStart(pointerColor) {
         this.canvas.css({"visibility" : "visible", "z-index" : this.selectedLayer.zindex+1});
         this.canvasB.css({"visibility" : "visible", "z-index" : this.selectedLayer.zindex+2});
         this.selectedLayer.jqImg.css({"display" : "none"});
 
         if (this.canvasLayer !== this.selectedLayer) {
             this.canvasLayer = this.selectedLayer;
-            let ctx = this.getCanvas();
+            let ctx = this.getMainContext();
             ctx.clearRect(0, 0, this.imageWidth, this.imageHeight);
             ctx.drawImage(this.selectedLayer.img, 0, 0);
         }
+
+        this.canvasBaked = false;
+        this.selectedTool.start(pointerColor, this.getMainContext(), this.getTempContext());
     }
 
     toolEnd() {
+        this.selectedTool.end();
+
         this.selectedLayer.jqImg.css({"display" : ""});
         this.canvas.css({"visibility" : "hidden"});
         this.canvasB.css({"visibility" : "hidden"});

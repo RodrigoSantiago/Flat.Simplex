@@ -1,19 +1,74 @@
 export class SpriteTool {
 
-    pixelMode = false;
+    // Context
+    ctx = null;
+    ctxFinal = null;
+    min = {};
+    max = {};
 
-    constructor(editor, jqButton) {
+    pixelMode = false;
+    selected = false;
+
+    constructor(editor, jqButton, configMenu) {
         this.editor = editor;
         this.jqButton = jqButton;
-        this.jqButton.click((e) => this.editor.selectTool(this));
+        this.jqButton.on("click", (e) => this.editor.selectTool(this));
+        this.jqButton.dblclick((e) => {
+            this.editor.selectTool(this);
+            configMenu.show();
+        });
+    }
+
+    _createCanvas() {
+        let canvas = document.createElement('canvas');
+        canvas.width = 100;
+        canvas.height = 100;
+        return canvas;
+    }
+
+    getBrushCanvas() {
+        if (!SpriteTool.brushCanvas) {
+            SpriteTool.brushCanvas = this._createCanvas();
+        }
+        return SpriteTool.brushCanvas;
+    }
+
+    getSrcCanvas() {
+        if (!SpriteTool.srcCanvas) {
+            SpriteTool.srcCanvas = this._createCanvas();
+        }
+        return SpriteTool.srcCanvas;
+    }
+
+    getDstCanvas() {
+        if (!SpriteTool.dstCanvas) {
+            SpriteTool.dstCanvas = this._createCanvas();
+        }
+        return SpriteTool.dstCanvas;
+    }
+
+    getTmpCanvas() {
+        if (!SpriteTool.tmpCanvas) {
+            SpriteTool.tmpCanvas = this._createCanvas();
+        }
+        return SpriteTool.tmpCanvas;
     }
 
     setSelected(selected) {
         if (selected) {
             this.jqButton.addClass("selected");
+            if (!this.selected) {
+                this.selected = true;
+                this.onSelected();
+            }
         } else {
             this.jqButton.removeClass("selected");
+            this.selected = false;
         }
+    }
+
+    onSelected() {
+
     }
 
     updatePreview(ctx) {
@@ -98,6 +153,28 @@ export class SpriteTool {
             this.editor.canvasView.css("cursor", "none");
             this.editor.canvasCursor.css("display", "");
         }
+    }
+
+    start(color, ctx, ctxTemp) {
+
+    }
+
+    end() {
+        if (this.ctx) {
+            this.resetContext(this.ctx);
+        }
+
+        if (this.ctxFinal) {
+            this.resetContext(this.ctxFinal);
+        }
+    }
+
+    resetContext(ctx) {
+        ctx.resetTransform();
+        ctx.filter = "none";
+        ctx.globalCompositeOperation = "source-over";
+        ctx.globalAlpha = 1;
+        ctx.imageSmoothingEnabled = true;
     }
 
     mouseDown(pos) {

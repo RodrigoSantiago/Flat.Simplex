@@ -152,8 +152,8 @@ main {
 
 @keyframes rippleExpand {
     0% {
-        width: 20px;
-        padding-bottom: 20px;
+        width: min(50%, 20px);
+        padding-bottom: min(50%, 20px);
         opacity: 0.5;
     }
     100% {
@@ -165,8 +165,8 @@ main {
 
 @keyframes rippleExpandLimited {
     0% {
-        width: 20px;
-        padding-bottom: 20px;
+        width: min(50%, 20px);
+        padding-bottom: min(50%, 20px);
         opacity: 0.5;
     }
     100% {

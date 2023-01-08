@@ -27,39 +27,37 @@ $(window).on('resize', function () {
     }
 });
 
-function clickRipple(e) {
-    if ($(e.target).hasClass("no-ripple") || $(e.target).parent().hasClass("no-ripple")) return;
-
-    let ripple = $(this).children('.ripple');
-    ripple.removeClass("expand");
-    let position = $(this).offset();
-    ripple.css({'left': e.pageX - position.left, 'top': e.pageY - position.top});
-    ripple.addClass("expand");
-    setTimeout(function () {ripple.removeClass("expand")}, 500);
-}
-
 function addRipple(e) {
     if (e.children('.ripple').length === 0) {
         e.attr('tabindex', 0);
         e.prepend($('<div class="ripple"></div>'));
-        e.mousedown(clickRipple);
+        e.on('mousedown', clickRipple);
         if (e.css("z-index") === "auto") {
             e.css("z-index", 0);
         }
     }
 }
 
+function clickRipple(e) {
+    if ($(e.target).hasClass("no-ripple") || $(e.target).parent().hasClass("no-ripple")) return;
+
+    let ripple = $(this).children('.ripple');
+    if (ripple[0].timeout) {
+        clearTimeout(ripple[0].timeout);
+        ripple.removeClass("expand");
+    }
+    ripple[0].timeout = setTimeout(() => {
+        ripple.removeClass("expand");
+        ripple[0].timeout = null;
+    }, 500);
+    let position = $(this).offset();
+    ripple.css({'left': e.pageX - position.left, 'top': e.pageY - position.top});
+    ripple.addClass("expand");
+}
+
 
 function hoverTooltip(e) {
 
-}
-
-function addTooltip(e) {
-    if (e.children('.tooltip').length === 0) {
-        e.prepend($('<div class="ripple"></div>'));
-        e.mousedown(clickRipple);
-        e.mousedown(clickRipple);
-    }
 }
 
 let main = $(".main");

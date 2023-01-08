@@ -159,7 +159,7 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
         }
     }
 
-    + .draggable-view {
+    &:not(.floating) + .draggable-view:not(.floating) {
         border-top: solid 1px $sprite-menu-line;
     }
 
@@ -232,7 +232,7 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
         border-radius: 100%;
     }
     .color-circle {
-        margin: -2px 0 0 -2px;
+        margin: -2px -3px 0 0;
         z-index: 2;
     }
     .alt-color-circle {
@@ -242,7 +242,7 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
         min-height: 12px;
         position: absolute;
         top: 19px;
-        left: 19px;
+        right: 19px;
         z-index: 1;
     }
 }
@@ -303,14 +303,12 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
     }
 
     .frame-buttons {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        max-width: 88px;
-        max-height: 88px;
-        padding: 4px;
+        @extend %vbox;
 
-        > .button {
+        .frame-add-btns, .frame-anim-btns {
+            @extend %hbox;
+        }
+        .button {
             margin: 4px;
         }
     }
@@ -343,10 +341,13 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
         }
     }
 
-    .frame-add-button {
+    .frame-buttons {
         @extend %vbox;
-        width: 64px;
-        margin: 8px;
+        margin: 8px 0 8px 0;
+
+        .frame-add-btns, .frame-anim-btns {
+            @extend %hbox;
+        }
     }
 }
 
@@ -376,10 +377,13 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
         }
     }
 
-    .frame-add-button {
+    .frame-buttons {
         @extend %hbox;
-        height: 64px;
-        margin: 8px;
+        margin: 0 8px 0 8px;
+
+        .frame-add-btns, .frame-anim-btns {
+            @extend %vbox;
+        }
     }
 }
 
@@ -671,9 +675,12 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
             width: 18px;
             text-align: center;
         }
-        > span {
+        > input[type=text] {
             font-size: 10px;
             color: var(--on-color);
+            &:hover, &:active, &:focus {
+                background-color: var(--on-color-a3);
+            }
         }
     }
 
@@ -689,9 +696,37 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
             height: 100%;
         }
     }
+    .brush-options {
+        @extend %vbox;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        .brush-option {
+            @extend %hbox;
+            width: calc(100% - 16px);
+            height: 24px;
+            align-items: center;
+            font-size: 10px;
+            color: var(--on-color);
+            span {
+                margin-left: 8px;
+                line-height: 14px;
+            }
+        }
+    }
+    .brush-divider {
+        width: 100%;
+        height: 1px;
+        background-color: $sprite-menu-line;
+        margin: 8px 0 8px 0;
+    }
     .brush-image {
-        width: calc(100% - 16px);
-        margin: 8px 8px 0 8px;
+        @extend %vbox-center;
+        width: 100%;
+        .button {
+            width: calc(100% - 16px);
+            margin: 0 8px 0 8px;
+        }
     }
 }
 
@@ -722,17 +757,195 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
     background: var(--on-color);
     outline: none;
     border-radius: 4px;
+    &::-webkit-slider-thumb {
+        appearance: none;
+        width: 16px;
+        height: 16px;
+        border-radius: 16px;
+        background: var(--on-color);
+        border: 2px solid var(--on-color);
+        cursor: pointer;
+        &:active {
+            outline: 4px solid var(--on-color-a3);
+        }
+    }
 }
-.slider::-webkit-slider-thumb {
-    appearance: none;
+
+.slider.disabled {
+    opacity: 0.5;
+    &::-webkit-slider-thumb {
+        cursor: default;
+        &:active {
+            outline: none;
+        }
+    }
+}
+
+input[type=checkbox] {
+    position: relative;
+    cursor: pointer;
     width: 16px;
     height: 16px;
-    border-radius: 16px;
-    background: var(--on-color);
-    cursor: pointer;
+    margin: 0;
 }
-.slider::-webkit-slider-thumb:active {
-    outline: 4px solid var(--on-color-a3);
+input[type=checkbox]:before {
+    content: "";
+    display: block;
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 0;
+    left: 0;
+    border-radius: 3px;
+    background-color: white;
+}
+input[type=checkbox]:checked:after {
+    content: "";
+    display: block;
+    width: 4px;
+    height: 8px;
+    border: solid black;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+    position: absolute;
+    top: 2px;
+    left: 5px;
 }
 
 //</editor-fold>
+
+.color-picker-view {
+    align-items: center;
+    min-width: 192px;
+    max-width: 192px;
+    min-height: 192px;
+
+    .brush-container {
+        @extend %vbox;
+        overflow-x: hidden;
+        overflow-y: auto;
+        width: 192px;
+        height: 192px;
+    }
+    .color-canvas {
+        width: 176px;
+        height: 176px;
+    }
+    .color-circle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 176px;
+        height: 176px;
+        position: relative;
+
+        .color-circle-mode {
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .color-circle-rgb {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+        }
+
+        .color-circle-dropper {
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+
+        .main-color {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            width: 24px;
+            height: 24px;
+            min-width: 24px;
+            min-height: 24px;
+            border: 1px solid var(--on-color);
+            background-color: #FF1000;
+            border-radius: 100px;
+            box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+        }
+
+        .alt-color {
+            position: absolute;
+            right: 26px;
+            bottom: 0;
+            width: 12px;
+            height: 12px;
+            min-width: 12px;
+            min-height: 12px;
+            border: 1px solid var(--on-color);
+            background-color: #FF1000;
+            border-radius: 100px;
+            box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+        }
+
+        .main-color.selected, .alt-color.selected {
+            border: 2px solid var(--on-color);
+        }
+
+        .color-hue, .color-sat {
+            position: absolute;
+            left: 16px;
+            top: 86px;
+            width: 16px;
+            height: 16px;
+            border-radius: 100px;
+            border: 2px solid white;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.4);
+        }
+    }
+
+    .color-divider {
+        width: 100%;
+        height: 1px;
+        background-color: $sprite-menu-line;
+        margin: 8px 0 8px 0;
+    }
+    .rgb-slider {
+        @extend %hbox-center;
+        margin: 4px 0 4px 0;
+        width: calc(100% - 16px);
+        font-size: 10px;
+        color: var(--on-color);
+        span {
+            width: 24px;
+            text-align: center;
+            margin-right: 8px;
+        }
+    }
+
+    .color-r.slider {
+        &::-webkit-slider-thumb {
+            background: #ee0c3f;
+        }
+    }
+    .color-g.slider {
+        &::-webkit-slider-thumb {
+            background: #08ad16;
+        }
+    }
+    .color-b.slider {
+        &::-webkit-slider-thumb {
+            background: #1151d9;
+        }
+    }
+    .text-rgb {
+        width: 24px;
+        color: var(--on-color);
+        margin-left: 8px;
+        font-size: 10px;
+        &:hover, &:active, &:focus {
+            background-color: var(--on-color-a3);
+        }
+    }
+}

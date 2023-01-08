@@ -2,75 +2,66 @@ import {SpriteToolBrush} from "./SpriteToolBrush.js";
 
 export class SpriteToolEraser extends SpriteToolBrush {
 
-    static brushCanvas = null;
-
-    constructor(editor, jqButton) {
-        super(editor, jqButton);
+    constructor(editor, jqButton, configMenu) {
+        super(editor, jqButton, configMenu);
     }
-
-    updateBrushCanvas() {
-        if (SpriteToolEraser.brushCanvas === null) {
-            SpriteToolEraser.brushCanvas = document.createElement('canvas');
-            SpriteToolEraser.brushCanvas.width = 100;
-            SpriteToolEraser.brushCanvas.height = 100;
-            SpriteToolEraser.brushCanvas.setup = {size : 0, hardness : 0, color : ""};
-        }
-
-        this.brushCanvas = SpriteToolEraser.brushCanvas;
-        if (this.brushCanvas.setup.size !== this.size ||
-            this.brushCanvas.setup.hardness !== this.hardness ||
-            this.brushCanvas.setup.color !== this.color) {
-
-            this.brushCanvas.setup.size = this.size;
-            this.brushCanvas.setup.hardness = this.hardness;
-            this.brushCanvas.setup.color = this.color
-            if (this.hardness >= 0.99) {
-                this.generatePixelImage(this.brushCanvas);
-            } else {
-                this.generateBrushImage(this.brushCanvas);
-            }
-        }
-    }
-
 
     updatePreview(ctx) {
         let config = this.editor.getBrushConfig();
-        this.size = Math.min(80, config.size);
-        this.spacing = 1 - config.spacing;
+        this.size = Math.min(30, config.size);
+        this.flow = config.flow;
         this.hardness = config.hardness;
         this.color = "#000000FF";
-        this.dist = this.size * this.spacing;
         this.ctx = ctx;
-        this.ctx.filter = "none";
+        this.pixelMode = this.hardness >= 0.99;
 
-        ctx.fillStyle = "#FFFFFF";
-        ctx.rect(0, 0, 80, 80);
-        ctx.fill();
-        this.ctx.globalCompositeOperation = "destination-out";
+
         this.updateBrushCanvas();
-        this.drawBrush(40, 40);
-        this.ctx.globalCompositeOperation = "source-over";
+        this.dist = Math.max(1, ((1 - this.flow) * 0.9 + 0.1) * this.size);
+
+        if (this.pixelMode) {
+            let pSize = this.size === 1 ? 30 : 60 / this.size;
+            let off = 10 + Math.round((60 - pSize * this.size) / 2);
+
+            ctx.fillStyle = "#FFFFFF";
+            ctx.fillRect(0, 0, 80, 80);
+            ctx.imageSmoothingEnabled = false;
+            ctx.drawImage(this.brushCanvas, 0, 0, this.size, this.size, off, off - 1, pSize * this.size, pSize * this.size);
+            ctx.drawImage(this.brushCanvas, 0, 0, this.size, this.size, off - 1, off, pSize * this.size, pSize * this.size);
+            ctx.drawImage(this.brushCanvas, 0, 0, this.size, this.size, off, off + 1, pSize * this.size, pSize * this.size);
+            ctx.drawImage(this.brushCanvas, 0, 0, this.size, this.size, off + 1, off, pSize * this.size, pSize * this.size);
+
+            ctx.globalCompositeOperation = "destination-out";
+            ctx.drawImage(this.brushCanvas, 0, 0, this.size, this.size, off, off, pSize * this.size, pSize * this.size);
+
+        } else {
+            ctx.fillStyle = "#FFFFFF";
+            ctx.fillRect(0, 0, 80, 80);
+
+            ctx.globalCompositeOperation = "destination-out";
+            let off = this.size / 2 + 1;
+            let d = 80 - off * 2;
+            for (let i = 0; i < 1; i += 0.1) {
+                this.drawBrushLine(
+                    {x: i * d + off, y: this.apply(i) * d + off},
+                    {x: (i + 0.1) * d + off, y: this.apply(i + 0.1) * d + off});
+            }
+        }
+        this.size = config.size;
     }
 
-    configureContext(color) {
+
+    start(color, ctx, ctxTemp) {
         let config = this.editor.getBrushConfig();
         this.size = config.size;
-        this.spacing = 1 - config.spacing;
+        this.flow = config.flow;
         this.hardness = config.hardness;
         this.color = "#000000FF";
         this.dist = 0;
 
-        this.ctx = this.editor.getCanvas();
-        this.ctx.filter = "none";
+        this.ctx = ctx;
         this.ctx.globalCompositeOperation = "destination-out";
-        this.ctx.resetTransform();
-
         this.pixelMode = this.hardness >= 0.99;
         this.updateBrushCanvas();
-    }
-
-    resetContext() {
-        super.resetContext();
-        this.ctx.globalCompositeOperation = "source-over";
     }
 }

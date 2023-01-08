@@ -10,12 +10,16 @@ export class SpriteMenu {
     _updateTimer = null;
 
     constructor(editor, jqDragView, dockeable) {
-        const self = this;
         this.editor = editor;
         this.jqDragView = jqDragView;
-        this.jqDragView.find(".drag").mousedown(function (e) {
-            if (DragSystem.drag(self, e.button)) {
-                self.onDragStart(e);
+        this.jqDragView.find(".drag").mousedown((e) => {
+            if (DragSystem.drag(this, e.button)) {
+                this.onDragStart(e);
+            }
+        });
+        this.jqDragView.click((e) => {
+            if (this.floating && this.jqDragView.parent()[0].lastChild !== this.jqDragView[0]) {
+                this.jqDragView.parent().append(this.jqDragView);
             }
         });
         this.dockeable = dockeable;
@@ -30,6 +34,17 @@ export class SpriteMenu {
             this.editor.splitVer.append(this.jqDragView);
             this.jqDragView.offset({left: off.left, top: off.top});
 
+        }
+    }
+
+    hide() {
+        this.jqDragView.css("display", "none");
+    }
+
+    show() {
+        this.jqDragView.css("display", "");
+        if (this.floating && this.jqDragView.parent()[0].lastChild !== this.jqDragView[0]) {
+            this.jqDragView.parent().append(this.jqDragView);
         }
     }
 
