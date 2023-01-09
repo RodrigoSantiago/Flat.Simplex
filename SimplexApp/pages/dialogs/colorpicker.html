@@ -1,0 +1,30 @@
+<div class="color-picker-dialog">
+    <div class="color-circle">
+        <canvas class="color-canvas"></canvas>
+        <div class="button chip on-surface color-circle-mode dense"><i class="material-icons">camera</i></div>
+        <div class="button chip on-surface color-circle-dropper dense"><i class="material-icons">colorize</i></div>
+        <div class="main-color"></div>
+        <div class="alt-color"></div>
+        <div class="color-hue"></div>
+        <div class="color-sat"></div>
+    </div>
+    <div class="color-divider"></div>
+    <div class="rgb-slider">
+        <span>R</span><input type="range" min="0" max="255" value="128" class="slider color-r"/>
+        <input type="text" class="text-rgb editable-label color-r" maxlength="3" value="128">
+    </div>
+    <div class="rgb-slider">
+        <span>G</span><input type="range" min="0" max="255" value="128" class="slider color-g"/>
+        <input type="text" class="text-rgb editable-label color-g" maxlength="3" value="128">
+    </div>
+    <div class="rgb-slider">
+        <span>B</span><input type="range" min="0" max="255" value="128" class="slider color-b"/>
+        <input type="text" class="text-rgb editable-label color-b" maxlength="3" value="128">
+    </div>
+    <div class="color-divider"></div>
+    <div class="alpha-slider">
+        <span>A</span><div class="bg-alpha"><input type="range" min="0" max="255" value="128" class="slider color-a"/></div>
+        <input type="text" class="text-rgb editable-label color-a" maxlength="3" value="128">
+    </div>
+    <div class="dialog-footer"><div class="button text primary dialog-btn-ok">OK</div></div>
+</div>

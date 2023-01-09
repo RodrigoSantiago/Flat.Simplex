@@ -1,17 +1,22 @@
 import {SpriteMenu} from "./SpriteMenu.js";
+import {SpriteEditor} from "./SpriteEditor.js";
+import {hexToRgb, hsvToRgb, rgbToHex, rgbToHsv} from "../../Colors.js";
 
 export class SpriteMenuColor extends SpriteMenu {
 
     palette = null;
     paletteMode = false;
     wheelMode = 'rgb';
-    hsbMode = false;
+
     ctx = null;
     cWidth = 176;
     cHeight = 176;
 
     color = "#FF0000";
-    altColor = "#00FF00"
+    altColor = "#00FF00";
+
+    alpha = 1;
+    altAlpha = 1;
 
     originalColor = "";
     originalAltColor = "";
@@ -26,39 +31,20 @@ export class SpriteMenuColor extends SpriteMenu {
 
     palettes = [
         {
-            colors: [
-                {r:0, g:0, b:0},
-                {r:64, g:64, b:64},
-                {r:128, g:128, b:128},
-                {r:192, g:192, b:192},
-                {r:255, g:255, b:255},
-                {r:128, g:0, b:0},
-                {r:0, g:128, b:0},
-                {r:0, g:0, b:128},
-                {r:128, g:64, b:64},
-                {r:64, g:128, b:64},
-                {r:64, g:64, b:128},
-                {r:255, g:64, b:64},
-                {r:64, g:255, b:64},
-                {r:64, g:64, b:255},
-                {r:255, g:0, b:0},
-                {r:255, g:128, b:0},
-                {r:255, g:255, b:0},
-                {r:128, g:255, b:0},
-                {r:0, g:255, b:0},
-                {r:0, g:255, b:128},
-                {r:0, g:255, b:255},
-                {r:0, g:128, b:255},
-                {r:0, g:0, b:255},
-                {r:128, g:0, b:255},
-                {r:255, g:0, b:255},
-                {r:255, g:0, b:128},
-            ]
+            colors: []
         }
     ]
 
-    constructor(editor, jqDragView, dockeable) {
+    constructor(editor, jqDragView, dockeable, onColorChoose, initialColor) {
         super(editor, jqDragView, dockeable);
+
+        for (let i = 0; i < 4; i++) {
+            for (let j = 0; j < 4; j++) {
+                for (let k = 0; k < 4; k++) {
+                    this.palettes[0].colors.push({r:Math.round(255/3 * i), g:Math.round(255/3 * j), b:Math.round(255/3 * k)});
+                }
+            }
+        }
 
         this.jqHue = jqDragView.find(".color-hue");
         this.jqSat = jqDragView.find(".color-sat");
@@ -69,9 +55,6 @@ export class SpriteMenuColor extends SpriteMenu {
         this.colorCanvas.width = this.cWidth;
         this.colorCanvas.height = this.cHeight;
         this.ctx = this.colorCanvas.getContext("2d", {willReadFrequently: true});
-        jqDragView.find(".close-view").click((e) => {
-            this.hide();
-        });
 
         this.palette = this.palettes[0];
         this.configureSliders();
@@ -87,12 +70,16 @@ export class SpriteMenuColor extends SpriteMenu {
             this.dropper = true;
         });
         this.jqColor.on('click', (e) => {
+            if (this.colorSelected === "main") return;
+
             this.colorSelected = "main";
             this.jqColor.addClass("selected");
             this.jqAltColor.removeClass("selected");
             this.setColor(this.originalColor);
         });
         this.jqAltColor.on('click', (e) => {
+            if (this.colorSelected === "alt") return;
+
             this.colorSelected = "alt";
             this.jqAltColor.addClass("selected");
             this.jqColor.removeClass("selected");
@@ -101,18 +88,50 @@ export class SpriteMenuColor extends SpriteMenu {
         this.colorSelected = "main";
         this.jqColor.addClass("selected");
 
-        this.originalColor = this.editor.color;
-        this.originalAltColor = this.editor.altColor;
+        if (editor instanceof SpriteEditor) {
+            jqDragView.find(".close-view i").click((e) => {
+                this.hide();
+            });
+            this.originalColor = this.editor.color;
+            this.originalAltColor = this.editor.altColor;
+            this.color = this.convert(this.originalColor);
+            this.altColor = this.convert(this.originalAltColor);
+            this.alpha = this.editor.alpha;
+            this.altAlpha = this.editor.altAlpha;
+        } else {
+            this.onColorChoose = onColorChoose;
+            this.originalColor = initialColor.substring(0, 7);
+            this.originalAltColor = this.originalColor;
+            this.color = this.convert(this.originalColor);
+            this.altColor = this.convert(this.originalAltColor);
+            this.alpha = initialColor.length === 7 ? 255 : parseInt(initialColor.substring(7), 16);
+            this.altAlpha = this.alpha;
+            this.jqAltColor.css("display", "none");
+            pick.css("display", "none");
+        }
+
+        this.setColor(this.originalColor);
+        this.requestUpdate();
+    }
+
+    showAsPopup(position, onColorChoose, initialColor) {
+        this.jqDragView.offset({
+            left : position.x - this.jqDragView.width()/2,
+            top : position.y
+        });
+        this.onColorChoose = onColorChoose;
+        this.originalColor = initialColor.substring(0, 7);
+        this.originalAltColor = this.originalColor;
         this.color = this.convert(this.originalColor);
         this.altColor = this.convert(this.originalAltColor);
-        this.setColor(this.originalColor);
-
-        this.requestUpdate();
+        this.alpha = initialColor.length === 7 ? 255 : parseInt(initialColor.substring(7), 16);
+        this.altAlpha = this.alpha;
+        this.show();
     }
 
     configureColorPicker() {
         this.jqCanvas.on('mousedown', (e) => {
-            if (!!this.dragging) return;
+            if (!!this.draggingColor) return;
 
             let pos = this.jqCanvas.offset();
             let px = e.pageX - pos.left;
@@ -121,20 +140,20 @@ export class SpriteMenuColor extends SpriteMenu {
             let outCenter = center - 24;
             let dist = (px - this.cWidth/2) * (px - this.cWidth/2) + (py - this.cHeight/2) * (py - this.cHeight/2);
             if (dist < outCenter * outCenter) {
-                this.dragging = "inner";
+                this.draggingColor = "inner";
                 this.innerPress(px, py);
             } else if (dist < center * center) {
-                this.dragging = "outter";
+                this.draggingColor = "outter";
                 this.outterPress(px, py);
             }
         });
         this.editor.addWindowListener('mousemove', (e) =>{
-            if (this.dragging === "outter") {
+            if (this.draggingColor === "outter") {
                 let pos = this.jqCanvas.offset();
                 let px = e.pageX - pos.left;
                 let py = e.pageY - pos.top;
                 this.outterPress(px, py);
-            } else if (this.dragging === "inner") {
+            } else if (this.draggingColor === "inner") {
                 let pos = this.jqCanvas.offset();
                 let px = e.pageX - pos.left;
                 let py = e.pageY - pos.top;
@@ -142,7 +161,7 @@ export class SpriteMenuColor extends SpriteMenu {
             }
         });
         this.editor.addWindowListener('mouseup',  (e) => {
-            this.dragging = null;
+            this.draggingColor = null;
             this.dropper = false;
         });
     }
@@ -151,29 +170,39 @@ export class SpriteMenuColor extends SpriteMenu {
         this.jqRslider = this.jqDragView.find("input[type=range].color-r");
         this.jqGslider = this.jqDragView.find("input[type=range].color-g");
         this.jqBslider = this.jqDragView.find("input[type=range].color-b");
+        this.jqAslider = this.jqDragView.find("input[type=range].color-a");
         this.jqRtext = this.jqDragView.find("input[type=text].color-r");
         this.jqGtext = this.jqDragView.find("input[type=text].color-g");
         this.jqBtext = this.jqDragView.find("input[type=text].color-b");
+        this.jqAtext = this.jqDragView.find("input[type=text].color-a");
         this.jqRslider[0].addEventListener('input', (e) => {
-            let col = this.colorSelected === "main" ? this.hexToRgb(this.originalColor) : this.hexToRgb(this.originalAltColor);
+            let col = this.colorSelected === "main" ? hexToRgb(this.originalColor) : hexToRgb(this.originalAltColor);
             col.r = Math.round(this.jqRslider[0].value);
-            this.setColor(this.rgbToHex(col.r, col.g, col.b));
+            this.setColor(rgbToHex(col.r, col.g, col.b));
             this.requestUpdate();
         });
         this.jqGslider[0].addEventListener('input', (e) => {
-            let col = this.colorSelected === "main" ? this.hexToRgb(this.originalColor) : this.hexToRgb(this.originalAltColor);
+            let col = this.colorSelected === "main" ? hexToRgb(this.originalColor) : hexToRgb(this.originalAltColor);
             col.g = Math.round(this.jqGslider[0].value);
-            this.setColor(this.rgbToHex(col.r, col.g, col.b));
+            this.setColor(rgbToHex(col.r, col.g, col.b));
             this.requestUpdate();
         });
         this.jqBslider[0].addEventListener('input', (e) => {
-            let col = this.colorSelected === "main" ? this.hexToRgb(this.originalColor) : this.hexToRgb(this.originalAltColor);
+            let col = this.colorSelected === "main" ? hexToRgb(this.originalColor) : hexToRgb(this.originalAltColor);
             col.b = Math.round(this.jqBslider[0].value);
-            this.setColor(this.rgbToHex(col.r, col.g, col.b));
+            this.setColor(rgbToHex(col.r, col.g, col.b));
             this.requestUpdate();
         });
+        this.jqAslider[0].addEventListener('input', (e) => {
+            if (this.colorSelected === "main") {
+                this.alpha = Math.round(this.jqAslider[0].value);
+            } else {
+                this.altAlpha = Math.round(this.jqAslider[0].value);
+            }
+            this.setButtonColor();
+        });
         this.jqRtext.on("input", (e) => {
-            let col = this.colorSelected === "main" ? this.hexToRgb(this.originalColor) : this.hexToRgb(this.originalAltColor);
+            let col = this.colorSelected === "main" ? hexToRgb(this.originalColor) : hexToRgb(this.originalAltColor);
             let r = parseInt(this.jqRtext.val());
             if (!r || r < 0) {
                 r = 0;
@@ -181,11 +210,11 @@ export class SpriteMenuColor extends SpriteMenu {
                 r = 255;
             }
             col.r = r;
-            this.setColor(this.rgbToHex(col.r, col.g, col.b));
+            this.setColor(rgbToHex(col.r, col.g, col.b));
             this.requestUpdate();
         });
         this.jqGtext.on("input", (e) => {
-            let col = this.colorSelected === "main" ? this.hexToRgb(this.originalColor) : this.hexToRgb(this.originalAltColor);
+            let col = this.colorSelected === "main" ? hexToRgb(this.originalColor) : hexToRgb(this.originalAltColor);
             let g = parseInt(this.jqGtext.val());
             if (!g || g < 0) {
                 g = 0;
@@ -193,11 +222,11 @@ export class SpriteMenuColor extends SpriteMenu {
                 g = 255;
             }
             col.g = g;
-            this.setColor(this.rgbToHex(col.r, col.g, col.b));
+            this.setColor(rgbToHex(col.r, col.g, col.b));
             this.requestUpdate();
         });
         this.jqBtext.on("input", (e) => {
-            let col = this.colorSelected === "main" ? this.hexToRgb(this.originalColor) : this.hexToRgb(this.originalAltColor);
+            let col = this.colorSelected === "main" ? hexToRgb(this.originalColor) : hexToRgb(this.originalAltColor);
             let b = parseInt(this.jqBtext.val());
             if (!b || b < 0) {
                 b = 0;
@@ -205,8 +234,22 @@ export class SpriteMenuColor extends SpriteMenu {
                 b = 255;
             }
             col.b = b
-            this.setColor(this.rgbToHex(col.r, col.g, col.b));
+            this.setColor(rgbToHex(col.r, col.g, col.b));
             this.requestUpdate();
+        });
+        this.jqAtext.on("input", (e) => {
+            let a = parseInt(this.jqAtext.val());
+            if (!a || a < 0) {
+                a = 0;
+            } else if (a > 255) {
+                a = 255;
+            }
+            if (this.colorSelected === "main") {
+                this.alpha = a;
+            } else {
+                this.altAlpha = a;
+            }
+            this.setButtonColor();
         });
     }
 
@@ -238,14 +281,15 @@ export class SpriteMenuColor extends SpriteMenu {
         let left = px;
         let top = py;
         let cPos = 28 + 18;
-        let iCen = this.cWidth - cPos - cPos;
-        this.selPos.x = Math.min(Math.max(0, px - cPos) / iCen, 1);
-        this.selPos.y = Math.min(Math.max(0, py - cPos) / iCen, 1);
+        let iCenW = this.cWidth - cPos - cPos;
 
         if (dist > inCenter) {
             left = (px - center) / dist * (inCenter) + center;
             top = (py - center) / dist * (inCenter) + center;
         }
+        this.selPos.x = Math.min(Math.max(0, left - cPos) / iCenW, 1);
+        this.selPos.y = Math.min(Math.max(0, top - cPos) / iCenW, 1);
+
         this.jqSat.css({left: left, top : top});
         this.setButtonColor();
     }
@@ -254,7 +298,7 @@ export class SpriteMenuColor extends SpriteMenu {
         this.editor.canvasBakeImage();
         let ctx = this.editor.getMainContext();
         let data = ctx.getImageData(canvasPos.x, canvasPos.y, 1, 1).data;
-        let color = this.rgbToHex(data[0], data[1], data[2]);
+        let color = rgbToHex(data[0], data[1], data[2]);
         this.setColor(color);
     }
 
@@ -268,8 +312,8 @@ export class SpriteMenuColor extends SpriteMenu {
         let center = this.cWidth / 2;
         let outCenter = center - 13;
 
-        let rgb = this.hexToRgb(color);
-        let hsv = this.rgbToHsv(rgb.r, rgb.g, rgb.b);
+        let rgb = hexToRgb(color);
+        let hsv = rgbToHsv(rgb.r, rgb.g, rgb.b);
         this.selHue = hsv.h;
 
         let angle = hsv.h * Math.PI * 2 - Math.PI / 2;
@@ -277,8 +321,8 @@ export class SpriteMenuColor extends SpriteMenu {
         let py = center + Math.sin(angle) * outCenter;
         this.jqHue.css({left: px, top : py});
 
-        this.selPos.x = 1 - hsv.s;
-        this.selPos.y = 1 - hsv.v;
+        this.selPos.x = Math.min(Math.max(0, 1 - hsv.s), 1);
+        this.selPos.y = Math.min(Math.max(0, 1 - hsv.v), 1);
         let cPos = 28 + 18;
         let iCen = this.cWidth - cPos - cPos;
         this.jqSat.css({
@@ -290,8 +334,8 @@ export class SpriteMenuColor extends SpriteMenu {
     }
 
     updateColor() {
-        let final = this.hsvToRgb(this.selHue, 1 - this.selPos.x, 1 - this.selPos.y);
-        let color = this.rgbToHex(final.r, final.g, final.b);
+        let final = hsvToRgb(this.selHue, 1 - this.selPos.x, 1 - this.selPos.y);
+        let color = rgbToHex(final.r, final.g, final.b);
         if (this.colorSelected === "main") {
             this.originalColor = color;
         } else {
@@ -309,7 +353,10 @@ export class SpriteMenuColor extends SpriteMenu {
     }
 
     getPaletteBestColor(colorIn) {
-        colorIn = this.hexToRgb(colorIn);
+        let stringMode = typeof colorIn === "string";
+        if (stringMode) {
+            colorIn = hexToRgb(colorIn);
+        }
 
         let col = this.palette.colors;
         let diff = -1;
@@ -323,28 +370,47 @@ export class SpriteMenuColor extends SpriteMenu {
                 bCol = col[i];
             }
         }
-        return this.rgbToHex(bCol.r, bCol.g, bCol.b);
+        if (stringMode) {
+            return rgbToHex(bCol.r, bCol.g, bCol.b);
+        } else {
+            colorIn.r = bCol.r;
+            colorIn.g = bCol.g;
+            colorIn.b = bCol.b;
+            return colorIn;
+        }
     }
 
     setButtonColor() {
         this.updateColor();
-        let rgb;
+        let rgb, a;
         if (this.colorSelected === "main") {
-            rgb = this.hexToRgb(this.originalColor);
+            rgb = hexToRgb(this.originalColor);
+            a = this.alpha;
             this.jqSat.css("background-color", this.color);
+            this.jqAslider.css("background", "linear-gradient(to left, " + this.color + ", " + this.color+"00");
         } else {
-            rgb = this.hexToRgb(this.originalAltColor);
+            rgb = hexToRgb(this.originalAltColor);
+            a = this.altAlpha;
             this.jqSat.css("background-color", this.altColor);
+            this.jqAslider.css("background", "linear-gradient(to left, " + this.altColor + ", " + this.altColor+"00");
         }
         this.jqRslider[0].value = rgb.r;
         this.jqGslider[0].value = rgb.g;
         this.jqBslider[0].value = rgb.b;
+        this.jqAslider[0].value = a;
         this.jqRtext.val(rgb.r);
         this.jqGtext.val(rgb.g);
         this.jqBtext.val(rgb.b);
-        this.editor.color = this.color;
-        this.editor.altColor = this.altColor;
-        this.editor.toolMenu.updateColors();
+        this.jqAtext.val(a);
+        if (this.onColorChoose) {
+            this.onColorChoose(this.color + (this.alpha.toString(16).length === 1 ? "0" : "") + this.alpha.toString(16));
+        } else {
+            this.editor.color = this.color;
+            this.editor.altColor = this.altColor;
+            this.editor.alpha = this.alpha;
+            this.editor.altAlpha = this.altAlpha;
+            this.editor.toolMenu.updateColors();
+        }
         this.jqColor.css("background-color", this.color);
         this.jqAltColor.css("background-color", this.altColor);
     }
@@ -365,8 +431,8 @@ export class SpriteMenuColor extends SpriteMenu {
 
         let outCenter = center - 24;
         let inCenter = center - 28;
-        let rgb = this.hsvToRgb(this.selHue, 1, 1);
-        let col = this.rgbToHex(rgb.r, rgb.g, rgb.b);
+        let rgb = hsvToRgb(this.selHue, 1, 1);
+        let col = rgbToHex(rgb.r, rgb.g, rgb.b);
 
         let hgrd = this.ctx.createLinearGradient(28, center, this.cWidth - 28, center);
         hgrd.addColorStop(0.146446, col);
@@ -473,134 +539,5 @@ export class SpriteMenuColor extends SpriteMenu {
         this.ctx.beginPath();
         this.ctx.ellipse(center, center, center - 1, center - 1, 0, 0, Math.PI * 2);
         this.ctx.stroke();
-    }
-
-    rgbToHex(r, g, b) {
-        r = r.toString(16);
-        g = g.toString(16);
-        b = b.toString(16);
-
-        if (r.length === 1) r = "0" + r;
-        if (g.length === 1) g = "0" + g;
-        if (b.length === 1) b = "0" + b;
-
-        return "#" + r + g + b;
-    }
-
-    hexToRgb(h) {
-        let r = 0, g = 0, b = 0;
-
-        // 3 digits
-        if (h.length === 4) {
-            r = parseInt(h[1] + h[1], 16);
-            g = parseInt(h[2] + h[2], 16);
-            b = parseInt(h[3] + h[3], 16);
-
-            // 6 digits
-        } else if (h.length === 7) {
-            r = parseInt(h[1] + h[2], 16);
-            g = parseInt(h[3] + h[4], 16);
-            b = parseInt(h[5] + h[6], 16);
-        }
-
-        return {r, g, b};
-    }
-
-    rgbToHsl(r, g, b) {
-        r /= 255;
-        g /= 255;
-        b /= 255;
-        let max = Math.max(r, g, b), min = Math.min(r, g, b);
-        let h, s, l = (max + min) / 2;
-
-        if (max === min) {
-            h = s = 0; // achromatic
-        } else {
-            let d = max - min;
-            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-            switch (max) {
-                case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-                case g: h = (b - r) / d + 2; break;
-                case b: h = (r - g) / d + 4; break;
-            }
-            h /= 6;
-        }
-
-        return {h, s, l};
-    }
-
-    hslToRgb(h, s, l) {
-        let r, g, b;
-        if (s === 0) {
-            r = g = b = l; // achromatic
-        } else {
-            const hue2rgb = (p, q, t) => {
-                if (t < 0) t += 1;
-                if (t > 1) t -= 1;
-                if (t < 1 / 6) return p + (q - p) * 6 * t;
-                if (t < 1 / 2) return q;
-                if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
-                return p;
-            };
-            const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
-            const p = 2 * l - q;
-            r = hue2rgb(p, q, h + 1 / 3);
-            g = hue2rgb(p, q, h);
-            b = hue2rgb(p, q, h - 1 / 3);
-        }
-        return {r: Math.round(r * 255), g: Math.round(g * 255), b: Math.round(b * 255)};
-    }
-
-    hsvToRgb(h, s, v) {
-        let r, g, b, i, f, p, q, t;
-        if (arguments.length === 1) {
-            s = h.s;
-            v = h.v;
-            h = h.h;
-        }
-        i = Math.floor(h * 6);
-        f = h * 6 - i;
-        p = v * (1 - s);
-        q = v * (1 - f * s);
-        t = v * (1 - (1 - f) * s);
-        switch (i % 6) {
-            case 0: r = v; g = t; b = p; break;
-            case 1: r = q; g = v; b = p; break;
-            case 2: r = p; g = v; b = t; break;
-            case 3: r = p; g = q; b = v; break;
-            case 4: r = t; g = p; b = v; break;
-            case 5: r = v; g = p; b = q; break;
-        }
-        return {
-            r: Math.round(r * 255),
-            g: Math.round(g * 255),
-            b: Math.round(b * 255)
-        };
-    }
-
-    rgbToHsv(r, g, b) {
-        if (arguments.length === 1) {
-            g = r.g;
-            b = r.b;
-            r = r.r;
-        }
-        let max = Math.max(r, g, b), min = Math.min(r, g, b),
-            d = max - min,
-            h,
-            s = (max === 0 ? 0 : d / max),
-            v = max / 255;
-
-        switch (max) {
-            case min: h = 0; break;
-            case r: h = (g - b) + d * (g < b ? 6: 0); h /= 6 * d; break;
-            case g: h = (b - r) + d * 2; h /= 6 * d; break;
-            case b: h = (r - g) + d * 4; h /= 6 * d; break;
-        }
-
-        return {
-            h: h,
-            s: s,
-            v: v
-        };
     }
 }

@@ -89,8 +89,9 @@ export class TabView {
         this.tabList.push(tab);
         if (this.tabList.length === 1) {
             this.selectTab(tab);
+        } else {
+            this.selectTab(tab);
         }
-        this.onResize();
     }
 
     removeTab(tab) {

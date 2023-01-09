@@ -9,11 +9,14 @@ export class SpriteTool {
     pixelMode = false;
     selected = false;
 
+    configMenu = null;
+
     constructor(editor, jqButton, configMenu) {
         this.editor = editor;
+        this.configMenu = configMenu;
         this.jqButton = jqButton;
         this.jqButton.on("click", (e) => this.editor.selectTool(this));
-        this.jqButton.dblclick((e) => {
+        this.jqButton.on("dblclick", (e) => {
             this.editor.selectTool(this);
             configMenu.show();
         });
@@ -85,7 +88,7 @@ export class SpriteTool {
 
     cursorAsCircle(pos) {
         this.editor.canvasCursor.removeClass("pencil");
-        this.editor.canvasCursor.css({left: pos.x, top: pos.y});
+        this.editor.canvasCursor.css({display : "", left: pos.x, top: pos.y});
         this._path = null;
 
         let config = this.editor.getBrushConfig();
@@ -155,7 +158,7 @@ export class SpriteTool {
         }
     }
 
-    start(color, ctx, ctxTemp) {
+    start(color, alpha, ctx, ctxTemp) {
 
     }
 

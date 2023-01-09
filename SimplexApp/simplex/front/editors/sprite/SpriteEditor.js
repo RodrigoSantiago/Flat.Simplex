@@ -14,6 +14,8 @@ import {SpriteToolBucket} from "./tools/SpriteToolBucket.js";
 import {SpriteMenuColor} from "./SpriteMenuColor.js";
 import {SpriteMenuTools} from "./SpriteMenuTools.js";
 import {SpriteToolColor} from "./tools/SpriteToolColor.js";
+import {SpriteMenuGradient} from "./SpriteMenuGradient.js";
+import {SpriteToolSelect} from "./tools/SpriteToolSelect.js";
 
 export class SpriteEditor extends Editor {
     static pageModel = null;
@@ -42,6 +44,8 @@ export class SpriteEditor extends Editor {
     // Brushes Settings
     color = "#000000";
     altColor = "#FF0040";
+    alpha = 255;
+    altAlpha = 255;
 
     constructor(asset) {
         super(asset);
@@ -74,6 +78,18 @@ export class SpriteEditor extends Editor {
     onResize() {
         this.canvasPosition({x: 0, y: 0}, {x: 0, y: 0});
         this.Toolbar.update();
+        for (let menu of this.toolMenus) {
+            if (menu.floating) {
+                let width = this.splitVer.width();
+                let height = this.splitVer.height();
+                let off = this.splitVer.offset();
+                let pos = menu.jqDragView.offset();
+                menu.jqDragView.offset({
+                    left: Math.min(off.left + width - menu.jqDragView.width(), Math.max(off.left, pos.left)),
+                    top: Math.min(off.top + height - menu.jqDragView.height(), Math.max(off.top, pos.top))
+                });
+            }
+        }
     }
 
     onShow() {
@@ -123,20 +139,22 @@ export class SpriteEditor extends Editor {
         this.framesMenu = new SpriteMenuFrames(this, this.jqRoot.find(".frames-view"), true);
         this.brushMenu = new SpriteMenuBrush(this, this.jqRoot.find(".brush-view"), false);
         this.colorMenu = new SpriteMenuColor(this, this.jqRoot.find(".color-picker-view"), false);
+        this.gradMenu = new SpriteMenuGradient(this, this.jqRoot.find(".gradient-view"), false);
         this.toolMenus.push(this.toolMenu);
         this.toolMenus.push(this.layersMenu);
         this.toolMenus.push(this.framesMenu);
         this.toolMenus.push(this.brushMenu);
         this.toolMenus.push(this.colorMenu);
+        this.toolMenus.push(this.gradMenu);
         this.dropLine = this.jqRoot.find(".sprite-drop-line");
 
-        this.toolSelect = new SpriteTool(this, this.jqRoot.find(".tool-select"));
+        this.toolSelect = new SpriteToolSelect(this, this.jqRoot.find(".tool-select"));
         this.toolPencil = new SpriteToolPencil(this, this.jqRoot.find(".tool-pencil"), this.brushMenu);
         this.toolBrush = new SpriteToolBrush(this, this.jqRoot.find(".tool-brush"), this.brushMenu);
         this.toolSpray = new SpriteToolSpray(this, this.jqRoot.find(".tool-spray"), this.brushMenu);
         this.toolEraser = new SpriteToolEraser(this, this.jqRoot.find(".tool-eraser"), this.brushMenu);
         this.toolSmudge = new SpriteToolSmudge(this, this.jqRoot.find(".tool-smudge"), this.brushMenu);
-        this.toolBucket = new SpriteToolBucket(this, this.jqRoot.find(".tool-bucket"));
+        this.toolBucket = new SpriteToolBucket(this, this.jqRoot.find(".tool-bucket"), this.gradMenu);
         this.toolShapes = new SpriteTool(this, this.jqRoot.find(".tool-shapes"));
         this.toolText = new SpriteTool(this, this.jqRoot.find(".tool-text"));
         this.toolColor = new SpriteToolColor(this, this.jqRoot.find(".tool-color"), this.colorMenu);
@@ -200,7 +218,7 @@ export class SpriteEditor extends Editor {
             } else if (e.button === 2) {
                 this.dragPaintCol = this.altColor;
             }
-            this.toolStart(this.dragPaintCol);
+            this.toolStart(this.dragPaintCol, e.button === 0 ? this.alpha : this.altAlpha);
             this.selectedTool.mouseDown(this.dragPaintPos);
         }
     }
@@ -255,6 +273,9 @@ export class SpriteEditor extends Editor {
             this.canvasPosition({x: bScreenX - screenX, y: bScreenY - screenY});
         }
         this.updateCanvasCursor(pos);
+        if (this.dragPaint && this.selectedTool) {
+            this.selectedTool.mouseMove(this.dragPaintPos, this.dragPaintCol);
+        }
     }
 
     canvasPosition(posA, posB) {
@@ -502,9 +523,9 @@ export class SpriteEditor extends Editor {
 
     // Historic
 
-    toolStart(pointerColor) {
+    toolStart(pointerColor, alpha) {
         this.canvas.css({"visibility" : "visible", "z-index" : this.selectedLayer.zindex+1});
-        this.canvasB.css({"visibility" : "visible", "z-index" : this.selectedLayer.zindex+2});
+        this.canvasB.css({"visibility" : "visible", "z-index" : this.selectedLayer.zindex+2, "opacity" : alpha / 255});
         this.selectedLayer.jqImg.css({"display" : "none"});
 
         if (this.canvasLayer !== this.selectedLayer) {
@@ -515,7 +536,7 @@ export class SpriteEditor extends Editor {
         }
 
         this.canvasBaked = false;
-        this.selectedTool.start(pointerColor, this.getMainContext(), this.getTempContext());
+        this.selectedTool.start(pointerColor, alpha, this.getMainContext(), this.getTempContext());
     }
 
     toolEnd() {

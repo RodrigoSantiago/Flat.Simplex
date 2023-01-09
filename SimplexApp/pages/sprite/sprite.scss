@@ -510,36 +510,6 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
 
 //</editor-fold>
 
-//<editor-fold desc="COLORS">
-
-.colors-view {
-    .color-matrix {
-        border-radius: 100%;
-        width: 240px;
-        height: 240px;
-        background: linear-gradient(to top, rgba(128, 128, 128, 1), rgba(0, 0, 0, 0)),
-        linear-gradient(to right, #ff0000 0%, #ffff00 15%, #00ff00 30%, #00ffff 45%, #0000ff 60%, #ff00ff 75%, #ff0000 100%);
-        border: 1px solid white;
-        outline: 2px solid black;
-    }
-}
-
-.colors-view.vertical {
-    @extend %vbox;
-    align-items: center;
-    min-width: 256px;
-    height: 100%;
-}
-
-.colors-view.horizontal {
-    @extend %hbox;
-    align-items: center;
-    min-height: 128px;
-    width: 100%;
-}
-
-//</editor-fold>
-
 //<editor-fold desc="CANVAS">
 .canvas-view {
     display: flex;
@@ -623,7 +593,6 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
     }
 }
 //</editor-fold>
-
 
 //<editor-fold desc="BRUSH">
 
@@ -748,35 +717,16 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
         height: 80px;
         margin: 16px 8px 16px 8px;
     }
-}
 
-.slider {
-    appearance: none;
-    width: 100%;
-    height: 2px;
-    background: var(--on-color);
-    outline: none;
-    border-radius: 4px;
-    &::-webkit-slider-thumb {
-        appearance: none;
-        width: 16px;
-        height: 16px;
-        border-radius: 16px;
+    input[type=range].slider {
         background: var(--on-color);
-        border: 2px solid var(--on-color);
-        cursor: pointer;
-        &:active {
-            outline: 4px solid var(--on-color-a3);
-        }
-    }
-}
-
-.slider.disabled {
-    opacity: 0.5;
-    &::-webkit-slider-thumb {
-        cursor: default;
-        &:active {
-            outline: none;
+        &::-webkit-slider-thumb {
+            appearance: none;
+            background: var(--on-color);
+            border: 2px solid var(--on-color);
+            &:active {
+                outline: 4px solid var(--on-color-a3);
+            }
         }
     }
 }
@@ -812,7 +762,13 @@ input[type=checkbox]:checked:after {
     left: 5px;
 }
 
+input[type=checkbox].disabled {
+    opacity: 0.5;
+}
+
 //</editor-fold>
+
+//<editor-fold desc="COLORS">
 
 .color-picker-view {
     align-items: center;
@@ -865,7 +821,6 @@ input[type=checkbox]:checked:after {
             height: 24px;
             min-width: 24px;
             min-height: 24px;
-            border: 1px solid var(--on-color);
             background-color: #FF1000;
             border-radius: 100px;
             box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.4);
@@ -880,7 +835,6 @@ input[type=checkbox]:checked:after {
             height: 12px;
             min-width: 12px;
             min-height: 12px;
-            border: 1px solid var(--on-color);
             background-color: #FF1000;
             border-radius: 100px;
             box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.4);
@@ -918,9 +872,51 @@ input[type=checkbox]:checked:after {
         font-size: 10px;
         color: var(--on-color);
         span {
-            width: 24px;
+            width: 18px;
+            min-width: 18px;
             text-align: center;
             margin-right: 8px;
+        }
+    }
+    .alpha-slider {
+        @extend %hbox-center;
+        margin: 4px 0 4px 0;
+        width: calc(100% - 16px);
+        font-size: 10px;
+        color: var(--on-color);
+        span {
+            width: 18px;
+            min-width: 18px;
+            text-align: center;
+            margin-right: 8px;
+        }
+        .bg-alpha {
+            display: flex;
+            width: 100%;
+            background-image : url("pages/canvas-bg.png");
+            background-size : 16px;
+            border-radius: 16px;
+        }
+        .slider {
+            appearance: none;
+            width: 100%;
+            height: 16px;
+            background: transparent;
+            outline: 2px solid var(--on-color);
+            border-radius: 16px;
+            &::-webkit-slider-thumb {
+                appearance: none;
+                width: 16px;
+                height: 16px;
+                border-radius: 16px;
+                background: transparent;
+                border: 2px solid var(--on-color);
+                cursor: pointer;
+                box-shadow: inset 0 0 1px 1px rgba(0, 0, 0, .3);
+                &:active {
+                    outline: 4px solid var(--on-color-a3);
+                }
+            }
         }
     }
 
@@ -940,12 +936,184 @@ input[type=checkbox]:checked:after {
         }
     }
     .text-rgb {
-        width: 24px;
+        width: 18px;
+        min-width: 18px;
         color: var(--on-color);
         margin-left: 8px;
         font-size: 10px;
         &:hover, &:active, &:focus {
             background-color: var(--on-color-a3);
         }
+    }
+
+    .color-history {
+        @extend %hbox-center;
+        width: calc(100% - 16px);
+        .color-block {
+            width: 16px;
+            height: 16px;
+            border: 2px solid var(--on-color);
+            border-radius: 2px;
+            background-color: #FFFFFF;
+            cursor: pointer;
+            + .color-block {
+                margin-left: 2px;
+            }
+        }
+        .color-block-add {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 16px;
+            height: 16px;
+            margin-right: 2px;
+            color : var(--on-color-a1);
+            cursor: pointer;
+            border-radius: 16px;
+            i {
+                font-size: 20px;
+            }
+            &:hover {
+                color : var(--on-color);
+            }
+        }
+    }
+}
+
+//</editor-fold>
+
+.gradient-view {
+    align-items: center;
+    min-width: 192px;
+    max-width: 192px;
+    min-height: 48px;
+
+    .gradient-line {
+        height: 24px;
+        width: 180px;
+        border-radius: 4px;
+        background: linear-gradient(to right, black, rgba(0, 0, 0, 0));
+        //border: 2px solid var(--on-color);
+        box-shadow: inset 0 0 0 2px  var(--on-color);
+        position: relative;
+        .gradient-bg {
+            position: absolute;
+            display: flex;
+            width: 100%;
+            height: 100%;
+            background-image : url("pages/canvas-bg.png");
+            background-size : 16px;
+            border-radius: 4px;
+            z-index: -1;
+            pointer-events: none;
+        }
+        .gradient-node {
+            position: absolute;
+            height: 24px;
+            width: 8px;
+            border-radius: 4px;
+            border: 2px solid var(--on-color);
+            box-shadow: inset 0 0 1px 1px rgba(0, 0, 0, .3);
+            cursor: pointer;
+            transform: translate(-50%, 0);
+        }
+
+        &.disabled {
+            opacity: 0.5;
+            pointer-events: none;
+
+            .gradient-bg {
+                display: none;
+            }
+        }
+    }
+
+    .gradient-tolerance {
+        @extend %hbox-center;
+        margin: 4px 0 4px 0;
+        width: calc(100% - 16px);
+        font-size: 10px;
+        color: var(--on-color);
+        span {
+            width: 32px;
+            min-width: 32px;
+            text-align: center;
+            margin-right: 8px;
+        }
+    }
+
+    .text-tolerance {
+        width: 18px;
+        min-width: 18px;
+        color: var(--on-color);
+        margin-left: 8px;
+        font-size: 10px;
+        &:hover, &:active, &:focus {
+            background-color: var(--on-color-a3);
+        }
+    }
+
+    .gradient-options {
+        @extend %hbox;
+        font-size: 10px;
+        color: var(--on-color);
+        width: calc(100% - 16px);
+        .gradient-option {
+            @extend %hbox;
+            align-items: center;
+            width: 50%;
+            input[type=checkbox] {
+                margin-right: 8px;
+            }
+        }
+        + .gradient-options {
+            margin-top: 8px;
+        }
+    }
+    .gradient-divider {
+        width: 100%;
+        height: 1px;
+        background-color: $sprite-menu-line;
+        margin: 8px 0 8px 0;
+    }
+}
+
+.sprite-grab-line {
+    position: absolute;
+    background-color: white;
+    width: 1px;
+    height: 1px;
+    pointer-events: none;
+    transform-origin: 0.5px 0.5px;
+    mix-blend-mode: difference;
+    box-shadow: 0 0 1px 1px #404040;
+    .grab-in {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 7px;
+        height: 7px;
+        background-color: white;
+        border-radius: 100%;
+        transform: translate(-3px, -3px);
+        box-shadow: 0 0 1px 1px #404040;
+    }
+    .grab-out {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        width: 7px;
+        height: 7px;
+        background-color: white;
+        border-radius: 100%;
+        transform: translate(3px, 3px);
+        box-shadow: 0 0 1px 1px #404040;
+    }
+    .grab-radius {
+        position: absolute;
+        transform: translate(-50%, -50%);
+        border-radius: 100%;
+        border: 1px dashed white;
+        box-shadow: 0 0 1px 1px #404040;
     }
 }

@@ -47,6 +47,7 @@ input[type=text].outline {
     --text-color : var(--on-surface-color);
     --text-color-in : var(--primary-color);
 }
+
 input[type=text].editable-label {
     height: unset;
     padding: 0;

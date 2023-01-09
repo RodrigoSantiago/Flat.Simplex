@@ -57,8 +57,8 @@ export class SpriteToolPencil extends SpriteToolBrush {
         }
     }
 
-    start(color, ctx, ctxTemp) {
-        super.start(color, ctx, ctxTemp);
+    start(color, alpha, ctx, ctxTemp) {
+        super.start(color, alpha, ctx, ctxTemp);
         this.ctx.filter = "url(#stroke-alpha-1)";
     }
 }

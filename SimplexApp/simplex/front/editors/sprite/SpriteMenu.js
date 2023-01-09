@@ -1,4 +1,5 @@
 import {DragSystem} from "../../DragSystem.js";
+import {SpriteEditor} from "./SpriteEditor.js";
 
 export class SpriteMenu {
 
@@ -12,28 +13,36 @@ export class SpriteMenu {
     constructor(editor, jqDragView, dockeable) {
         this.editor = editor;
         this.jqDragView = jqDragView;
-        this.jqDragView.find(".drag").mousedown((e) => {
-            if (DragSystem.drag(this, e.button)) {
-                this.onDragStart(e);
+        if (editor instanceof SpriteEditor) {
+            this.jqDragView.find(".drag").mousedown((e) => {
+                if (DragSystem.drag(this, e.button)) {
+                    this.onDragStart(e);
+                }
+            });
+            this.jqDragView.click((e) => {
+                if (this.floating && this.jqDragView.parent()[0].lastChild !== this.jqDragView[0]) {
+                    this.jqDragView.parent().append(this.jqDragView);
+                }
+            });
+            this.dockeable = dockeable;
+            if (this.jqDragView.hasClass("vertical")) {
+                this.type = "vertical";
+            } else if (this.jqDragView.hasClass("horizontal")) {
+                this.type = "horizontal";
+            } else {
+                this.type = this.jqDragView.parent()[0] === editor.splitVer[0] ? "horizontal" : "vertical";
+                this.jqDragView.addClass(this.type);
             }
-        });
-        this.jqDragView.click((e) => {
-            if (this.floating && this.jqDragView.parent()[0].lastChild !== this.jqDragView[0]) {
-                this.jqDragView.parent().append(this.jqDragView);
-            }
-        });
-        this.dockeable = dockeable;
-        this.type = this.jqDragView.parent()[0] === editor.splitVer[0] ? "horizontal" : "vertical";
-        this.jqDragView.addClass(this.type);
-        this.floating = this.jqDragView.is(".floating");
-        if (!dockeable) {
-            this.floating = true;
-            let off = this.jqDragView.offset();
-            this.jqDragView.addClass("floating");
-            this.jqDragView.detach();
-            this.editor.splitVer.append(this.jqDragView);
-            this.jqDragView.offset({left: off.left, top: off.top});
 
+            this.floating = this.jqDragView.is(".floating");
+            if (!dockeable) {
+                this.floating = true;
+                let off = this.jqDragView.offset();
+                this.jqDragView.addClass("floating");
+                this.jqDragView.detach();
+                this.editor.splitVer.append(this.jqDragView);
+                this.jqDragView.offset({left: off.left, top: off.top});
+            }
         }
     }
 

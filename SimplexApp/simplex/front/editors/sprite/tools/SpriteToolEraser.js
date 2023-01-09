@@ -51,7 +51,7 @@ export class SpriteToolEraser extends SpriteToolBrush {
     }
 
 
-    start(color, ctx, ctxTemp) {
+    start(color, alpha, ctx, ctxTemp) {
         let config = this.editor.getBrushConfig();
         this.size = config.size;
         this.flow = config.flow;
@@ -60,6 +60,7 @@ export class SpriteToolEraser extends SpriteToolBrush {
         this.dist = 0;
 
         this.ctx = ctx;
+        this.ctxFinal = null;
         this.ctx.globalCompositeOperation = "destination-out";
         this.pixelMode = this.hardness >= 0.99;
         this.updateBrushCanvas();

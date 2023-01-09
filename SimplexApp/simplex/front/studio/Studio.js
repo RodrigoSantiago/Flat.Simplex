@@ -255,7 +255,6 @@ export class Studio {
         }, editor.getJqRoot());
         tab.asset = asset;
         this.TabView.addTab(tab);
-        this.TabView.selectTab(tab);
     }
 
     onResize() {

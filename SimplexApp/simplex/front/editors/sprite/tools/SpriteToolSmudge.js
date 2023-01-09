@@ -69,7 +69,7 @@ export class SpriteToolSmudge extends SpriteToolBrush {
 
     }
 
-    start(color, ctx, ctxTemp) {
+    start(color, alpha, ctx, ctxTemp) {
         let config = this.editor.getBrushConfig();
         this.size = config.size;
         this.flow = 0.85;
@@ -82,6 +82,7 @@ export class SpriteToolSmudge extends SpriteToolBrush {
         this.resetContext(this.getTmpCanvas().getContext("2d"));
 
         this.ctx = ctx;
+        this.ctxFinal = null;
         this.lastP = null;
         this.updateBrushCanvas();
     }

@@ -2,6 +2,41 @@
 @use "main";
 @use "buttons";
 
+.dialog {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    left:0;
+    right:0;
+    top:0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+
+    .dialog-bg {
+        position: absolute;
+        left:0;
+        right:0;
+        top:0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.1);
+        z-index: -1;
+    }
+    .dialog-footer {
+        @extend %hbox;
+        justify-content: end;
+        width: 100%;
+        padding: 8px 0 8px 0;
+        border-top: 1px solid var(--on-surface-color-a3);
+        > div {
+            margin-right: 8px;
+        }
+    }
+}
+
 .dropdown {
     @extend %vbox-center;
     @extend %elevation-8;

@@ -8,6 +8,7 @@
 @use "css/toolbar";
 @use "css/slider";
 @use "css/textinput";
+@use "pages/dialogs/colorpicker";
 @use "pages/sprite/sprite";
 
 * {
@@ -42,7 +43,7 @@
     overflow: hidden;
 }
 
-.divider {
+.divider-center {
     min-width: 8px;
     width: 8px;
     height: 100%;

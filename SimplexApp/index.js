@@ -4,6 +4,7 @@ import {Studio} from "./simplex/front/studio/Studio.js";
 import {Toolbar} from "./simplex/front/Toolbar.js";
 import {TabView} from "./simplex/front/TabView.js";
 import {SpriteEditor} from "./simplex/front/editors/sprite/SpriteEditor.js";
+import {Dialogs} from "./simplex/front/Dialogs.js";
 
 let globalDomInsert = null;
 $(document).on('DOMNodeInserted', function() {
@@ -76,3 +77,4 @@ const studio = new Studio(
 );
 
 SpriteEditor.loadModel();
+Dialogs.loadModels();

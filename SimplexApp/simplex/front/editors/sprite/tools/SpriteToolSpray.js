@@ -70,7 +70,7 @@ export class SpriteToolSpray extends SpriteToolBrush {
         this.size = config.size;
     }
 
-    start(color, ctx, ctxTemp) {
+    start(color, alpha, ctx, ctxTemp) {
         let config = this.editor.getBrushConfig();
         this.size = config.size;
         this.hardness = config.hardness;
@@ -78,6 +78,7 @@ export class SpriteToolSpray extends SpriteToolBrush {
         let hex = color.length === 9 ? color : color + "FF";
         let a = parseInt(hex.slice(7, 9), 16);
         this.color = hex.substring(0, 7) + Math.round(a * (this.opacity * 0.5 + 0.25)).toString(16);
+        this.alpha = alpha;
         this.dist = 0;
 
         this.ctx = ctxTemp;
@@ -87,9 +88,6 @@ export class SpriteToolSpray extends SpriteToolBrush {
 
     end() {
         super.end();
-
-        this.ctxFinal.drawImage(this.ctx.canvas, 0, 0);
-        this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
         if (this.interval !== null) {
             clearTimeout(this.interval);

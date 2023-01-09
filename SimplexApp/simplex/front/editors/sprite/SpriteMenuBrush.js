@@ -23,7 +23,7 @@ export class SpriteMenuBrush extends SpriteMenu {
         this.jqFlowText = jqDragView.find(".brush-text-flow");
         this.jqImage = jqDragView.find(".brush-image");
         this.jqOptions = jqDragView.find(".brush-options");
-        jqDragView.find(".close-view").click((e) => {
+        jqDragView.find(".close-view i").click((e) => {
             this.hide();
         });
 

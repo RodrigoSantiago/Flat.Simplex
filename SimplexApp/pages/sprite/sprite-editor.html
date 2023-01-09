@@ -21,13 +21,13 @@
                 <div class="tool-text button icon on-color tool-button"><i class="material-icons">insert_text</i></div>
                 <div class="tool-color button icon on-color tool-button"><div class="alt-color-circle"></div><div class="color-circle"></div></div>
             </div>
-            <div class="brush-view draggable-view" style="left: 8px; top: 8px">
+            <div class="brush-view draggable-view" style="left: 8px; top: 8px; display: none">
                 <div class="drag"><i class="material-icons">more_horiz</i></div>
                 <div class="brush-preview"></div>
                 <div class="brush-sliders">
-                    <input type="range" min="1" max="100" value="50" class="slider brush-size"/>
-                    <input type="range" min="1" max="100" value="95" class="slider brush-hardness"/>
-                    <input type="range" min="1" max="100" value="25" class="slider brush-flow"/>
+                    <input type="range" min="1" max="100" value="50" class="on-color slider brush-size"/>
+                    <input type="range" min="1" max="100" value="95" class="on-color slider brush-hardness"/>
+                    <input type="range" min="1" max="100" value="25" class="on-color slider brush-flow"/>
                 </div>
                 <div class="brush-icons">
                     <div class="brush-icon"><i class="material-icons">nest_heat_link_e</i></div>
@@ -50,7 +50,7 @@
 
                 <div class="close-view"><div><i class="material-icons">close</i></div></div>
             </div>
-            <div class="color-picker-view draggable-view">
+            <div class="color-picker-view draggable-view" style="left: calc(100% - 360px); top: 8px">
                 <div class="drag"><i class="material-icons">more_horiz</i></div>
                 <div class="color-circle">
                     <canvas class="color-canvas"></canvas>
@@ -63,20 +63,48 @@
                 </div>
                 <div class="color-divider"></div>
                 <div class="rgb-slider">
-                    <span>R</span><input type="range" min="0" max="255" value="128" class="slider color-r"/>
+                    <span>R</span><input type="range" min="0" max="255" value="128" class="on-color slider color-r"/>
                     <input type="text" class="text-rgb editable-label color-r" maxlength="3" value="128">
                 </div>
                 <div class="rgb-slider">
-                    <span>G</span><input type="range" min="0" max="255" value="128" class="slider color-g"/>
+                    <span>G</span><input type="range" min="0" max="255" value="128" class="on-color slider color-g"/>
                     <input type="text" class="text-rgb editable-label color-g" maxlength="3" value="128">
                 </div>
                 <div class="rgb-slider">
-                    <span>B</span><input type="range" min="0" max="255" value="128" class="slider color-b"/>
+                    <span>B</span><input type="range" min="0" max="255" value="128" class="on-color slider color-b"/>
                     <input type="text" class="text-rgb editable-label color-b" maxlength="3" value="128">
+                </div>
+                <div class="color-divider"></div>
+                <div class="alpha-slider">
+                    <span>A</span><div class="bg-alpha"><input type="range" min="0" max="255" value="128" class="on-color slider color-a"/></div>
+                    <input type="text" class="text-rgb editable-label color-a" maxlength="3" value="128">
                 </div>
                 <div class="close-view"><div><i class="material-icons">close</i></div></div>
             </div>
-
+            <div class="gradient-view draggable-view">
+                <div class="drag"><i class="material-icons">more_horiz</i></div>
+                <div class="gradient-line">
+                    <div class="gradient-bg"></div>
+                </div>
+                <div class="gradient-divider"></div>
+                <div class="gradient-tolerance">
+                    <span>Similar</span><input type="range" min="0" max="128" value="0" class="value-tolerance slider on-color"/>
+                    <input type="text" class="editable-label text-tolerance" maxlength="3" value="0">
+                </div>
+                <div class="gradient-divider"></div>
+                <div class="gradient-options">
+                    <label class="gradient-option"><input class="gradient-contiguous" type="checkbox"><span class="brush-text">Contiguous</span></label>
+                    <label class="gradient-option"><input class="gradient-alpha" type="checkbox"><span class="brush-text">Blend Alpha</span></label>
+                </div>
+                <div class="gradient-options">
+                    <label class="gradient-option"><input class="gradient-gradient" type="checkbox"><span class="brush-text">Use Gradient</span></label>
+                    <label class="gradient-option"><input class="gradient-radial" type="checkbox"><span class="brush-text">Radial</span></label>
+                </div>
+                <div class="gradient-options">
+                    <label class="gradient-option"><input class="gradient-palette" type="checkbox"><span class="brush-text">Palette</span></label>
+                </div>
+                <div class="close-view"><div><i class="material-icons">close</i></div></div>
+            </div>
             <div class="canvas-view">
                 <div class="canvas-cursor">
                     <svg width="100%" height="100%" viewBox="0 0 100 100" >

@@ -107,16 +107,30 @@ export class SpriteToolBrush extends SpriteTool {
         }
     }
 
-    start(color, ctx, ctxTemp) {
+    start(color, alpha, ctx, ctxTemp) {
         let config = this.editor.getBrushConfig();
         this.size = config.size;
         this.flow = config.flow;
         this.hardness = config.hardness;
         this.color = color.length === 9 ? color : color + "FF";
+        this.alpha = alpha;
         this.dist = 0;
 
-        this.ctx = ctx;
+        this.ctx = ctxTemp;
+        this.ctxFinal = ctx;
         this.updateBrushCanvas();
+    }
+
+    end() {
+        super.end();
+
+        if (this.ctxFinal) {
+            this.ctxFinal.globalAlpha = this.alpha / 255;
+            this.ctxFinal.drawImage(this.ctx.canvas, 0, 0);
+            this.ctxFinal.globalAlpha = 1;
+            this.ctxFinal = null;
+            this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+        }
     }
 
     mouseDown(pos) {
@@ -150,6 +164,14 @@ export class SpriteToolBrush extends SpriteTool {
         let py = Math.round(y - this.size / 2);
 
         this.ctx.drawImage(this.brushCanvas, 0, 0, this.size, this.size, px, py, this.size, this.size);
+        if (this.ctxFinal && !this.pixelMode) {
+            this.ctx.globalCompositeOperation = "source-atop";
+            this.ctx.fillStyle = this.color.substring(0, 7) + "FF";
+            this.ctx.beginPath();
+            this.ctx.ellipse(x, y, this.size / 2, this.size / 2, 0, 0, Math.PI * 2);
+            this.ctx.fill();
+            this.ctx.globalCompositeOperation = "source-over";
+        }
     }
 
     drawBrushLine(pointA, pointB) {
