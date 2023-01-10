@@ -14,6 +14,7 @@ export class SpriteToolEraser extends SpriteToolBrush {
         this.color = "#000000FF";
         this.ctx = ctx;
         this.pixelMode = this.hardness >= 0.99;
+        this.clipping = false;
 
 
         this.updateBrushCanvas();
@@ -58,11 +59,35 @@ export class SpriteToolEraser extends SpriteToolBrush {
         this.hardness = config.hardness;
         this.color = "#000000FF";
         this.dist = 0;
+        this.clipping = true;
 
         this.ctx = ctx;
         this.ctxFinal = null;
         this.ctx.globalCompositeOperation = "destination-out";
         this.pixelMode = this.hardness >= 0.99;
+        this.resetContext(this.getTmpCanvas().getContext("2d"));
         this.updateBrushCanvas();
+    }
+
+    drawBrush(x, y) {
+        let px = Math.round(x - this.size / 2);
+        let py = Math.round(y - this.size / 2);
+
+        if (this.clipping) {
+            let tmp = this.getTmpCanvas().getContext("2d");
+            tmp.clearRect(0, 0, this.size, this.size);
+            tmp.drawImage(this.brushCanvas, 0, 0, this.size, this.size, 0, 0, this.size, this.size);
+            tmp.globalCompositeOperation = "destination-in";
+            tmp.drawImage(this.editor.getSelectionContext().canvas, px, py, this.size, this.size, 0, 0, this.size, this.size);
+            tmp.globalCompositeOperation = "source-over";
+
+            this.ctx.drawImage(tmp.canvas, 0, 0, this.size, this.size, px, py, this.size, this.size);
+        } else {
+            this.ctx.drawImage(this.brushCanvas, 0, 0, this.size, this.size, px, py, this.size, this.size);
+        }
+    }
+
+    clip() {
+
     }
 }

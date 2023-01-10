@@ -1996,6 +1996,13 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
   image-rendering: pixelated;
   z-index: 2;
 }
+.canvas-view .canvas-position .canvasC {
+  position: absolute;
+  image-rendering: pixelated;
+  z-index: 100;
+  filter: url(#selection-border);
+  mix-blend-mode: difference;
+}
 
 .brush-view.vertical {
   align-items: center;
@@ -2463,6 +2470,14 @@ input[type=checkbox].disabled {
   border-radius: 100%;
   border: 1px dashed white;
   box-shadow: 0 0 1px 1px #404040;
+}
+
+.sprite-selection-box {
+  position: absolute;
+  border: 1px dashed white;
+  mix-blend-mode: difference;
+  border-image: repeating-linear-gradient(to top right, white, white 3px, #4F4F4F 3px, #4F4F4F 6px) 1;
+  box-shadow: 0 0 0 #404040;
 }
 
 * {

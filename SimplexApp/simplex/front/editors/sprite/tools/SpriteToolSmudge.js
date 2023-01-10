@@ -45,6 +45,7 @@ export class SpriteToolSmudge extends SpriteToolBrush {
         this.hardness = config.hardness;
         this.color = "#000000" + Math.round(((1 - config.flow) * 0.5 + 0.25) * 255).toString(16);
         this.dist = Math.max(1, this.size / 10);
+        this.clipping = false;
         this.updateBrushCanvas();
 
         this.ctx = ctx;
@@ -77,6 +78,7 @@ export class SpriteToolSmudge extends SpriteToolBrush {
         this.hardness = config.hardness;
         this.color = "#000000" + Math.round(((1 - this.opacity) * 0.5 + 0.25) * 255).toString(16);
         this.dist = 0;
+        this.clipping = this.editor.selectionClip;
         this.resetContext(this.getSrcCanvas().getContext("2d"));
         this.resetContext(this.getDstCanvas().getContext("2d"));
         this.resetContext(this.getTmpCanvas().getContext("2d"));
@@ -163,11 +165,24 @@ export class SpriteToolSmudge extends SpriteToolBrush {
         src.globalCompositeOperation = "source-atop";
         src.drawImage(tmp.canvas, 0, 0);
 
-        this.ctx.clearRect(x1, y1, w, h);
-        this.ctx.drawImage(src.canvas, 0, 0, w, h, x1, y1, w, h);
+        if (!this.clipping) {
+            this.ctx.clearRect(x1, y1, w, h);
+            this.ctx.drawImage(src.canvas, 0, 0, w, h, x1, y1, w, h);
+        } else {
+            src.globalCompositeOperation = "destination-in";
+            src.drawImage(this.editor.getSelectionContext().canvas, x1, y1, w, h, 0, 0, w, h);
+            this.ctx.globalCompositeOperation = "destination-out";
+            this.ctx.drawImage(this.editor.getSelectionContext().canvas, x1, y1, w, h, x1, y1, w, h);
+            this.ctx.globalCompositeOperation = "source-over";
+            this.ctx.drawImage(src.canvas, 0, 0, w, h, x1, y1, w, h);
+        }
 
         this.lastP.x = x;
         this.lastP.y = y;
+    }
+
+    clip() {
+
     }
 
     drawBrushLine(pointA, pointB) {

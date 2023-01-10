@@ -33,6 +33,7 @@ export class SpriteToolBucket extends SpriteTool {
         this.radial = this.configMenu.radial;
         this.palette = this.configMenu.palette;
         this.gradient = this.configMenu.getGradient();
+        this.clipping = this.editor.selectionClip;
     }
 
     end() {
@@ -41,8 +42,11 @@ export class SpriteToolBucket extends SpriteTool {
 
         this.imageA = null;
         this.imageB = null;
+        this.imageC = null;
         this.imageData = null;
         this.imageDataB = null;
+        this.imageData = null;
+        this.imageDataC = null;
     }
 
     mouseDown(pos) {
@@ -199,6 +203,16 @@ export class SpriteToolBucket extends SpriteTool {
     }
 
     setColor(p) {
+        if (this.clipping) {
+            if (!this.imageC) {
+                this.imageC = this.editor.canvasC[0].getContext("2d").getImageData(0, 0, this.ctxTemp.canvas.width, this.ctxTemp.canvas.height);
+                this.imageDataC = this.imageC.data;
+            }
+            if (this.imageDataC[p] === 0) {
+                return;
+            }
+        }
+
         if (this.useGradient) {
             if (this.palette) {
                 this.temp.r = this.imageDataB[p];

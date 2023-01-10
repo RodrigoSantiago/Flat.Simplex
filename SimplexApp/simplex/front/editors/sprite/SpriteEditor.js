@@ -41,11 +41,16 @@ export class SpriteEditor extends Editor {
     selectedFrame = null;
     canvasLayer = null;
 
+    selectionClip = false;
+
     // Brushes Settings
     color = "#000000";
     altColor = "#FF0040";
     alpha = 255;
     altAlpha = 255;
+
+    //Loop
+    loopSelection = null;
 
     constructor(asset) {
         super(asset);
@@ -60,6 +65,7 @@ export class SpriteEditor extends Editor {
         this.splitHor = this.jqRoot.find(".split-panel-hor");
         this.canvas = this.jqRoot.find(".canvasA");
         this.canvasB = this.jqRoot.find(".canvasB");
+        this.canvasC = this.jqRoot.find(".canvasC");
         this.canvasPos = this.jqRoot.find(".canvas-position");
         this.canvasScl = this.jqRoot.find(".canvas-owner");
         this.canvasView = this.jqRoot.find(".canvas-view");
@@ -69,6 +75,8 @@ export class SpriteEditor extends Editor {
         this.canvas[0].height = this.imageHeight;
         this.canvasB[0].width = this.imageWidth;
         this.canvasB[0].height = this.imageHeight;
+        this.canvasC[0].width = this.imageWidth;
+        this.canvasC[0].height = this.imageHeight;
     }
 
     getJqRoot() {
@@ -103,10 +111,18 @@ export class SpriteEditor extends Editor {
         } else {
             this.selectedTool.onSelected();
         }
+        if (!this.loopSelection) {
+            this.loopSelection = setInterval((e) => {
+                this.toolSelect.animate();
+            }, 200);
+        }
     }
 
     onHide() {
-
+        if (this.loopSelection) {
+            clearInterval(this.loopSelection);
+            this.loopSelection = null;
+        }
     }
 
     onRemove() {
@@ -118,6 +134,10 @@ export class SpriteEditor extends Editor {
 
     getTempContext() {
         return this.canvasContextB;
+    }
+
+    getSelectionContext() {
+        return this.canvasContextC;
     }
 
     configureToolbar() {
@@ -179,6 +199,7 @@ export class SpriteEditor extends Editor {
 
         this.canvasContext = this.canvas[0].getContext("2d");
         this.canvasContextB = this.canvasB[0].getContext("2d");
+        this.canvasContextC = this.canvasC[0].getContext("2d");
     }
 
     configureLayers() {
@@ -272,10 +293,10 @@ export class SpriteEditor extends Editor {
 
             this.canvasPosition({x: bScreenX - screenX, y: bScreenY - screenY});
         }
-        this.updateCanvasCursor(pos);
         if (this.dragPaint && this.selectedTool) {
             this.selectedTool.mouseMove(this.dragPaintPos, this.dragPaintCol);
         }
+        this.updateCanvasCursor(pos);
     }
 
     canvasPosition(posA, posB) {
@@ -319,6 +340,7 @@ export class SpriteEditor extends Editor {
         });
         this.canvas.css("transform", "scale(" + this.zoomStep + ")");
         this.canvasB.css("transform", "scale(" + this.zoomStep + ")");
+        this.canvasC.css("transform", "scale(" + this.zoomStep + ")");
 
         let bgSize = 16;
         if (this.zoomStep >= 4 && this.zoomStep < 12) {
@@ -350,7 +372,7 @@ export class SpriteEditor extends Editor {
 
     updateCanvasCursor(pos) {
         if (this.colorMenu.dropper) {
-            this.canvasView.css("cursor", "default");
+            this.canvasView.css("cursor", "url(cursor-dropper.png) 2 17, default");
             this.canvasCursor.css("display", "none");
         } else {
             this.selectedTool.updateCanvasCursor(pos);

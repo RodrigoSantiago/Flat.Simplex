@@ -54,6 +54,7 @@ export class SpriteToolBrush extends SpriteTool {
         this.hardness = config.hardness;
         this.flow = config.flow;
         this.color = "#000000FF";
+        this.clipping = false;
 
         this.ctx = ctx;
         ctx.fillStyle = "#FFFFFF";
@@ -115,6 +116,7 @@ export class SpriteToolBrush extends SpriteTool {
         this.color = color.length === 9 ? color : color + "FF";
         this.alpha = alpha;
         this.dist = 0;
+        this.clipping = this.editor.selectionClip;
 
         this.ctx = ctxTemp;
         this.ctxFinal = ctx;
@@ -139,6 +141,7 @@ export class SpriteToolBrush extends SpriteTool {
 
         this.prevPos = pos;
         this.drawBrush(pos.x, pos.y);
+        this.clip();
     }
 
     mouseMove(pos) {
@@ -153,10 +156,20 @@ export class SpriteToolBrush extends SpriteTool {
             this.drawBrushLine(this.prevPos, pos);
         }
         this.prevPos = pos;
+        this.clip();
     }
 
     mouseUp(pos) {
 
+    }
+
+    clip() {
+        if (this.clipping) {
+            let p = this.ctx.globalCompositeOperation;
+            this.ctx.globalCompositeOperation = "destination-in";
+            this.ctx.drawImage(this.editor.getSelectionContext().canvas, 0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+            this.ctx.globalCompositeOperation = p;
+        }
     }
 
     drawBrush(x, y) {

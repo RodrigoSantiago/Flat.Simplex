@@ -6,6 +6,7 @@ export class Editor {
     asset;
 
     clearEvents = [];
+    loopEvents = [];
 
     constructor(asset) {
         this.assetType = asset.type;

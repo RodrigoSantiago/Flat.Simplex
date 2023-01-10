@@ -87,11 +87,7 @@ export class TabView {
         });
         this.jqHeader.append(tab.jqTab);
         this.tabList.push(tab);
-        if (this.tabList.length === 1) {
-            this.selectTab(tab);
-        } else {
-            this.selectTab(tab);
-        }
+        this.selectTab(tab);
     }
 
     removeTab(tab) {
@@ -100,7 +96,7 @@ export class TabView {
             if (this.tabList.length > 0) {
                 this.selectTab(this.tabList[Math.max(this.tabList.length - 1, index)]);
             } else {
-                this.selectedTab = null;
+                this.selectTab(null);
             }
         }
         tab.jqContent.onRemove?.();
@@ -114,17 +110,21 @@ export class TabView {
 
     selectTab(tab) {
         if (this.selectedTab !== tab) {
-            tab.jqTab.addClass("selected");
             if (this.selectedTab !== null) {
                 this.selectedTab.jqTab.removeClass("selected");
                 this.selectedTab.jqContent.onHide?.();
                 this.selectedTab.jqContent.detach();
             }
             this.selectedTab = tab;
-            this.jqBody.append(tab.jqContent);
-            tab.jqContent.onShow?.();
+            if (tab) {
+                tab.jqTab.addClass("selected");
+                this.jqBody.append(tab.jqContent);
+                tab.jqContent.onShow?.();
+            }
         }
-        this.scrollToTab(tab);
+        if (tab) {
+            this.scrollToTab(tab);
+        }
         this.onResize();
     }
 

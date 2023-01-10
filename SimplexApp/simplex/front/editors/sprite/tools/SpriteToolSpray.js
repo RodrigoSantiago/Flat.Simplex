@@ -43,6 +43,7 @@ export class SpriteToolSpray extends SpriteToolBrush {
         this.opacity = config.flow;
         this.color = "#000000" + Math.round(255 * (this.opacity * 0.5 + 0.25)).toString(16);
         this.dist = Math.min(Math.max(1, this.size / 2), 5);
+        this.clipping = false;
         this.updateBrushCanvas();
 
         this.ctx = this.getTmpCanvas().getContext("2d");
@@ -80,6 +81,7 @@ export class SpriteToolSpray extends SpriteToolBrush {
         this.color = hex.substring(0, 7) + Math.round(a * (this.opacity * 0.5 + 0.25)).toString(16);
         this.alpha = alpha;
         this.dist = 0;
+        this.clipping = this.editor.selectionClip;
 
         this.ctx = ctxTemp;
         this.ctxFinal = ctx;
@@ -96,12 +98,18 @@ export class SpriteToolSpray extends SpriteToolBrush {
     }
 
     drawBrush(x, y) {
-        super.drawBrush(x, y);
+        let px = Math.round(x - this.size / 2);
+        let py = Math.round(y - this.size / 2);
+
+        this.ctx.drawImage(this.brushCanvas, 0, 0, this.size, this.size, px, py, this.size, this.size);
+
         this.ctx.globalCompositeOperation = "lighter";
         this.ctx.fillStyle = "#00000001";
         this.ctx.beginPath();
         this.ctx.ellipse(x, y, this.size / 2 - 2, this.size / 2 - 2, 0, 0, Math.PI * 2);
         this.ctx.fill();
+        this.ctx.globalCompositeOperation = "source-atop";
+
         this.ctx.globalCompositeOperation = "source-atop";
         this.ctx.fillStyle = this.color.substring(0, 7) + "FF";
         this.ctx.beginPath();
@@ -109,6 +117,7 @@ export class SpriteToolSpray extends SpriteToolBrush {
         this.ctx.fill();
         this.ctx.globalCompositeOperation = "source-over";
 
+        this.clip();
 
         if (this.interval !== null) {
             clearTimeout(this.interval);
