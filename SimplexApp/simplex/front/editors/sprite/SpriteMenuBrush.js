@@ -5,6 +5,8 @@ export class SpriteMenuBrush extends SpriteMenu {
     brushSize = 50;
     brushHardness = 80;
     brushFlow = 10;
+    option = false;
+    selectionMode = 1;
 
     interval = null;
 
@@ -23,6 +25,12 @@ export class SpriteMenuBrush extends SpriteMenu {
         this.jqFlowText = jqDragView.find(".brush-text-flow");
         this.jqImage = jqDragView.find(".brush-image");
         this.jqOptions = jqDragView.find(".brush-options");
+        this.jqOptions.on("input", (e) => this.setOptionMode(null, this.jqOptions[0].checked));
+
+        this.jqMode = jqDragView.find(".brush-mode");
+        this.jqMode.find(".mode-1").on("click", (e) => this.setSelectionMode(1));
+        this.jqMode.find(".mode-2").on("click", (e) => this.setSelectionMode(2));
+        this.jqMode.find(".mode-3").on("click", (e) => this.setSelectionMode(3));
         jqDragView.find(".close-view i").click((e) => {
             this.hide();
         });
@@ -62,16 +70,38 @@ export class SpriteMenuBrush extends SpriteMenu {
         ctx.globalCompositeOperation = "source-over";
         ctx.globalAlpha = 1;
         ctx.imageSmoothingEnabled = true;
+
+        let left = this.editor.canvasCursor.css("left");
+        let top = this.editor.canvasCursor.css("top");
+        this.editor.updateCanvasCursor({x: left, y: top});
     }
 
     setOptionMode(text, selected) {
+        this.option = selected;
+        this.jqOptions[0].checked = selected;
         this.jqImage.css("display", "none");
         this.jqOptions.css("display", "");
+        this.jqMode.css("display", "none");
+        this.delayUpdatePreview();
     }
 
     setImageMode() {
         this.jqImage.css("display", "");
         this.jqOptions.css("display", "none");
+        this.jqMode.css("display", "none");
+        this.delayUpdatePreview();
+    }
+
+    setSelectionMode(mode) {
+        this.selectionMode = mode;
+        this.jqImage.css("display", "none");
+        this.jqOptions.css("display", "none");
+        this.jqMode.css("display", "");
+        this.jqMode.find(".mode-1").removeClass("selected");
+        this.jqMode.find(".mode-2").removeClass("selected");
+        this.jqMode.find(".mode-3").removeClass("selected");
+        this.jqMode.find(".mode-" + mode).addClass("selected");
+        this.delayUpdatePreview();
     }
 
     size(value) {
@@ -146,7 +176,9 @@ export class SpriteMenuBrush extends SpriteMenu {
             hardness: this.brushHardness / 100,
             flow: this.brushFlow / 100,
             image: null,
-            replace: false
+            option: this.option,
+            selectionMode : this.selectionMode
+
         }
     }
 }

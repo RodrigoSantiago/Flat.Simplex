@@ -168,7 +168,7 @@ export class SpriteEditor extends Editor {
         this.toolMenus.push(this.gradMenu);
         this.dropLine = this.jqRoot.find(".sprite-drop-line");
 
-        this.toolSelect = new SpriteToolSelect(this, this.jqRoot.find(".tool-select"));
+        this.toolSelect = new SpriteToolSelect(this, this.jqRoot.find(".tool-select"), this.brushMenu);
         this.toolPencil = new SpriteToolPencil(this, this.jqRoot.find(".tool-pencil"), this.brushMenu);
         this.toolBrush = new SpriteToolBrush(this, this.jqRoot.find(".tool-brush"), this.brushMenu);
         this.toolSpray = new SpriteToolSpray(this, this.jqRoot.find(".tool-spray"), this.brushMenu);
@@ -194,8 +194,8 @@ export class SpriteEditor extends Editor {
             let off = this.canvasView.offset();
             this.updateCanvasCursor({x: e.pageX - off.left, y: e.pageY - off.top});
         });
-        this.canvasView.mouseleave(e => this.canvasCursor.css("display", "none"));
-        this.canvasView.mouseenter(e => this.canvasCursor.css("display", ""));
+        this.canvasView.mouseleave(e => this.canvasCursor.addClass("cursor-out"));
+        this.canvasView.mouseenter(e => this.canvasCursor.removeClass("cursor-out"));
 
         this.canvasContext = this.canvas[0].getContext("2d");
         this.canvasContextB = this.canvasB[0].getContext("2d");
@@ -239,7 +239,7 @@ export class SpriteEditor extends Editor {
             } else if (e.button === 2) {
                 this.dragPaintCol = this.altColor;
             }
-            this.toolStart(this.dragPaintCol, e.button === 0 ? this.alpha : this.altAlpha);
+            this.toolStart(this.dragPaintCol, e.button === 0 ? this.alpha : this.altAlpha, e.ctrlKey, e.altKey, e.shiftKey);
             this.selectedTool.mouseDown(this.dragPaintPos);
         }
     }
@@ -545,7 +545,7 @@ export class SpriteEditor extends Editor {
 
     // Historic
 
-    toolStart(pointerColor, alpha) {
+    toolStart(pointerColor, alpha, ctrl, alt, shift) {
         this.canvas.css({"visibility" : "visible", "z-index" : this.selectedLayer.zindex+1});
         this.canvasB.css({"visibility" : "visible", "z-index" : this.selectedLayer.zindex+2, "opacity" : alpha / 255});
         this.selectedLayer.jqImg.css({"display" : "none"});
@@ -558,7 +558,7 @@ export class SpriteEditor extends Editor {
         }
 
         this.canvasBaked = false;
-        this.selectedTool.start(pointerColor, alpha, this.getMainContext(), this.getTempContext());
+        this.selectedTool.start(pointerColor, alpha, this.getMainContext(), this.getTempContext(), ctrl, alt, shift);
     }
 
     toolEnd() {

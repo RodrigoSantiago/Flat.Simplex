@@ -34,6 +34,8 @@ export class SpriteToolBucket extends SpriteTool {
         this.palette = this.configMenu.palette;
         this.gradient = this.configMenu.getGradient();
         this.clipping = this.editor.selectionClip;
+        this.tolerance2 = this.tolerance * this.tolerance;
+        this.toleranceA2 = this.tolerance === 0 ? 0 : this.tolerance * 1.5;
     }
 
     end() {
@@ -158,16 +160,14 @@ export class SpriteToolBucket extends SpriteTool {
     fill() {
         let w = this.ctx.canvas.width;
         let h = this.ctx.canvas.height;
-        for (let y = 0; y < h; y++) {
-            for (let x = 0; x < w; x++) {
-                let p = x * 4 + (y * w * 4);
-                let r = this.imageData[p];
-                let g = this.imageData[p + 1];
-                let b = this.imageData[p + 2];
-                let a = this.imageData[p + 3];
-                if (this.isTolerable(r, g, b, a)) {
-                    this.setColor(p);
-                }
+        let wh = w * h * 4;
+        for (let i = 0; i < wh; i+= 4) {
+            let r = this.imageData[i];
+            let g = this.imageData[i + 1];
+            let b = this.imageData[i + 2];
+            let a = this.imageData[i + 3];
+            if (this.isTolerable(r, g, b, a)) {
+                this.setColor(i);
             }
         }
     }
@@ -251,8 +251,8 @@ export class SpriteToolBucket extends SpriteTool {
             (g - this.pointG) * (g - this.pointG) +
             (b - this.pointB) * (b - this.pointB)
         );
-        if (dist <= this.tolerance * this.tolerance) {
-            return this.blendAlpha || Math.abs(a - this.pointA) <= this.tolerance;
+        if (dist <= this.tolerance2) {
+            return this.blendAlpha || Math.abs(a - this.pointA) <= this.toleranceA2;
         }
         return false;
     }

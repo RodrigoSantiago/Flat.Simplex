@@ -158,7 +158,7 @@ export class SpriteTool {
         }
     }
 
-    start(color, alpha, ctx, ctxTemp) {
+    start(color, alpha, ctx, ctxTemp, ctrl, alt, shift) {
 
     }
 

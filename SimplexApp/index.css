@@ -233,7 +233,7 @@ html, body {
   user-select: none;
 }
 
-.drawer-header, .split-panel-hor, .draggable-view.horizontal, .frames-view .frame-buttons .frame-add-btns, .frames-view .frame-buttons .frame-anim-btns, .frames-view.vertical .frame-buttons .frame-add-btns, .frames-view.vertical .frame-buttons .frame-anim-btns, .frames-view.horizontal .frames-container, .frames-view.horizontal .frame-buttons, .layers-view.horizontal .layers-container, .layers-view.horizontal .layer-add-button, .brush-view.vertical .brush-icons, .brush-view.vertical .brush-options .brush-option, .brush-view.horizontal .brush-container, .gradient-view .gradient-options, .gradient-view .gradient-options .gradient-option, .toolbar, .toolbar > .menu, .toolbar > .title, .tab-view, .tab-view .tab-scroll, .tab-view .tab-header, .tab-view .tab-page, .dialog .dialog-footer, .dropdown > .menu-item:not(.separator), .tree-view .tree-item, .tree-view .ident, .main, .main > .navigator-split > .content, .hbox {
+.drawer-header, .split-panel-hor, .draggable-view.horizontal, .frames-view .frame-buttons .frame-add-btns, .frames-view .frame-buttons .frame-anim-btns, .frames-view.vertical .frame-buttons .frame-add-btns, .frames-view.vertical .frame-buttons .frame-anim-btns, .frames-view.horizontal .frames-container, .frames-view.horizontal .frame-buttons, .layers-view.horizontal .layers-container, .layers-view.horizontal .layer-add-button, .brush-view .brush-icons, .brush-view .brush-options .brush-option, .brush-view .brush-mode .brush-modes, .brush-view.horizontal .brush-container, .gradient-view .gradient-options, .gradient-view .gradient-options .gradient-option, .toolbar, .toolbar > .menu, .toolbar > .title, .tab-view, .tab-view .tab-scroll, .tab-view .tab-header, .tab-view .tab-page, .dialog .dialog-footer, .dropdown > .menu-item:not(.separator), .tree-view .tree-item, .tree-view .ident, .main, .main > .navigator-split > .content, .hbox {
   display: flex;
   flex-direction: row;
 }
@@ -250,12 +250,12 @@ html, body {
   text-align: center;
 }
 
-.left-list, .floating-creation, .drawer, .negative-floating, .editor, .split-panel-ver, .draggable-view.vertical, .frames-view .frame-buttons, .frames-view.vertical .frames-container, .frames-view.vertical .frame-buttons, .frames-view.horizontal .frame-buttons .frame-add-btns, .frames-view.horizontal .frame-buttons .frame-anim-btns, .layers-view.vertical .layers-container, .layers-view.vertical .layer-add-button, .brush-view.vertical .brush-container, .brush-view.vertical .brush-sliders, .brush-view.vertical .brush-options, .color-picker-view .brush-container, .main > .navigator-split, .main > .navigator, .main > .navigator .drawer, main, .vbox, html, body {
+.left-list, .floating-creation, .drawer, .negative-floating, .editor, .split-panel-ver, .draggable-view.vertical, .frames-view .frame-buttons, .frames-view.vertical .frames-container, .frames-view.vertical .frame-buttons, .frames-view.horizontal .frame-buttons .frame-add-btns, .frames-view.horizontal .frame-buttons .frame-anim-btns, .layers-view.vertical .layers-container, .layers-view.vertical .layer-add-button, .brush-view .brush-container, .brush-view .brush-sliders, .brush-view .brush-options, .brush-view .brush-mode, .color-picker-view .brush-container, .main > .navigator-split, .main > .navigator, .main > .navigator .drawer, main, .vbox, html, body {
   display: flex;
   flex-direction: column;
 }
 
-.brush-view.vertical .brush-image, .color-picker-dialog, .dropdown, .vbox-center {
+.brush-view .brush-image, .color-picker-dialog, .dropdown, .vbox-center {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -2004,20 +2004,20 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
   mix-blend-mode: difference;
 }
 
-.brush-view.vertical {
+.brush-view {
   align-items: center;
   min-width: 96px;
   max-width: 96px;
   height: 100%;
   max-height: 100%;
 }
-.brush-view.vertical .brush-container {
+.brush-view .brush-container {
   overflow-x: hidden;
   overflow-y: auto;
   width: 96px;
   height: 100%;
 }
-.brush-view.vertical .brush-sliders {
+.brush-view .brush-sliders {
   align-items: center;
   justify-content: space-between;
   width: 128px;
@@ -2026,31 +2026,31 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
   margin-bottom: 32px;
   transform: rotate(-90deg);
 }
-.brush-view.vertical .brush-sliders .slider {
+.brush-view .brush-sliders .slider {
   margin: 8px 0 8px 0;
 }
-.brush-view.vertical .brush-icons {
+.brush-view .brush-icons {
   width: 100%;
   align-items: center;
   justify-content: space-between;
   padding: 0 8px 0 8px;
 }
-.brush-view.vertical .brush-icons .brush-icon > i {
+.brush-view .brush-icons .brush-icon > i {
   color: var(--on-color);
   font-size: 18px;
 }
-.brush-view.vertical .brush-icons .brush-text {
+.brush-view .brush-icons .brush-text {
   width: 18px;
   text-align: center;
 }
-.brush-view.vertical .brush-icons > input[type=text] {
+.brush-view .brush-icons > input[type=text] {
   font-size: 10px;
   color: var(--on-color);
 }
-.brush-view.vertical .brush-icons > input[type=text]:hover, .brush-view.vertical .brush-icons > input[type=text]:active, .brush-view.vertical .brush-icons > input[type=text]:focus {
+.brush-view .brush-icons > input[type=text]:hover, .brush-view .brush-icons > input[type=text]:active, .brush-view .brush-icons > input[type=text]:focus {
   background-color: var(--on-color-a3);
 }
-.brush-view.vertical .brush-preview {
+.brush-view .brush-preview {
   display: flex;
   width: 80px;
   height: 80px;
@@ -2058,38 +2058,48 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
   background-image: url("pages/canvas-bg.png");
   background-size: 16px;
 }
-.brush-view.vertical .brush-preview canvas {
+.brush-view .brush-preview canvas {
   width: 100%;
   height: 100%;
 }
-.brush-view.vertical .brush-options {
+.brush-view .brush-divider {
+  width: 100%;
+  height: 1px;
+  background-color: #424242;
+  margin: 8px 0 8px 0;
+}
+.brush-view .brush-options {
   width: 100%;
   justify-content: center;
   align-items: center;
 }
-.brush-view.vertical .brush-options .brush-option {
+.brush-view .brush-options .brush-option {
   width: calc(100% - 16px);
   height: 24px;
   align-items: center;
   font-size: 10px;
   color: var(--on-color);
 }
-.brush-view.vertical .brush-options .brush-option span {
+.brush-view .brush-options .brush-option span {
   margin-left: 8px;
   line-height: 14px;
 }
-.brush-view.vertical .brush-divider {
-  width: 100%;
-  height: 1px;
-  background-color: #424242;
-  margin: 8px 0 8px 0;
-}
-.brush-view.vertical .brush-image {
+.brush-view .brush-image {
   width: 100%;
 }
-.brush-view.vertical .brush-image .button {
+.brush-view .brush-image .button {
   width: calc(100% - 16px);
   margin: 0 8px 0 8px;
+}
+.brush-view .brush-mode {
+  width: 100%;
+}
+.brush-view .brush-mode .brush-modes .button {
+  width: 16px;
+  margin: 0 4px 0 4px;
+}
+.brush-view .brush-mode .brush-modes .button.selected {
+  background-color: #9e9e9e;
 }
 
 .brush-view.horizontal {
@@ -2478,6 +2488,10 @@ input[type=checkbox].disabled {
   mix-blend-mode: difference;
   border-image: repeating-linear-gradient(to top right, white, white 3px, #4F4F4F 3px, #4F4F4F 6px) 1;
   box-shadow: 0 0 0 #404040;
+}
+
+.cursor-out {
+  display: none !important;
 }
 
 * {

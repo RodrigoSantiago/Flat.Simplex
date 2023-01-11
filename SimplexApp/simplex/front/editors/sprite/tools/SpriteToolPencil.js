@@ -2,6 +2,8 @@ import {SpriteToolBrush} from "./SpriteToolBrush.js";
 
 export class SpriteToolPencil extends SpriteToolBrush {
 
+    replace = false;
+
     constructor(editor, jqButton, configMenu) {
         super(editor, jqButton, configMenu);
         this.pixelMode = true;
@@ -18,7 +20,7 @@ export class SpriteToolPencil extends SpriteToolBrush {
         this.editor.brushMenu.setFlowEnabled(false);
         this.editor.brushMenu.setHardness(this.hardness);
         this.editor.brushMenu.setHardnessEnabled(false);
-        this.editor.brushMenu.setOptionMode("Replace", false);
+        this.editor.brushMenu.setOptionMode("Replace", this.replace);
     }
 
     updatePreview(ctx) {
@@ -58,7 +60,9 @@ export class SpriteToolPencil extends SpriteToolBrush {
     }
 
     start(color, alpha, ctx, ctxTemp) {
+        this.replace = this.editor.getBrushConfig().option;
         super.start(color, alpha, ctx, ctxTemp);
+
         this.ctx.filter = "url(#stroke-alpha-1)";
     }
 }

@@ -604,9 +604,6 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
 //<editor-fold desc="BRUSH">
 
 .brush-view {
-}
-
-.brush-view.vertical {
     align-items: center;
     min-width: 96px;
     max-width: 96px;
@@ -672,6 +669,14 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
             height: 100%;
         }
     }
+
+    .brush-divider {
+        width: 100%;
+        height: 1px;
+        background-color: $sprite-menu-line;
+        margin: 8px 0 8px 0;
+    }
+
     .brush-options {
         @extend %vbox;
         width: 100%;
@@ -690,18 +695,28 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
             }
         }
     }
-    .brush-divider {
-        width: 100%;
-        height: 1px;
-        background-color: $sprite-menu-line;
-        margin: 8px 0 8px 0;
-    }
+
     .brush-image {
         @extend %vbox-center;
         width: 100%;
         .button {
             width: calc(100% - 16px);
             margin: 0 8px 0 8px;
+        }
+    }
+
+    .brush-mode {
+        @extend %vbox;
+        width: 100%;
+        .brush-modes {
+            @extend %hbox;
+            .button {
+                width: 16px;
+                margin: 0 4px 0 4px;
+                &.selected {
+                    background-color: $sprite-menu-bg-active;
+                }
+            }
         }
     }
 }
@@ -1131,4 +1146,7 @@ input[type=checkbox].disabled {
     mix-blend-mode: difference;
     border-image: repeating-linear-gradient(to top right, white, white 3px, #4F4F4F 3px, #4F4F4F 6px) 1;
     box-shadow: 0 0 0 #404040;
+}
+.cursor-out {
+    display: none !important;
 }
