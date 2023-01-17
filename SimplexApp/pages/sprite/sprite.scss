@@ -1144,8 +1144,98 @@ input[type=checkbox].disabled {
     position: absolute;
     border: 1px dashed white;
     mix-blend-mode: difference;
-    border-image: repeating-linear-gradient(to top right, white, white 3px, #4F4F4F 3px, #4F4F4F 6px) 1;
+    border-image: repeating-linear-gradient(45deg, white, white 3px, #4F4F4F 3px, #4F4F4F 6px) 1;
     box-shadow: 0 0 0 #404040;
+}
+.sprite-scale-box {
+    position: absolute;
+    cursor: move;
+
+    img {
+        position: absolute;
+        width : 100%;
+        height: 100%;
+        pointer-events: none;
+    }
+
+    .sprite-scale-box-border {
+        position: absolute;
+        left:0;
+        right:0;
+        top:0;
+        bottom:0;
+        border: 1px solid white;
+        border-image: repeating-linear-gradient(45deg, white, white 3px, #4F4F4F 3px, #4F4F4F 6px) 1;
+        box-shadow: 0 0 0 #404040;
+        pointer-events: none;
+        z-index: 0;
+        mix-blend-mode: difference;
+    }
+
+    .sprite-pivot {
+        position: absolute;
+        width: 17px;
+        height: 17px;
+        padding: 4px;
+        border-radius: 100%;
+        transform: translate(-50%, -50%);
+        .sprite-pivot-handler {
+            width: 9px;
+            height: 9px;
+            background-color: $sprite-menu-bg;
+            border: 1px solid black;
+            border-radius: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        z-index: 1;
+    }
+
+    :nth-child(1) {
+        left: 0;
+        top:0;
+        cursor: nwse-resize;
+    }
+    :nth-child(2) {
+        left: 50%;
+        top:0;
+        cursor: ns-resize;
+    }
+    :nth-child(3) {
+        left: 100%;
+        top:0;
+        cursor: nesw-resize;
+    }
+    :nth-child(4) {
+        left: 0;
+        top:50%;
+        cursor: ew-resize;
+    }
+    :nth-child(5) {
+        left: 50%;
+        top: -32px;
+        cursor: move;
+    }
+    :nth-child(6) {
+        left: 100%;
+        top:50%;
+        cursor: ew-resize;
+    }
+    :nth-child(7) {
+        left: 0;
+        top:100%;
+        cursor: nesw-resize;
+    }
+    :nth-child(8) {
+        left: 50%;
+        top:100%;
+        cursor: ns-resize;
+    }
+    :nth-child(9) {
+        left: 100%;
+        top:100%;
+        cursor: nwse-resize;
+    }
 }
 .cursor-out {
     display: none !important;

@@ -3,7 +3,6 @@ import {Toolbar} from "../../Toolbar.js";
 import {SpriteTool} from "./tools/SpriteTool.js";
 import {SpriteToolPencil} from "./tools/SpriteToolPencil.js";
 import {SpriteToolBrush} from "./tools/SpriteToolBrush.js";
-import {SpriteMenu} from "./SpriteMenu.js";
 import {SpriteMenuLayers} from "./SpriteMenuLayers.js";
 import {SpriteMenuBrush} from "./SpriteMenuBrush.js";
 import {SpriteMenuFrames} from "./SpriteMenuFrames.js";
@@ -16,6 +15,7 @@ import {SpriteMenuTools} from "./SpriteMenuTools.js";
 import {SpriteToolColor} from "./tools/SpriteToolColor.js";
 import {SpriteMenuGradient} from "./SpriteMenuGradient.js";
 import {SpriteToolSelect} from "./tools/SpriteToolSelect.js";
+import {SpriteTransformBox} from "./SpriteTransformBox.js";
 
 export class SpriteEditor extends Editor {
     static pageModel = null;
@@ -40,6 +40,7 @@ export class SpriteEditor extends Editor {
     selectedLayer = null;
     selectedFrame = null;
     canvasLayer = null;
+    selectionBool = [];
 
     selectionClip = false;
 
@@ -77,6 +78,7 @@ export class SpriteEditor extends Editor {
         this.canvasB[0].height = this.imageHeight;
         this.canvasC[0].width = this.imageWidth;
         this.canvasC[0].height = this.imageHeight;
+        this.selectionBool = new Array(this.imageWidth * this.imageHeight).fill(false);
     }
 
     getJqRoot() {
@@ -123,6 +125,7 @@ export class SpriteEditor extends Editor {
             clearInterval(this.loopSelection);
             this.loopSelection = null;
         }
+        this.selectedTool?.onUnselected();
     }
 
     onRemove() {
@@ -178,6 +181,8 @@ export class SpriteEditor extends Editor {
         this.toolShapes = new SpriteTool(this, this.jqRoot.find(".tool-shapes"));
         this.toolText = new SpriteTool(this, this.jqRoot.find(".tool-text"));
         this.toolColor = new SpriteToolColor(this, this.jqRoot.find(".tool-color"), this.colorMenu);
+
+        this.tsBox = new SpriteTransformBox(this);
     }
 
     configureCanvas() {
@@ -185,7 +190,10 @@ export class SpriteEditor extends Editor {
         this.canvasZoom(1);
         this.canvasPosition({x: this.canvasView.width() / 2, y: this.canvasView.height() / 2});
 
-        this.canvasView.mousedown(e => this.canvasOnMouseDown(e));
+        this.canvasView.mousedown(e => {
+            if ($(e.target).closest('.sprite-scale-box').length) return;
+            this.canvasOnMouseDown(e)
+        });
         this.addWindowListener('mousemove', e => this.canvasOnMouseMove(e));
         this.addWindowListener('mouseup', e => this.canvasOnMouseUp(e));
         this.canvasView[0].addEventListener('wheel', e => this.canvasOnMouseScroll(e));
@@ -214,6 +222,8 @@ export class SpriteEditor extends Editor {
         };
         obj.x = Math.floor(obj.x);
         obj.y = Math.floor(obj.y);
+        obj.xf = obj.x;
+        obj.yf = obj.y;
         return obj;
     }
 
@@ -292,6 +302,7 @@ export class SpriteEditor extends Editor {
             let screenY = pixelCenterY * zoomAfter;
 
             this.canvasPosition({x: bScreenX - screenX, y: bScreenY - screenY});
+            this.tsBox.update(zoomBefore);
         }
         if (this.dragPaint && this.selectedTool) {
             this.selectedTool.mouseMove(this.dragPaintPos, this.dragPaintCol);

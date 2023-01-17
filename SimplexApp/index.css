@@ -2486,8 +2486,95 @@ input[type=checkbox].disabled {
   position: absolute;
   border: 1px dashed white;
   mix-blend-mode: difference;
-  border-image: repeating-linear-gradient(to top right, white, white 3px, #4F4F4F 3px, #4F4F4F 6px) 1;
+  border-image: repeating-linear-gradient(45deg, white, white 3px, #4F4F4F 3px, #4F4F4F 6px) 1;
   box-shadow: 0 0 0 #404040;
+}
+
+.sprite-scale-box {
+  position: absolute;
+  cursor: move;
+}
+.sprite-scale-box img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.sprite-scale-box .sprite-scale-box-border {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  border: 1px solid white;
+  border-image: repeating-linear-gradient(45deg, white, white 3px, #4F4F4F 3px, #4F4F4F 6px) 1;
+  box-shadow: 0 0 0 #404040;
+  pointer-events: none;
+  z-index: 0;
+  mix-blend-mode: difference;
+}
+.sprite-scale-box .sprite-pivot {
+  position: absolute;
+  width: 17px;
+  height: 17px;
+  padding: 4px;
+  border-radius: 100%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+}
+.sprite-scale-box .sprite-pivot .sprite-pivot-handler {
+  width: 9px;
+  height: 9px;
+  background-color: #757575;
+  border: 1px solid black;
+  border-radius: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+.sprite-scale-box :nth-child(1) {
+  left: 0;
+  top: 0;
+  cursor: nwse-resize;
+}
+.sprite-scale-box :nth-child(2) {
+  left: 50%;
+  top: 0;
+  cursor: ns-resize;
+}
+.sprite-scale-box :nth-child(3) {
+  left: 100%;
+  top: 0;
+  cursor: nesw-resize;
+}
+.sprite-scale-box :nth-child(4) {
+  left: 0;
+  top: 50%;
+  cursor: ew-resize;
+}
+.sprite-scale-box :nth-child(5) {
+  left: 50%;
+  top: -32px;
+  cursor: move;
+}
+.sprite-scale-box :nth-child(6) {
+  left: 100%;
+  top: 50%;
+  cursor: ew-resize;
+}
+.sprite-scale-box :nth-child(7) {
+  left: 0;
+  top: 100%;
+  cursor: nesw-resize;
+}
+.sprite-scale-box :nth-child(8) {
+  left: 50%;
+  top: 100%;
+  cursor: ns-resize;
+}
+.sprite-scale-box :nth-child(9) {
+  left: 100%;
+  top: 100%;
+  cursor: nwse-resize;
 }
 
 .cursor-out {

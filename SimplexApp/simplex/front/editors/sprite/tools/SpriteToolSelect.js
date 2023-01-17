@@ -1,9 +1,10 @@
-import {SpriteTool} from "./SpriteTool.js";
 import {SpriteToolBrush} from "./SpriteToolBrush.js";
+import {Dialogs} from "../../../Dialogs.js";
 
 const Square = 1;
 const Brush = 2;
 const Magic = 3;
+const Transform = 4;
 
 export class SpriteToolSelect extends SpriteToolBrush {
 
@@ -12,11 +13,13 @@ export class SpriteToolSelect extends SpriteToolBrush {
     additiveView = "none";
     started = false;
     selectMode = 1;
+    boolBrush = [];
 
     constructor(editor, jqButton, configMenu) {
         super(editor, jqButton, configMenu);
         this.pixelMode = true;
         this.jqBox = $("<div class='sprite-selection-box'></div>");
+
         this.img = new Image();
         this.img.src = "pages/selection-bg.png";
         this.editor.addWindowListener("keydown", (e) => {
@@ -33,6 +36,7 @@ export class SpriteToolSelect extends SpriteToolBrush {
                 this.additiveView = "none";
             }
         });
+        this.boolBrush = new Array(100 * 100);
     }
 
     onSelected() {
@@ -46,9 +50,35 @@ export class SpriteToolSelect extends SpriteToolBrush {
         this.editor.brushMenu.setSelectionMode(this.selectMode);
     }
 
+    onUnselected() {
+
+    }
+
     updateBrushCanvas() {
         this.brushCanvas = this.getBrushCanvas();
         this.generatePixelImage(this.brushCanvas);
+    }
+
+    generatePixelImage(canvas) {
+        for (let i = 0; i < 100 * 100; i++) {
+            this.boolBrush[i] = false;
+        }
+        let ctx = canvas.getContext("2d");
+        this.resetContext(ctx);
+        ctx.clearRect(0, 0, 100, 100);
+        ctx.fillStyle = this.color;
+
+        let offset = this.size / 2 - 0.5;
+        let r2 = this.size === 3 ? 1.2 : (this.size / 2 + 0.1) * (this.size / 2 + 0.1);
+        for (let x = 0; x < this.size; x++) {
+            for (let y = 0; y < this.size; y++) {
+                let dist = (x - offset) * (x - offset) + (y - offset) * (y - offset);
+                if (dist < r2) {
+                    ctx.fillRect(x, y, 1, 1);
+                    this.boolBrush[x + y * 100] = true;
+                }
+            }
+        }
     }
 
     updateCanvasCursor(pos) {
@@ -62,6 +92,16 @@ export class SpriteToolSelect extends SpriteToolBrush {
         } else if ((this.started && this.additive === "sub") || (!this.started && this.additiveView === "sub")) {
             this.editor.canvasView.css("cursor", "url(cursor-cross-sub.png) 10 10, crosshair");
         } else {
+            if (!this.started) {
+                let canvasPos = this.editor.convertCanvasPosition({pageX : Dialogs.mouseX, pageY : Dialogs.mouseY});
+                if (canvasPos.x >= 0 && canvasPos.x < this.editor.imageWidth &&
+                    canvasPos.y >= 0 && canvasPos.y < this.editor.imageHeight) {
+                    if (this.editor.selectionBool[canvasPos.y * this.editor.imageWidth + canvasPos.x]) {
+                        this.editor.canvasView.css("cursor", "move");
+                        return;
+                    }
+                }
+            }
             this.editor.canvasView.css("cursor", "url(cursor-cross.png) 10 10, crosshair");
         }
     }
@@ -150,127 +190,240 @@ export class SpriteToolSelect extends SpriteToolBrush {
     }
 
     mouseDown(pos) {
-        if (this.additive === "none") {
-            this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+        if (this.editor.tsBox.isOpen) {
+            this.mouseSaveTransform(this.editor.tsBox);
         }
-        if (this.selectMode === Square) {
-            this.initPos = pos;
-            this.editor.canvasView.append(this.jqBox);
-            let w = this.ctx.canvas.width;
-            let h = this.ctx.canvas.height;
-            let offset = this.editor.canvasPos.offset();
-            offset.left += (this.initPos.x - w / 2) * this.editor.zoomStep;
-            offset.top += (this.initPos.y - h / 2) * this.editor.zoomStep;
-            this.jqBox.offset(offset);
-            this.jqBox.css({width : 0, height : 0});
 
+        if (this.additive === "none" &&
+            pos.x >= 0 && pos.x < this.editor.imageWidth &&
+            pos.y >= 0 && pos.y < this.editor.imageHeight &&
+            this.editor.selectionBool[pos.y * this.editor.imageWidth + pos.x]) {
+            this.selectMode = Transform;
+            this.mouseDownTransform(pos);
+        } else if (this.selectMode === Square) {
+            this.mouseDownSquare(pos);
         } else if (this.selectMode === Brush) {
-            super.mouseDown(pos);
-
-        } else {
-            let w = this.ctx.canvas.width;
-            let h = this.ctx.canvas.height;
-            let imageDataA = this.ctx.getImageData(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-            let dataA = imageDataA.data;
-            let imageDataB = this.ctxMagic.getImageData(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-            let dataB = imageDataB.data;
-
-            let clear = true;
-            let p = pos.x * 4 + (pos.y * this.ctxMagic.canvas.width * 4);
-            this.pointR = dataB[p];
-            this.pointG = dataB[p + 1];
-            this.pointB = dataB[p + 2];
-            this.pointA = dataB[p + 3];
-
-            let val = this.additive === "sub" ? 0 : 255;
-            let wh =  w * h * 4;
-            for (let i = 0; i < wh; i += 4) {
-                let r = dataB[i];
-                let g = dataB[i + 1];
-                let b = dataB[i + 2];
-                let a = dataB[i + 3];
-                if (this.isTolerable(r, g, b, a)) {
-                    dataA[i] = val;
-                    dataA[i + 1] = val;
-                    dataA[i + 2] = val;
-                    dataA[i + 3] = val;
-                }
-                if (dataA[i + 3] !== 0) {
-                    clear = false;
-                }
-            }
-            this.ctx.putImageData(imageDataA, 0, 0);
-            this.editor.selectionClip = !clear;
+            this.mouseDownBrush(pos);
+        } else if (this.selectMode === Magic) {
+            this.mouseDownMagic(pos);
         }
     }
 
     mouseMove(pos) {
         if (this.selectMode === Square) {
-            let w = this.ctx.canvas.width;
-            let h = this.ctx.canvas.height;
-            if (pos.x > this.initPos.x) pos.x++;
-            if (pos.y > this.initPos.y) pos.y++;
-
-            let currentOff = this.editor.canvasPos.offset();
-            currentOff.left += (this.initPos.x - w / 2) * this.editor.zoomStep;
-            currentOff.top += (this.initPos.y - h / 2) * this.editor.zoomStep;
-
-            let offset = this.editor.canvasPos.offset();
-            offset.left += (pos.x - w / 2) * this.editor.zoomStep;
-            offset.top += (pos.y - h / 2) * this.editor.zoomStep;
-
-            this.jqBox.offset({
-                left: Math.min(offset.left, currentOff.left),
-                top: Math.min(offset.top, currentOff.top)
-            });
-
-            let distW = Math.abs(offset.left - currentOff.left);
-            let distH = Math.abs(offset.top - currentOff.top);
-            this.jqBox.css({width: distW, height: distH});
+            this.mouseMoveSquare(pos);
         } else if (this.selectMode === Brush) {
-            super.mouseMove(pos);
-        } else {
-            // Already Done
+            this.mouseMoveBrush(pos);
+        } else if (this.selectMode === Magic) {
+            this.mouseMoveMagic(pos);
         }
     }
 
     mouseUp(pos) {
         if (this.selectMode === Square) {
-            this.jqBox.detach();
-            if (pos.x > this.initPos.x) pos.x++;
-            if (pos.y > this.initPos.y) pos.y++;
-            let x1 = Math.min(this.initPos.x, pos.x);
-            let w = Math.abs(this.initPos.x - pos.x);
-            let y1 = Math.min(this.initPos.y, pos.y);
-            let h = Math.abs(this.initPos.y - pos.y);
-            if (w > 1 && h > 1) {
-                this.editor.selectionClip = true;
-                if (this.additive === "sub") {
-                    this.ctx.globalCompositeOperation = "destination-out";
-                }
-                this.ctx.fillStyle = this.fillPattern;
-                this.ctx.fillRect(x1, y1, w, h);
-            } else if (this.additive === "none") {
-                this.editor.selectionClip = false;
-                this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-            }
+            this.mouseUpSquare(pos);
         } else if (this.selectMode === Brush) {
+            this.mouseUpBrush(pos);
+        } else if (this.selectMode === Magic) {
+            this.mouseUpMagic(pos);
+        }
+    }
+
+    mouseDownTransform(pos) {
+        let mix = this.imgWidth();
+        let miy = this.imgHeight();
+        let max = 0;
+        let may = 0;
+        for (let i = 0; i < this.imgHeight(); i++) {
+            let p = i * this.imgWidth();
+            for (let j = 0; j < this.imgWidth(); j++) {
+                if (this.editor.selectionBool[p + j]) {
+                    if (j < mix) mix = j;
+                    if (j > max) max = j;
+                    if (i < miy) miy = i;
+                    if (i > may) may = i;
+                }
+            }
+        }
+        max += 1;
+        may += 1;
+        this.clearSelect();
+        let canvas = document.createElement('canvas');
+        canvas.width = max - mix;
+        canvas.height = may - miy;
+        let ctx = canvas.getContext("2d");
+        ctx.drawImage(this.ctx.canvas, mix, miy, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
+        ctx.globalCompositeOperation = "source-in";
+        ctx.drawImage(this.ctxMagic.canvas, mix, miy, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
+        ctx.globalCompositeOperation = "source-over";
+
+        this.ctxMagic.globalCompositeOperation = "destination-out";
+        this.ctxMagic.drawImage(this.ctx.canvas, 0, 0, this.imgWidth(), this.imgHeight());
+        this.ctxMagic.globalCompositeOperation = "source-over";
+
+        let src = canvas.toDataURL();
+        this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+        this.editor.selectionClip = false;
+
+        this.editor.tsBox.open(pos, mix, miy, max - mix, may - miy, src);
+    }
+
+    mouseSaveTransform(tsBox) {
+        let w = Math.abs(tsBox.width * this.editor.zoomStep);
+        let h = Math.abs(tsBox.height * this.editor.zoomStep);
+        let x1 = ((tsBox.center.x) - w / 2) / this.editor.zoomStep + this.imgWidth() / 2;
+        let y1 = ((tsBox.center.y) - h / 2) / this.editor.zoomStep + this.imgHeight() / 2;
+        let x2 = ((tsBox.center.x) + w / 2) / this.editor.zoomStep + this.imgWidth() / 2;
+        let y2 = ((tsBox.center.y) + h / 2) / this.editor.zoomStep + this.imgHeight() / 2;
+
+        x1 = Math.round(x1);
+        y1 = Math.round(y1);
+        x2 = Math.round(x2);
+        y2 = Math.round(y2);
+        let cx = (x1 + x2) / 2;
+        let cy = (y1 + y2) / 2;
+
+        this.ctxMagic.translate(cx, cy);
+        this.ctxMagic.rotate(tsBox.angle);
+        this.ctxMagic.imageSmoothingEnabled = false;
+        this.ctxMagic.imageSmoothingQuality = 'low';
+        this.ctxMagic.drawImage(tsBox.jqImg[0], 0, 0, tsBox.startWidth, tsBox.startHeight, x1 - cx, y1 - cy, x2 - x1, y2 - y1);
+        this.ctxMagic.imageSmoothingQuality = 'high';
+        this.ctxMagic.imageSmoothingEnabled = true;
+        this.ctxMagic.resetTransform();
+        this.editor.tsBox.close();
+    }
+
+    mouseDownSquare(pos) {
+        if (this.additive === "none") {
+            this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+            this.clearSelect();
+        }
+        this.initPos = pos;
+        this.editor.canvasView.append(this.jqBox);
+        let w = this.ctx.canvas.width;
+        let h = this.ctx.canvas.height;
+        let offset = this.editor.canvasPos.offset();
+        offset.left += (this.initPos.x - w / 2) * this.editor.zoomStep;
+        offset.top += (this.initPos.y - h / 2) * this.editor.zoomStep;
+        this.jqBox.offset(offset);
+        this.jqBox.css({width : 0, height : 0});
+    }
+
+    mouseMoveSquare(pos) {
+        let w = this.ctx.canvas.width;
+        let h = this.ctx.canvas.height;
+        if (pos.x > this.initPos.x) pos.x++;
+        if (pos.y > this.initPos.y) pos.y++;
+
+        let currentOff = this.editor.canvasPos.offset();
+        currentOff.left += (this.initPos.x - w / 2) * this.editor.zoomStep;
+        currentOff.top += (this.initPos.y - h / 2) * this.editor.zoomStep;
+
+        let offset = this.editor.canvasPos.offset();
+        offset.left += (pos.x - w / 2) * this.editor.zoomStep;
+        offset.top += (pos.y - h / 2) * this.editor.zoomStep;
+
+        this.jqBox.offset({
+            left: Math.min(offset.left, currentOff.left),
+            top: Math.min(offset.top, currentOff.top)
+        });
+
+        let distW = Math.abs(offset.left - currentOff.left);
+        let distH = Math.abs(offset.top - currentOff.top);
+        this.jqBox.css({width: distW, height: distH});
+    }
+
+    mouseUpSquare(pos) {
+        this.jqBox.detach();
+        if (pos.x > this.initPos.x) pos.x++;
+        if (pos.y > this.initPos.y) pos.y++;
+        let x1 = Math.min(this.initPos.x, pos.x);
+        let w = Math.abs(this.initPos.x - pos.x);
+        let y1 = Math.min(this.initPos.y, pos.y);
+        let h = Math.abs(this.initPos.y - pos.y);
+        if (w > 1 && h > 1) {
             this.editor.selectionClip = true;
-            super.mouseUp(pos);
-        } else {
-            return;
+            if (this.additive === "sub") {
+                this.ctx.globalCompositeOperation = "destination-out";
+                this.subBlock(x1, y1, w, h);
+            } else {
+                this.addBlock(x1, y1, w, h);
+            }
+            this.ctx.fillStyle = this.fillPattern;
+            this.ctx.fillRect(x1, y1, w, h);
+        } else if (this.additive === "none") {
+            this.editor.selectionClip = false;
+            this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
         }
 
-        if (this.additive === "sub" && this.editor.selectionClip) {
-            let imageData = this.ctx.getImageData(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-            let data = imageData.data;
-            for (let i = 3; i < data.length; i += 4) {
-                if (data[i] !== 0) {
-                    return;
-                }
-            }
-            this.editor.selectionClip = false;
+        this.isClear();
+    }
+
+    mouseDownBrush(pos) {
+        if (this.additive === "none") {
+            this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+            this.clearSelect();
         }
+        super.mouseDown(pos);
+    }
+
+    mouseMoveBrush(pos) {
+        super.mouseMove(pos);
+    }
+
+    mouseUpBrush(pos) {
+        this.editor.selectionClip = true;
+        super.mouseUp(pos);
+    }
+
+    mouseDownMagic(pos) {
+        if (this.additive === "none") {
+            this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+            this.clearSelect();
+        }
+        let w = this.ctx.canvas.width;
+        let h = this.ctx.canvas.height;
+        let imageDataA = this.ctx.getImageData(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+        let dataA = imageDataA.data;
+        let imageDataB = this.ctxMagic.getImageData(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+        let dataB = imageDataB.data;
+
+        let clear = true;
+        let p = pos.x * 4 + (pos.y * this.ctxMagic.canvas.width * 4);
+        this.pointR = dataB[p];
+        this.pointG = dataB[p + 1];
+        this.pointB = dataB[p + 2];
+        this.pointA = dataB[p + 3];
+
+        let val = this.additive === "sub" ? 0 : 255;
+        let wh =  w * h * 4;
+        for (let i = 0; i < wh; i += 4) {
+            let r = dataB[i];
+            let g = dataB[i + 1];
+            let b = dataB[i + 2];
+            let a = dataB[i + 3];
+            if (this.isTolerable(r, g, b, a)) {
+                dataA[i] = val;
+                dataA[i + 1] = val;
+                dataA[i + 2] = val;
+                dataA[i + 3] = val;
+                this.editor.selectionBool[i / 4] = !!val;
+            }
+            if (dataA[i + 3] !== 0) {
+                clear = false;
+            }
+        }
+        this.ctx.putImageData(imageDataA, 0, 0);
+        this.editor.selectionClip = !clear;
+    }
+
+    mouseMoveMagic(pos) {
+
+    }
+
+    mouseUpMagic(pos) {
+        this.isClear();
     }
 
     drawBrush(x, y) {
@@ -281,6 +434,7 @@ export class SpriteToolSelect extends SpriteToolBrush {
             this.ctx.globalCompositeOperation = "destination-out";
             this.ctx.drawImage(this.brushCanvas, 0, 0, this.size, this.size, px, py, this.size, this.size);
             this.ctx.globalCompositeOperation = "source-over";
+            this.subBrush(px, py, this.size, this.size);
         } else {
             let brCtx = this.brushCanvas.getContext("2d");
             brCtx.translate(this.animPoint, 0);
@@ -290,11 +444,24 @@ export class SpriteToolSelect extends SpriteToolBrush {
             brCtx.globalCompositeOperation = "source-over";
             brCtx.translate(-this.animPoint, 0);
             this.ctx.drawImage(this.brushCanvas, 0, 0, this.size, this.size, px, py, this.size, this.size);
+            this.addBrush(px, py, this.size, this.size);
         }
     }
 
     clip() {
 
+    }
+
+    isClear() {
+        if (this.additive === "sub" && this.editor.selectionClip) {
+            for (let i = 0, l = this.ctx.canvas.width * this.ctx.canvas.height; i < l; i++) {
+                if (this.editor.selectionBool[i]) {
+                    this.editor.selectionClip = true;
+                    return;
+                }
+            }
+            this.editor.selectionClip = false;
+        }
     }
 
     isTolerable(r, g, b, a) {
@@ -307,6 +474,54 @@ export class SpriteToolSelect extends SpriteToolBrush {
             return Math.abs(a - this.pointA) <= this.toleranceA2;
         }
         return false;
+    }
+
+    clearSelect() {
+        for (let i = 0, l = this.ctx.canvas.width * this.ctx.canvas.height; i < l; i++) {
+            this.editor.selectionBool[i] = false;
+        }
+    }
+
+    addBlock(x, y, w, h) {
+        for (let j = y; j < y + h; j++) {
+            let p = j * this.editor.imageWidth;
+            for (let i = x; i < x + w; i++) {
+                this.editor.selectionBool[p + i] = true;
+            }
+        }
+    }
+
+    subBlock(x, y, w, h) {
+        for (let j = y; j < y + h; j++) {
+            let p = j * this.editor.imageWidth;
+            for (let i = x; i < x + w; i++) {
+                this.editor.selectionBool[p + i] = false;
+            }
+        }
+    }
+
+    addBrush(x, y, w, h) {
+        for (let j = y; j < y + h; j++) {
+            let p = j * this.editor.imageWidth;
+            let p2 = (j - y) * 100;
+            for (let i = x; i < x + w; i++) {
+                if (this.boolBrush[p2 + i - x]) {
+                    this.editor.selectionBool[p + i] = true;
+                }
+            }
+        }
+    }
+
+    subBrush(x, y, w, h) {
+        for (let j = y; j < y + h; j++) {
+            let p = j * this.editor.imageWidth;
+            let p2 = (j - y) * 100;
+            for (let i = x; i < x + w; i++) {
+                if (this.boolBrush[p2 + i - x]) {
+                    this.editor.selectionBool[p + i] = false;
+                }
+            }
+        }
     }
 
     animate() {

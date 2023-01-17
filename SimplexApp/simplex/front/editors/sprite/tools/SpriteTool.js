@@ -22,6 +22,14 @@ export class SpriteTool {
         });
     }
 
+    imgWidth() {
+        return this.editor.imageWidth;
+    }
+
+    imgHeight() {
+        return this.editor.imageHeight;
+    }
+
     _createCanvas() {
         let canvas = document.createElement('canvas');
         canvas.width = 100;
@@ -66,11 +74,18 @@ export class SpriteTool {
             }
         } else {
             this.jqButton.removeClass("selected");
-            this.selected = false;
+            if (this.selected) {
+                this.selected = false;
+                this.onUnselected();
+            }
         }
     }
 
     onSelected() {
+
+    }
+
+    onUnselected() {
 
     }
 
@@ -178,6 +193,7 @@ export class SpriteTool {
         ctx.globalCompositeOperation = "source-over";
         ctx.globalAlpha = 1;
         ctx.imageSmoothingEnabled = true;
+        ctx.imageSmoothingQuality = 'high';
     }
 
     mouseDown(pos) {

@@ -1,6 +1,10 @@
+import {DragSystem} from "./DragSystem.js";
+
 export class Dialogs {
     static zindex = 24;
     static pageMap = new Map();
+    static mouseX = 0;
+    static mouseY = 0;
 
     static loadModels() {
         $('<div></div>').load("pages/dialogs/colorpicker.html", function (response, status, xhr) {
@@ -8,6 +12,10 @@ export class Dialogs {
         });
     }
 }
+window.addEventListener('mousemove', function (e) {
+    Dialogs.mouseX = e.pageX;
+    Dialogs.mouseY = e.pageY;
+});
 
 export class Dialog {
     jqRoot = null;

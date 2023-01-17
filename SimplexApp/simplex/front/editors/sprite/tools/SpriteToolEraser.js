@@ -59,7 +59,7 @@ export class SpriteToolEraser extends SpriteToolBrush {
         this.hardness = config.hardness;
         this.color = "#000000FF";
         this.dist = 0;
-        this.clipping = true;
+        this.clipping = this.editor.selectionClip;
 
         this.ctx = ctx;
         this.ctxFinal = null;
