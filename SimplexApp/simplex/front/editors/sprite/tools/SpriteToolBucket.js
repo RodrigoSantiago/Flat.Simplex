@@ -1,5 +1,4 @@
 import {SpriteTool} from "./SpriteTool.js";
-import {ColorPickerDialog} from "../../../dialogs/ColorPickerDialog.js";
 
 export class SpriteToolBucket extends SpriteTool {
 
@@ -20,6 +19,7 @@ export class SpriteToolBucket extends SpriteTool {
     }
 
     start(color, alpha, ctx, ctxTemp) {
+        super.start(color, alpha, ctx, ctxTemp);
         this.colorR = parseInt(color.substring(1, 3), 16);
         this.colorG = parseInt(color.substring(3, 5), 16);
         this.colorB = parseInt(color.substring(5, 7), 16);
@@ -155,6 +155,8 @@ export class SpriteToolBucket extends SpriteTool {
             this.fill();
         }
         this.ctx.putImageData(this.imageA, 0, 0);
+
+        this.editor.toolEnd();
     }
 
     fill() {

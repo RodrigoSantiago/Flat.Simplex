@@ -16,6 +16,7 @@ import {SpriteToolColor} from "./tools/SpriteToolColor.js";
 import {SpriteMenuGradient} from "./SpriteMenuGradient.js";
 import {SpriteToolSelect} from "./tools/SpriteToolSelect.js";
 import {SpriteTransformBox} from "./SpriteTransformBox.js";
+import {SpriteToolShapes} from "./tools/SpriteToolShapes.js";
 
 export class SpriteEditor extends Editor {
     static pageModel = null;
@@ -111,7 +112,7 @@ export class SpriteEditor extends Editor {
             this.selectTool(this.toolPencil);
             this.ready = true;
         } else {
-            this.selectedTool.onSelected();
+            this.selectedTool?.setSelected(true);
         }
         if (!this.loopSelection) {
             this.loopSelection = setInterval((e) => {
@@ -125,10 +126,11 @@ export class SpriteEditor extends Editor {
             clearInterval(this.loopSelection);
             this.loopSelection = null;
         }
-        this.selectedTool?.onUnselected();
+        this.selectedTool?.setSelected(false);
     }
 
     onRemove() {
+        super.onRemove();
     }
 
     getMainContext() {
@@ -178,7 +180,7 @@ export class SpriteEditor extends Editor {
         this.toolEraser = new SpriteToolEraser(this, this.jqRoot.find(".tool-eraser"), this.brushMenu);
         this.toolSmudge = new SpriteToolSmudge(this, this.jqRoot.find(".tool-smudge"), this.brushMenu);
         this.toolBucket = new SpriteToolBucket(this, this.jqRoot.find(".tool-bucket"), this.gradMenu);
-        this.toolShapes = new SpriteTool(this, this.jqRoot.find(".tool-shapes"));
+        this.toolShapes = new SpriteToolShapes(this, this.jqRoot.find(".tool-shapes"), this.brushMenu);
         this.toolText = new SpriteTool(this, this.jqRoot.find(".tool-text"));
         this.toolColor = new SpriteToolColor(this, this.jqRoot.find(".tool-color"), this.colorMenu);
 
@@ -250,7 +252,9 @@ export class SpriteEditor extends Editor {
                 this.dragPaintCol = this.altColor;
             }
             this.toolStart(this.dragPaintCol, e.button === 0 ? this.alpha : this.altAlpha, e.ctrlKey, e.altKey, e.shiftKey);
-            this.selectedTool.mouseDown(this.dragPaintPos);
+            if (this.selectedTool.isDrawing()) {
+                this.selectedTool.mouseDown(this.dragPaintPos, e.ctrlKey, e.altKey, e.shiftKey);
+            }
         }
     }
 
@@ -265,19 +269,21 @@ export class SpriteEditor extends Editor {
             this.canvasPosition(old, this.dragZoomStart);
         } else if (this.dragPaint) {
             this.dragPaintPos = this.convertCanvasPosition(e);
-            this.selectedTool.mouseMove(this.dragPaintPos, this.dragPaintCol);
+            if (this.selectedTool.isDrawing()) {
+                this.selectedTool.mouseMove(this.dragPaintPos, e.ctrlKey, e.altKey, e.shiftKey);
+            }
         }
     }
 
     canvasOnMouseUp(e) {
-        if (this.dragPaint && e.button === this.dragButton) {
-            this.dragPaintPos = this.convertCanvasPosition(e);
-            this.selectedTool.mouseUp(this.dragPaintPos, this.dragPaintCol);
-            this.dragPaint = false;
-            this.toolEnd();
-        }
         if (this.dragZoom && e.button === 1) {
             this.dragZoom = false;
+        } else if (this.dragPaint && e.button === this.dragButton) {
+            this.dragPaintPos = this.convertCanvasPosition(e);
+            if (this.selectedTool.isDrawing()) {
+                this.selectedTool.mouseUp(this.dragPaintPos, e.ctrlKey, e.altKey, e.shiftKey);
+            }
+            this.dragPaint = false;
         }
     }
 
@@ -548,10 +554,6 @@ export class SpriteEditor extends Editor {
         this.canvasBaked = false;
         this.canvasLayer = null;
         this.framesMenu.frameSelect(frame);
-    }
-
-    getBrushConfig() {
-        return this.toolMenus[3].getBrushConfig();
     }
 
     // Historic

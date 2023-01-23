@@ -12,13 +12,20 @@ export class SpriteToolSpray extends SpriteToolBrush {
         this.hardness = 0.50;
     }
 
-    generateBrushImage(canvas) {
+    onUnselected() {
+        let config = this.getConfig();
+        this.opacity = config.flow;
+        super.onUnselected();
+    }
+
+    generateBrushImage(canvas, size, hardness, color) {
         let ctx = canvas.getContext("2d");
+        this.resetContext(ctx);
         ctx.clearRect(0, 0, 100, 100);
 
-        const grd = ctx.createRadialGradient(this.size / 2, this.size / 2, 0, this.size / 2, this.size / 2, this.size / 2);
-        grd.addColorStop(Math.min(0.99, this.hardness * 0.75), this.color);
-        grd.addColorStop(1, this.color.substring(0, 7) + "00");
+        const grd = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
+        grd.addColorStop(Math.min(0.99, hardness * 0.75), color);
+        grd.addColorStop(1, color.substring(0, 7) + "00");
 
         ctx.fillStyle = grd;
         ctx.fillRect(0, 0, 100, 100);
@@ -36,55 +43,47 @@ export class SpriteToolSpray extends SpriteToolBrush {
     }
 
     updatePreview(ctx) {
-        let config = this.editor.getBrushConfig();
-        this.size = Math.min(40, config.size);
-        this.hardness = config.hardness;
-        this.flow = 0.85;
-        this.opacity = config.flow;
-        this.color = "#000000" + Math.round(255 * (this.opacity * 0.5 + 0.25)).toString(16);
-        this.dist = Math.min(Math.max(1, this.size / 2), 5);
-        this.clipping = false;
-        this.updateBrushCanvas();
+        let config = this.getConfig();
+        let size = Math.min(30, config.size);
+        let hardness = config.hardness;
+        let flow = 0.85;
+        let opacity = config.flow;
+        let color = "#000000" + Math.round(255 * (opacity * 0.5 + 0.25)).toString(16);
+        let dist = -1;
 
-        this.ctx = this.getTmpCanvas().getContext("2d");
-        this.ctx.clearRect(0, 0, 100, 100);
-        this.ctxFinal = ctx;
+        let tempCtx = this.getSrcCanvas();
+        this.resetContext(tempCtx.getContext("2d"));
+        this.generateBrushImage(tempCtx, size, hardness, color);
 
-        let off = this.size / 2 + 1;
+        ctx.fillStyle = "#FFFFFF";
+        ctx.fillRect(0, 0, 80, 80);
+
+        let off = size / 2 + 1;
         let d = 80 - off * 2;
-        for (let i = 0; i < 1; i += 0.1) {
-            this.drawBrushLine(
-                {x: i * d + off        , y: this.apply(i) * d + off},
-                {x: (i + 0.1) * d + off, y: this.apply(i + 0.1) * d + off});
+        for (let i = 0; i < 0.99; i += 0.1) {
+            dist = SpriteToolBrush.drawBrushLineCustom(
+                {x: i * d + off, y: this.apply(i) * d + off},
+                {x: (i + 0.1) * d + off, y: this.apply(i + 0.1) * d + off},
+                dist,
+                Math.max(1, ((1 - flow) * 0.9 + 0.1) * size),
+                (x, y) => ctx.drawImage(tempCtx, 0, 0, size, size, Math.round(x - size / 2), Math.round(y - size / 2), size, size)
+            );
         }
-
-        clearTimeout(this.interval);
-        this.interval = null;
 
         for (let i = 0; i < 5; i++) {
-            super.drawBrush(d + off, d + off);
+            ctx.drawImage(tempCtx, 0, 0, size, size, Math.round((d + off) - size / 2), Math.round((d + off) - size / 2), size, size);
         }
-
-        this.ctxFinal.fillStyle = "#FFFFFF";
-        this.ctxFinal.fillRect(0, 0, 80, 80);
-        this.ctxFinal.drawImage(this.ctx.canvas, 0, 0);
-        this.size = config.size;
     }
 
-    start(color, alpha, ctx, ctxTemp) {
-        let config = this.editor.getBrushConfig();
-        this.size = config.size;
-        this.hardness = config.hardness;
+    start(color, alpha, ctx, ctxTemp, ctrl, alt, shift) {
+        super.start(color, alpha, ctx, ctxTemp, ctrl, alt, shift);
+
+        let config = this.getConfig();
+        this.flow = 0.85;
         this.opacity = config.flow;
         let hex = color.length === 9 ? color : color + "FF";
         let a = parseInt(hex.slice(7, 9), 16);
         this.color = hex.substring(0, 7) + Math.round(a * (this.opacity * 0.5 + 0.25)).toString(16);
-        this.alpha = alpha;
-        this.dist = 0;
-        this.clipping = this.editor.selectionClip;
-
-        this.ctx = ctxTemp;
-        this.ctxFinal = ctx;
         this.updateBrushCanvas();
     }
 

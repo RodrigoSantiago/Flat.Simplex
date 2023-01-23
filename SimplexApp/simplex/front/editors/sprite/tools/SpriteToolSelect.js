@@ -51,31 +51,44 @@ export class SpriteToolSelect extends SpriteToolBrush {
     }
 
     onUnselected() {
+        let config = this.getConfig();
+        this.selectMode = config.selectionMode;
 
+        if (this.editor.tsBox.isOpen) {
+            this.editor.toolStart(this.color, this.alpha, false, false, false);
+            this.mouseSaveTransform(this.editor.tsBox);
+            this.editor.toolEnd();
+        }
+        super.onUnselected();
     }
 
     updateBrushCanvas() {
         this.brushCanvas = this.getBrushCanvas();
-        this.generatePixelImage(this.brushCanvas);
+        this.generatePixelImage(this.brushCanvas, this.size, this.color, this.boolBrush);
     }
 
-    generatePixelImage(canvas) {
+    generatePixelImage(canvas, size, color, boolBrush) {
+        if (!boolBrush) {
+            super.generatePixelImage(canvas, size, color, boolBrush);
+            return;
+        }
+
         for (let i = 0; i < 100 * 100; i++) {
-            this.boolBrush[i] = false;
+            boolBrush[i] = false;
         }
         let ctx = canvas.getContext("2d");
         this.resetContext(ctx);
         ctx.clearRect(0, 0, 100, 100);
-        ctx.fillStyle = this.color;
+        ctx.fillStyle = color;
 
-        let offset = this.size / 2 - 0.5;
-        let r2 = this.size === 3 ? 1.2 : (this.size / 2 + 0.1) * (this.size / 2 + 0.1);
-        for (let x = 0; x < this.size; x++) {
-            for (let y = 0; y < this.size; y++) {
+        let offset = size / 2 - 0.5;
+        let r2 = size === 3 ? 1.2 : (size / 2 + 0.1) * (size / 2 + 0.1);
+        for (let x = 0; x < size; x++) {
+            for (let y = 0; y < size; y++) {
                 let dist = (x - offset) * (x - offset) + (y - offset) * (y - offset);
                 if (dist < r2) {
                     ctx.fillRect(x, y, 1, 1);
-                    this.boolBrush[x + y * 100] = true;
+                    boolBrush[x + y * 100] = true;
                 }
             }
         }
@@ -87,12 +100,12 @@ export class SpriteToolSelect extends SpriteToolBrush {
         } else {
             this.editor.canvasCursor.css("display", "none");
         }
-        if ((this.started && this.additive === "add") || (!this.started && this.additiveView === "add")) {
+        if ((this.drawing && this.additive === "add") || (!this.drawing && this.additiveView === "add")) {
             this.editor.canvasView.css("cursor", "url(cursor-cross-add.png) 10 10, crosshair");
-        } else if ((this.started && this.additive === "sub") || (!this.started && this.additiveView === "sub")) {
+        } else if ((this.drawing && this.additive === "sub") || (!this.drawing && this.additiveView === "sub")) {
             this.editor.canvasView.css("cursor", "url(cursor-cross-sub.png) 10 10, crosshair");
         } else {
-            if (!this.started) {
+            if (!this.drawing) {
                 let canvasPos = this.editor.convertCanvasPosition({pageX : Dialogs.mouseX, pageY : Dialogs.mouseY});
                 if (canvasPos.x >= 0 && canvasPos.x < this.editor.imageWidth &&
                     canvasPos.y >= 0 && canvasPos.y < this.editor.imageHeight) {
@@ -106,13 +119,76 @@ export class SpriteToolSelect extends SpriteToolBrush {
         }
     }
 
+    updatePreview(ctx) {
+        let config = this.getConfig();
+        let flow = config.flow;
+        let selectMode = config.selectionMode;
+
+        ctx.fillStyle = "#FFFFFF";
+        ctx.fillRect(0, 0, 80, 80);
+
+        if (selectMode === Square) {
+            ctx.clearRect(10, 10, 60, 60);
+
+        } else if (selectMode === Brush) {
+            let size =  Math.min(30, config.size);
+
+            let tempCtx = this.getSrcCanvas();
+            this.resetContext(tempCtx.getContext("2d"));
+            this.generatePixelImage(tempCtx, size, "#000000");
+
+            let dist = Math.max(1, ((1 - flow) * 0.9 + 0.1) * size);
+
+            ctx.globalCompositeOperation = "destination-out";
+            let off = size / 2 + 1;
+            let d = 80 - off * 2;
+            for (let i = 0; i < 0.99; i += 0.1) {
+                dist = SpriteToolBrush.drawBrushLineCustom(
+                    {x: i * d + off, y: this.apply(i) * d + off},
+                    {x: (i + 0.1) * d + off, y: this.apply(i + 0.1) * d + off},
+                    dist,
+                    Math.max(1, ((1 - flow) * 0.9 + 0.1) * size),
+                    (x, y) => ctx.drawImage(tempCtx, 0, 0, size, size, Math.round(x - size / 2), Math.round(y - size / 2), size, size)
+                );
+            }
+            ctx.globalCompositeOperation = "source-over";
+        } else {
+            let size = config.size;
+
+            let tempCtx = this.getSrcCanvas();
+            this.resetContext(tempCtx.getContext("2d"));
+            this.generatePixelImage(tempCtx, size, "#000000");
+
+            ctx.globalCompositeOperation = "destination-out";
+            ctx.drawImage(tempCtx, 0, 0, size, size, Math.round(40 - size / 2), Math.round(40 - size / 2), size, size);
+            ctx.globalCompositeOperation = "source-over";
+        }
+
+        // Add Pattern
+        let temp = this.getTmpCanvas().getContext("2d");
+        this.resetContext(temp);
+        temp.clearRect(0, 0, 80, 80);
+        temp.filter = "url(#selection-border)";
+        temp.drawImage(ctx.canvas, 0, 0, 80, 80, 0, 0, 80, 80);
+        temp.filter = "none";
+        temp.globalCompositeOperation = "destination-out";
+        temp.lineWidth = 1;
+        temp.strokeStyle = "#FFFFFF";
+        temp.rect(0, 0, 80, 80);
+        temp.stroke();
+        temp.globalCompositeOperation = "source-in";
+        temp.fillStyle = ctx.createPattern(this.img, "repeat");
+        temp.fillRect(0, 0, 80, 80);
+        ctx.globalCompositeOperation = "copy";
+        ctx.drawImage(temp.canvas, 0, 0, 80, 80, 0, 0, 80, 80);
+
+    }
+
     start(color, alpha, ctx, ctxTemp, ctrl, alt, shift) {
-        let config = this.editor.getBrushConfig();
-        this.started = true;
-        this.size = config.size;
+        super.start(color, alpha, ctx, ctxTemp, ctrl, alt, shift);
+        let config = this.getConfig();
+        this.align = false;
         this.alpha = 255;
-        this.hardness = config.hardness;
-        this.flow = config.flow;
         this.color = "#000000FF";
         this.clipping = false;
         this.selectMode = config.selectionMode;
@@ -122,71 +198,12 @@ export class SpriteToolSelect extends SpriteToolBrush {
         this.tolerance = ((this.size - 1) / 99) * 128;
         this.tolerance2 = this.tolerance * this.tolerance;
         this.toleranceA2 = this.tolerance === 0 ? 0 : this.tolerance * 1.5;
+        this.fillPattern = ctx.createPattern(this.img, "repeat");
         this.updateBrushCanvas();
-    }
-
-    updatePreview(ctx) {
-        let config = this.editor.getBrushConfig();
-        this.size = config.size;
-        this.hardness = config.hardness;
-        this.flow = config.flow;
-        this.alpha = 255;
-        this.color = "#000000FF";
-        this.clipping = false;
-        this.selectMode = config.selectionMode;
-
-        this.ctx = ctx;
-        ctx.fillStyle = "#FFFFFF";
-        ctx.fillRect(0, 0, 80, 80);
-
-        this.fillPattern = this.ctx.createPattern(this.img, "repeat");
-
-        this.additive = "sub";
-        if (this.selectMode === Square) {
-            this.ctx.clearRect(10, 10, 60, 60);
-
-        } else if (this.selectMode === Brush) {
-            this.size = Math.min(30, config.size);
-            this.updateBrushCanvas();
-            this.dist = Math.max(1, ((1 - this.flow) * 0.9 + 0.1) * this.size);
-
-            let off = this.size / 2 + 1;
-            let d = 80 - off * 2;
-            for (let i = 0; i < 0.99; i += 0.1) {
-                super.drawBrushLine(
-                    {x: i * d + off        , y: this.apply(i) * d + off},
-                    {x: (i + 0.1) * d + off, y: this.apply(i + 0.1) * d + off});
-            }
-            this.size = config.size;
-        } else {
-            this.updateBrushCanvas();
-            this.drawBrush(40, 40);
-        }
-        this.additive = "none";
-
-        // Add Pattern
-        let temp = this.getTmpCanvas().getContext("2d");
-        this.resetContext(temp);
-        temp.clearRect(0, 0, 80, 80);
-        temp.filter = "url(#selection-border)";
-        temp.drawImage(this.ctx.canvas, 0, 0, 80, 80, 0, 0, 80, 80);
-        temp.filter = "none";
-        temp.globalCompositeOperation = "destination-out";
-        temp.lineWidth = 1;
-        temp.strokeStyle = "#FFFFFF";
-        temp.rect(0, 0, 80, 80);
-        temp.stroke();
-        temp.globalCompositeOperation = "source-in";
-        temp.fillStyle = this.fillPattern;
-        temp.fillRect(0, 0, 80, 80);
-        this.ctx.globalCompositeOperation = "copy";
-        this.ctx.drawImage(temp.canvas, 0, 0, 80, 80, 0, 0, 80, 80);
-
     }
 
     end() {
         super.end();
-        this.started = false;
     }
 
     mouseDown(pos) {
@@ -200,12 +217,19 @@ export class SpriteToolSelect extends SpriteToolBrush {
             this.editor.selectionBool[pos.y * this.editor.imageWidth + pos.x]) {
             this.selectMode = Transform;
             this.mouseDownTransform(pos);
-        } else if (this.selectMode === Square) {
-            this.mouseDownSquare(pos);
-        } else if (this.selectMode === Brush) {
-            this.mouseDownBrush(pos);
-        } else if (this.selectMode === Magic) {
-            this.mouseDownMagic(pos);
+        } else {
+
+            if (this.additive === "none") {
+                this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+                this.clearSelect();
+            }
+            if (this.selectMode === Square) {
+                this.mouseDownSquare(pos);
+            } else if (this.selectMode === Brush) {
+                this.mouseDownBrush(pos);
+            } else if (this.selectMode === Magic) {
+                this.mouseDownMagic(pos);
+            }
         }
     }
 
@@ -227,6 +251,7 @@ export class SpriteToolSelect extends SpriteToolBrush {
         } else if (this.selectMode === Magic) {
             this.mouseUpMagic(pos);
         }
+        this.editor.toolEnd();
     }
 
     mouseDownTransform(pos) {
@@ -295,10 +320,6 @@ export class SpriteToolSelect extends SpriteToolBrush {
     }
 
     mouseDownSquare(pos) {
-        if (this.additive === "none") {
-            this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-            this.clearSelect();
-        }
         this.initPos = pos;
         this.editor.canvasView.append(this.jqBox);
         let w = this.ctx.canvas.width;
@@ -361,10 +382,6 @@ export class SpriteToolSelect extends SpriteToolBrush {
     }
 
     mouseDownBrush(pos) {
-        if (this.additive === "none") {
-            this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-            this.clearSelect();
-        }
         super.mouseDown(pos);
     }
 
@@ -374,14 +391,10 @@ export class SpriteToolSelect extends SpriteToolBrush {
 
     mouseUpBrush(pos) {
         this.editor.selectionClip = true;
-        super.mouseUp(pos);
+        this.editor.toolEnd();
     }
 
     mouseDownMagic(pos) {
-        if (this.additive === "none") {
-            this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-            this.clearSelect();
-        }
         let w = this.ctx.canvas.width;
         let h = this.ctx.canvas.height;
         let imageDataA = this.ctx.getImageData(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);

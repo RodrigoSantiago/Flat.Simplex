@@ -522,6 +522,10 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
     position: relative;
     z-index: $zindex-canvas;
 
+    .cursor-out {
+        display: none !important;
+    }
+
     .canvas-cursor {
         display: flex;
         position: absolute;
@@ -717,6 +721,22 @@ $sprite-menu-bg-fade: var(--surface-color-a3);//fade-out(colors.$color-grey-600,
                     background-color: $sprite-menu-bg-active;
                 }
             }
+        }
+    }
+    .brush-shapes {
+        @extend %vbox-center;
+        input {
+            margin: 4px 0 4px 0;
+            width: calc(100% - 16px);
+        }
+        span {
+            width: calc(100% - 16px);
+            min-width: 32px;
+            text-align: center;
+            margin-top: -4px;
+            margin-bottom: 4px;
+            font-size: 10px;
+            color: var(--on-color);
         }
     }
 }
@@ -1004,6 +1024,8 @@ input[type=checkbox].disabled {
 
 //</editor-fold>
 
+//<editor-fold desc="GRADIENT">
+
 .gradient-view {
     align-items: center;
     min-width: 192px;
@@ -1140,6 +1162,9 @@ input[type=checkbox].disabled {
     }
 }
 
+//</editor-fold>
+
+//<editor-fold desc="TRANSFORM">
 .sprite-selection-box {
     position: absolute;
     border: 1px dashed white;
@@ -1237,6 +1262,61 @@ input[type=checkbox].disabled {
         cursor: nwse-resize;
     }
 }
-.cursor-out {
-    display: none !important;
+
+//</editor-fold>
+
+.shapes-view {
+    align-items: center;
+    min-width: 192px;
+    max-width: 192px;
+    min-height: 48px;
+    .shapes-divider {
+        width: 100%;
+        height: 1px;
+        background-color: $sprite-menu-line;
+        margin: 8px 0 8px 0;
+    }
+
+    .shapes-points {
+        @extend %hbox-center;
+        margin: 4px 0 4px 0;
+        width: calc(100% - 16px);
+        font-size: 10px;
+        color: var(--on-color);
+        span {
+            width: 32px;
+            min-width: 32px;
+            text-align: center;
+            margin-right: 8px;
+        }
+    }
+
+    .text-points {
+        width: 18px;
+        min-width: 18px;
+        color: var(--on-color);
+        margin-left: 8px;
+        font-size: 10px;
+        &:hover, &:active, &:focus {
+            background-color: var(--on-color-a3);
+        }
+    }
+
+    .shapes-options {
+        @extend %hbox;
+        font-size: 10px;
+        color: var(--on-color);
+        width: calc(100% - 16px);
+        .shapes-option {
+            @extend %hbox;
+            align-items: center;
+            width: 50%;
+            input[type=checkbox] {
+                margin-right: 8px;
+            }
+        }
+        + .shapes-options {
+            margin-top: 8px;
+        }
+    }
 }

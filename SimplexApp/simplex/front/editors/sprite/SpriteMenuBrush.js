@@ -36,18 +36,61 @@ export class SpriteMenuBrush extends SpriteMenu {
         });
 
         this.setSize(30);
-        this.jqSize[0].addEventListener('input', (e) => {
+        this.jqSize.on('input', (e) => {
             this.size(this.jqSize[0].value);
             this.delayUpdatePreview();
         });
+        this.jqSizeText.on('input', (e) => {
+            let p = parseInt(this.jqSizeText.val());
+            if (!p) {
+                p = 1;
+            }
+            this.setSize(p);
+        });
         this.setHardness(0.25);
-        this.jqHardness[0].addEventListener('input', (e) => {
+        this.jqHardness.on('input', (e) => {
             this.hardness(this.jqHardness[0].value);
             this.delayUpdatePreview();
         });
+        this.jqHardnessText.on('input', (e) => {
+            let p = parseInt(this.jqHardnessText.val());
+            if (!p) {
+                p = 1;
+            }
+            this.setHardness(p / 100);
+        });
         this.setFlow(0.10);
-        this.jqFlow[0].addEventListener('input', (e) => {
+        this.jqFlow.on('input', (e) => {
             this.flow(this.jqFlow[0].value);
+            this.delayUpdatePreview();
+        });
+        this.jqFlowText.on('input', (e) => {
+            let p = parseInt(this.jqFlowText.val());
+            if (!p) {
+                p = 1;
+            }
+            this.setFlow(p / 100);
+        });
+
+
+        this.jqShapes = jqDragView.find(".brush-shapes");
+        this.jqPoints = jqDragView.find(".value-points");
+        this.jqPointsText = jqDragView.find(".text-points");
+        this.points = 1;
+        this.jqPointsText.text("Line");
+        this.jqPoints[0].addEventListener('input', (e) => {
+            this.points = this.jqPoints[0].value;
+
+            this.jqPointsText.text(
+                this.points == 1 ? "Line" :
+                this.points == 2 ? "Bezier" :
+                this.points == 3 ? "Triangle" :
+                this.points == 4 ? "Square" :
+                this.points == 5 ? "Pentagon" :
+                this.points == 6 ? "Hexagon" :
+                this.points == 7 ? "Heptagon" :
+                this.points == 8 ? "Octagon" : "Circle"
+            );
             this.delayUpdatePreview();
         });
     }
@@ -55,10 +98,15 @@ export class SpriteMenuBrush extends SpriteMenu {
     delayUpdatePreview() {
         if (this.interval === null) {
             this.updatePreview();
+            this.invalid = false;
             this.interval = setTimeout((e) => {
-                this.updatePreview();
+                if (this.invalid) {
+                    this.updatePreview();
+                }
                 this.interval = null;
-            }, 50);
+            }, 120);
+        } else {
+            this.invalid = true;
         }
     }
 
@@ -82,6 +130,7 @@ export class SpriteMenuBrush extends SpriteMenu {
         this.jqImage.css("display", "none");
         this.jqOptions.css("display", "");
         this.jqMode.css("display", "none");
+        this.jqShapes.css("display", "none");
         this.delayUpdatePreview();
     }
 
@@ -89,6 +138,7 @@ export class SpriteMenuBrush extends SpriteMenu {
         this.jqImage.css("display", "");
         this.jqOptions.css("display", "none");
         this.jqMode.css("display", "none");
+        this.jqShapes.css("display", "none");
         this.delayUpdatePreview();
     }
 
@@ -97,10 +147,19 @@ export class SpriteMenuBrush extends SpriteMenu {
         this.jqImage.css("display", "none");
         this.jqOptions.css("display", "none");
         this.jqMode.css("display", "");
+        this.jqShapes.css("display", "none");
         this.jqMode.find(".mode-1").removeClass("selected");
         this.jqMode.find(".mode-2").removeClass("selected");
         this.jqMode.find(".mode-3").removeClass("selected");
         this.jqMode.find(".mode-" + mode).addClass("selected");
+        this.delayUpdatePreview();
+    }
+
+    setShapeMode() {
+        this.jqImage.css("display", "none");
+        this.jqOptions.css("display", "none");
+        this.jqMode.css("display", "none");
+        this.jqShapes.css("display", "");
         this.delayUpdatePreview();
     }
 
@@ -151,12 +210,18 @@ export class SpriteMenuBrush extends SpriteMenu {
     }
 
     setHardnessEnabled(enabled) {
-        if (enabled) {
+        if (enabled === "bool") {
             this.jqHardness.removeClass("disabled");
             this.jqHardness[0].disabled = false;
+            this.jqHardness.attr("step", 99);
+        } else if (enabled) {
+            this.jqHardness.removeClass("disabled");
+            this.jqHardness[0].disabled = false;
+            this.jqHardness.attr("step", 1);
         } else {
             this.jqHardness.addClass("disabled");
             this.jqHardness[0].disabled = true;
+            this.jqHardness.attr("step", 1);
         }
     }
 
@@ -170,15 +235,15 @@ export class SpriteMenuBrush extends SpriteMenu {
         }
     }
 
-    getBrushConfig() {
+    getConfig() {
         return {
             size: this.brushSize,
             hardness: this.brushHardness / 100,
             flow: this.brushFlow / 100,
             image: null,
             option: this.option,
-            selectionMode : this.selectionMode
-
+            selectionMode : this.selectionMode,
+            shape : Math.round(this.points)
         }
     }
 }
