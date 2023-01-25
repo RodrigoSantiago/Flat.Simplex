@@ -15,6 +15,8 @@ export class SpriteTransformBox {
 
     isOpen = false;
 
+    onUpdate = null;
+
     constructor(editor) {
         this.editor = editor;
         this.jqBox = $("<div class='sprite-scale-box'></div>");
@@ -82,20 +84,7 @@ export class SpriteTransformBox {
             }
         });
         this.editor.addWindowListener('mouseup', (e) => {
-            if (e.button !== 0) return;
-            if (this.pivot) {
-                this.center.x += this.offX;
-                this.center.y += this.offY;
-                this.width += this.addWidth;
-                this.height += this.addHeight;
-                this.angle = Math.round((this.angle + this.addAngle) / (Math.PI / 360)) * (Math.PI / 360);
-                this.offX = 0;
-                this.offY = 0;
-                this.addWidth = 0;
-                this.addHeight = 0;
-                this.addAngle = 0;
-            }
-            this.pivot = null;
+            if (e.button === 0) this.leave();
         });
         this.editor.canvasPos.append(this.jqBox);
         this.jqBox.css("display", "none");
@@ -116,7 +105,12 @@ export class SpriteTransformBox {
         this.addHeight = 0;
         this.addAngle = 0;
         this.jqBox.css("display", "");
-        this.jqImg[0].src = imageSrc;
+        if (imageSrc) {
+            this.jqImg[0].src = imageSrc;
+            this.jqImg.css("display", "");
+        } else {
+            this.jqImg.css("display", "none");
+        }
         this.update();
 
         this.mouseIn = this.convertRelativePos(
@@ -127,6 +121,22 @@ export class SpriteTransformBox {
         this.isOpen = true;
     }
 
+    leave() {
+        if (this.pivot) {
+            this.center.x += this.offX;
+            this.center.y += this.offY;
+            this.width += this.addWidth;
+            this.height += this.addHeight;
+            this.angle = Math.round((this.angle + this.addAngle) / (Math.PI / 360)) * (Math.PI / 360);
+            this.offX = 0;
+            this.offY = 0;
+            this.addWidth = 0;
+            this.addHeight = 0;
+            this.addAngle = 0;
+        }
+        this.pivot = null;
+    }
+
     close() {
         this.isOpen = false;
         this.jqBox.css("display", "none");
@@ -135,11 +145,11 @@ export class SpriteTransformBox {
     }
 
     convertRelativePos(mx, my) {
-        let p = this.RotatePoint(mx, my, (Math.PI*2) - this.angle);
-        return {x:p.x, y:p.y, xn:mx, yn:my};
+        let p = this.RotatePoint(mx, my, (Math.PI * 2) - this.angle);
+        return {x: p.x, y: p.y, xn: mx, yn: my};
     }
 
-    movePivot(x , y, xS, yS) {
+    movePivot(x, y, xS, yS) {
         this.addWidth = x * xS / this.editor.zoomStep;
         this.addHeight = y * yS / this.editor.zoomStep;
         let p = this.RotatePoint(xS === 0 ? 0 : x / 2, yS === 0 ? 0 : y / 2, this.angle);
@@ -186,10 +196,17 @@ export class SpriteTransformBox {
         this.jqBox.css({
             left: this.x1,
             top: this.y1,
-            width: this.x2 -this.x1,
+            width: this.x2 - this.x1,
             height: this.y2 - this.y1,
             transform: "rotate(" + (this.angle + this.addAngle) + "rad)"
         });
+
+
+        let x1 = ((this.center.x + this.offX) - w / 2) / this.editor.zoomStep + this.editor.imageWidth / 2;
+        let y1 = ((this.center.y + this.offY) - h / 2) / this.editor.zoomStep + this.editor.imageHeight / 2;
+        let x2 = ((this.center.x + this.offX) + w / 2) / this.editor.zoomStep + this.editor.imageWidth / 2;
+        let y2 = ((this.center.y + this.offY) + h / 2) / this.editor.zoomStep + this.editor.imageHeight / 2;
+        this.onUpdate?.(x1, y1, x2, y2, this.angle + this.addAngle);
     }
 
     isTranspose() {

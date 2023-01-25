@@ -4,6 +4,8 @@ import {hexToRgb, hsvToRgb, rgbFuncToHex, rgbToHex, rgbToHsv} from "../../../Col
 export class SpriteToolShapes extends SpriteToolBrush {
 
     bezierMode = false;
+    polygon = {};
+    polygonPerfect = {};
 
     constructor(editor, jqButton, configMenu) {
         super(editor, jqButton, configMenu);
@@ -153,6 +155,7 @@ export class SpriteToolShapes extends SpriteToolBrush {
 
         this.prevPos = pos;
         this.initPos = pos;
+        this.endPos = pos;
         this.mouseMove(pos);
     }
 
@@ -166,28 +169,31 @@ export class SpriteToolShapes extends SpriteToolBrush {
         this.min.y = Math.min(this.min.y, pos.y - this.size);
         this.max.x = Math.max(this.max.x, pos.x + this.size);
         this.max.y = Math.max(this.max.y, pos.y + this.size);
+        this.endPos = pos;
 
         this.clear();
 
+        let polygon = this.createVisualPolygon(this.initPos, this.endPos, this.pixelMode);
+
         if (this.pixelMode) {
-            if (this.mode === 1 || this.mode === 2) {
-                this.drawPixelLine(this.initPos, pos);
-            } else if (this.mode === 2) {
-
-            } else if (this.mode === 4) {
-                this.drawPixelLine(this.initPos, {x: this.initPos.x, y: pos.y});
-                this.drawPixelLine({x: this.initPos.x, y: pos.y}, pos);
-                this.drawPixelLine(pos, {x: pos.x, y: this.initPos.y});
-                this.drawPixelLine({x: pos.x, y: this.initPos.y}, this.initPos);
-
-            } else if (this.mode === 9) {
-                this.drawPixelCircle(this.initPos.x, this.initPos.y, pos.x, pos.y,
-                    (cx, cy, x, y, xff,yff) => this.drawCircleMirror(cx, cy, x, y, xff,yff));
+            if (this.mode === 9) {
+                this.drawPixelCircle(polygon[0].x, this.polygon[0].y, polygon[1].x, polygon[1].y,
+                    (cx, cy, x, y, xff, yff) => this.drawCircleMirror(cx, cy, x, y, xff, yff));
             } else {
-                this.drawPixelShape(pos);
+                for (let i = 0; i < polygon.length; i++) {
+                    /*this.color = this.getColor(i, polygon.length);
+                    this.updateBrushCanvas();*/
+                    let p1 = i + 1 === polygon.length ? 0 : i + 1;
+                    if (polygon[i].r) {
+                        this.drawPixelLine(polygon[p1], polygon[i]);
+                    } else {
+                        this.drawPixelLine(polygon[i], polygon[p1]);
+                    }
+                    if (this.mode === 1) break;
+                }
             }
         } else {
-            this.ctx.fillSyle = "none";
+            this.ctx.fillStyle = "none";
             this.ctx.lineCap = "round";
             this.ctx.lineJoin = "round";
             this.ctx.strokeStyle = this.color;
@@ -197,34 +203,22 @@ export class SpriteToolShapes extends SpriteToolBrush {
             if (this.size % 2 === 1) {
                 this.ctx.translate(0.5, 0.5);
             }
-            if (this.mode === 1 || this.mode === 2) {
-                this.ctx.moveTo(this.initPos.x, this.initPos.y);
-                this.ctx.lineTo(pos.x, pos.y);
-            } else if (this.mode === 2) {
-
-            } else if (this.mode === 3) {
-                let len = Math.sqrt(
-                    (this.initPos.x - pos.x) * (this.initPos.x - pos.x) +
-                    (this.initPos.y - pos.y) * (this.initPos.y - pos.y));
-                let ang = Math.atan2(this.initPos.y - pos.y, this.initPos.x - pos.x) + Math.PI * 0.333333;
-                this.ctx.moveTo(this.initPos.x, this.initPos.y);
-                this.ctx.lineTo(pos.x, pos.y);
-                this.ctx.lineTo(pos.x + Math.cos(ang) * len, pos.y + Math.sin(ang) * len);
-                this.ctx.closePath();
-
-            } else if (this.mode === 4) {
-                this.ctx.moveTo(this.initPos.x, this.initPos.y);
-                this.ctx.lineTo(this.initPos.x, pos.y);
-                this.ctx.lineTo(pos.x, pos.y);
-                this.ctx.lineTo(pos.x, this.initPos.y);
-                this.ctx.closePath();
-
-            } else if (this.mode === 9) {
-                let cx = (this.initPos.x + pos.x) / 2;
-                let cy = (this.initPos.y + pos.y) / 2;
-                this.ctx.ellipse(cx, cy, Math.abs(this.initPos.x - pos.x) / 2, Math.abs(this.initPos.y - pos.y) / 2, 0 , 0, Math.PI * 2);
+            if (this.mode === 9) {
+                let cx = (polygon[0].x + polygon[1].x) / 2;
+                let cy = (polygon[0].y + polygon[1].y) / 2;
+                let w = Math.abs(polygon[1].x - polygon[0].x) / 2;
+                let h = Math.abs(this.polygon[1].x - polygon[0].x) / 2;
+                this.ctx.ellipse(cx, cy, w, h, 0, 0, Math.PI * 2);
             } else {
-                this.drawShape(pos);
+                this.ctx.moveTo(polygon[0].x, polygon[0].y);
+                for (let i = 1; i < polygon.length; i++) {
+                    /*this.color = this.getColor(i, polygon.length);
+                    this.updateBrushCanvas();*/
+                    this.ctx.lineTo(polygon[i].x, polygon[i].y);
+                }
+                if (this.mode !== 1) {
+                    this.ctx.closePath();
+                }
             }
             this.ctx.stroke();
             this.ctx.resetTransform();
@@ -234,92 +228,208 @@ export class SpriteToolShapes extends SpriteToolBrush {
     }
 
     mouseUp(pos) {
-        this.editor.toolEnd();
-    }
+        this.polygon = this.createFinalPolygon(this.initPos, this.endPos, this.pixelMode);
 
-    drawShape(pos) {
-        let len = Math.sqrt(
-            (this.initPos.x - pos.x) * (this.initPos.x - pos.x) +
-            (this.initPos.y - pos.y) * (this.initPos.y - pos.y));
-
-        let angInit = Math.atan2(pos.y - this.initPos.y, pos.x - this.initPos.x);
-        let ang = Math.PI * 2 / this.mode;
-
-        this.ctx.moveTo(this.initPos.x, this.initPos.y);
-        this.ctx.lineTo(pos.x, pos.y);
-        let point = {x: pos.x, y: pos.y};
-
-        for (let i = 1; i < this.mode; i++) {
-            point.x = point.x + Math.cos(angInit - ang * i) * len;
-            point.y = point.y + Math.sin(angInit - ang * i) * len;
-            this.ctx.lineTo(point.x, point.y);
+        this.polygonScale = this.createFinalPolygon({x: 0, y: 0},
+            {
+                x: (this.endPos.x - this.initPos.x) * 100,
+                y: (this.endPos.y - this.initPos.y) * 100
+            }, false);
+        for (let i = 0; i < this.polygonScale.length; i++) {
+            this.polygonScale[i].x = this.polygonScale[i].x / 100 + this.initPos.x;
+            this.polygonScale[i].y = this.polygonScale[i].y / 100 + this.initPos.y;
         }
-        this.ctx.closePath();
+        this.polygonScale.minx = Math.floor(this.polygonScale.minx / 100) + this.initPos.x;
+        this.polygonScale.miny = Math.floor(this.polygonScale.miny / 100) + this.initPos.y;
+        this.polygonScale.maxx = Math.ceil(this.polygonScale.maxx / 100) + this.initPos.x;
+        this.polygonScale.maxy = Math.ceil(this.polygonScale.maxy / 100) + this.initPos.y;
+        this.polygonScale.width = this.polygonScale.maxx - this.polygonScale.minx;
+        this.polygonScale.height = this.polygonScale.maxy - this.polygonScale.miny;
+
+        this.editor.tsBox.open(pos, this.polygon.minx, this.polygon.miny, this.polygon.width, this.polygon.height, null);
+        this.editor.tsBox.onUpdate = (x1, y1, x2, y2, angle) => this.boxUpdate(x1, y1, x2, y2, angle);
+        this.editor.tsBox.leave();
     }
 
-    drawPixelShape(pos) {
-        let w = Math.abs(pos.x - this.initPos.x);
-        let h = Math.abs(pos.y - this.initPos.y);
-        let size = (pos.x === this.initPos.x || pos.y === this.initPos.y) ? Math.max(w, h) : Math.round(Math.sqrt(w * w + h * h));
-        if (size < 3) {
-            this.drawPixelLine(this.initPos, pos);
-        } else if (pos.x === this.initPos.x || pos.y === this.initPos.y || (w === h && this.mode === 8)) {
-            let polygon;
-            if (this.mode === 3) {
-                polygon = this.drawPixelTriangle(pos, size);
-            } else if (this.mode === 5) {
-                polygon = this.drawPixelPentagon(pos, size);
-            } else if (this.mode === 6) {
-                polygon = this.drawPixelHexagon(pos, size);
-            } else if (this.mode === 7) {
-                polygon = this.drawPixelHeptagon(pos, size);
-            } else {
-                polygon = this.drawPixelOctagon(pos, size);
-            }
-            this.rotPolygon(polygon);
+    tPt(pt, move, center, scale) {
+        let ex = Math.round((pt.x - center.x) * scale.x + move.x + center.x);
+        let ey = Math.round((pt.y - center.y) * scale.y + move.y + center.y);
+        return {
+            x : ex,
+            y : ey
+        };
+    }
 
-            for (let i = 0; i < polygon.length; i++) {
-                /*this.color = this.getColor(i, polygon.length);
-                this.updateBrushCanvas();*/
-                let p1 = i + 1 === polygon.length ? 0 : i + 1;
-                if (polygon[i].r) {
-                    this.drawPixelLine(polygon[p1], polygon[i]);
-                } else {
-                    this.drawPixelLine(polygon[i], polygon[p1]);
+    boxUpdate(x1, y1, x2, y2, a) {
+        let len = Math.sqrt((x2 - x1) * (x2 - x1) + (y1 - y2) + (y1 - y2));
+        let polygon = this.polygon;
+
+        let tsBox = this.editor.tsBox;
+        let c = {
+            x: (polygon.maxx + polygon.minx) / 2,
+            y: (polygon.maxy + polygon.miny) / 2
+        };
+        let s = {
+            x: (x2 - x1) / (polygon.maxx - polygon.minx),
+            y: (y2 - y1) / (polygon.maxy - polygon.miny)
+        };
+        let m = {
+            x: Math.round((x2 + x1) / 2 - c.x),
+            y: Math.round((y2 + y1) / 2 - c.y)
+        };
+
+        this.clear();
+
+        if (this.pixelMode) {
+            if (this.mode === 9) {
+                this.drawPixelCircle(polygon[0].x, polygon[0].y, polygon[1].x, polygon[1].y,
+                    (cx, cy, x, y, xff, yff) => this.drawCircleMirror(cx, cy, x, y, xff, yff));
+            } else {
+                for (let i = 0; i < polygon.length; i++) {
+                    /*this.color = this.getColor(i, polygon.length);
+                    this.updateBrushCanvas();*/
+                    let p1 = i + 1 === polygon.length ? 0 : i + 1;
+                    if (polygon[i].r) {
+                        this.drawPixelLine(this.tPt(polygon[p1], m, c, s), this.tPt(polygon[i], m, c, s));
+                    } else {
+                        this.drawPixelLine(this.tPt(polygon[i], m, c, s), this.tPt(polygon[p1], m, c, s));
+                    }
+                    if (this.mode === 1) break;
                 }
             }
         } else {
-            this.drawPixelPolygon(pos);
-        }
-    }
+            this.ctx.fillStyle = "none";
+            this.ctx.lineCap = "round";
+            this.ctx.lineJoin = "round";
+            this.ctx.strokeStyle = this.color;
+            this.ctx.lineWidth = this.size;
 
-    drawPixelPolygon(pos) {
-        let len = Math.sqrt(
-            (this.initPos.x - pos.x) * (this.initPos.x - pos.x) +
-            (this.initPos.y - pos.y) * (this.initPos.y - pos.y));
-
-        let angInit = Math.atan2(pos.y - this.initPos.y, pos.x - this.initPos.x);
-        let ang = Math.PI * 2 / this.mode;
-        let prevP = {x: this.initPos.x, y: this.initPos.y};
-        let point = {x: pos.x, y: pos.y};
-
-        for (let i = 0; i < this.mode; i++) {
-            if (i === this.mode - 1) {
-                this.drawPixelLine(prevP, this.initPos);
-            } else {
-                this.drawPixelLine(prevP, point);
-                prevP.x = point.x;
-                prevP.y = point.y;
-                point.x = point.x + Math.cos(angInit - ang * (i + 1)) * len;
-                point.y = point.y + Math.sin(angInit - ang * (i + 1)) * len;
+            this.ctx.beginPath();
+            if (this.size % 2 === 1) {
+                this.ctx.translate(0.5, 0.5);
             }
+            if (this.mode === 9) {
+                let cx = (polygon[0].x + polygon[1].x) / 2;
+                let cy = (polygon[0].y + polygon[1].y) / 2;
+                let w = Math.abs(polygon[1].x - polygon[0].x) / 2;
+                let h = Math.abs(polygon[1].x - polygon[0].x) / 2;
+                this.ctx.ellipse(cx, cy, w, h, 0, 0, Math.PI * 2);
+            } else {
+                this.ctx.moveTo(polygon[0].x, polygon[0].y);
+                for (let i = 1; i < polygon.length; i++) {
+                    /*this.color = this.getColor(i, polygon.length);
+                    this.updateBrushCanvas();*/
+                    this.ctx.lineTo(polygon[i].x, polygon[i].y);
+                }
+                if (this.mode !== 1) {
+                    this.ctx.closePath();
+                }
+            }
+            this.ctx.stroke();
+            this.ctx.resetTransform();
+        }
+        this.clip();
+    }
+
+    createFinalPolygon(init, pos, precise) {
+        let polygon = this.createVisualPolygon(init, pos, precise);
+        let minx = polygon[0].x, miny = polygon[0].y, maxx = polygon[0].x, maxy = polygon[0].y;
+        for (let i = 0; i < polygon.length; i++) {
+            minx = Math.min(polygon[i].x, minx);
+            miny = Math.min(polygon[i].y, miny);
+            maxx = Math.max(polygon[i].x, maxx);
+            maxy = Math.max(polygon[i].y, maxy);
+        }
+        polygon.minx = minx;
+        polygon.miny = miny;
+        polygon.maxx = maxx + 1;
+        polygon.maxy = maxy + 1;
+        polygon.mode = this.mode;
+        polygon.width = maxx - minx + 1;
+        polygon.height = maxy - miny + 1;
+        return polygon;
+    }
+
+    createVisualPolygon(init, pos, precise) {
+        let polygon;
+        if (this.mode === 1) {
+            polygon = [
+                {x : init.x, y: init.y},
+                {x : pos.x, y: pos.y}
+            ];
+        } else if (this.mode === 2) {
+            polygon = [
+                {x : init.x, y: init.y},
+                {x : pos.x, y: pos.y}
+            ];
+        } else if (this.mode === 4) {
+            polygon = [
+                {x : init.x, y: init.y},
+                {x : init.x, y: pos.y},
+                {x : pos.x, y :pos.y},
+                {x : pos.x, y: init.y}
+            ];
+        } else if (this.mode === 9) {
+            polygon = [
+                {x : init.x, y: init.y},
+                {x : init.x, y: pos.y},
+            ];
+        } else {
+            polygon = this.createShape(init, pos, precise);
+        }
+
+        if (this.mode !== 4) {
+            this.rotPolygon(init, polygon);
+        }
+        return polygon;
+    }
+
+    createShape(init, pos, precise) {
+        let w = Math.abs(pos.x - init.x);
+        let h = Math.abs(pos.y - init.y);
+        let size = (pos.x === init.x || pos.y === init.y) ? Math.max(w, h) : Math.round(Math.sqrt(w * w + h * h));
+        if (size < 3) {
+            return [
+                {x : init.x, y: init.y},
+                {x : pos.x, y: pos.y}
+            ];
+        } else if (precise && (pos.x === init.x || pos.y === init.y || (w === h && this.mode === 8))) {
+            if (this.mode === 3) {
+                return this.createTriangle(init, pos, size);
+            } else if (this.mode === 5) {
+                return this.createPentagon(init, pos, size);
+            } else if (this.mode === 6) {
+                return this.createHexagon(init, pos, size);
+            } else if (this.mode === 7) {
+                return this.createHeptagon(init, pos, size);
+            } else {
+                return this.createOctagon(init, pos, size);
+            }
+        } else {
+            return this.createPolygon(init, pos, size);
         }
     }
 
-    drawPixelTriangle(pos, size) {
+    createPolygon(init, pos, size) {
+        let ang = Math.PI * 2 / this.mode;
+        let point = {x: init.x + size, y: init.y};
+
+        let polygon = [
+            {x: init.x, y: init.y},
+            {x: pos.x, y: pos.y}
+        ];
+        for (let i = 1; i < this.mode; i++) {
+            point.x = point.x + Math.cos(- ang * i) * size;
+            point.y = point.y + Math.sin(- ang * i) * size;
+            polygon.push({x: point.x, y: point.y});
+        }
+        return polygon;
+    }
+
+    createTriangle(init, pos, size) {
         // Main Rects
-        let ix = this.initPos.x;
-        let iy = this.initPos.y;
+        let ix = init.x;
+        let iy = init.y;
         let psx = ix + size;
         let psy = iy;
 
@@ -349,12 +459,12 @@ export class SpriteToolShapes extends SpriteToolBrush {
         }
     }
 
-    drawPixelPentagon(pos, size) {
+    createPentagon(init, pos, size) {
         let height = Math.round(size * Math.sqrt(5 + 2 * Math.sqrt(5)) / 2);
 
         // Main Rects
-        let ix = this.initPos.x;
-        let iy = this.initPos.y;
+        let ix = init.x;
+        let iy = init.y;
         let psx = ix + size;
         let psy = iy;
 
@@ -386,10 +496,10 @@ export class SpriteToolShapes extends SpriteToolBrush {
         }
     }
 
-    drawPixelHexagon(pos, size) {
+    createHexagon(init, pos, size) {
         // Main Rects
-        let ix = this.initPos.x;
-        let iy = this.initPos.y;
+        let ix = init.x;
+        let iy = init.y;
         let psx = ix + size;
         let psy = iy;
 
@@ -418,18 +528,18 @@ export class SpriteToolShapes extends SpriteToolBrush {
         ];
     }
 
-    drawPixelHeptagon(pos, size) {
+    createHeptagon(init, pos, size) {
         // Main Rects
-        let ix = this.initPos.x;
-        let iy = this.initPos.y;
+        let ix = init.x;
+        let iy = init.y;
         let psx = ix + size;
         let psy = iy;
 
         let height = size * 2.1907;
 
-        let cx = Math.round(this.initPos.x + size / 2);
-        let cx2 = Math.round(this.initPos.x + size / 2) - 1;
-        let cy = this.initPos.y - height;
+        let cx = Math.round(init.x + size / 2);
+        let cx2 = Math.round(init.x + size / 2) - 1;
+        let cy = init.y - height;
 
         // Brace
         let minor = Math.round(size / Math.sqrt(5));
@@ -467,9 +577,9 @@ export class SpriteToolShapes extends SpriteToolBrush {
         }
     }
 
-    drawPixelOctagon(pos, size) {
-        let ix = this.initPos.x;
-        let iy = this.initPos.y;
+    createOctagon(init, pos, size) {
+        let ix = init.x;
+        let iy = init.y;
         let psx = ix + size;
         let psy = iy;
 
@@ -526,14 +636,18 @@ export class SpriteToolShapes extends SpriteToolBrush {
         this.drawBrush(cx - x, cy - y);
     }
 
-    rotPolygon(points) {
+    rotPolygon(init, points) {
         let angInit = Math.atan2(points[1].y - points[0].y, points[1].x - points[0].x);
         if (Math.abs(angInit) > 0.00001) {
             let cos = Math.cos(angInit);
             let sin = Math.sin(angInit);
             for (let i = 2; i < points.length; i++) {
-                this.rotPoint(this.initPos.x, this.initPos.y, cos, sin, points[i]);
+                this.rotPoint(init.x, init.y, cos, sin, points[i]);
             }
+        }
+        for (let i = 2; i < points.length; i++) {
+            points[i].x = Math.round(points[i].x);
+            points[i].y = Math.round(points[i].y);
         }
     }
 

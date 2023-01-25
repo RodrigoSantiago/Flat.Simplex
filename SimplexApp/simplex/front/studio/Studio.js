@@ -8,6 +8,7 @@ import {Editor} from "../editors/Editor.js";
 
 export class Studio {
 
+    /** @type {jQuery} **/
     jqMain = null;
     Navigator = null;
     Toolbar = null;

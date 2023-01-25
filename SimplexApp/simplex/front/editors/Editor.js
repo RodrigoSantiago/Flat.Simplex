@@ -2,12 +2,17 @@ import {AssetType} from "../assets/Asset.js";
 
 export class Editor {
 
-    assetType;
-    asset;
+    /** @type {AssetType} */ assetType;
+    /** @type {Asset} */ asset;
 
     clearEvents = [];
     loopEvents = [];
 
+    /**
+     * Base constructor
+     *
+     * @param {Asset} asset
+     */
     constructor(asset) {
         this.assetType = asset.type;
         this.asset = asset;

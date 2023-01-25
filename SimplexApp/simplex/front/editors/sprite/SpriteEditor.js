@@ -1,5 +1,5 @@
 import {Editor} from "../Editor.js";
-import {Toolbar} from "../../Toolbar.js";
+import {Toolbar} from "../../toolbar.js";
 import {SpriteTool} from "./tools/SpriteTool.js";
 import {SpriteToolPencil} from "./tools/SpriteToolPencil.js";
 import {SpriteToolBrush} from "./tools/SpriteToolBrush.js";
@@ -27,20 +27,20 @@ export class SpriteEditor extends Editor {
         });
     }
 
-    jqRoot = null;
-    Toolbar = null;
+    /** @type {JQuery} */ jqRoot = null;
+    /** @type {Toolbar} */ toolbar = null;
 
-    selectedTool = null;
+    /** @type {SpriteTool} */ selectedTool = null;
     toolMenus = [];
     zoomStep = 1;
     zoomPos = {};
     imageWidth = 400;
     imageHeight = 200;
-    layers = [];
-    frames = [];
-    selectedLayer = null;
-    selectedFrame = null;
-    canvasLayer = null;
+    /** @type {SpriteLayer[]} */ layers = [];
+    /** @type {SpriteFrame[]} */ frames = [];
+    /** @type {SpriteLayer} */ selectedLayer = null;
+    /** @type {SpriteFrame} */ selectedFrame = null;
+    /** @type {SpriteLayer} */ canvasLayer = null;
     selectionBool = [];
 
     selectionClip = false;
@@ -62,7 +62,7 @@ export class SpriteEditor extends Editor {
         this.jqRoot.onHide = () => this.onHide();
         this.jqRoot.onRemove = () => this.onHide();
 
-        this.Toolbar = new Toolbar(this.jqRoot.find(".toolbar"));
+        this.toolbar = new Toolbar(this.jqRoot.find(".toolbar"));
         this.splitVer = this.jqRoot.find(".split-panel-ver");
         this.splitHor = this.jqRoot.find(".split-panel-hor");
         this.canvas = this.jqRoot.find(".canvasA");
@@ -88,7 +88,7 @@ export class SpriteEditor extends Editor {
 
     onResize() {
         this.canvasPosition({x: 0, y: 0}, {x: 0, y: 0});
-        this.Toolbar.update();
+        this.toolbar.update();
         for (let menu of this.toolMenus) {
             if (menu.floating) {
                 let width = this.splitVer.width();
@@ -105,7 +105,7 @@ export class SpriteEditor extends Editor {
 
     onShow() {
         if (!this.ready) {
-            this.configureToolbar();
+            this.configuretoolbar();
             this.configureTools();
             this.configureCanvas();
             this.configureLayers();
@@ -145,17 +145,17 @@ export class SpriteEditor extends Editor {
         return this.canvasContextC;
     }
 
-    configureToolbar() {
-        this.Toolbar.addItem("Undo", "undo", null);
-        this.Toolbar.addItem("Redo", "redo", null);
-        this.Toolbar.addItem("Import", null, null);
-        this.Toolbar.addItem("Export", null, null);
-        this.Toolbar.addItem("_", null, null);
-        this.Toolbar.addItem("Resize", null, null);
-        this.Toolbar.addItem("Physics Mask", null, null);
-        this.Toolbar.addItem("Filters", null, null);
-        this.Toolbar.addItem("_", null, null);
-        this.Toolbar.addItem("Settings", null, null);
+    configuretoolbar() {
+        this.toolbar.addItem("Undo", "undo", null);
+        this.toolbar.addItem("Redo", "redo", null);
+        this.toolbar.addItem("Import", null, null);
+        this.toolbar.addItem("Export", null, null);
+        this.toolbar.addItem("_", null, null);
+        this.toolbar.addItem("Resize", null, null);
+        this.toolbar.addItem("Physics Mask", null, null);
+        this.toolbar.addItem("Filters", null, null);
+        this.toolbar.addItem("_", null, null);
+        this.toolbar.addItem("Settings", null, null);
     }
 
     configureTools() {
@@ -425,7 +425,7 @@ export class SpriteEditor extends Editor {
 
         let best = 32;
         let pos = {x: x - menu.offX, y: y- menu.offY};
-        let bestLine = null;
+        let bestLine = {};
         for (const line of lines) {
             if (line.type === "horizontal") {
                 if (Math.abs(y - line.p) < best) {

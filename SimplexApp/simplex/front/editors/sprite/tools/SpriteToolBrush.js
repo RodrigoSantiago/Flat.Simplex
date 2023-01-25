@@ -8,7 +8,7 @@ export class SpriteToolBrush extends SpriteTool {
 
     // Temp
     dist = 0;
-    prevPos = {};
+    prevPos = {x:0, y:0};
     brushData = {};
 
     constructor(editor, jqButton, configMenu) {

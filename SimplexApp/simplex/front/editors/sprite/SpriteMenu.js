@@ -100,4 +100,8 @@ export class SpriteMenu {
             this._updateTimer = null;
         }
     }
+
+    getConfig() {
+
+    }
 }

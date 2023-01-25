@@ -1,20 +1,27 @@
 export class SpriteTool {
 
-    // Context
-    ctx = null;
-    ctxFinal = null;
-    min = {};
-    max = {};
-    selected = false;
+    /** @type {CanvasRenderingContext2D} */ ctx = null;
+    /** @type {CanvasRenderingContext2D} */ ctxFinal = null;
+    /** @type {SpriteMenu} */ configMenu = null;
 
     // Brush
     size = 1;
     color = "#000000";
     alpha = 1;
-    pixelMode = false;
-    configMenu = null;
     drawing = false;
+    selected = false;
+    pixelMode = false;
 
+    min = {x: 0, y: 0};
+    max = {x: 0, y: 0};
+
+    /**
+     * Base constructor
+     *
+     * @param {SpriteEditor} editor
+     * @param {JQuery} jqButton
+     * @param {SpriteMenu} configMenu
+     */
     constructor(editor, jqButton, configMenu) {
         this.editor = editor;
         this.configMenu = configMenu;
@@ -26,15 +33,33 @@ export class SpriteTool {
         });
     }
 
+    /**
+     * Shortcut for the current sprite width
+     *
+     * @returns {number}
+     */
     imgWidth() {
         return this.editor.imageWidth;
     }
 
+    /**
+     * Shortcut for the current sprite height
+     *
+     * @returns {number}
+     */
     imgHeight() {
         return this.editor.imageHeight;
     }
 
-    _createCanvas(canvas, width, height) {
+    /**
+     * Create a canvas, or setup the given canvas to be the size entered
+     *
+     * @param {HTMLCanvasElement} canvas
+     * @param {number} width
+     * @param {number} height
+     * @return {HTMLCanvasElement}
+     */
+    createCanvas(canvas, width, height) {
         width = width ? width : 100;
         height = height ? height : 100;
         if (canvas && canvas.width === width && canvas.height === height) {
@@ -47,26 +72,66 @@ export class SpriteTool {
         return canvas;
     }
 
+    /**
+     * Get a temporary canvas with the given size. Useful for Brushes
+     *
+     * @param {number} width
+     * @param {number} height
+     * @returns {HTMLCanvasElement}
+     */
     getBrushCanvas(width, height) {
-        return SpriteTool.brushCanvas = this._createCanvas(SpriteTool.brushCanvas, width, height);
+        return SpriteTool.brushCanvas = this.createCanvas(SpriteTool.brushCanvas, width, height);
     }
 
+    /**
+     * Get a temporary canvas with the given size. Useful for Source
+     *
+     * @param {number} width
+     * @param {number} height
+     * @returns {HTMLCanvasElement}
+     */
     getSrcCanvas(width, height) {
-        return SpriteTool.srcCanvas = this._createCanvas(SpriteTool.srcCanvas, width, height);
+        return SpriteTool.srcCanvas = this.createCanvas(SpriteTool.srcCanvas, width, height);
     }
 
+    /**
+     * Get a temporary canvas with the given size. Useful for Destination
+     *
+     * @param {number} width
+     * @param {number} height
+     * @returns {HTMLCanvasElement}
+     */
     getDstCanvas(width, height) {
-        return SpriteTool.dstCanvas = this._createCanvas(SpriteTool.dstCanvas, width, height);
+        return SpriteTool.dstCanvas = this.createCanvas(SpriteTool.dstCanvas, width, height);
     }
 
+    /**
+     * Get a temporary canvas with the given size. Useful as additional canvas
+     *
+     * @param {number} width
+     * @param {number} height
+     * @returns {HTMLCanvasElement}
+     */
     getTmpCanvas(width, height) {
-        return SpriteTool.tmpCanvas = this._createCanvas(SpriteTool.tmpCanvas, width, height);
+        return SpriteTool.tmpCanvas = this.createCanvas(SpriteTool.tmpCanvas, width, height);
     }
 
+    /**
+     * Get a temporary canvas with the given size. Useful as extra additional canvas
+     *
+     * @param {number} width
+     * @param {number} height
+     * @returns {HTMLCanvasElement}
+     */
     getExtCanvas(width, height) {
-        return SpriteTool.extCanvas = this._createCanvas(SpriteTool.extCanvas, width, height);
+        return SpriteTool.extCanvas = this.createCanvas(SpriteTool.extCanvas, width, height);
     }
 
+    /**
+     * Set the tool selection state. Fires onSelected and onUnselected
+     *
+     * @param {boolean} selected
+     */
     setSelected(selected) {
         if (selected) {
             this.jqButton.addClass("selected");
@@ -83,20 +148,35 @@ export class SpriteTool {
         }
     }
 
+    /**
+     * Get the updated configuration
+     *
+     * @returns {*}
+     */
     getConfig() {
         return this.configMenu.getConfig();
     }
 
+    /**
+     * Fires when the tool is selected
+     */
     onSelected() {
 
     }
 
+    /**
+     * Fires when the tool lost selection
+     */
     onUnselected() {
         if (this.drawing) {
             this.end();
         }
     }
 
+    /**
+     *
+     * @param pos Mouse position related to
+     */
     updateCanvasCursor(pos) {
         if (this.pixelMode) {
             this.cursorAsPixel(pos);
@@ -122,7 +202,7 @@ export class SpriteTool {
     cursorAsCircle(pos) {
         let size = this.drawing ? this.size : this.getConfig().size;
         this.editor.canvasCursor.removeClass("pencil");
-        this.editor.canvasCursor.css({display : "", left: pos.x, top: pos.y});
+        this.editor.canvasCursor.css({display: "", left: pos.x, top: pos.y});
         SpriteTool._path = null;
 
         if (size * this.editor.zoomStep < 8) {
@@ -238,6 +318,12 @@ export class SpriteTool {
         this.editor.toolEnd();
     }
 
+    /**
+     * Generate a Path countoring a pixel circle brush
+     * 
+     * @param {number} size
+     * @returns {string}
+     */
     generatePixelPath(size) {
         if (size <= 1) return "M0 0 L0 1 L 1 1 L 1 0 L 0 0";
 
