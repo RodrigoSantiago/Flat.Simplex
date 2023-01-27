@@ -6,6 +6,14 @@ import {TabView} from "./simplex/front/TabView.js";
 import {SpriteEditor} from "./simplex/front/editors/sprite/SpriteEditor.js";
 import {Dialogs} from "./simplex/front/Dialogs.js";
 
+window.log = function (...points) {
+    let str = "";
+    for (let p of points) {
+        str += (Math.round(p.x * 100)/100) + ", " + (Math.round(p.y * 100)/100) + "\n";
+    }
+    console.log(str);
+};
+
 let globalDomInsert = null;
 $(document).on('DOMNodeInserted', function() {
     if (globalDomInsert === null) {

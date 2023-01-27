@@ -193,7 +193,8 @@ export class SpriteEditor extends Editor {
         this.canvasPosition({x: this.canvasView.width() / 2, y: this.canvasView.height() / 2});
 
         this.canvasView.mousedown(e => {
-            if ($(e.target).closest('.sprite-scale-box').length) return;
+            if (($(e.target).closest('.sprite-scale-box-border').length ||
+                $(e.target).closest('.sprite-pivot').length) && e.button !== 1) return;
             this.canvasOnMouseDown(e)
         });
         this.addWindowListener('mousemove', e => this.canvasOnMouseMove(e));

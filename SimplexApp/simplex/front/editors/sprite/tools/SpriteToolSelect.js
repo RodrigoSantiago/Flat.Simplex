@@ -294,25 +294,18 @@ export class SpriteToolSelect extends SpriteToolBrush {
     }
 
     mouseSaveTransform(tsBox) {
-        let w = Math.abs(tsBox.width * this.editor.zoomStep);
-        let h = Math.abs(tsBox.height * this.editor.zoomStep);
-        let x1 = ((tsBox.center.x) - w / 2) / this.editor.zoomStep + this.imgWidth() / 2;
-        let y1 = ((tsBox.center.y) - h / 2) / this.editor.zoomStep + this.imgHeight() / 2;
-        let x2 = ((tsBox.center.x) + w / 2) / this.editor.zoomStep + this.imgWidth() / 2;
-        let y2 = ((tsBox.center.y) + h / 2) / this.editor.zoomStep + this.imgHeight() / 2;
+        let x1 = tsBox.cx - tsBox.width / 2;
+        let y1 = tsBox.cy - tsBox.height / 2;
+        let initW = tsBox.startWidth;
+        let initH = tsBox.startHeight;
 
-        x1 = Math.round(x1);
-        y1 = Math.round(y1);
-        x2 = Math.round(x2);
-        y2 = Math.round(y2);
-        let cx = (x1 + x2) / 2;
-        let cy = (y1 + y2) / 2;
-
-        this.ctxMagic.translate(cx, cy);
+        this.ctxMagic.translate(tsBox.cx, tsBox.cy);
         this.ctxMagic.rotate(tsBox.angle);
         this.ctxMagic.imageSmoothingEnabled = false;
         this.ctxMagic.imageSmoothingQuality = 'low';
-        this.ctxMagic.drawImage(tsBox.jqImg[0], 0, 0, tsBox.startWidth, tsBox.startHeight, x1 - cx, y1 - cy, x2 - x1, y2 - y1);
+        let inX = (tsBox.signX === 1) ? 0 : initW;
+        let inY = (tsBox.signX === 1) ? 0 : initH;
+        this.ctxMagic.drawImage(tsBox.jqImg[0], inX, inY, initW - inX, initH - inY, -tsBox.width/2, -tsBox.height/2, tsBox.width, tsBox.height);
         this.ctxMagic.imageSmoothingQuality = 'high';
         this.ctxMagic.imageSmoothingEnabled = true;
         this.ctxMagic.resetTransform();

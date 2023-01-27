@@ -1122,6 +1122,10 @@ input[type=checkbox].disabled {
     }
 }
 
+//</editor-fold>
+
+//<editor-fold desc="TRANSFORM">
+
 .sprite-grab-line {
     position: absolute;
     background-color: white;
@@ -1162,9 +1166,6 @@ input[type=checkbox].disabled {
     }
 }
 
-//</editor-fold>
-
-//<editor-fold desc="TRANSFORM">
 .sprite-selection-box {
     position: absolute;
     border: 1px dashed white;
@@ -1172,15 +1173,39 @@ input[type=checkbox].disabled {
     border-image: repeating-linear-gradient(45deg, white, white 3px, #4F4F4F 3px, #4F4F4F 6px) 1;
     box-shadow: 0 0 0 #404040;
 }
-.sprite-scale-box {
+
+.sprite-pivot-line {
     position: absolute;
-    cursor: move;
+    width: 1px;
+    height: 1px;
+    background-color: white;
+    transform-origin: 0.5px 0.5px;
+    z-index: 200;
+    pointer-events: none;
+    mix-blend-mode: difference;
+    box-shadow: 0 0 1px 1px #404040;
+}
+
+.sprite-scale-box {
+    left : 0;
+    top : 0;
+    position: absolute;
+    z-index: 200;
 
     img {
         position: absolute;
         width : 100%;
         height: 100%;
         pointer-events: none;
+    }
+    .flipX {
+        transform: scale(-1, 1);
+    }
+    .flipY {
+        transform: scale(1, -1);
+    }
+    .flipXY {
+        transform: scale(-1, -1);
     }
 
     .sprite-scale-box-border {
@@ -1192,9 +1217,9 @@ input[type=checkbox].disabled {
         border: 1px solid white;
         border-image: repeating-linear-gradient(45deg, white, white 3px, #4F4F4F 3px, #4F4F4F 6px) 1;
         box-shadow: 0 0 0 #404040;
-        pointer-events: none;
         z-index: 0;
         mix-blend-mode: difference;
+        cursor: move;
     }
 
     .sprite-pivot {
@@ -1214,6 +1239,20 @@ input[type=checkbox].disabled {
             z-index: 1;
         }
         z-index: 1;
+    }
+    .sprite-pivot.bezier {
+        cursor: move;
+        display: none;
+    }
+
+    &.bezier {
+        .sprite-pivot:not(.bezier), .sprite-scale-box-border {
+            display: none;
+            pointer-events: none;
+        }
+        .sprite-pivot.bezier {
+            display: flex;
+        }
     }
 
     :nth-child(1) {

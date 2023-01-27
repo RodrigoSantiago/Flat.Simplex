@@ -2506,15 +2506,38 @@ input[type=checkbox].disabled {
   box-shadow: 0 0 0 #404040;
 }
 
-.sprite-scale-box {
+.sprite-pivot-line {
   position: absolute;
-  cursor: move;
+  width: 1px;
+  height: 1px;
+  background-color: white;
+  transform-origin: 0.5px 0.5px;
+  z-index: 200;
+  pointer-events: none;
+  mix-blend-mode: difference;
+  box-shadow: 0 0 1px 1px #404040;
+}
+
+.sprite-scale-box {
+  left: 0;
+  top: 0;
+  position: absolute;
+  z-index: 200;
 }
 .sprite-scale-box img {
   position: absolute;
   width: 100%;
   height: 100%;
   pointer-events: none;
+}
+.sprite-scale-box .flipX {
+  transform: scale(-1, 1);
+}
+.sprite-scale-box .flipY {
+  transform: scale(1, -1);
+}
+.sprite-scale-box .flipXY {
+  transform: scale(-1, -1);
 }
 .sprite-scale-box .sprite-scale-box-border {
   position: absolute;
@@ -2525,9 +2548,9 @@ input[type=checkbox].disabled {
   border: 1px solid white;
   border-image: repeating-linear-gradient(45deg, white, white 3px, #4F4F4F 3px, #4F4F4F 6px) 1;
   box-shadow: 0 0 0 #404040;
-  pointer-events: none;
   z-index: 0;
   mix-blend-mode: difference;
+  cursor: move;
 }
 .sprite-scale-box .sprite-pivot {
   position: absolute;
@@ -2546,6 +2569,17 @@ input[type=checkbox].disabled {
   border-radius: 100%;
   pointer-events: none;
   z-index: 1;
+}
+.sprite-scale-box .sprite-pivot.bezier {
+  cursor: move;
+  display: none;
+}
+.sprite-scale-box.bezier .sprite-pivot:not(.bezier), .sprite-scale-box.bezier .sprite-scale-box-border {
+  display: none;
+  pointer-events: none;
+}
+.sprite-scale-box.bezier .sprite-pivot.bezier {
+  display: flex;
 }
 .sprite-scale-box :nth-child(1) {
   left: 0;

@@ -3,7 +3,7 @@ import {SpriteEditor} from "./SpriteEditor.js";
 
 export class SpriteMenu {
 
-    jqDragView = null;
+    jqDragView;
     dragged = false;
     floating = false;
     type = null;

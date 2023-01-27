@@ -1,5 +1,6 @@
 import {SpriteToolBrush} from "./SpriteToolBrush.js";
 import {hexToRgb, hsvToRgb, rgbFuncToHex, rgbToHex, rgbToHsv} from "../../../Colors.js";
+import {BezierCurve} from "../effects/BezierCurve.js";
 
 export class SpriteToolShapes extends SpriteToolBrush {
 
@@ -10,6 +11,9 @@ export class SpriteToolShapes extends SpriteToolBrush {
     constructor(editor, jqButton, configMenu) {
         super(editor, jqButton, configMenu);
         this.hardness = 100;
+
+        this.jqLineA = $("<div class='sprite-pivot-line'></div>");
+        this.jqLineB = $("<div class='sprite-pivot-line'></div>");
     }
 
     onSelected() {
@@ -20,6 +24,14 @@ export class SpriteToolShapes extends SpriteToolBrush {
         this.editor.brushMenu.setHardness(this.hardness);
         this.editor.brushMenu.setHardnessEnabled("bool");
         this.editor.brushMenu.setShapeMode();
+    }
+
+    onUnselected() {
+        if (this.editor.tsBox.isOpen) {
+            this.mouseSaveTransform(this.editor.tsBox);
+            return;
+        }
+        super.onUnselected();
     }
 
     updatePreview(ctx) {
@@ -74,11 +86,8 @@ export class SpriteToolShapes extends SpriteToolBrush {
                 }
             } else if (mode === 9) {
                 this.drawPixelCircle(10, 10, 70, 70,
-                    (cx, cy, x, y, xff,yff) => {
-                        ctx.drawImage(tempCtx, 0, 0, size, size, Math.round((cx + x + xff) - size / 2), Math.round((cy + y + yff) - size / 2), size, size);
-                        ctx.drawImage(tempCtx, 0, 0, size, size, Math.round((cx + x + xff) - size / 2), Math.round((cy - y) - size / 2), size, size);
-                        ctx.drawImage(tempCtx, 0, 0, size, size, Math.round((cx - x) - size / 2), Math.round((cy + y + yff) - size / 2), size, size);
-                        ctx.drawImage(tempCtx, 0, 0, size, size, Math.round((cx - x) - size / 2), Math.round((cy - y) - size / 2), size, size);
+                    (x, y) => {
+                        ctx.drawImage(tempCtx, 0, 0, size, size, Math.round(x - size / 2), Math.round(y - size / 2), size, size)
                     });
             } else {
                 for (let i = 0; i < pts.length; i++) {
@@ -138,6 +147,8 @@ export class SpriteToolShapes extends SpriteToolBrush {
     }
 
     end() {
+        this.jqLineA.detach();
+        this.jqLineB.detach();
         if (this.ctxFinal) {
             this.ctxFinal.globalAlpha = this.alpha / 255;
             this.ctxFinal.drawImage(this.ctx.canvas, 0, 0);
@@ -149,6 +160,11 @@ export class SpriteToolShapes extends SpriteToolBrush {
     }
 
     mouseDown(pos, ctrl, alt, shift) {
+        if (this.editor.tsBox.isOpen) {
+            this.mouseSaveTransform(this.editor.tsBox);
+            return;
+        }
+
         this.align = shift;
         this.min = {x: pos.x - this.size, y: pos.y - this.size};
         this.max = {x: pos.x + this.size, y: pos.y + this.size};
@@ -156,11 +172,11 @@ export class SpriteToolShapes extends SpriteToolBrush {
         this.prevPos = pos;
         this.initPos = pos;
         this.endPos = pos;
-        this.mouseMove(pos);
     }
 
     mouseMove(pos, ctrl, alt, shift) {
-        if (pos.x === this.prevPos.x && pos.y === this.prevPos.y) {
+        if ((pos.x === this.prevPos.x && pos.y === this.prevPos.y) ||
+            (pos.x === this.initPos.x && pos.y === this.initPos.y)) {
             return;
         }
         this.align = shift;
@@ -176,13 +192,20 @@ export class SpriteToolShapes extends SpriteToolBrush {
         let polygon = this.createVisualPolygon(this.initPos, this.endPos, this.pixelMode);
 
         if (this.pixelMode) {
-            if (this.mode === 9) {
-                this.drawPixelCircle(polygon[0].x, this.polygon[0].y, polygon[1].x, polygon[1].y,
-                    (cx, cy, x, y, xff, yff) => this.drawCircleMirror(cx, cy, x, y, xff, yff));
+            if (this.mode === 2) {
+                let p = polygon[0];
+                let p1 = polygon[1];
+                let p2 = polygon[2];
+                let p3 = polygon[3];
+                let lines = [];
+                BezierCurve.drawBezier(p.x, p.y, p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, (x, y) => lines.push({x, y}));
+                for (let i = 0; i < lines.length - 1; i++) {
+                    this.drawPixelLine(lines[i], lines[i + 1]);
+                }
+            } else if (this.mode === 9) {
+                this.drawPixelCircle(this.initPos.x, this.initPos.y, pos.x, pos.y, (x, y) => this.drawBrush(x, y));
             } else {
                 for (let i = 0; i < polygon.length; i++) {
-                    /*this.color = this.getColor(i, polygon.length);
-                    this.updateBrushCanvas();*/
                     let p1 = i + 1 === polygon.length ? 0 : i + 1;
                     if (polygon[i].r) {
                         this.drawPixelLine(polygon[p1], polygon[i]);
@@ -203,17 +226,22 @@ export class SpriteToolShapes extends SpriteToolBrush {
             if (this.size % 2 === 1) {
                 this.ctx.translate(0.5, 0.5);
             }
-            if (this.mode === 9) {
-                let cx = (polygon[0].x + polygon[1].x) / 2;
-                let cy = (polygon[0].y + polygon[1].y) / 2;
-                let w = Math.abs(polygon[1].x - polygon[0].x) / 2;
-                let h = Math.abs(this.polygon[1].x - polygon[0].x) / 2;
+            if (this.mode === 2) {
+                let p = polygon[0];
+                let p1 = polygon[1];
+                let p2 = polygon[2];
+                let p3 = polygon[3];
+                this.ctx.moveTo(p.x, p.y);
+                this.ctx.bezierCurveTo(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y);
+            } else if (this.mode === 9) {
+                let cx = (this.initPos.x + pos.x) / 2;
+                let cy = (this.initPos.y + pos.y) / 2;
+                let w = Math.abs(this.initPos.x - pos.x) / 2;
+                let h = Math.abs(this.initPos.y - pos.y) / 2;
                 this.ctx.ellipse(cx, cy, w, h, 0, 0, Math.PI * 2);
             } else {
                 this.ctx.moveTo(polygon[0].x, polygon[0].y);
                 for (let i = 1; i < polygon.length; i++) {
-                    /*this.color = this.getColor(i, polygon.length);
-                    this.updateBrushCanvas();*/
                     this.ctx.lineTo(polygon[i].x, polygon[i].y);
                 }
                 if (this.mode !== 1) {
@@ -228,71 +256,179 @@ export class SpriteToolShapes extends SpriteToolBrush {
     }
 
     mouseUp(pos) {
+        if (pos.x === this.initPos.x && pos.y === this.initPos.y) {
+            this.editor.toolEnd();
+            return;
+        }
+        if (this.mode === 1) {
+            this.editor.toolEnd();
+            return;
+        }
         this.polygon = this.createFinalPolygon(this.initPos, this.endPos, this.pixelMode);
-
         this.polygonScale = this.createFinalPolygon({x: 0, y: 0},
             {
                 x: (this.endPos.x - this.initPos.x) * 100,
                 y: (this.endPos.y - this.initPos.y) * 100
             }, false);
-        for (let i = 0; i < this.polygonScale.length; i++) {
-            this.polygonScale[i].x = this.polygonScale[i].x / 100 + this.initPos.x;
-            this.polygonScale[i].y = this.polygonScale[i].y / 100 + this.initPos.y;
-        }
-        this.polygonScale.minx = Math.floor(this.polygonScale.minx / 100) + this.initPos.x;
-        this.polygonScale.miny = Math.floor(this.polygonScale.miny / 100) + this.initPos.y;
-        this.polygonScale.maxx = Math.ceil(this.polygonScale.maxx / 100) + this.initPos.x;
-        this.polygonScale.maxy = Math.ceil(this.polygonScale.maxy / 100) + this.initPos.y;
-        this.polygonScale.width = this.polygonScale.maxx - this.polygonScale.minx;
-        this.polygonScale.height = this.polygonScale.maxy - this.polygonScale.miny;
 
-        this.editor.tsBox.open(pos, this.polygon.minx, this.polygon.miny, this.polygon.width, this.polygon.height, null);
-        this.editor.tsBox.onUpdate = (x1, y1, x2, y2, angle) => this.boxUpdate(x1, y1, x2, y2, angle);
+        this.editor.tsBox.onUpdate = (x1, y1, x2, y2, angle, sx, sy, ha, hb) => this.boxUpdate(x1, y1, x2, y2, angle, sx, sy, ha, hb);
+        if (this.mode === 2) {
+            this.editor.tsBox.open(pos, this.polygon.minx, this.polygon.miny, this.polygon.width, this.polygon.height, null, this.polygon[1], this.polygon[2]);
+
+            this.editor.canvasScl.append(this.jqLineA);
+            this.editor.canvasScl.append(this.jqLineB);
+        } else {
+            this.editor.tsBox.open(pos, this.polygon.minx, this.polygon.miny, this.polygon.width, this.polygon.height, null);
+        }
         this.editor.tsBox.leave();
     }
 
-    tPt(pt, move, center, scale) {
-        let ex = Math.round((pt.x - center.x) * scale.x + move.x + center.x);
-        let ey = Math.round((pt.y - center.y) * scale.y + move.y + center.y);
+    tPt(polygon, n, mt) {
+        let move = mt.m;
+        let center = mt.c;
+        let scale = mt.s;
+
+        let pt = n === null ? polygon : polygon[n];
+        let ex = (pt.x - center.x) * scale.x + move.x + center.x;
+        let ey = (pt.y - center.y) * scale.y + move.y + center.y;
+
+        if (n !== null) {
+            if (scale.x > 0) {
+                if (pt.x === polygon.minx) ex = polygon.curx1;
+                if (pt.x === polygon.maxx - 1) ex = polygon.curx2 - 1;
+            } else {
+                if (pt.x === polygon.minx) ex = polygon.curx2 - 1;
+                if (pt.x === polygon.maxx - 1) ex = polygon.curx1;
+            }
+            if (scale.y > 0) {
+                if (pt.y === polygon.miny) ey = polygon.cury1;
+                if (pt.y === polygon.maxy - 1) ey = polygon.cury2 - 1;
+            } else {
+                if (pt.y === polygon.miny) ey = polygon.cury2 - 1;
+                if (pt.y === polygon.maxy - 1) ey = polygon.cury1;
+            }
+        }
+
+        if (mt.a !== 0) {
+            ex -= center.x + move.x;
+            ey -= center.y + move.y;
+
+            let xnew = ex * mt.cos - ey * mt.sin;
+            let ynew = ex * mt.sin + ey * mt.cos;
+
+            ex = xnew + center.x + move.x;
+            ey = ynew + center.y + move.y;
+        }
+
         return {
             x : ex,
             y : ey
         };
     }
 
-    boxUpdate(x1, y1, x2, y2, a) {
-        let len = Math.sqrt((x2 - x1) * (x2 - x1) + (y1 - y2) + (y1 - y2));
-        let polygon = this.polygon;
+    boxUpdate(x1, y1, x2, y2, a, signX, signY, handleA, handleB) {
+        let polygon;
+        let identity = Math.abs((x2 - x1) - (this.polygon.maxx - this.polygon.minx)) < 0.001
+            && Math.abs((y2 - y1) - (this.polygon.maxy - this.polygon.miny)) < 0.001;
 
-        let tsBox = this.editor.tsBox;
+        if (identity || this.mode === 1 || this.mode === 2 || this.mode === 4 || this.mode === 9) {
+            polygon = this.polygon;
+        } else {
+            polygon = this.polygonScale;
+        }
+
+        if (Math.abs(a) < 0.001) {
+            a = 0;
+        }
+
+        polygon.curx1 = x1;
+        polygon.curx2 = x2;
+        polygon.cury1 = y1;
+        polygon.cury2 = y2;
+
         let c = {
             x: (polygon.maxx + polygon.minx) / 2,
             y: (polygon.maxy + polygon.miny) / 2
         };
         let s = {
-            x: (x2 - x1) / (polygon.maxx - polygon.minx),
-            y: (y2 - y1) / (polygon.maxy - polygon.miny)
+            x: (x2 - x1) / (polygon.maxx - polygon.minx) * signX,
+            y: (y2 - y1) / (polygon.maxy - polygon.miny) * signY
         };
         let m = {
             x: Math.round((x2 + x1) / 2 - c.x),
             y: Math.round((y2 + y1) / 2 - c.y)
         };
+        let mt = {c, s, m, a, cos:Math.cos(a), sin:Math.sin(a), signX, signY};
+
+        if (this.mode === 2) {
+            handleA.x = handleA.x * polygon.width + polygon.minx;
+            handleA.y = handleA.y * polygon.height + polygon.miny;
+            handleB.x = handleB.x * polygon.width + polygon.minx;
+            handleB.y = handleB.y * polygon.height + polygon.miny;
+
+            let h1 = this.tPt(polygon, 0, mt);
+            let tp1 = this.tPt(handleA, null, mt);
+            let tp2 = this.tPt(handleB, null, mt);
+            let h2 = this.tPt(polygon, 3, mt);
+
+            h1.x += 0.5;
+            h2.x += 0.5;
+            h1.y += 0.5;
+            h2.y += 0.5;
+            tp1.x += 0.5;
+            tp2.x += 0.5;
+            tp1.y += 0.5;
+            tp2.y += 0.5;
+
+            this.jqLineA.css({width: "2px", transform: ""});
+            this.jqLineA.css({left: h1.x * this.editor.zoomStep, top: h1.y * this.editor.zoomStep});
+            this.jqLineB.css({width: "2px", transform: ""});
+            this.jqLineB.css({left: h2.x * this.editor.zoomStep, top: h2.y * this.editor.zoomStep});
+
+            let dist = Math.sqrt((tp1.x - h1.x) * (tp1.x - h1.x) + (tp1.y - h1.y) * (tp1.y - h1.y));
+            let dist2 = Math.sqrt((tp2.x - h2.x) * (tp2.x - h2.x) + (tp2.y - h2.y) * (tp2.y - h2.y));
+            let angle = Math.atan2(-(h1.y - tp1.y), -(h1.x - tp1.x));
+            let angle2 = Math.atan2(-(h2.y - tp2.y), -(h2.x - tp2.x));
+            this.jqLineA.css({width: dist * this.editor.zoomStep, transform: "rotate(" + angle + "rad)"});
+            this.jqLineB.css({width: dist2 * this.editor.zoomStep, transform: "rotate(" + angle2 + "rad)"});
+        }
 
         this.clear();
 
         if (this.pixelMode) {
-            if (this.mode === 9) {
-                this.drawPixelCircle(polygon[0].x, polygon[0].y, polygon[1].x, polygon[1].y,
-                    (cx, cy, x, y, xff, yff) => this.drawCircleMirror(cx, cy, x, y, xff, yff));
+            if (this.mode === 2) {
+                let p = this.tPt(polygon, 0, mt);
+                let p1 = this.tPt(handleA, null, mt);
+                let p2 = this.tPt(handleB, null, mt);
+                let p3 = this.tPt(polygon, 3, mt);
+                let lines = [];
+                BezierCurve.drawBezier(p.x, p.y, p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, (x, y) => lines.push({x, y}));
+                for (let i = 0; i < lines.length - 1; i++) {
+                    this.drawPixelLine(lines[i], lines[i + 1]);
+                }
+            } else if (this.mode === 9) {
+                if (a === 0) {
+                    this.drawPixelCircle(x1, y1, x2-1, y2-1, (x, y) => this.drawBrush(x, y));
+                } else {
+                    for (let i = 0; i < polygon.length - 1; i += 3) {
+                        let p0 = this.tPt(polygon, i, mt);
+                        let p1 = this.tPt(polygon, i + 1, mt);
+                        let p2 = this.tPt(polygon, i + 2, mt);
+                        let p3 = this.tPt(polygon, i + 3, mt);
+                        let lines = [];
+                        BezierCurve.drawBezier(p0.x, p0.y, p1.x, p1.y, p2.x, p2.y, p3.x, p3.y, (x, y) => lines.push({x, y}));
+                        for (let i = 0; i < lines.length - 1; i++) {
+                            this.drawPixelLine(lines[i], lines[i + 1]);
+                        }
+                    }
+                }
             } else {
                 for (let i = 0; i < polygon.length; i++) {
-                    /*this.color = this.getColor(i, polygon.length);
-                    this.updateBrushCanvas();*/
                     let p1 = i + 1 === polygon.length ? 0 : i + 1;
                     if (polygon[i].r) {
-                        this.drawPixelLine(this.tPt(polygon[p1], m, c, s), this.tPt(polygon[i], m, c, s));
+                        this.drawPixelLine(this.tPt(polygon, p1, mt), this.tPt(polygon, i, mt));
                     } else {
-                        this.drawPixelLine(this.tPt(polygon[i], m, c, s), this.tPt(polygon[p1], m, c, s));
+                        this.drawPixelLine(this.tPt(polygon, i, mt), this.tPt(polygon, p1, mt));
                     }
                     if (this.mode === 1) break;
                 }
@@ -308,18 +444,37 @@ export class SpriteToolShapes extends SpriteToolBrush {
             if (this.size % 2 === 1) {
                 this.ctx.translate(0.5, 0.5);
             }
-            if (this.mode === 9) {
-                let cx = (polygon[0].x + polygon[1].x) / 2;
-                let cy = (polygon[0].y + polygon[1].y) / 2;
-                let w = Math.abs(polygon[1].x - polygon[0].x) / 2;
-                let h = Math.abs(polygon[1].x - polygon[0].x) / 2;
-                this.ctx.ellipse(cx, cy, w, h, 0, 0, Math.PI * 2);
+
+            if (this.mode === 2) {
+                let p = this.tPt(polygon, 0, mt);
+                let p1 = this.tPt(handleA, null, mt);
+                let p2 = this.tPt(handleB, null, mt);
+                let p3 = this.tPt(polygon, 3, mt);
+                this.ctx.moveTo(p.x, p.y);
+                this.ctx.bezierCurveTo(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y);
+            } else if (this.mode === 9) {
+                if (a === 0) {
+                    let cx = (x1 + (x2 - 1)) / 2;
+                    let cy = (y1 + (y2 - 1)) / 2;
+                    let w = Math.abs((x2 - 1) - x1) / 2;
+                    let h = Math.abs((y2 - 1) - y1) / 2;
+                    this.ctx.ellipse(cx, cy, w, h, 0, 0, Math.PI * 2);
+                } else {
+                    for (let i = 0; i < polygon.length - 1; i += 3) {
+                        let p0 = this.tPt(polygon, i, mt);
+                        let p1 = this.tPt(polygon, i + 1, mt);
+                        let p2 = this.tPt(polygon, i + 2, mt);
+                        let p3 = this.tPt(polygon, i + 3, mt);
+                        this.ctx.moveTo(p0.x, p0.y);
+                        this.ctx.bezierCurveTo(p1.x, p1.y, p2.x, p2.y, p3.x, p3.y);
+                    }
+                }
             } else {
-                this.ctx.moveTo(polygon[0].x, polygon[0].y);
+                let p = this.tPt(polygon, 0, mt);
+                this.ctx.moveTo(p.x, p.y);
                 for (let i = 1; i < polygon.length; i++) {
-                    /*this.color = this.getColor(i, polygon.length);
-                    this.updateBrushCanvas();*/
-                    this.ctx.lineTo(polygon[i].x, polygon[i].y);
+                    p = this.tPt(polygon, i, mt);
+                    this.ctx.lineTo(p.x, p.y);
                 }
                 if (this.mode !== 1) {
                     this.ctx.closePath();
@@ -329,6 +484,12 @@ export class SpriteToolShapes extends SpriteToolBrush {
             this.ctx.resetTransform();
         }
         this.clip();
+    }
+
+    mouseSaveTransform() {
+        this.editor.tsBox.onUpdate = null;
+        this.editor.toolEnd();
+        this.editor.tsBox.close();
     }
 
     createFinalPolygon(init, pos, precise) {
@@ -360,6 +521,8 @@ export class SpriteToolShapes extends SpriteToolBrush {
         } else if (this.mode === 2) {
             polygon = [
                 {x : init.x, y: init.y},
+                {x : init.x * 0.9 + pos.x * 0.1, y: init.y * 0.5 + pos.y * 0.5},
+                {x : init.x * 0.1 + pos.x * 0.9, y: init.y * 0.5 + pos.y * 0.5},
                 {x : pos.x, y: pos.y}
             ];
         } else if (this.mode === 4) {
@@ -370,15 +533,14 @@ export class SpriteToolShapes extends SpriteToolBrush {
                 {x : pos.x, y: init.y}
             ];
         } else if (this.mode === 9) {
-            polygon = [
-                {x : init.x, y: init.y},
-                {x : init.x, y: pos.y},
-            ];
+            polygon = this.ellipseToBezier(
+                Math.min(init.x, pos.x), Math.min(init.y, pos.y),
+                Math.abs(init.x - pos.x), Math.abs(init.y - pos.y));
         } else {
             polygon = this.createShape(init, pos, precise);
         }
 
-        if (this.mode !== 4) {
+        if (this.mode !== 2 && this.mode !== 4 && this.mode !== 9) {
             this.rotPolygon(init, polygon);
         }
         return polygon;
@@ -598,6 +760,13 @@ export class SpriteToolShapes extends SpriteToolBrush {
         ];
     }
 
+    drawCircleMirror(cx, cy, x, y, xff, yff, ptFunction) {
+        ptFunction(cx + x + xff, cy + y + yff);
+        ptFunction(cx + x + xff, cy - y);
+        ptFunction(cx - x, cy + y + yff);
+        ptFunction(cx - x, cy - y);
+    }
+
     drawPixelCircle(x1, y1, x2, y2, ptFunction) {
         if (x1 === x2 || y1 === y2) {
             this.drawPixelLine({x:x1, y:y1}, {x:x2, y:y2});
@@ -618,22 +787,160 @@ export class SpriteToolShapes extends SpriteToolBrush {
             let y = Math.round(Math.sqrt(bb - (x * x) * d));
             if (y !== y) y = 0;
             for (let i = y + 1; i < prevY; i++) {
-                ptFunction(cx, cy, x, i, xff, yff);
+                this.drawCircleMirror(cx, cy, x, i, xff, yff, ptFunction);
             }
-            ptFunction(cx, cy, x, y, xff, yff);
+            this.drawCircleMirror(cx, cy, x, y, xff, yff, ptFunction);
             prevY = y;
         }
-        ptFunction(cx, cy, a, 0, xff, yff);
+        this.drawCircleMirror(cx, cy, a, 0, xff, yff, ptFunction);
         for (let i = 0; i < prevY; i++) {
-            ptFunction(cx, cy, a, i, xff, yff);
+            this.drawCircleMirror(cx, cy, a, i, xff, yff, ptFunction);
         }
     }
 
-    drawCircleMirror(cx, cy, x, y, xff, yff) {
-        this.drawBrush(cx + x + xff, cy + y + yff);
-        this.drawBrush(cx + x + xff, cy - y);
-        this.drawBrush(cx - x, cy + y + yff);
-        this.drawBrush(cx - x, cy - y);
+    DrawEllipse(xc, yc, width, height, ptFunction) {
+        let a2 = width * width;
+        let b2 = height * height;
+        let fa2 = 4 * a2, fb2 = 4 * b2;
+        let x, y, sigma;
+
+        for (x = 0, y = height, sigma = 2 * b2 + a2 * (1 - 2 * height); b2 * x <= a2 * y + 0.00001; x++) {
+            ptFunction(xc + x, yc + y);
+            ptFunction(xc - x, yc + y);
+            ptFunction(xc + x, yc - y);
+            ptFunction(xc - x, yc - y);
+
+            if (sigma >= 0) {
+                sigma += fa2 * (1 - y);
+                y--;
+            }
+            sigma += b2 * ((4 * x) + 6);
+        }
+
+        for (x = width, y = 0, sigma = 2 * a2 + b2 * (1 - 2 * width); a2 * y <= b2 * x + 0.00001; y++) {
+            ptFunction(xc + x, yc + y);
+            ptFunction(xc - x, yc + y);
+            ptFunction(xc + x, yc - y);
+            ptFunction(xc - x, yc - y);
+
+            if (sigma >= 0) {
+                sigma += fb2 * (1 - x);
+                x--;
+            }
+            sigma += a2 * ((4 * y) + 6);
+        }
+    }
+
+    Plot4EllipsePoints(X,Y ,CX,CY, PutPixel) {
+        PutPixel(CX + X, CY + Y);
+        PutPixel(CX - X, CY + Y);
+        PutPixel(CX - X, CY - Y);
+        PutPixel(CX + X, CY - Y);
+    }
+
+    PlotEllipse(CX, CY, XRadius, YRadius, PutPixel) {
+        var X, Y;
+        var XChange, YChange;
+        var EllipseError;
+        var TwoASquare, TwoBSquare;
+        var StoppingX, StoppingY;
+        TwoASquare = 2 * XRadius * XRadius;
+        TwoBSquare = 2 * YRadius * YRadius;
+        X = XRadius;
+        Y = 0;
+        XChange = YRadius * YRadius * (1 - 2 * XRadius)
+        YChange = XRadius * XRadius;
+        EllipseError = 0;
+        StoppingX = TwoBSquare * XRadius;
+        StoppingY = 0;
+
+        while (StoppingX >= StoppingY) {
+            this.Plot4EllipsePoints(X, Y, CX, CY,PutPixel);
+            ++Y;
+            (StoppingY += TwoASquare);
+            (EllipseError += YChange);
+            (YChange += TwoASquare);
+            if ((2 * EllipseError + XChange) > 0) {
+                --X;
+                StoppingX -= TwoBSquare;
+                EllipseError += XChange;
+                XChange += TwoBSquare;
+            }
+        }
+
+        X = 0;
+        Y = YRadius;
+        XChange = YRadius * YRadius;
+        YChange = XRadius * XRadius * (1 - 2 * YRadius);
+        EllipseError = 0;
+        StoppingX = 0;
+        StoppingY = TwoASquare * YRadius;
+        while (StoppingX <= StoppingY) {
+            this.Plot4EllipsePoints(X, Y, CX, CY,PutPixel);
+            ++X;
+            StoppingX += TwoBSquare;
+            EllipseError += XChange;
+            XChange += TwoBSquare;
+            if ((2 * EllipseError + YChange) > 0) {
+                --Y;
+                StoppingY -= TwoASquare;
+                EllipseError += YChange;
+                YChange += TwoASquare;
+            }
+        }
+    }
+
+    ellipseToBezier(x, y, width, height) {
+        let cCtlPt = [];
+        for (let i = 0; i < 13; i++) {
+            cCtlPt.push({x:0, y:0});
+        }
+
+        // MAGICAL CONSTANT to map ellipse to beziers
+        //  			2/3*(sqrt(2)-1)
+        const EToBConst = 0.2761423749154;
+
+        let offset = {
+            cx : Math.floor(width * EToBConst),
+            cy : Math.floor(height * EToBConst)
+        };
+    //  Use the following line instead for mapping systems where +ve Y is upwards
+    //  CSize offset((int)(r.Width() * EToBConst), -(int)(r.Height() * EToBConst));
+
+        let centre = {
+            x : (x + x+width) / 2,
+            y : (y + y+height) / 2
+        };
+
+        cCtlPt[0].x  =                            //------------------------/
+        cCtlPt[1].x  =                            //                        /
+        cCtlPt[11].x =                            //        2___3___4       /
+        cCtlPt[12].x = x;                         //     1             5    /
+        cCtlPt[5].x  =                            //     |             |    /
+        cCtlPt[6].x  =                            //     |             |    /
+        cCtlPt[7].x  = x + width;                 //     0,12          6    /
+        cCtlPt[2].x  =                            //     |             |    /
+        cCtlPt[10].x = centre.x - offset.cx;      //     |             |    /
+        cCtlPt[4].x  =                            //    11             7    /
+        cCtlPt[8].x  = centre.x + offset.cx;      //       10___9___8       /
+        cCtlPt[3].x  =                            //                        /
+        cCtlPt[9].x  = centre.x;                  //------------------------*
+
+        cCtlPt[2].y  =
+        cCtlPt[3].y  =
+        cCtlPt[4].y  = y;
+        cCtlPt[8].y  =
+        cCtlPt[9].y  =
+        cCtlPt[10].y = y + height;
+        cCtlPt[7].y  =
+        cCtlPt[11].y = centre.y + offset.cy;
+        cCtlPt[1].y  =
+        cCtlPt[5].y  = centre.y - offset.cy;
+        cCtlPt[0].y  =
+        cCtlPt[12].y =
+        cCtlPt[6].y  = centre.y;
+
+        return cCtlPt;
     }
 
     rotPolygon(init, points) {
