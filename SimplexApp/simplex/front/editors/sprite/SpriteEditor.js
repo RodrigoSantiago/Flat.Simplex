@@ -17,6 +17,7 @@ import {SpriteMenuGradient} from "./SpriteMenuGradient.js";
 import {SpriteToolSelect} from "./tools/SpriteToolSelect.js";
 import {SpriteTransformBox} from "./SpriteTransformBox.js";
 import {SpriteToolShapes} from "./tools/SpriteToolShapes.js";
+import {SpriteToolText} from "./tools/SpriteToolText.js";
 
 export class SpriteEditor extends Editor {
     static pageModel = null;
@@ -57,11 +58,6 @@ export class SpriteEditor extends Editor {
     constructor(asset) {
         super(asset);
         this.jqRoot = $(SpriteEditor.pageModel);
-        this.jqRoot.onResize = () => this.onResize();
-        this.jqRoot.onShow = () => this.onShow();
-        this.jqRoot.onHide = () => this.onHide();
-        this.jqRoot.onRemove = () => this.onHide();
-
         this.toolbar = new Toolbar(this.jqRoot.find(".toolbar"));
         this.splitVer = this.jqRoot.find(".split-panel-ver");
         this.splitHor = this.jqRoot.find(".split-panel-hor");
@@ -133,6 +129,16 @@ export class SpriteEditor extends Editor {
         super.onRemove();
     }
 
+    onKeyDown(key, ctrl, alt, shift) {
+        if (key) {
+
+        }
+    }
+
+    onKeyUp(key, ctrl, alt, shift) {
+
+    }
+
     getMainContext() {
         return this.canvasContext;
     }
@@ -181,7 +187,7 @@ export class SpriteEditor extends Editor {
         this.toolSmudge = new SpriteToolSmudge(this, this.jqRoot.find(".tool-smudge"), this.brushMenu);
         this.toolBucket = new SpriteToolBucket(this, this.jqRoot.find(".tool-bucket"), this.gradMenu);
         this.toolShapes = new SpriteToolShapes(this, this.jqRoot.find(".tool-shapes"), this.brushMenu);
-        this.toolText = new SpriteTool(this, this.jqRoot.find(".tool-text"));
+        this.toolText = new SpriteToolText(this, this.jqRoot.find(".tool-text"));
         this.toolColor = new SpriteToolColor(this, this.jqRoot.find(".tool-color"), this.colorMenu);
 
         this.tsBox = new SpriteTransformBox(this);
@@ -249,10 +255,12 @@ export class SpriteEditor extends Editor {
             this.dragButton = e.button;
             if (e.button === 0) {
                 this.dragPaintCol = this.color;
+                this.dragPaintAlpha = this.alpha;
             } else if (e.button === 2) {
                 this.dragPaintCol = this.altColor;
+                this.dragPaintAlpha = this.altAlpha;
             }
-            this.toolStart(this.dragPaintCol, e.button === 0 ? this.alpha : this.altAlpha, e.ctrlKey, e.altKey, e.shiftKey);
+            this.toolStart(this.dragPaintCol, this.dragPaintAlpha, e.ctrlKey, e.altKey, e.shiftKey);
             if (this.selectedTool.isDrawing()) {
                 this.selectedTool.mouseDown(this.dragPaintPos, e.ctrlKey, e.altKey, e.shiftKey);
             }

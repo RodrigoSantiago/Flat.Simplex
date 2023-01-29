@@ -34,7 +34,8 @@ export class AssetType {
 
 export class Asset {
 
-    // TreeView Visibility
+    /** #type{AssetType}*/ type;
+    name;
     text;
     icon;
     color;

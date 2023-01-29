@@ -186,7 +186,7 @@ function tessCubic(scale,
 }
 
 export class BezierCurve {
-    static drawBezier(x1, y1, x2, y2, x3, y3, x4, y4, func) {
+    static iterateBezier(x1, y1, x2, y2, x3, y3, x4, y4, func) {
         tessCubic(1, x1, y1, x2, y2, x3, y3, x4, y4, func);
     }
 }

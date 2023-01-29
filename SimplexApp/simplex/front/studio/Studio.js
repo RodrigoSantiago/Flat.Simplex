@@ -1,52 +1,49 @@
-import {TreeItem} from "../TreeView.js";
 import {DragSystem} from "../DragSystem.js";
 import {Dropdown, DropdownItem} from "../Dropdown.js";
 import {Asset, AssetType} from "../assets/Asset.js";
-import {Tab, TabView} from "../TabView.js";
 import {SpriteEditor} from "../editors/sprite/SpriteEditor.js";
 import {Editor} from "../editors/Editor.js";
+import {Tab} from "../components/TabView/Tab.js";
+import {TreeItem} from "../components/TreeView/TreeItem.js";
 
 export class Studio {
 
-    /** @type {jQuery} **/
-    jqMain = null;
-    Navigator = null;
-    Toolbar = null;
-    TreeView = null;
-    Preview = null;
-    TabView = null;
-    OpenEditors = [];
+    /** @type {JQuery} **/ jqMain = null;
+    /** @type {Navigator} **/ navigator = null;
+    /** @type {Toolbar} **/ toolbar = null;
+    /** @type {TreeView} **/ treeView = null;
+    preview = null;
+    /** @type {TabView} **/ tabView = null;
+    /** @type {Editor[]} **/ openEditors = [];
     TransferenceAssets = [];
     TransferenceMode = "";
 
     jqLowHeight;
 
-    constructor(jqMain, Navigator, Toolbar, TreeView, Preview, TabView) {
-        const self = this;
-
+    constructor(jqMain, navigator, toolbar, treeView, preview, tabView) {
         this.jqMain = jqMain;
-        this.Navigator = Navigator;
-        this.Toolbar = Toolbar;
-        this.TreeView = TreeView;
-        this.Preview = Preview;
-        this.TabView = TabView;
+        this.navigator = navigator;
+        this.toolbar = toolbar;
+        this.treeView = treeView;
+        this.preview = preview;
+        this.tabView = tabView;
 
-        this.Navigator.addItem("New", "insert_drive_file", null);
-        this.Navigator.addItem("Save", "save", null);
-        this.Navigator.addItem("Open", "folder", null);
-        this.Navigator.addItem("Export", "outbox", null);
-        this.Navigator.addItem("_");
-        this.Navigator.addItem("Help", "help", null);
-        this.Navigator.addItem("Info", "info", null);
+        this.navigator.addItem("New", "insert_drive_file", null);
+        this.navigator.addItem("Save", "save", null);
+        this.navigator.addItem("Open", "folder", null);
+        this.navigator.addItem("Export", "outbox", null);
+        this.navigator.addItem("_");
+        this.navigator.addItem("Help", "help", null);
+        this.navigator.addItem("Info", "info", null);
 
-        this.Toolbar.addItem("Play", "play_arrow", null);
-        this.Toolbar.addItem("Debug", "bug_report", null);
-        this.Toolbar.addItem("Build", "archive", null);
-        this.Toolbar.addItem("Game Properties", null, null);
-        this.Toolbar.addItem("Todo List", null, null);
-        this.Toolbar.addItem("Plugins", null, null);
-        this.Toolbar.addItem("_", null, null);
-        this.Toolbar.addItem("Settings", null, null);
+        this.toolbar.addItem("Play", "play_arrow", null);
+        this.toolbar.addItem("Debug", "bug_report", null);
+        this.toolbar.addItem("Build", "archive", null);
+        this.toolbar.addItem("Game Properties", null, null);
+        this.toolbar.addItem("Todo List", null, null);
+        this.toolbar.addItem("Plugins", null, null);
+        this.toolbar.addItem("_", null, null);
+        this.toolbar.addItem("Settings", null, null);
 
         this.jqLowHeight = this.jqMain.find(".low-height");
 
@@ -59,24 +56,21 @@ export class Studio {
     }
 
     configureDivider() {
-        const self = this;
         let dc = $("#divider_center");
-        dc[0].onDragMove = function (e) {
+        dc[0].onDragMove = (e) => {
             let m = Math.max(200, Math.min(400, e.pageX - dc.parent().offset().left));
             $(".left-list").css("min-width", m + "px").width(m);
-            self.onResize();
+            this.onResize();
         }
-        dc.mousedown(function (e) {
+        dc.on("mousedown", (e) => {
             DragSystem.drag(dc[0], e.button);
         });
     }
 
     configureTreeView() {
-        const self = this;
-
-        this.TreeView.onTreeItemClick = function (item) {
+        this.treeView.onTreeItemClick = (item) => {
             if (item && !item.isFolder()) {
-                self.editAsset(item);
+                this.editAsset(item);
             }
         }
 
@@ -84,26 +78,26 @@ export class Studio {
             if (i === 3 || i === 14) {
                 let it2 = new TreeItem(new Asset("Asset Folder " + i, AssetType.folder), true);
                 it2.open = true;
-                this.TreeView.root.addChild(it2);
+                this.treeView.root.addChild(it2);
 
                 let it = new TreeItem(new Asset("Sprite Asset " + i, AssetType.sprite));
                 it2.addChild(it);
             } else {
                 let it = new TreeItem(new Asset("Sprite Asset " + i, AssetType.sprite));
-                this.TreeView.root.addChild(it);
+                this.treeView.root.addChild(it);
             }
         }
-        this.TreeView.onRequestContextMenu = function (e, item) {
+        this.treeView.onRequestContextMenu = (e, item) => {
             let arr = [
-                new DropdownItem("edit", "Edit", (e) => self.editAsset(item)),
+                new DropdownItem("edit", "Edit", (e) => this.editAsset(item)),
                 new DropdownItem("edit_note", "Rename", (e) => {}, !!item),
-                new DropdownItem("folder", "Create Folder", e => self.createAsset("folder")),
+                new DropdownItem("folder", "Create Folder", e => this.createAsset("folder")),
                 new DropdownItem("_", "_"),
-                new DropdownItem("content_cut", "Cut", e => self.cutSelection(), !!item),
-                new DropdownItem("content_copy", "Copy", e => self.copySelection(), !!item),
-                new DropdownItem("content_paste", "Paste", e => self.pasteContent(item), self.TransferenceAssets.length > 0),
+                new DropdownItem("content_cut", "Cut", e => this.cutSelection(), !!item),
+                new DropdownItem("content_copy", "Copy", e => this.copySelection(), !!item),
+                new DropdownItem("content_paste", "Paste", e => this.pasteContent(item), this.TransferenceAssets.length > 0),
                 new DropdownItem("_", "_"),
-                new DropdownItem("delete", "Delete", e => self.deleteSelection(), !!item)
+                new DropdownItem("delete", "Delete", e => this.deleteSelection(), !!item)
             ];
             if (!item || item.isFolder()) {
                 arr.splice(0, 1);
@@ -114,25 +108,28 @@ export class Studio {
             }, arr);
         }
 
-        this.TreeView.update();
+        this.treeView.update();
     }
 
     configureTabView() {
-
+        $(window).on("keydown", (e) => {
+            /*if (this.TabView.selectedTab) {
+                //this.TabView.selectedTab.
+            }*/
+        });
     }
 
     configureFloatingMenu() {
-        const self = this;
-        $("#floating-add-sprite").click(e => self.createAsset("sprite"));
-        $("#floating-add-sound").click(e => self.createAsset("sound"));
-        $("#floating-add-font").click(e => self.createAsset("font"));
-        $("#floating-add-script").click(e => self.createAsset("script"));
-        $("#floating-add-object").click(e => self.createAsset("object"));
-        $("#floating-add-scene").click(e => self.createAsset("scene"));
+        $("#floating-add-sprite").on("click", (e) => this.createAsset("sprite"));
+        $("#floating-add-sound").on("click", (e) => this.createAsset("sound"));
+        $("#floating-add-font").on("click", (e) => this.createAsset("font"));
+        $("#floating-add-script").on("click", (e) => this.createAsset("script"));
+        $("#floating-add-object").on("click", (e) => this.createAsset("object"));
+        $("#floating-add-scene").on("click", (e) => this.createAsset("scene"));
 
         let floating_add = $("#floating-add");
         let floating_creation = $(".floating-creation");
-        $(document).mouseup(function (event) {
+        $(document).on("mouseup", (event) => {
             if ($(event.target).closest(floating_add).length === 0) {
                 if (floating_creation.css("display") !== "none") {
                     floating_creation.slideToggle(100);
@@ -140,7 +137,7 @@ export class Studio {
                 }
             }
         });
-        floating_add.click(function (e) {
+        floating_add.on("click", (e) => {
             if (floating_creation.css("display") === "none") {
                 floating_add.addClass("open");
             } else {
@@ -153,8 +150,8 @@ export class Studio {
     createAsset(type) {
         let it  = new TreeItem(new Asset("Asset created", AssetType.type[type]), AssetType.type[type] === AssetType.folder);
 
-        if (this.TreeView.selection.length === 1) {
-            let selectedItem = this.TreeView.selection[0];
+        if (this.treeView.selection.length === 1) {
+            let selectedItem = this.treeView.selection[0];
             if (selectedItem.isFolder()) {
                 selectedItem.addChild(it);
             } else {
@@ -162,14 +159,14 @@ export class Studio {
                 selectedItem.parent.addChild(it, id);
             }
         } else {
-            this.TreeView.root.addChild(it);
+            this.treeView.root.addChild(it);
         }
-        this.TreeView.selectionAdd(it);
-        this.TreeView.update();
+        this.treeView.selectionAdd(it);
+        this.treeView.update();
     }
 
     copySelection() {
-        let selection = this.TreeView.selection.slice();
+        let selection = this.treeView.selection.slice();
         let filter = [];
         for (let i = 0; i < selection.length; i++) {
             let item = selection[i];
@@ -187,7 +184,7 @@ export class Studio {
         }
         this.TransferenceAssets = filter;
         this.TransferenceMode = "copy";
-        this.TreeView.selectionSet(filter);
+        this.treeView.selectionSet(filter);
 
     }
 
@@ -210,7 +207,7 @@ export class Studio {
                 }
             }
 
-            let parent = this.TreeView.root;
+            let parent = this.treeView.root;
             let index = null;
             if (item) {
                 parent = item.getParent();
@@ -220,10 +217,10 @@ export class Studio {
                 let newItem = this.TransferenceAssets[i];
                 parent.addChild(newItem, index + i + 1);
             }
-            this.TreeView.selectionSet(this.TransferenceAssets);
+            this.treeView.selectionSet(this.TransferenceAssets);
             this.TransferenceAssets = [];
         }
-        this.TreeView.update();
+        this.treeView.update();
     }
 
     deleteSelection() {
@@ -235,34 +232,39 @@ export class Studio {
             }
             this.TransferenceAssets = [];
         }
-        this.TreeView.update();
+        this.treeView.update();
     }
 
+    /**
+     * Edit the asset from the given TreeItem
+     *
+     * @param {TreeItem} item
+     */
     editAsset(item) {
-        const self = this;
         let asset = item.content;
 
-        for (const tb of this.TabView.tabList) {
-            if (tb.asset === asset) {
-                this.TabView.selectTab(tb);
+        for (const tb of this.tabView.tabList) {
+            if (tb.controller.content === asset) {
+                this.tabView.selectTab(tb);
                 return;
             }
         }
 
-        let editor = asset.type === AssetType.sprite ? new SpriteEditor(asset) : new Editor(asset);
-
-        let tab = new Tab(asset.name, asset.type.icon, asset.type.className, function (e) {
-            self.TabView.removeTab(e);
-        }, editor.getJqRoot());
-        tab.asset = asset;
-        this.TabView.addTab(tab);
+        let editor = asset.type === AssetType.sprite ? 
+            new SpriteEditor(asset) :
+            new Editor(asset);
+        
+        let tab = new Tab(asset.name, asset.type.icon, asset.type.className, editor);
+        editor.close = () => this.tabView.removeTab(tab);
+        
+        this.tabView.addTab(tab);
     }
 
     onResize() {
-        this.Navigator.toClose();
-        this.TreeView.update();
-        this.Toolbar.update();
-        this.TabView.onResize();
+        this.navigator.toClose();
+        this.treeView.update();
+        this.toolbar.update();
+        this.tabView.onResize();
 
         this.jqLowHeight.css("min-width", this.jqMain.find(".negative-floating").width());
     }

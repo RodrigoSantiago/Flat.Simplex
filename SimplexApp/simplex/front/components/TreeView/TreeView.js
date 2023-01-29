@@ -1,117 +1,15 @@
-import {DragSystem} from "./DragSystem.js";
-
-export class TreeItem {
-
-    constructor(content, isFolder) {
-        this.content = content;
-
-        this.treeView = null;
-        this.parent = null;
-        this.children = [];
-
-        this.folder = !!isFolder;
-        this.open = false;
-        this.selected = false;
-        this.dragged = false;
-        this.tempIndex = 0;
-    }
-
-    getParent() {
-        return this.parent;
-    }
-
-    addChild(item, index) {
-        if (item.parent !== null) {
-            item.parent.removeChild(item);
-        }
-        if (index !== undefined) {
-            this.children.splice(index, 0, item);
-        } else {
-            this.children.push(item);
-        }
-        item.parent = this;
-        item.treeView = this.treeView;
-    }
-
-    removeChild(item) {
-        let index = this.children.indexOf(item);
-        if (index >= 0) {
-            this.children.splice(index, 1);
-            if (item.parent === this) {
-                item.treeView.selectionRemove(item);
-
-                item.parent = null;
-            }
-        }
-    }
-
-    isChildOf(parentItem) {
-        if (this === parentItem || this.parent === parentItem) {
-            return true;
-        } else if (this.parent !== null) {
-            return this.parent.isChildOf(parentItem);
-        } else {
-            return false;
-        }
-    }
-
-    getIdent() {
-        if (this.parent === null) {
-            return 0;
-        } else {
-            return this.parent.getIdent() + 1;
-        }
-    }
-
-    getIndex() {
-        return this.parent == null ? 0 : this.parent.children.indexOf(this);
-    }
-
-    getTreeView() {
-        return this.treeView;
-    }
-
-    setSelected(value) {
-        this.selected = value;
-    }
-
-    isSelected() {
-        return this.selected;
-    }
-
-    isSelectedFolder() {
-        return this.selected || (this.parent !== null && this.parent.isSelected());
-    }
-
-    isFolder() {
-        return this.folder;
-    }
-
-    isOpen() {
-        return this.open;
-    }
-
-    setOpen(value) {
-        this.open = value;
-    }
-
-    isDragged() {
-        return this.dragged;
-    }
-
-    setDragged(value) {
-        this.dragged = value;
-    }
-}
+import {DragSystem} from "../../DragSystem.js";
+import {TreeItem} from "./TreeItem.js";
 
 export class TreeView {
-    root;
-    jQRootElement;
-    jQContentElement;
-    jQItemElement;
-    jQItemDragElement;
-    jQLineDropElement;
-    jQScroll;
+
+    /** @type{TreeItem} */ root;
+    /** @type{JQuery} */ jQRootElement;
+    /** @type{JQuery} */ jQContentElement;
+    /** @type{JQuery} */ jQItemElement;
+    /** @type{JQuery} */ jQItemDragElement;
+    /** @type{JQuery} */ jQLineDropElement;
+    /** @type{JQuery} */ jQScroll;
     convertFunction;
 
     jQItems = [];

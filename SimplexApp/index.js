@@ -1,10 +1,11 @@
 import {Navigator} from "./simplex/front/Navigator.js";
-import {TreeView} from "./simplex/front/TreeView.js"
+import {TreeView} from "./simplex/front/components/TreeView/TreeView.js"
 import {Studio} from "./simplex/front/studio/Studio.js";
 import {Toolbar} from "./simplex/front/Toolbar.js";
-import {TabView} from "./simplex/front/TabView.js";
+import {TabView} from "./simplex/front/components/TabView/TabView.js";
 import {SpriteEditor} from "./simplex/front/editors/sprite/SpriteEditor.js";
 import {Dialogs} from "./simplex/front/Dialogs.js";
+import {FontManager} from "./simplex/front/font/FontManager.js";
 
 window.log = function (...points) {
     let str = "";
@@ -86,3 +87,4 @@ const studio = new Studio(
 
 SpriteEditor.loadModel();
 Dialogs.loadModels();
+FontManager.loadDefaultFonts();

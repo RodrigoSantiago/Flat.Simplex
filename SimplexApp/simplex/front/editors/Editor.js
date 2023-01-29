@@ -1,6 +1,7 @@
 import {AssetType} from "../assets/Asset.js";
+import {TabController} from "../components/TabView/TabController.js";
 
-export class Editor {
+export class Editor extends TabController {
 
     /** @type {AssetType} */ assetType;
     /** @type {Asset} */ asset;
@@ -11,9 +12,10 @@ export class Editor {
     /**
      * Base constructor
      *
-     * @param {Asset} asset
+     * @param {Asset} asset Asset to be edited
      */
     constructor(asset) {
+        super(asset);
         this.assetType = asset.type;
         this.asset = asset;
     }
@@ -55,8 +57,20 @@ export class Editor {
         }
     }
 
+    onClose() {
+        close();
+    }
+
     addWindowListener(event, func) {
         window.addEventListener(event, func);
         this.clearEvents.push({e:event, f:func, i:true});
+    }
+
+    onKeyDown(key, ctrl, alt, shift) {
+
+    }
+
+    onKeyUp(key, ctrl, alt, shift) {
+
     }
 }
