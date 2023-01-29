@@ -52,6 +52,10 @@ export class TreeItem {
         }
     }
 
+    isEmpty() {
+        return this.children.length === 0;
+    }
+
     isChildOf(parentItem) {
         if (this === parentItem || this.parent === parentItem) {
             return true;
