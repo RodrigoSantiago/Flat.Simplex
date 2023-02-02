@@ -34,12 +34,18 @@ export class AssetType {
 
 export class Asset {
 
-    /** #type{AssetType}*/ type;
-    name;
-    text;
-    icon;
-    color;
+    /** @type{AssetType}*/ type;
+    /** @type{string}*/ name;
+    /** @type{string}*/ text;
+    /** @type{string}*/ icon;
+    /** @type{string}*/ color;
 
+    /**
+     * Base constructor
+     *
+     * @param name Asset Unic Name
+     * @param type Asset type
+     */
     constructor(name, type) {
         this.type = type;
         this.name = name;

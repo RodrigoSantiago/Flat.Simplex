@@ -1,4 +1,14 @@
 export class TreeCell {
+
+    /** @type{TreeView} */ treeView;
+    /** @type{TreeItem} */ treeItem;
+
+    /** @type{JQuery} */ jqItem;
+    /** @type{JQuery} */ span;
+    /** @type{JQuery} */ icon;
+    /** @type{JQuery} */ fold;
+    /** @type{JQuery} */ line;
+
     constructor(treeView, jqItemTemplate) {
         this.treeView = treeView;
         this.jqItem = jqItemTemplate.clone();

@@ -1,5 +1,5 @@
-import {DismissClickResize} from "./Utils.js";
-import {DragSystem} from "./DragSystem.js";
+import {DismissClickResize} from "../../Utils.js";
+import {DragSystem} from "../../DragSystem.js";
 
 export class Navigator {
 
@@ -9,28 +9,19 @@ export class Navigator {
     open = false;
 
     constructor(jqMain, jqToolbar, jqNavigator) {
-        const self = this;
         this.toolbar = jqToolbar;
         this.nav = jqNavigator;
         this.drawer = jqNavigator.find('.drawer');
         this.hamburger = $('<div class="hamburger button icon on-color"><i class="material-icons">menu</i></div>');
 
         this.toolbar.prepend(this.hamburger);
-        this.hamburger.click(function (e) {
-            self.toggle(200);
-        });
+        this.hamburger.on("click", (e) => this.toggle(200));
 
-        self.toClose();
+        this.toClose();
 
-        $(window).mousedown(function (e) {
-            self.mouseDown(e);
-        });
-        $(window).mousemove(function (e) {
-            self.mouseMove(e);
-        });
-        $(window).mouseup(function (e) {
-            self.mouseUp(e);
-        });
+        $(window).on("mousedown", (e) => this.mouseDown(e));
+        $(window).on("mousemove", (e) => this.mouseMove(e));
+        $(window).on("mouseup", (e) => this.mouseUp(e));
     }
 
     addItem(name, icon, event) {
@@ -38,9 +29,7 @@ export class Navigator {
             this.drawer.append($('<div class="separator"></div>'));
         } else {
             let item = $('<div class="button text primary"><i class="material-icons">' + icon + '</i><span>' + name + '</span></div>');
-            item.click(function (e) {
-                event?.(e);
-            });
+            item.on("click", (e) => event?.(e));
             this.drawer.append(item);
         }
     }
@@ -60,14 +49,13 @@ export class Navigator {
         this.nav.removeClass("close");
         this.nav.addClass("open");
         this.nav.finish();
-        let self = this;
         if (anim) {
             this.nav.animate({
                 left : 0
             }, {
                 duration : anim,
-                step : function () {
-                    self.updateNavigatorBackout();
+                step : () => {
+                    this.updateNavigatorBackout();
                 }
             })
         } else {
@@ -76,14 +64,11 @@ export class Navigator {
                 backgroundColor : 'rgba(0, 0, 0, 0.5)'
             });
         }
-        DismissClickResize(this.drawer, function (selector) {
-            self.toClose(200);
-        });
+        DismissClickResize(this.drawer, (s) => this.toClose(200));
     }
 
     toClose(anim) {
         this.open = false;
-        let self = this;
         this.nav.finish();
         if (anim) {
             this.nav.animate({
@@ -91,12 +76,12 @@ export class Navigator {
                 backgroundColor : "rgba(0, 0, 0, 0)"
             }, {
                 duration : anim,
-                step : function () {
-                    self.updateNavigatorBackout();
+                step : () => {
+                    this.updateNavigatorBackout();
                 },
-                complete : function () {
-                    self.nav.removeClass("open");
-                    self.nav.addClass("close");
+                complete : () => {
+                    this.nav.removeClass("open");
+                    this.nav.addClass("close");
                 }
             })
         } else {

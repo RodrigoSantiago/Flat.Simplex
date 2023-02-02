@@ -1,6 +1,6 @@
 import {SpriteMenu} from "./SpriteMenu.js";
-import {hexToRgb, rgbToHex} from "../../Colors.js";
-import {ColorPickerDialog} from "../../dialogs/ColorPickerDialog.js";
+import {hexToRgb, rgbToHex} from "../../../Colors.js";
+import {ColorPickerDialog} from "../../../dialogs/ColorPickerDialog.js";
 
 export class SpriteMenuGradient extends SpriteMenu {
 

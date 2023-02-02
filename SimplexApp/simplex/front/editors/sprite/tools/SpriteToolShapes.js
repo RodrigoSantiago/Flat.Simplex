@@ -1,6 +1,6 @@
 import {SpriteToolBrush} from "./SpriteToolBrush.js";
 import {hexToRgb, hsvToRgb, rgbFuncToHex, rgbToHex, rgbToHsv} from "../../../Colors.js";
-import {BezierCurve} from "../effects/BezierCurve.js";
+import {BezierCurve} from "../geometry/BezierCurve.js";
 
 export class SpriteToolShapes extends SpriteToolBrush {
 

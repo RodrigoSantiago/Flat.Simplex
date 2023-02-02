@@ -1,9 +1,10 @@
-import {DragSystem} from "../../DragSystem.js";
-import {SpriteEditor} from "./SpriteEditor.js";
+import {DragSystem} from "../../../DragSystem.js";
+import {SpriteEditor} from "../SpriteEditor.js";
 
 export class SpriteMenu {
 
-    jqDragView;
+    /** @type{JQuery} */ jqDragView;
+    /** @type{SpriteEditor} */ editor;
     dragged = false;
     floating = false;
     type = null;
@@ -30,7 +31,7 @@ export class SpriteMenu {
             } else if (this.jqDragView.hasClass("horizontal")) {
                 this.type = "horizontal";
             } else {
-                this.type = this.jqDragView.parent()[0] === editor.splitVer[0] ? "horizontal" : "vertical";
+                this.type = this.jqDragView.parent()[0] === editor.jqSplitVer[0] ? "horizontal" : "vertical";
                 this.jqDragView.addClass(this.type);
             }
 
@@ -40,7 +41,7 @@ export class SpriteMenu {
                 let off = this.jqDragView.offset();
                 this.jqDragView.addClass("floating");
                 this.jqDragView.detach();
-                this.editor.splitVer.append(this.jqDragView);
+                this.editor.jqSplitVer.append(this.jqDragView);
                 this.jqDragView.offset({left: off.left, top: off.top});
             }
         }
@@ -66,7 +67,7 @@ export class SpriteMenu {
         this.jqDragView.addClass("dragging");
         this.jqDragView.addClass("floating");
         this.jqDragView.detach();
-        this.editor.splitVer.append(this.jqDragView);
+        this.editor.jqSplitVer.append(this.jqDragView);
         this.jqDragView.offset({left: e.pageX - this.offX, top: e.pageY - this.offY});
     }
 

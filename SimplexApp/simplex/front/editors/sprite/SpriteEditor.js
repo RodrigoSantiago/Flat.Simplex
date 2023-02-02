@@ -3,21 +3,24 @@ import {Toolbar} from "../../toolbar.js";
 import {SpriteTool} from "./tools/SpriteTool.js";
 import {SpriteToolPencil} from "./tools/SpriteToolPencil.js";
 import {SpriteToolBrush} from "./tools/SpriteToolBrush.js";
-import {SpriteMenuLayers} from "./SpriteMenuLayers.js";
-import {SpriteMenuBrush} from "./SpriteMenuBrush.js";
-import {SpriteMenuFrames} from "./SpriteMenuFrames.js";
+import {SpriteMenuLayers} from "./menus/SpriteMenuLayers.js";
+import {SpriteMenuBrush} from "./menus/SpriteMenuBrush.js";
+import {SpriteMenuFrames} from "./menus/SpriteMenuFrames.js";
 import {SpriteToolSpray} from "./tools/SpriteToolSpray.js";
 import {SpriteToolEraser} from "./tools/SpriteToolEraser.js";
 import {SpriteToolSmudge} from "./tools/SpriteToolSmudge.js";
 import {SpriteToolBucket} from "./tools/SpriteToolBucket.js";
-import {SpriteMenuColor} from "./SpriteMenuColor.js";
-import {SpriteMenuTools} from "./SpriteMenuTools.js";
+import {SpriteMenuColor} from "./menus/SpriteMenuColor.js";
+import {SpriteMenuTools} from "./menus/SpriteMenuTools.js";
 import {SpriteToolColor} from "./tools/SpriteToolColor.js";
-import {SpriteMenuGradient} from "./SpriteMenuGradient.js";
+import {SpriteMenuGradient} from "./menus/SpriteMenuGradient.js";
 import {SpriteToolSelect} from "./tools/SpriteToolSelect.js";
 import {SpriteTransformBox} from "./SpriteTransformBox.js";
 import {SpriteToolShapes} from "./tools/SpriteToolShapes.js";
 import {SpriteToolText} from "./tools/SpriteToolText.js";
+import {SpriteLayerView} from "./menus/SpriteLayerView.js";
+import {SpriteLayer} from "./SpriteLayer.js";
+import {SpriteFrame} from "./SpriteFrame.js";
 
 export class SpriteEditor extends Editor {
     static pageModel = null;
@@ -30,37 +33,91 @@ export class SpriteEditor extends Editor {
 
     /** @type {JQuery} */ jqRoot = null;
     /** @type {Toolbar} */ toolbar = null;
+    /** @type {AssetSprite} */ sprAsset = null;
 
-    /** @type {SpriteTool} */ selectedTool = null;
-    toolMenus = [];
-    zoomStep = 1;
-    zoomPos = {};
-    imageWidth = 400;
-    imageHeight = 200;
-    /** @type {SpriteLayer[]} */ layers = [];
+    /** @type {number} */ imageWidth = 400;
+    /** @type {number} */ imageHeight = 200;
+
+    // Menus
+    /** @type {SpriteMenu[]} */ toolMenus = [];
+    /** @type {SpriteMenuTools} */ toolsMenu;
+    /** @type {SpriteMenuLayers} */ layersMenu;
+    /** @type {SpriteMenuFrames} */ framesMenu;
+    /** @type {SpriteMenuBrush} */ brushMenu;
+    /** @type {SpriteMenuColor} */ colorMenu;
+    /** @type {SpriteMenuGradient} */ gradMenu;
+    /** @type {JQuery} */ dropLine;
+    /** @type {JQuery} */ jqSplitVer;
+    /** @type {JQuery} */ jqSplitHor;
+
+    // Animation
     /** @type {SpriteFrame[]} */ frames = [];
     /** @type {SpriteLayer} */ selectedLayer = null;
     /** @type {SpriteFrame} */ selectedFrame = null;
-    /** @type {SpriteLayer} */ canvasLayer = null;
-    selectionBool = [];
 
-    selectionClip = false;
+    // Tools
+    /** @type {SpriteTool} */ selectedTool = null;
+    /** @type {SpriteToolSelect} */ toolSelect;
+    /** @type {SpriteToolPencil} */ toolPencil;
+    /** @type {SpriteToolBrush} */ toolBrush;
+    /** @type {SpriteToolSpray} */ toolSpray;
+    /** @type {SpriteToolEraser} */ toolEraser;
+    /** @type {SpriteToolSmudge} */ toolSmudge;
+    /** @type {SpriteToolBucket} */ toolBucket;
+    /** @type {SpriteToolShapes} */ toolShapes;
+    /** @type {SpriteToolText} */ toolText;
+    /** @type {SpriteToolColor} */ toolColor;
+
+    // Selection
+    /** @type {SpriteTransformBox} */ tsBox;
+    /** @type {boolean[]} */ selectionPixels = [];
+    /** @type {boolean} */ selectionClip = false;
+
+    // Canvas
+    /** @type {SpriteLayer} */ canvasLayer = null;
+    /** @type {boolean} */ canvasBaked = false;
+    /** @type {JQuery} */ canvas;
+    /** @type {JQuery} */ canvasB;
+    /** @type {JQuery} */ canvasC;
+    /** @type {JQuery} */ canvasPos;
+    /** @type {JQuery} */ canvasScl;
+    /** @type {JQuery} */ canvasView;
+    /** @type {JQuery} */ canvasBg;
+    /** @type {JQuery} */ canvasCursor;
 
     // Brushes Settings
-    color = "#000000";
-    altColor = "#FF0040";
-    alpha = 255;
-    altAlpha = 255;
+    /** @type {string} */ color = "#000000";
+    /** @type {string} */ altColor = "#FF0040";
+    /** @type {number} */ alpha = 255;
+    /** @type {number} */ altAlpha = 255;
 
-    //Loop
+    // Zoom
+    /** @type {{x, y}} */ zoomPos = {x:0, y:0};
+    /** @type {number} */ zoomStep = 1;
+    /** @type {boolean} */ dragZoom;
+    /** @type {{x, y}} */ dragZoomStart;
+
+    // Paiting
+    /** @type {boolean} */ dragPaint;
+    /** @type {{x, y}} */ dragPaintPos;
+    /** @type {number} */ dragButton;
+    /** @type {string} */ dragPaintCol;
+    /** @type {number} */ dragPaintAlpha;
+
     loopSelection = null;
 
+    /**
+     * Base contructor
+     *
+     * @param asset {AssetSprite} Asset to be edited
+     */
     constructor(asset) {
         super(asset);
+        this.sprAsset = asset;
         this.jqRoot = $(SpriteEditor.pageModel);
         this.toolbar = new Toolbar(this.jqRoot.find(".toolbar"));
-        this.splitVer = this.jqRoot.find(".split-panel-ver");
-        this.splitHor = this.jqRoot.find(".split-panel-hor");
+        this.jqSplitVer = this.jqRoot.find(".split-panel-ver");
+        this.jqSplitHor = this.jqRoot.find(".split-panel-hor");
         this.canvas = this.jqRoot.find(".canvasA");
         this.canvasB = this.jqRoot.find(".canvasB");
         this.canvasC = this.jqRoot.find(".canvasC");
@@ -75,21 +132,33 @@ export class SpriteEditor extends Editor {
         this.canvasB[0].height = this.imageHeight;
         this.canvasC[0].width = this.imageWidth;
         this.canvasC[0].height = this.imageHeight;
-        this.selectionBool = new Array(this.imageWidth * this.imageHeight).fill(false);
+        this.selectionPixels = new Array(this.imageWidth * this.imageHeight).fill(false);
+
+        this.jqRoot.find(".save-btn").on("click", (e) => {
+            this.close();
+        });
+        this.jqRoot.find(".close-btn").on("click", (e) => {
+            this.close();
+        });
     }
 
+    /**
+     * @override
+     * @returns {JQuery}
+     */
     getJqRoot() {
         return this.jqRoot;
     }
 
+    /** @override */
     onResize() {
         this.canvasPosition({x: 0, y: 0}, {x: 0, y: 0});
         this.toolbar.update();
         for (let menu of this.toolMenus) {
             if (menu.floating) {
-                let width = this.splitVer.width();
-                let height = this.splitVer.height();
-                let off = this.splitVer.offset();
+                let width = this.jqSplitVer.width();
+                let height = this.jqSplitVer.height();
+                let off = this.jqSplitVer.offset();
                 let pos = menu.jqDragView.offset();
                 menu.jqDragView.offset({
                     left: Math.min(off.left + width - menu.jqDragView.width(), Math.max(off.left, pos.left)),
@@ -99,6 +168,7 @@ export class SpriteEditor extends Editor {
         }
     }
 
+    /** @override */
     onShow() {
         if (!this.ready) {
             this.configuretoolbar();
@@ -111,12 +181,11 @@ export class SpriteEditor extends Editor {
             this.selectedTool?.setSelected(true);
         }
         if (!this.loopSelection) {
-            this.loopSelection = setInterval((e) => {
-                this.toolSelect.animate();
-            }, 200);
+            this.loopSelection = setInterval((e) => this.toolSelect.animate(), 200);
         }
     }
 
+    /** @override */
     onHide() {
         if (this.loopSelection) {
             clearInterval(this.loopSelection);
@@ -125,30 +194,33 @@ export class SpriteEditor extends Editor {
         this.selectedTool?.setSelected(false);
     }
 
+    /** @override */
     onRemove() {
         super.onRemove();
     }
 
+    /** @override */
     onKeyDown(key, ctrl, alt, shift) {
         if (key) {
 
         }
     }
 
+    /** @override */
     onKeyUp(key, ctrl, alt, shift) {
 
     }
 
     getMainContext() {
-        return this.canvasContext;
+        return this.canvas[0].getContext("2d");
     }
 
     getTempContext() {
-        return this.canvasContextB;
+        return this.canvasB[0].getContext("2d");
     }
 
     getSelectionContext() {
-        return this.canvasContextC;
+        return this.canvasC[0].getContext("2d");
     }
 
     configuretoolbar() {
@@ -165,13 +237,15 @@ export class SpriteEditor extends Editor {
     }
 
     configureTools() {
-        this.toolMenu = new SpriteMenuTools(this, this.jqRoot.find(".tools-view"), true);
+        this.tsBox = new SpriteTransformBox(this);
+
+        this.toolsMenu = new SpriteMenuTools(this, this.jqRoot.find(".tools-view"), true);
         this.layersMenu = new SpriteMenuLayers(this, this.jqRoot.find(".layers-view"), true);
         this.framesMenu = new SpriteMenuFrames(this, this.jqRoot.find(".frames-view"), true);
         this.brushMenu = new SpriteMenuBrush(this, this.jqRoot.find(".brush-view"), false);
         this.colorMenu = new SpriteMenuColor(this, this.jqRoot.find(".color-picker-view"), false);
         this.gradMenu = new SpriteMenuGradient(this, this.jqRoot.find(".gradient-view"), false);
-        this.toolMenus.push(this.toolMenu);
+        this.toolMenus.push(this.toolsMenu);
         this.toolMenus.push(this.layersMenu);
         this.toolMenus.push(this.framesMenu);
         this.toolMenus.push(this.brushMenu);
@@ -187,10 +261,8 @@ export class SpriteEditor extends Editor {
         this.toolSmudge = new SpriteToolSmudge(this, this.jqRoot.find(".tool-smudge"), this.brushMenu);
         this.toolBucket = new SpriteToolBucket(this, this.jqRoot.find(".tool-bucket"), this.gradMenu);
         this.toolShapes = new SpriteToolShapes(this, this.jqRoot.find(".tool-shapes"), this.brushMenu);
-        this.toolText = new SpriteToolText(this, this.jqRoot.find(".tool-text"));
+        this.toolText = new SpriteToolText(this, this.jqRoot.find(".tool-text"), this.brushMenu);
         this.toolColor = new SpriteToolColor(this, this.jqRoot.find(".tool-color"), this.colorMenu);
-
-        this.tsBox = new SpriteTransformBox(this);
     }
 
     configureCanvas() {
@@ -213,14 +285,16 @@ export class SpriteEditor extends Editor {
         });
         this.canvasView.mouseleave(e => this.canvasCursor.addClass("cursor-out"));
         this.canvasView.mouseenter(e => this.canvasCursor.removeClass("cursor-out"));
-
-        this.canvasContext = this.canvas[0].getContext("2d");
-        this.canvasContextB = this.canvasB[0].getContext("2d");
-        this.canvasContextC = this.canvasC[0].getContext("2d");
     }
 
     configureLayers() {
-        this.frameAdd();
+        this.imageWidth = this.sprAsset.width;
+        this.imageHeight = this.sprAsset.height;
+        this.frames = [];
+        for (let frame of this.sprAsset.frames) {
+            this.frameAdd(frame.layers);
+        }
+        this.selectFrame(this.frames[0]);
     }
 
     convertCanvasPosition(e) {
@@ -410,9 +484,9 @@ export class SpriteEditor extends Editor {
             return {type: "floating", menu: null, a: 0, pos: {x: x - menu.offX, y: y- menu.offY}};
         }
 
-        let width = this.splitVer.width();
-        let height = this.splitVer.height();
-        let off = this.splitVer.offset();
+        let width = this.jqSplitVer.width();
+        let height = this.jqSplitVer.height();
+        let off = this.jqSplitVer.offset();
 
         let lines = [
             {o: null, type: "horizontal", p: off.top, a: 1},
@@ -504,9 +578,9 @@ export class SpriteEditor extends Editor {
         let bestFit = this.dragFindBestFit(menu, x, y);
         if (bestFit.type === "floating") {
 
-            let width = this.splitVer.width();
-            let height = this.splitVer.height();
-            let off = this.splitVer.offset();
+            let width = this.jqSplitVer.width();
+            let height = this.jqSplitVer.height();
+            let off = this.jqSplitVer.offset();
 
             menu.floating = true;
             menu.jqDragView.addClass("floating");
@@ -526,15 +600,15 @@ export class SpriteEditor extends Editor {
                 menu.jqDragView.detach();
                 if (bestFit.type === "vertical") {
                     if (bestFit.a === 1) {
-                        this.splitHor.prepend(menu.jqDragView);
+                        this.jqSplitHor.prepend(menu.jqDragView);
                     } else {
-                        this.splitHor.append(menu.jqDragView);
+                        this.jqSplitHor.append(menu.jqDragView);
                     }
                 } else {
                     if (bestFit.a === 1) {
-                        this.splitVer.prepend(menu.jqDragView);
+                        this.jqSplitVer.prepend(menu.jqDragView);
                     } else {
-                        this.splitVer.append(menu.jqDragView);
+                        this.jqSplitVer.append(menu.jqDragView);
                     }
                 }
             } else if (bestFit.menu !== menu) {
@@ -555,28 +629,44 @@ export class SpriteEditor extends Editor {
         this.brushMenu.updatePreview();
     }
 
+    /**
+     *
+     * @param layer {SpriteLayer}
+     */
     selectLayer(layer) {
+        this.selectedLayer = layer;
+        this.canvasBaked = false;
+        this.canvasLayer = null;
+
         this.layersMenu.layerSelect(layer);
     }
 
+    /**
+     *
+     * @param frame {SpriteFrame}
+     */
     selectFrame(frame) {
-        this.canvasBaked = false;
-        this.canvasLayer = null;
+        this.selectedFrame = frame;
         this.framesMenu.frameSelect(frame);
+        this.layersMenu.layerReplaceAll(frame.layers);
+
+        this.selectLayer(frame.layers[0]);
     }
 
     // Historic
 
     toolStart(pointerColor, alpha, ctrl, alt, shift) {
-        this.canvas.css({"visibility" : "visible", "z-index" : this.selectedLayer.zindex+1});
-        this.canvasB.css({"visibility" : "visible", "z-index" : this.selectedLayer.zindex+2, "opacity" : alpha / 255});
-        this.selectedLayer.jqImg.css({"display" : "none"});
+        let layerView = this.layersMenu.getLayer(this.selectedLayer);
+        layerView.jqImg.css({"display" : "none"});
+
+        this.canvas.css({"visibility" : "visible", "z-index" : layerView.zindex+1});
+        this.canvasB.css({"visibility" : "visible", "z-index" : layerView.zindex+2, "opacity" : alpha / 255});
 
         if (this.canvasLayer !== this.selectedLayer) {
             this.canvasLayer = this.selectedLayer;
             let ctx = this.getMainContext();
             ctx.clearRect(0, 0, this.imageWidth, this.imageHeight);
-            ctx.drawImage(this.selectedLayer.img, 0, 0);
+            ctx.drawImage(layerView.jqImg[0], 0, 0);
         }
 
         this.canvasBaked = false;
@@ -586,35 +676,83 @@ export class SpriteEditor extends Editor {
     toolEnd() {
         this.selectedTool.end();
 
-        this.selectedLayer.jqImg.css({"display" : ""});
+        let layerView = this.layersMenu.getLayer(this.selectedLayer);
+        layerView.jqImg.css({"display" : ""});
+
         this.canvas.css({"visibility" : "hidden"});
         this.canvasB.css({"visibility" : "hidden"});
-        this.selectedLayer.canvasDraw(this.canvas[0]);
+        this.selectedLayer.setImage(this.canvas[0].toDataURL());
+        layerView.update();
 
-        setTimeout(() => this.selectedFrame.updateThumbnail(), 5);
+        let frameView = this.framesMenu.getFrame(this.selectedFrame);
+        frameView.updateThumbnail();
     }
 
     layerAdd(image, index) {
+        let layer = new SpriteLayer(image, true);
+        if (index === undefined) {
+            this.selectedFrame.layers.push(layer);
+        } else {
+            this.selectedFrame.layers.splice(index + 1, 0, layer);
+        }
+
         this.layersMenu.layerAdd(image, index);
+        this.selectLayer(layer);
     }
 
     layerMove(layerA, layerB) {
+        let indexA = this.selectedFrame.layers.indexOf(layerA);
+        this.selectedFrame.layers.splice(indexA, 1);
+        if (!layerB) {
+            this.selectedFrame.layers.push(layerA);
+        } else {
+            let indexB = this.selectedFrame.layers.indexOf(layerB);
+            this.selectedFrame.layers.splice(indexB, 0, layerA);
+        }
+
         this.layersMenu.layerMove(layerA, layerB);
     }
 
     layerRemove(layer) {
+        let index = this.selectedFrame.layers.indexOf(layer);
+        this.selectedFrame.layers.splice(index, 1);
         this.layersMenu.layerRemove(layer);
+        if (this.selectedLayer === layer) {
+            this.selectLayer(Math.min(this.selectedFrame.layers.length - 1, index));
+        }
     }
 
-    frameAdd() {
-        this.framesMenu.frameAdd();
+    frameAdd(layers, index) {
+        let frame = new SpriteFrame(layers);
+        if (index === undefined) {
+            this.frames.push(frame);
+        } else {
+            this.frames.splice(index + 1, 0, frame);
+        }
+
+        this.framesMenu.frameAdd(frame, index);
+        this.selectFrame(frame);
     }
 
-    frameMove() {
+    frameMove(frameA, frameB) {
+        let indexA = this.frames.indexOf(frameA);
+        this.frames.splice(indexA, 1);
+        if (frameB === undefined) {
+            this.frames.push(frameA);
+        } else {
+            let indexB = this.frames.indexOf(frameB);
+            this.frames.splice(indexB, 0, frameA);
+        }
 
+        this.framesMenu.frameMove(frameA, frameB);
     }
 
     frameRemove(frame) {
+        let index = this.frames.indexOf(frame);
+        this.frames.splice(index, 1);
         this.framesMenu.frameRemove(frame);
+        if (this.selectedFrame === frame) {
+            this.selectFrame(Math.min(this.frames.length - 1, index));
+        }
     }
 }

@@ -1,6 +1,6 @@
 import {SpriteMenu} from "./SpriteMenu.js";
-import {SpriteEditor} from "./SpriteEditor.js";
-import {hexToRgb, hsvToRgb, rgbToHex, rgbToHsv} from "../../Colors.js";
+import {SpriteEditor} from "../SpriteEditor.js";
+import {hexToRgb, hsvToRgb, rgbToHex, rgbToHsv} from "../../../Colors.js";
 
 export class SpriteMenuColor extends SpriteMenu {
 
@@ -409,7 +409,7 @@ export class SpriteMenuColor extends SpriteMenu {
             this.editor.altColor = this.altColor;
             this.editor.alpha = this.alpha;
             this.editor.altAlpha = this.altAlpha;
-            this.editor.toolMenu.updateColors();
+            this.editor.toolsMenu.updateColors();
         }
         this.jqColor.css("background-color", this.color);
         this.jqAltColor.css("background-color", this.altColor);

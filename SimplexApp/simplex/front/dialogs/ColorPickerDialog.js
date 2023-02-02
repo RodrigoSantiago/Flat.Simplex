@@ -1,5 +1,5 @@
 import {Dialog} from "../Dialogs.js";
-import {SpriteMenuColor} from "../editors/sprite/SpriteMenuColor.js";
+import {SpriteMenuColor} from "../editors/sprite/menus/SpriteMenuColor.js";
 
 export class ColorPickerDialog extends Dialog {
 

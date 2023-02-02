@@ -109,7 +109,7 @@ export class SpriteToolSelect extends SpriteToolBrush {
                 let canvasPos = this.editor.convertCanvasPosition({pageX : Dialogs.mouseX, pageY : Dialogs.mouseY});
                 if (canvasPos.x >= 0 && canvasPos.x < this.editor.imageWidth &&
                     canvasPos.y >= 0 && canvasPos.y < this.editor.imageHeight) {
-                    if (this.editor.selectionBool[canvasPos.y * this.editor.imageWidth + canvasPos.x]) {
+                    if (this.editor.selectionPixels[canvasPos.y * this.editor.imageWidth + canvasPos.x]) {
                         this.editor.canvasView.css("cursor", "move");
                         return;
                     }
@@ -214,7 +214,7 @@ export class SpriteToolSelect extends SpriteToolBrush {
         if (this.additive === "none" &&
             pos.x >= 0 && pos.x < this.editor.imageWidth &&
             pos.y >= 0 && pos.y < this.editor.imageHeight &&
-            this.editor.selectionBool[pos.y * this.editor.imageWidth + pos.x]) {
+            this.editor.selectionPixels[pos.y * this.editor.imageWidth + pos.x]) {
             this.selectMode = Transform;
             this.mouseDownTransform(pos);
         } else {
@@ -262,7 +262,7 @@ export class SpriteToolSelect extends SpriteToolBrush {
         for (let i = 0; i < this.imgHeight(); i++) {
             let p = i * this.imgWidth();
             for (let j = 0; j < this.imgWidth(); j++) {
-                if (this.editor.selectionBool[p + j]) {
+                if (this.editor.selectionPixels[p + j]) {
                     if (j < mix) mix = j;
                     if (j > max) max = j;
                     if (i < miy) miy = i;
@@ -414,7 +414,7 @@ export class SpriteToolSelect extends SpriteToolBrush {
                 dataA[i + 1] = val;
                 dataA[i + 2] = val;
                 dataA[i + 3] = val;
-                this.editor.selectionBool[i / 4] = !!val;
+                this.editor.selectionPixels[i / 4] = !!val;
             }
             if (dataA[i + 3] !== 0) {
                 clear = false;
@@ -461,7 +461,7 @@ export class SpriteToolSelect extends SpriteToolBrush {
     isClear() {
         if (this.additive === "sub" && this.editor.selectionClip) {
             for (let i = 0, l = this.ctx.canvas.width * this.ctx.canvas.height; i < l; i++) {
-                if (this.editor.selectionBool[i]) {
+                if (this.editor.selectionPixels[i]) {
                     this.editor.selectionClip = true;
                     return;
                 }
@@ -484,7 +484,7 @@ export class SpriteToolSelect extends SpriteToolBrush {
 
     clearSelect() {
         for (let i = 0, l = this.ctx.canvas.width * this.ctx.canvas.height; i < l; i++) {
-            this.editor.selectionBool[i] = false;
+            this.editor.selectionPixels[i] = false;
         }
     }
 
@@ -492,7 +492,7 @@ export class SpriteToolSelect extends SpriteToolBrush {
         for (let j = y; j < y + h; j++) {
             let p = j * this.editor.imageWidth;
             for (let i = x; i < x + w; i++) {
-                this.editor.selectionBool[p + i] = true;
+                this.editor.selectionPixels[p + i] = true;
             }
         }
     }
@@ -501,7 +501,7 @@ export class SpriteToolSelect extends SpriteToolBrush {
         for (let j = y; j < y + h; j++) {
             let p = j * this.editor.imageWidth;
             for (let i = x; i < x + w; i++) {
-                this.editor.selectionBool[p + i] = false;
+                this.editor.selectionPixels[p + i] = false;
             }
         }
     }
@@ -512,7 +512,7 @@ export class SpriteToolSelect extends SpriteToolBrush {
             let p2 = (j - y) * 100;
             for (let i = x; i < x + w; i++) {
                 if (this.boolBrush[p2 + i - x]) {
-                    this.editor.selectionBool[p + i] = true;
+                    this.editor.selectionPixels[p + i] = true;
                 }
             }
         }
@@ -524,7 +524,7 @@ export class SpriteToolSelect extends SpriteToolBrush {
             let p2 = (j - y) * 100;
             for (let i = x; i < x + w; i++) {
                 if (this.boolBrush[p2 + i - x]) {
-                    this.editor.selectionBool[p + i] = false;
+                    this.editor.selectionPixels[p + i] = false;
                 }
             }
         }

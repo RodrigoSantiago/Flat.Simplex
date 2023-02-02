@@ -5,6 +5,7 @@ import {SpriteEditor} from "../editors/sprite/SpriteEditor.js";
 import {Editor} from "../editors/Editor.js";
 import {Tab} from "../components/TabView/Tab.js";
 import {TreeItem} from "../components/TreeView/TreeItem.js";
+import {AssetSprite} from "../editors/sprite/AssetSprite.js";
 
 export class Studio {
 
@@ -80,10 +81,10 @@ export class Studio {
                 it2.open = true;
                 this.treeView.root.addChild(it2);
 
-                let it = new TreeItem(new Asset("Sprite Asset " + i, AssetType.sprite));
+                let it = new TreeItem(new AssetSprite("Sprite Asset " + i, 400, 200));
                 it2.addChild(it);
             } else {
-                let it = new TreeItem(new Asset("Sprite Asset " + i, AssetType.sprite));
+                let it = new TreeItem(new AssetSprite("Sprite Asset " + i, 400, 200));
                 this.treeView.root.addChild(it);
             }
         }

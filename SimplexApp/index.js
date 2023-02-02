@@ -1,4 +1,4 @@
-import {Navigator} from "./simplex/front/Navigator.js";
+import {Navigator} from "./simplex/front/components/Navigator/Navigator.js";
 import {TreeView} from "./simplex/front/components/TreeView/TreeView.js"
 import {Studio} from "./simplex/front/studio/Studio.js";
 import {Toolbar} from "./simplex/front/Toolbar.js";
