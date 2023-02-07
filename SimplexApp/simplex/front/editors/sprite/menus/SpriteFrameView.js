@@ -49,7 +49,7 @@ export class SpriteFrameView {
         CopySystem.copy(this.editor, {
             tag : "sprite_frame",
             frame : this.frame.clone()
-        }, false);
+        });
     }
 
     cut() {
@@ -57,16 +57,25 @@ export class SpriteFrameView {
             tag : "sprite_frame",
             frame : this.frame.clone(),
             onMove : (t) => this.editor.layerRemove(this)
-        }, true);
+        });
     }
 
     paste() {
         let obj = CopySystem.paste();
-        this.editor.layerAdd(obj.frame.clone(), this.editor.layers.indexOf(this));
+        this.editor.layerAdd(obj.frame.clone(), this.editor.frames.indexOf(this));
         CopySystem.pasteDone();
     }
 
     updateThumbnail() {
+
+        for (let i = 0; i < this.frame.layers.length; i++) {
+            let layer = this.frame.layers[i];
+            if (!layer.imgDom.complete) {
+                setTimeout(e => this.updateThumbnail(), 100);
+                return;
+            }
+        }
+
         if (SpriteFrameView.thumbnailCanvas === null) {
             SpriteFrameView.thumbnailCanvas = document.createElement('canvas');
             SpriteFrameView.thumbnailCanvas.width = 64;
@@ -91,28 +100,15 @@ export class SpriteFrameView {
             offH = 64;
         }
 
-        let incomplete = false;
         for (let i = 0; i < this.frame.layers.length; i++) {
-            let layer = this.frame.layers[i];
-            if (!layer.imgDom.complete) {
-                incomplete = true;
-                break;
+            let l = this.frame.layers[i];
+            try {
+                ctx.drawImage(l.imgDom, 0, 0, this.editor.imageWidth, this.editor.imageHeight, offX, offY, offW, offH);
+            } catch (e) {
+                console.error(e);
             }
         }
-        if (incomplete) {
-            setTimeout(e => {
-                this.updateThumbnail()
-            }, 100);
-        } else {
-            for (let i = 0; i < this.frame.layers.length; i++) {
-                let l = this.frame.layers[i];
-                try {
-                    ctx.drawImage(l.imgDom, 0, 0, this.editor.imageWidth, this.editor.imageHeight, offX, offY, offW, offH);
-                } catch (e) {
-                    console.error(e);
-                }
-            }
-            this.jqFrameBtnImg[0].src = SpriteFrameView.thumbnailCanvas.toDataURL();
-        }
+        this.jqFrameBtnImg[0].src = SpriteFrameView.thumbnailCanvas.toDataURL();
+
     }
 }

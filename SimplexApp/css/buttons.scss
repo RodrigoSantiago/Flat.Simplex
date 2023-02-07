@@ -363,3 +363,19 @@
     font-size: 18px;
     padding: 3px;
 }
+
+.drop-down-button {
+    min-width: 64px;
+    min-height: 36px;
+    border-radius: 4px;
+    option {
+        display: none;
+    }
+    > .button {
+        width: 100%;
+    }
+}
+.drop-down-button.dense {
+    min-height: 28px;
+    height: 28px;
+}

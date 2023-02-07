@@ -6,6 +6,7 @@ import {TabView} from "./simplex/front/components/TabView/TabView.js";
 import {SpriteEditor} from "./simplex/front/editors/sprite/SpriteEditor.js";
 import {Dialogs} from "./simplex/front/Dialogs.js";
 import {FontManager} from "./simplex/front/font/FontManager.js";
+import {DropdownButton} from "./simplex/front/Dropdown.js";
 
 window.log = function (...points) {
     let str = "";
@@ -19,8 +20,13 @@ let globalDomInsert = null;
 $(document).on('DOMNodeInserted', function() {
     if (globalDomInsert === null) {
         globalDomInsert = setTimeout(function () {
-            $(".button, .hamburger, .menu-item, .tree-item, .tab-page").each(function (e) {
+            $(".button, .hamburger, .menu-item, .tree-item, .tab-page, .list-item").each(function (e) {
                 addRipple($(this))
+            });
+            $(".drop-down-button").each(function (e) {
+                if (!$(this).data("expansion")) {
+                    new DropdownButton($(this));
+                }
             });
             globalDomInsert = null;
         }, 200);

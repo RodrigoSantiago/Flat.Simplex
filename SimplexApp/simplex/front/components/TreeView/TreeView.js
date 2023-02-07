@@ -20,6 +20,8 @@ export class TreeView {
     /** @type{Function} */ onTreeItemClick = null;
     /** @type{Function} */ onSingleItemSelected = null;
     /** @type{Function} */ onRequestContextMenu = null;
+    /** @type{Function} */ onTreeItemRequestDrag = null;
+    /** @type{Function} */ onTreeChange = null;
 
     /** @type{TreeCell} */ dragCell;
     dragData = {
@@ -43,7 +45,7 @@ export class TreeView {
     computedMaxHeight = 0;
     prevIndex = -1;
 
-    constructor(jQRootElement, onTreeItemClick, onSingleItemSelected, onRequestContextMenu) {
+    constructor(jQRootElement) {
         this.root = new TreeItem(null);
         this.root.treeView = this;
         this.root.open = true;
@@ -73,9 +75,6 @@ export class TreeView {
         this.jQLineDropElement = $("<div class='tree-drop-line'></div>");
         this.jQRootElement.append(this.jQLineDropElement);
 
-        this.onTreeItemClick = onTreeItemClick;
-        this.onSingleItemSelected = onSingleItemSelected;
-        this.onRequestContextMenu = onRequestContextMenu;
         this.addVisibleItem();
         this.itemWidth = this.jqCells[0].getWidth();
         this.itemHeight = this.jqCells[0].getHeight();
@@ -105,8 +104,10 @@ export class TreeView {
             let xd = this.dragData.relative.x - e.pageX;
             let yd = this.dragData.relative.y - e.pageY;
             if (xd * xd + yd * yd > this.itemHeight / 2 * this.itemHeight / 2) {
-                if (DragSystem.drag(this, this.dragData.button)) {
-                    this.onDragStart(e);
+                if (!this.onTreeItemRequestDrag || this.onTreeItemRequestDrag(this.dragData.item)) {
+                    if (DragSystem.drag(this, this.dragData.button)) {
+                        this.onDragStart(e);
+                    }
                 }
 
                 this.dragData.pressed = false;
@@ -233,6 +234,7 @@ export class TreeView {
                     this.dragData.drop.addChild(this.dragData.item);
                 }
 
+                this.onTreeChange?.();
                 this.selectionAdd(this.dragData.item, false);
             } else {
                 this.update();
@@ -420,8 +422,21 @@ export class TreeView {
         return sum;
     }
 
+    hasSelection() {
+        return this.selection.length > 0;
+    }
+
+    getSelection() {
+        return this.selection.slice();
+    }
+
+    getMainSelected() {
+        return this.hasSelection() ? this.selection[0] : null;
+    }
+
     /**
-     * 
+     * Add or remove item from selection
+     *
      * @param item {TreeItem}
      * @param additive {boolean}
      */
@@ -447,34 +462,12 @@ export class TreeView {
         this.update();
     }
 
-    selectionSet(items) {
-        for (let item of this.selection) {
-            item.selected = false;
-        }
-        this.selection = items.slice();
-        for (let item of this.selection) {
-            item.selected = true;
-        }
-        this.update();
-    }
-
-    selectionRemove(item) {
-        let index = this.selection.indexOf(item);
-        if (index >= 0) {
-            this.selection.splice(index, 1);
-            item.selected = false;
-        }
-        this.update();
-    }
-
-    selectionClear() {
-        for (let item of this.selection) {
-            item.selected = false;
-        }
-        this.selection = [];
-        this.update();
-    }
-
+    /**
+     * Add all TreeItems between itemA and itemB, inclusive
+     *
+     * @param itemA {TreeItem}
+     * @param itemB {TreeItem}
+     */
     selectionAddBetween(itemA, itemB) {
         let index = {i: 1};
         for (const child of this.root.children) {
@@ -486,10 +479,68 @@ export class TreeView {
         this.update();
     }
 
-    computeListIndex(item, index) {
-        item.tempIndex = index.i++;
-        for (const child of item.children) {
-            this.computeListIndex(child, index);
+    /**
+     * Set the current selection
+     *
+     * @param items {TreeItem[]}
+     */
+    selectionSet(items) {
+        for (let item of this.selection) {
+            item.selected = false;
+        }
+        this.selection = items.slice();
+        for (let item of this.selection) {
+            item.selected = true;
+        }
+        this.update();
+    }
+
+    /**
+     * Remove the selection from the given TreeItem
+     *
+     * @param item {TreeItem}
+     */
+    selectionRemove(item) {
+        let index = this.selection.indexOf(item);
+        if (index >= 0) {
+            this.selection.splice(index, 1);
+            item.selected = false;
+        }
+        this.update();
+    }
+
+    /**
+     * Remove all TreeItems from selection
+     */
+    selectionClear() {
+        for (let item of this.selection) {
+            item.selected = false;
+        }
+        this.selection = [];
+        this.update();
+    }
+
+    /**
+     * Add a mark to all TreeItems and it's children
+     *
+     * @param items {TreeItem[]}
+     */
+    mark(items) {
+        this.hasMark = true;
+        for(let item of items) {
+            item.setMark(true);
+        }
+        this.update();
+    }
+
+    /**
+     * Remove the mark from all children
+     */
+    clearMark() {
+        if (this.hasMark) {
+            this.hasMark = false;
+            this.root.setMark(false);
+            this.update();
         }
     }
 
@@ -502,6 +553,13 @@ export class TreeView {
         }
         for (const child of item.children) {
             this.selectIfBetween(child, indexMin, indexMax);
+        }
+    }
+
+    computeListIndex(item, index) {
+        item.tempIndex = index.i++;
+        for (const child of item.children) {
+            this.computeListIndex(child, index);
         }
     }
 }

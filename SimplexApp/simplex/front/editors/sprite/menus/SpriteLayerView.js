@@ -29,7 +29,7 @@ export class SpriteLayerView {
             '   </div>' +
             '</div>');
 
-        this.jqLayerBtn.click((e) => this.editor.selectLayer(this));
+        this.jqLayerBtn.click((e) => this.editor.selectLayer(this.layer));
         this.jqLayerBtn.contextmenu((e) => this.onContextMenu(e));
         this.jqLayerBtnImg = this.jqLayerBtn.find(".layer-img");
         this.jqLayerHide = this.jqLayerBtn.find("i");
@@ -83,7 +83,7 @@ export class SpriteLayerView {
         let arr = [
             this.isVisible() ?
                 new DropdownItem("visibility_off", "Hide", e => this.setVisibility(false)) :
-                new DropdownItem("visibility", "Show", e => this.setVisibility(false)),
+                new DropdownItem("visibility", "Show", e => this.setVisibility(true)),
             new DropdownItem("photo_library", "Clone", e => this.clone()),
             new DropdownItem("_", "_"),
             new DropdownItem("content_cut", "Cut", e => this.cut()),
@@ -106,7 +106,7 @@ export class SpriteLayerView {
         CopySystem.copy(this.editor, {
             tag : "sprite_layer",
             img : this.layer.img,
-        },false);
+        });
     }
 
     cut() {
@@ -114,7 +114,7 @@ export class SpriteLayerView {
             tag : "sprite_layer",
             img : this.layer.img,
             onMove : (t) => this.editor.layerRemove(this.layer)
-        }, true);
+        });
     }
 
     paste() {

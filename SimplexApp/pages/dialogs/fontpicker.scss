@@ -1,0 +1,66 @@
+@use "../../css/colors";
+@use "../../css/main";
+@use "../../css/buttons";
+
+.font-picker-dialog {
+    @extend %elevation-24;
+    @extend %vbox-center;
+    min-width: 224px;
+    max-width: 224px;
+    min-height: 192px;
+    max-height: 400px;
+    border-radius: 4px;
+    background-color: var(--surface-color);
+    padding: 24px 0 0 0;
+
+    .font-list {
+        width: 100%;
+        overflow-x: hidden;
+        overflow-y: scroll;
+    }
+    .font-item {
+        @extend %hbox;
+        justify-content: start;
+        align-items: center;
+        padding: 0 16px 0 16px;
+        position: relative;
+        overflow: hidden;
+
+        width: 100%;
+        height: 48px;
+        background-color: colors.$color-white;
+        user-select: none;
+        font-weight: 400;
+
+        cursor: pointer;
+
+        &:not(.empty, .selected):hover {
+            background-color: var(--surface-color-hover);
+        }
+        &:not(.empty, .selected):active:hover {
+            background-color : var(--surface-color-active);
+        }
+        &.selected {
+            background-color : var(--surface-color-active);
+        }
+
+        > span {
+            text-align: left;
+            min-width: 128px;
+            width: 100%;
+            height: 48px;
+            line-height: 48px;
+            flex-grow: 1;
+        }
+    }
+    .font-list.dense {
+        .font-item {
+            height: 36px;
+
+            > span {
+                height: 36px;
+                line-height: 36px;
+            }
+        }
+    }
+}

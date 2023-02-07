@@ -225,7 +225,7 @@ html, body {
   user-select: none;
 }
 
-.split-panel-hor, .draggable-view.horizontal, .frames-view .frame-buttons .frame-add-btns, .frames-view .frame-buttons .frame-anim-btns, .frames-view.vertical .frame-buttons .frame-add-btns, .frames-view.vertical .frame-buttons .frame-anim-btns, .frames-view.horizontal .frames-container, .frames-view.horizontal .frame-buttons, .layers-view.horizontal .layers-container, .layers-view.horizontal .layer-add-button, .brush-view .brush-icons, .brush-view .brush-options .brush-option, .brush-view .brush-mode .brush-modes, .brush-view.horizontal .brush-container, .gradient-view .gradient-options, .gradient-view .gradient-options .gradient-option, .shapes-view .shapes-options, .shapes-view .shapes-options .shapes-option, .hbox {
+.split-panel-hor, .draggable-view.horizontal, .frames-view .frame-buttons .frame-add-btns, .frames-view .frame-buttons .frame-anim-btns, .frames-view.vertical .frame-buttons .frame-add-btns, .frames-view.vertical .frame-buttons .frame-anim-btns, .frames-view.horizontal .frames-container, .frames-view.horizontal .frame-buttons, .layers-view.horizontal .layers-container, .layers-view.horizontal .layer-add-button, .brush-view .brush-icons, .brush-view .brush-options .brush-option, .brush-view .brush-mode .brush-modes, .brush-view.horizontal .brush-container, .gradient-view .gradient-options, .gradient-view .gradient-options .gradient-option, .shapes-view .shapes-options, .shapes-view .shapes-options .shapes-option, .font-view .font-options, .font-view .font-options .font-option, .hbox {
   display: flex;
   flex-direction: row;
 }
@@ -234,7 +234,7 @@ html, body {
   flex-grow: 1;
 }
 
-.color-picker-view .rgb-slider, .color-picker-view .alpha-slider, .color-picker-view .color-history, .gradient-view .gradient-tolerance, .shapes-view .shapes-points, .button, .button.icon, .button.chip, .hbox-center {
+.color-picker-view .rgb-slider, .color-picker-view .alpha-slider, .color-picker-view .color-history, .gradient-view .gradient-tolerance, .shapes-view .shapes-points, .font-view .font-size, .button, .button.icon, .button.chip, .hbox-center {
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -622,6 +622,23 @@ main {
 .button.chip.dense > i {
   font-size: 18px;
   padding: 3px;
+}
+
+.drop-down-button {
+  min-width: 64px;
+  min-height: 36px;
+  border-radius: 4px;
+}
+.drop-down-button option {
+  display: none;
+}
+.drop-down-button > .button {
+  width: 100%;
+}
+
+.drop-down-button.dense {
+  min-height: 28px;
+  height: 28px;
 }
 
 /*$sprite-menu-line: var(--on-surface-color-a3);//colors.$color-grey-800;
@@ -1481,6 +1498,12 @@ input[type=checkbox].disabled {
   max-width: 192px;
   min-height: 48px;
 }
+.gradient-view > .title {
+  align-self: start;
+  margin: 0 0 4px 8px;
+  font-size: 10px;
+  color: var(--on-color);
+}
 .gradient-view .gradient-line {
   height: 24px;
   width: 180px;
@@ -1684,47 +1707,47 @@ input[type=checkbox].disabled {
 .sprite-scale-box.bezier .sprite-pivot.bezier {
   display: flex;
 }
-.sprite-scale-box :nth-child(1) {
+.sprite-scale-box > :nth-child(1) {
   left: 0;
   top: 0;
   cursor: nwse-resize;
 }
-.sprite-scale-box :nth-child(2) {
+.sprite-scale-box > :nth-child(2) {
   left: 50%;
   top: 0;
   cursor: ns-resize;
 }
-.sprite-scale-box :nth-child(3) {
+.sprite-scale-box > :nth-child(3) {
   left: 100%;
   top: 0;
   cursor: nesw-resize;
 }
-.sprite-scale-box :nth-child(4) {
+.sprite-scale-box > :nth-child(4) {
   left: 0;
   top: 50%;
   cursor: ew-resize;
 }
-.sprite-scale-box :nth-child(5) {
+.sprite-scale-box > :nth-child(5) {
   left: 50%;
   top: -32px;
   cursor: move;
 }
-.sprite-scale-box :nth-child(6) {
+.sprite-scale-box > :nth-child(6) {
   left: 100%;
   top: 50%;
   cursor: ew-resize;
 }
-.sprite-scale-box :nth-child(7) {
+.sprite-scale-box > :nth-child(7) {
   left: 0;
   top: 100%;
   cursor: nesw-resize;
 }
-.sprite-scale-box :nth-child(8) {
+.sprite-scale-box > :nth-child(8) {
   left: 50%;
   top: 100%;
   cursor: ns-resize;
 }
-.sprite-scale-box :nth-child(9) {
+.sprite-scale-box > :nth-child(9) {
   left: 100%;
   top: 100%;
   cursor: nwse-resize;
@@ -1778,6 +1801,87 @@ input[type=checkbox].disabled {
 }
 .shapes-view .shapes-options + .shapes-options {
   margin-top: 8px;
+}
+
+.sprite-text-area {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0;
+  background-color: transparent;
+  border: 0;
+  resize: none;
+  z-index: 100;
+  cursor: text;
+  display: inline-block;
+  overflow: clip;
+  white-space: nowrap;
+}
+
+.sprite-text-span {
+  position: absolute;
+  white-space: nowrap;
+  display: block;
+}
+
+.font-view {
+  align-items: center;
+  min-width: 192px;
+  max-width: 192px;
+  min-height: 48px;
+}
+.font-view .font-size {
+  margin: 4px 0 4px 0;
+  width: calc(100% - 16px);
+  font-size: 10px;
+  color: var(--on-color);
+}
+.font-view .font-size span {
+  width: 32px;
+  min-width: 32px;
+  text-align: left;
+  margin-right: 8px;
+}
+.font-view .text-size {
+  width: 18px;
+  min-width: 18px;
+  color: var(--on-color);
+  margin-left: 8px;
+  font-size: 10px;
+}
+.font-view .text-size:hover, .font-view .text-size:active, .font-view .text-size:focus {
+  background-color: var(--on-color-a3);
+}
+.font-view .font-family-option {
+  width: calc(100% - 16px);
+}
+.font-view .font-family-option .title {
+  margin-bottom: 4px;
+  font-size: 10px;
+  color: var(--on-color);
+}
+.font-view .font-options {
+  font-size: 10px;
+  color: var(--on-color);
+  width: calc(100% - 16px);
+}
+.font-view .font-options .font-option {
+  align-items: center;
+  width: 50%;
+}
+.font-view .font-options .font-option input[type=checkbox] {
+  margin-right: 8px;
+}
+.font-view .font-options + .font-options {
+  margin-top: 8px;
+}
+.font-view .font-divider {
+  width: 100%;
+  height: 1px;
+  background-color: #424242;
+  margin: 8px 0 8px 0;
 }
 
 /*# sourceMappingURL=sprite.css.map */

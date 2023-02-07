@@ -38,6 +38,18 @@ export class TreeCellAdapter {
             jQElement.removeClass("selected");
         }
 
+        if (treeItem.isSelected()) {
+            jQElement.addClass("selected");
+        } else {
+            jQElement.removeClass("selected");
+        }
+
+        if (treeItem.isMarked()) {
+            jQElement.addClass("mark");
+        } else {
+            jQElement.removeClass("mark");
+        }
+
         span.text(treeItem.content.text);
         icon.text(treeItem.content.icon);
         icon.css("background-color", treeItem.content.color);

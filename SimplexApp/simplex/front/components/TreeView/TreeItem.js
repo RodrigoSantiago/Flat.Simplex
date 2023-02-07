@@ -11,6 +11,7 @@ export class TreeItem {
     /** @type{boolean} */ selected = false;
     /** @type{boolean} */ dragged = false;
     /** @type{number} */ tempIndex = 0;
+    /** @type{boolean} */ mark = false;
 
     /**
      * Base constructor
@@ -38,6 +39,8 @@ export class TreeItem {
         }
         item.parent = this;
         item.treeView = this.treeView;
+
+        this.treeView.onTreeChange?.();
     }
 
     removeChild(item) {
@@ -45,9 +48,11 @@ export class TreeItem {
         if (index >= 0) {
             this.children.splice(index, 1);
             if (item.parent === this) {
+                item.treeView.onTreeChange?.();
                 item.treeView.selectionRemove(item);
 
                 item.parent = null;
+                item.setMark(false);
             }
         }
     }
@@ -112,5 +117,16 @@ export class TreeItem {
 
     setDragged(value) {
         this.dragged = value;
+    }
+
+    setMark(mark) {
+        this.mark = mark;
+        for(let child of this.children) {
+            child.setMark(mark);
+        }
+    }
+
+    isMarked() {
+        return this.mark;
     }
 }

@@ -107,6 +107,13 @@
     }
 }
 
+.dialog-divider {
+    width: 100%;
+    height: 1px;
+    background-color: var(--on-surface-color-a3);
+    margin: 8px 0 8px 0;
+}
+
 .dropdown.dense {
 > .menu-item:not(.separator) {
         min-height: 32px;

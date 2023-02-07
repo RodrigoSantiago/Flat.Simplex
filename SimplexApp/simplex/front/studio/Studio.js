@@ -6,6 +6,7 @@ import {Editor} from "../editors/Editor.js";
 import {Tab} from "../components/TabView/Tab.js";
 import {TreeItem} from "../components/TreeView/TreeItem.js";
 import {AssetSprite} from "../editors/sprite/AssetSprite.js";
+import {CopySystem} from "../CopySystem.js";
 
 export class Studio {
 
@@ -16,8 +17,6 @@ export class Studio {
     preview = null;
     /** @type {TabView} **/ tabView = null;
     /** @type {Editor[]} **/ openEditors = [];
-    TransferenceAssets = [];
-    TransferenceMode = "";
 
     jqLowHeight;
 
@@ -52,6 +51,7 @@ export class Studio {
         this.configureTreeView();
         this.configureTabView();
         this.configureFloatingMenu();
+        this.configureEvents();
 
         this.onResize();
     }
@@ -74,6 +74,30 @@ export class Studio {
                 this.editAsset(item);
             }
         }
+        this.treeView.onRequestContextMenu = (e, item) => {
+            let arr = [
+                new DropdownItem("edit", "Edit", (e) => this.editAsset(item)),
+                new DropdownItem("edit_note", "Rename", (e) => {}, !!item),
+                new DropdownItem("folder", "Create Folder", e => this.createAsset("folder")),
+                new DropdownItem("_", "_"),
+                new DropdownItem("content_cut", "Cut", e => this.cutSelection(), !!item),
+                new DropdownItem("content_copy", "Copy", e => this.copySelection(), !!item),
+                new DropdownItem("content_paste", "Paste", e => this.pasteContent(item), CopySystem.trasnference.tag === "asset_item"),
+                new DropdownItem("_", "_"),
+                new DropdownItem("delete", "Delete", e => this.deleteSelection(), !!item)
+            ];
+            if (!item || item.isFolder()) {
+                arr.splice(0, 1);
+            }
+            new Dropdown({
+                x : e.pageX,
+                y : e.pageY,
+            }, arr);
+        }
+        this.treeView.onTreeChange = () => {
+            CopySystem.clear(this);
+            this.treeView.clearMark();
+        };
 
         for (let i = 0; i < 15; i++) {
             if (i === 3 || i === 14) {
@@ -88,36 +112,11 @@ export class Studio {
                 this.treeView.root.addChild(it);
             }
         }
-        this.treeView.onRequestContextMenu = (e, item) => {
-            let arr = [
-                new DropdownItem("edit", "Edit", (e) => this.editAsset(item)),
-                new DropdownItem("edit_note", "Rename", (e) => {}, !!item),
-                new DropdownItem("folder", "Create Folder", e => this.createAsset("folder")),
-                new DropdownItem("_", "_"),
-                new DropdownItem("content_cut", "Cut", e => this.cutSelection(), !!item),
-                new DropdownItem("content_copy", "Copy", e => this.copySelection(), !!item),
-                new DropdownItem("content_paste", "Paste", e => this.pasteContent(item), this.TransferenceAssets.length > 0),
-                new DropdownItem("_", "_"),
-                new DropdownItem("delete", "Delete", e => this.deleteSelection(), !!item)
-            ];
-            if (!item || item.isFolder()) {
-                arr.splice(0, 1);
-            }
-            new Dropdown({
-                x : e.pageX,
-                y : e.pageY,
-            }, arr);
-        }
-
         this.treeView.update();
     }
 
     configureTabView() {
-        $(window).on("keydown", (e) => {
-            /*if (this.TabView.selectedTab) {
-                //this.TabView.selectedTab.
-            }*/
-        });
+
     }
 
     configureFloatingMenu() {
@@ -148,11 +147,40 @@ export class Studio {
         });
     }
 
+    configureEvents() {
+        this.mainFocus = "studio";
+        $(document).on("click", (e) => {
+            if ($.contains(this.tabView.jqBody[0], e.target) || $.contains(this.tabView.jqHeader[0], e.target)) {
+                this.mainFocus = "editor";
+            } else {
+                this.mainFocus = "studio";
+            }
+        });
+        $(window).on("keydown", (e) => {
+            if (this.mainFocus === "editor") {
+                if (this.tabView.selectedTab) {
+                    this.tabView.selectedTab.controller.onKeyDown(e.key, e.ctrlKey, e.altKey, e.shiftKey);
+                }
+            } else if (this.mainFocus === "studio") {
+                this.onKeyDown(e.key, e.ctrlKey, e.altKey, e.shiftKey);
+            }
+        });
+        $(window).on("keyup", (e) => {
+            if (this.mainFocus === "editor") {
+                if (this.tabView.selectedTab) {
+                    this.tabView.selectedTab.controller.onKeyUp(e.key, e.ctrlKey, e.altKey, e.shiftKey);
+                }
+            } else if (this.mainFocus === "studio") {
+                this.onKeyUp(e.key, e.ctrlKey, e.altKey, e.shiftKey);
+            }
+        });
+    }
+
     createAsset(type) {
         let it  = new TreeItem(new Asset("Asset created", AssetType.type[type]), AssetType.type[type] === AssetType.folder);
 
-        if (this.treeView.selection.length === 1) {
-            let selectedItem = this.treeView.selection[0];
+        if (this.treeView.hasSelection()) {
+            let selectedItem = this.treeView.getMainSelected();
             if (selectedItem.isFolder()) {
                 selectedItem.addChild(it);
             } else {
@@ -166,8 +194,8 @@ export class Studio {
         this.treeView.update();
     }
 
-    copySelection() {
-        let selection = this.treeView.selection.slice();
+    getSelection() {
+        let selection = this.treeView.getSelection();
         let filter = [];
         for (let i = 0; i < selection.length; i++) {
             let item = selection[i];
@@ -183,28 +211,48 @@ export class Studio {
                 filter.push(item);
             }
         }
-        this.TransferenceAssets = filter;
-        this.TransferenceMode = "copy";
-        this.treeView.selectionSet(filter);
+        return filter;
+    }
 
+    copySelection() {
+        let selection = this.getSelection();
+        CopySystem.copy(this, {
+            tag : "asset_item",
+            copy : true,
+            assets : selection,
+            mode : "copy",
+        });
+        this.treeView.selectionSet(selection);
     }
 
     cutSelection() {
-        this.copySelection();
-        this.TransferenceMode = "cut";
+        let selection = this.getSelection();
+        CopySystem.copy(this, {
+            tag : "asset_item",
+            assets : selection,
+            mode : "cut",
+            onLose : (t) => this.treeView.clearMark(),
+            onMove : (t) => this.treeView.clearMark()
+        });
+        this.treeView.mark(selection);
+        this.treeView.selectionSet(selection);
     }
 
     pasteContent(item) {
-        if (this.TransferenceAssets.length > 0) {
-            if (this.TransferenceMode === "cut") {
-                for (let i = 0; i < this.TransferenceAssets.length; i++) {
-                    let newItem = this.TransferenceAssets[i];
+        let paste = CopySystem.paste();
+        let assets = paste.assets;
+        let mode = paste.mode;
+
+        if (assets.length > 0) {
+            if (mode === "cut") {
+                for (let i = 0; i < assets.length; i++) {
+                    let newItem = assets[i];
                     newItem.getParent().removeChild(newItem);
                 }
-            } else if (this.TransferenceMode === "copy") {
-                for (let i = 0; i < this.TransferenceAssets.length; i++) {
-                    let oldItem = this.TransferenceAssets[i];
-                    this.TransferenceAssets[i] = new TreeItem(oldItem.content.makeCopy(), oldItem.isFolder());
+            } else if (mode === "copy") {
+                for (let i = 0; i < assets.length; i++) {
+                    let oldItem = assets[i];
+                    assets[i] = new TreeItem(oldItem.content.makeCopy(), oldItem.isFolder());
                 }
             }
 
@@ -214,25 +262,25 @@ export class Studio {
                 parent = item.getParent();
                 index = item.getIndex();
             }
-            for (let i = 0; i < this.TransferenceAssets.length; i++) {
-                let newItem = this.TransferenceAssets[i];
+            for (let i = 0; i < assets.length; i++) {
+                let newItem = assets[i];
                 parent.addChild(newItem, index + i + 1);
             }
-            this.treeView.selectionSet(this.TransferenceAssets);
-            this.TransferenceAssets = [];
+            this.treeView.selectionSet(assets);
         }
+        CopySystem.pasteDone();
         this.treeView.update();
     }
 
     deleteSelection() {
-        this.copySelection();
-        if (this.TransferenceAssets.length > 0) {
-            for (let i = 0; i < this.TransferenceAssets.length; i++) {
-                let newItem = this.TransferenceAssets[i];
+        let selection = this.getSelection();
+        if (selection.length > 0) {
+            for (let i = 0; i < selection.length; i++) {
+                let newItem = selection[i];
                 newItem.getParent().removeChild(newItem);
             }
-            this.TransferenceAssets = [];
         }
+
         this.treeView.update();
     }
 
@@ -268,5 +316,32 @@ export class Studio {
         this.tabView.onResize();
 
         this.jqLowHeight.css("min-width", this.jqMain.find(".negative-floating").width());
+    }
+
+    onKeyDown(key, ctrl, alt, shift) {
+        let k = key.toUpperCase();
+        if (ctrl && k === "C") {
+            if (this.treeView.hasSelection()) {
+                this.copySelection();
+            }
+        } else if (ctrl && k === "X") {
+            if (this.treeView.hasSelection()) {
+                this.cutSelection();
+            }
+        } else if (ctrl && k === "V" && CopySystem.trasnference.tag === "asset_item") {
+            if (this.treeView.hasSelection()) {
+                this.pasteContent(this.treeView.getMainSelected());
+            } else {
+                this.pasteContent(null);
+            }
+        } else if (k === "DELETE" || k === "BACKSPACE") {
+            if (this.treeView.hasSelection()) {
+                this.deleteSelection();
+            }
+        }
+    }
+
+    onKeyUp(key, ctrl, alt, shift) {
+
     }
 }

@@ -10,6 +10,9 @@ export class Dialogs {
         $('<div></div>').load("pages/dialogs/colorpicker.html", function (response, status, xhr) {
             Dialogs.pageMap["colorpicker"] = response;
         });
+        $('<div></div>').load("pages/dialogs/fontpicker.html", function (response, status, xhr) {
+            Dialogs.pageMap["fontpicker"] = response;
+        });
     }
 }
 window.addEventListener('mousemove', function (e) {
@@ -18,7 +21,8 @@ window.addEventListener('mousemove', function (e) {
 });
 
 export class Dialog {
-    jqRoot = null;
+
+    /** @type{JQuery} */ jqRoot = null;
     shown = true;
     clearEvents = [];
 

@@ -18,9 +18,9 @@ import {SpriteToolSelect} from "./tools/SpriteToolSelect.js";
 import {SpriteTransformBox} from "./SpriteTransformBox.js";
 import {SpriteToolShapes} from "./tools/SpriteToolShapes.js";
 import {SpriteToolText} from "./tools/SpriteToolText.js";
-import {SpriteLayerView} from "./menus/SpriteLayerView.js";
 import {SpriteLayer} from "./SpriteLayer.js";
 import {SpriteFrame} from "./SpriteFrame.js";
+import {SpriteMenuFont} from "./menus/SpriteMenuFont.js";
 
 export class SpriteEditor extends Editor {
     static pageModel = null;
@@ -245,12 +245,14 @@ export class SpriteEditor extends Editor {
         this.brushMenu = new SpriteMenuBrush(this, this.jqRoot.find(".brush-view"), false);
         this.colorMenu = new SpriteMenuColor(this, this.jqRoot.find(".color-picker-view"), false);
         this.gradMenu = new SpriteMenuGradient(this, this.jqRoot.find(".gradient-view"), false);
+        this.fontMenu = new SpriteMenuFont(this, this.jqRoot.find(".font-view"), false);
         this.toolMenus.push(this.toolsMenu);
         this.toolMenus.push(this.layersMenu);
         this.toolMenus.push(this.framesMenu);
         this.toolMenus.push(this.brushMenu);
         this.toolMenus.push(this.colorMenu);
         this.toolMenus.push(this.gradMenu);
+        this.toolMenus.push(this.fontMenu);
         this.dropLine = this.jqRoot.find(".sprite-drop-line");
 
         this.toolSelect = new SpriteToolSelect(this, this.jqRoot.find(".tool-select"), this.brushMenu);
@@ -261,7 +263,7 @@ export class SpriteEditor extends Editor {
         this.toolSmudge = new SpriteToolSmudge(this, this.jqRoot.find(".tool-smudge"), this.brushMenu);
         this.toolBucket = new SpriteToolBucket(this, this.jqRoot.find(".tool-bucket"), this.gradMenu);
         this.toolShapes = new SpriteToolShapes(this, this.jqRoot.find(".tool-shapes"), this.brushMenu);
-        this.toolText = new SpriteToolText(this, this.jqRoot.find(".tool-text"), this.brushMenu);
+        this.toolText = new SpriteToolText(this, this.jqRoot.find(".tool-text"), this.fontMenu);
         this.toolColor = new SpriteToolColor(this, this.jqRoot.find(".tool-color"), this.colorMenu);
     }
 
@@ -272,7 +274,8 @@ export class SpriteEditor extends Editor {
 
         this.canvasView.mousedown(e => {
             if (($(e.target).closest('.sprite-scale-box-border').length ||
-                $(e.target).closest('.sprite-pivot').length) && e.button !== 1) return;
+                $(e.target).closest('.sprite-pivot').length ||
+                $(e.target).closest('.sprite-text-area').length) && e.button !== 1) return;
             this.canvasOnMouseDown(e)
         });
         this.addWindowListener('mousemove', e => this.canvasOnMouseMove(e));
@@ -696,7 +699,7 @@ export class SpriteEditor extends Editor {
             this.selectedFrame.layers.splice(index + 1, 0, layer);
         }
 
-        this.layersMenu.layerAdd(image, index);
+        this.layersMenu.layerAdd(layer, index);
         this.selectLayer(layer);
     }
 

@@ -95,6 +95,7 @@
             </div>
             <div class="gradient-view draggable-view">
                 <div class="drag"><i class="material-icons">more_horiz</i></div>
+                <div class="title">Gradient</div>
                 <div class="gradient-line">
                     <div class="gradient-bg"></div>
                 </div>
@@ -114,6 +115,36 @@
                 </div>
                 <div class="gradient-options">
                     <label class="gradient-option"><input class="gradient-palette" type="checkbox"><span class="brush-text">Palette</span></label>
+                </div>
+                <div class="close-view"><div><i class="material-icons">close</i></div></div>
+            </div>
+            <div class="font-view draggable-view">
+                <div class="drag"><i class="material-icons">more_horiz</i></div>
+                <div class="font-family-option">
+                    <div class="title">Font</div>
+                    <div class="font-family drop-down-button">
+                        <input type="text" class="dense" readonly value="Arial"/>
+                        <option data-icon="" data-font="Arial" data-slot='1'>Arial</option>
+                        <option data-icon="" data-font="Helvetica" data-slot='2'>Helvetica</option>
+                        <option data-icon="">_</option>
+                        <option data-icon="" data-font="serif">Serif</option>
+                        <option data-icon="" data-font="sans-serif">Sans Serif</option>
+                        <option data-icon="" data-font="monospace">Monospace</option>
+                        <option data-icon="" data-font="cursive">Cursive</option>
+                        <option data-icon="" data-font="fantasy">Fantasy</option>
+                        <option data-icon="">_</option>
+                        <option data-icon="add">Pick</option>
+                    </div>
+                </div>
+                <div class="font-divider"></div>
+                <div class="font-size">
+                    <span>Size</span><input type="range" min="8" max="128" value="0" class="value-size slider on-color"/>
+                    <input type="text" class="editable-label text-size" maxlength="3" value="0">
+                </div>
+                <div class="font-divider"></div>
+                <div class="font-options">
+                    <label class="font-option"><input class="font-bold" type="checkbox"><span class="brush-text">Bold</span></label>
+                    <label class="font-option"><input class="font-italic" type="checkbox"><span class="brush-text">Italic</span></label>
                 </div>
                 <div class="close-view"><div><i class="material-icons">close</i></div></div>
             </div>

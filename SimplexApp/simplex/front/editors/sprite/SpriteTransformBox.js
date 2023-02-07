@@ -31,11 +31,27 @@ export class SpriteTransformBox {
     isOpen = false;
     isBezier = false;
     onUpdate = null;
+    textMode = false;
+
+    size = 24;
+    font = "Arial";
 
     constructor(editor) {
         this.editor = editor;
         this.jqBox = $("<div class='sprite-scale-box'></div>");
         this.jqImg = $("<img class='sprite-scale-img'/>");
+        this.jqTxt = $("<textarea class='sprite-text-area' spellcheck='false'>Type...</textarea>");
+        this.jqTxtSpan = $("<div class='sprite-textspan'></div>");
+        this.jqTxt.css("display", "none");
+        this.jqTxt.on("keyup", e => {
+            if (this.textMode) {
+                this.textEdited = true;
+                this.update();
+            }
+        });
+        this.jqTxt.on("click", e => {
+            this.textEdited = true;
+        });
         this.jqPivot = [];
         for (let i = 0; i < 9; i++) {
             let pivot = $("<div class='sprite-pivot'><div class='sprite-pivot-handler'></div></div>");
@@ -76,6 +92,7 @@ export class SpriteTransformBox {
 
         let border = $("<div class='sprite-scale-box-border'></div>");
         this.jqBox.append(this.jqImg);
+        this.jqBox.append(this.jqTxt);
         this.jqBox.append(border);
         border.on('mousedown', (e) => {
             if (e.button !== 0) return;
@@ -105,6 +122,19 @@ export class SpriteTransformBox {
         this.editor.canvasScl.append(this.jqBox);
         this.jqBox.css("display", "none");
         this.update();
+    }
+
+    openText(pos, x, y, w, h, size, font, bold, italic) {
+        this.size = size;
+        this.font = font;
+        this.bold = bold;
+        this.italic = italic;
+        this.open(pos, x, y, w, h, null, null, null);
+        this.jqTxt.css("display", "");
+        this.jqTxt.trigger("focus");
+        this.jqTxt.trigger("select");
+        this.textMode = true;
+        this.textEdited = false;
     }
 
     open(pos, x, y, w, h, imageSrc, handleA, handleB) {
@@ -148,11 +178,14 @@ export class SpriteTransformBox {
         } else {
             this.jqImg.css("display", "none");
         }
-        this.update();
 
         this.mouseIn = {x:pos.x, y:pos.y};
         this.pivot = 10;
         this.isOpen = true;
+        this.textMode = false;
+        this.jqTxt.css("display", "none");
+
+        this.update();
     }
 
     leave() {
@@ -169,6 +202,8 @@ export class SpriteTransformBox {
             this.width = Math.abs(this.width + this.offWidth);
             this.height = Math.abs(this.height + this.offHeight);
             this.angle = Math.round((this.angle + this.offAngle) / (Math.PI / 360)) * (Math.PI / 360);
+            if (this.width < 1) this.width = 1;
+            if (this.height < 1) this.height = 1;
             this.offX = 0;
             this.offY = 0;
             this.offWidth = 0;
@@ -192,6 +227,8 @@ export class SpriteTransformBox {
         this.isOpen = false;
         this.jqBox.css("display", "none");
         this.jqImg[0].src = "";
+        this.jqTxt.val("Type...");
+        this.onUpdate = null;
         this.update();
     }
 
@@ -199,7 +236,7 @@ export class SpriteTransformBox {
         mx = Math.round(mx / this.editor.zoomStep);
         my = Math.round(my / this.editor.zoomStep);
         let p = this.RotatePoint(mx, my, (Math.PI * 2) - this.angle);
-        return {x: p.x, y: p.y, nx: mx, ny: my};
+        return {x: Math.round(p.x), y: Math.round(p.y), nx: mx, ny: my};
     }
 
     movePivot(id, pos, shift) {
@@ -253,13 +290,15 @@ export class SpriteTransformBox {
         let offh = (this.height + this.offHeight);
         let w = Math.abs(offw);
         let h = Math.abs(offh);
+        if (w < 1 || h < 1) return;
+
         let a = (this.angle + this.offAngle);
         let rx1 = this.cx + this.offX - w / 2;
         let rx2 = this.cx + this.offX + w / 2;
         let ry1 = this.cy + this.offY - h / 2;
         let ry2 = this.cy + this.offY + h / 2;
-        let signX = (this.width + this.offWidth) < 0 ? -this.signX : this.signX;
-        let signY = (this.height + this.offHeight) < 0 ? -this.signY : this.signY;
+        let signX = offw < 0 ? -this.signX : this.signX;
+        let signY = offh < 0 ? -this.signY : this.signY;
 
         let trueX = (rx1 * this.editor.zoomStep);
         let trueY = (ry1 * this.editor.zoomStep);
@@ -267,8 +306,8 @@ export class SpriteTransformBox {
         let trueH = (ry2 - ry1) * this.editor.zoomStep;
         let width = Math.floor(trueW);
         let height = Math.floor(trueH);
-        let sW = trueW / width;
-        let sH = trueH / height;
+        let sW = trueW > 10 ? trueW / width : 1;
+        let sH = trueH > 10 ? trueH / height : 1;
 
         if (this.isBezier) {
             if (this.pivot !== 4 && this.pivot < 10) {
@@ -313,6 +352,20 @@ export class SpriteTransformBox {
             this.jqImg.addClass("flipY");
         }
 
+        this.jqTxt.css("margin", 8 * this.editor.zoomStep);
+        this.jqTxt.css("font-size", this.size * this.editor.zoomStep);
+        this.jqTxt.css("font-family", this.font);
+        this.jqTxt.css("font-weight", this.bold ? "bold" : "normal");
+        this.jqTxt.css("font-style", this.italic ? "italic" : "normal");
+
+        this.rx1 = rx1;
+        this.ry1 = ry1;
+        this.rx2 = rx2;
+        this.ry2 = ry2;
+        this.rAngle = a;
+        this.rSignX = signX;
+        this.rSignY = signY;
+
         this.onUpdate?.(rx1, ry1, rx2, ry2, a, signX, signY, {
             x: this.isBezier ? (this.handleA.x + this.handleOffA.x) / w : 0,
             y: this.isBezier ? (this.handleA.y + this.handleOffA.y) / h: 0,
@@ -332,5 +385,22 @@ export class SpriteTransformBox {
         let y = sinTheta * pointx + cosTheta * pointy;
 
         return {x, y};
+    }
+
+    getLines() {
+        this.jqTxtSpan.appendTo(this.jqTxt.parent());
+        this.jqTxtSpan.css("margin", 8 * this.editor.zoomStep);
+        this.jqTxtSpan.css("font-size", this.size * this.editor.zoomStep);
+        this.jqTxtSpan.css("font-family", this.font);
+        let lines = this.jqTxt.val().split("\n");
+        let html = "";
+        for (let i = 0; i < lines.length; i++) {
+            html += lines[i];
+            this.jqTxtSpan.html(html);
+            lines[i] = {text : lines[i], height : this.jqTxtSpan.height() / this.editor.zoomStep};
+            html += "<br>";
+        }
+        this.jqTxtSpan.detach()
+        return lines;
     }
 }

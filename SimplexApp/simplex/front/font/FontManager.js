@@ -61,8 +61,17 @@ function loadDocumentFontData() {
 export class FontManager {
 
     /** @tyle{Map} */ static fonts = new Map();
+    static defaultFont;
 
     static loadDefaultFonts() {
+        FontManager.defaultFont = new FontData("Arial");
+        FontManager.fonts.set("Arial", FontManager.defaultFont);
+        FontManager.fonts.set("serif", new FontData("serif"));
+        FontManager.fonts.set("sans-serif", new FontData("sans-serif"));
+        FontManager.fonts.set("monospace", new FontData("monospace"));
+        FontManager.fonts.set("fantasy", new FontData("fantasy"));
+        FontManager.fonts.set("cursive", new FontData("cursive"));
+
         if ('queryLocalFonts' in window) {
             loadSystemFontData().then((t) => {
                 if (!FontManager.fonts.size) {

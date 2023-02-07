@@ -1,24 +1,58 @@
 import {Dialogs} from "./Dialogs.js";
 import {DismissClickResize} from "./Utils.js";
 
+export class DropdownButton {
+    constructor(element) {
+        element.data("expansion", 1);
+
+        let input = element.find("input[type=text]");
+        element.on("click", (e) => {
+            let items = [];
+            element.children('option').each(function(e) {
+                items.push(new DropdownItem(
+                    $(this).data("icon"),
+                    $(this).text(),
+                    (e) => {
+                        input.val($(this).text());
+                        element.trigger("option", [$(this)]);
+                    },
+                    true,
+                    $(this).data("font")
+                ))
+            });
+            new Dropdown({
+                x : element.offset().left,
+                y : element.offset().top + element.height(),
+            }, items, element.width());
+        })
+    }
+}
+
 export class DropdownItem {
-    constructor(icon, name, onclick, enabled = true) {
+    constructor(icon, name, onclick, enabled = true, font = null) {
         this.icon = icon;
         this.name = name;
         this.onclick = onclick;
         this.enabled = enabled;
+        this.font = font;
     }
 }
 
 export class Dropdown {
 
-    jqRoot = null;
+    jqRoot;
     shown = true;
 
-    constructor(position, items) {
+    constructor(position, items, width) {
         const self = this;
 
         this.jqRoot = $("<div class='dropdown'></div>");
+        if (width) {
+            this.jqRoot.css({
+                "max-width" : width,
+                "min-width" : width,
+            })
+        }
         $(".main").append(this.jqRoot);
 
         // Configure Items
@@ -32,6 +66,9 @@ export class Dropdown {
                     jqItem = $("<div class='menu-item'><i class='material-icons'>" + item.icon + "</i>" + item.name + "</div>");
                 } else {
                     jqItem = $("<div class='menu-item'>" + item.name + "</div>");
+                }
+                if (item.font) {
+                    jqItem.css("font-family", item.font);
                 }
                 if (!item.enabled) {
                     jqItem.addClass("disabled");
@@ -76,14 +113,12 @@ export class Dropdown {
     }
 
     hidden() {
-        const self = this;
-
         if (this.shown) {
             this.shown = false;
             this.clearDismiss();
 
-            this.jqRoot.fadeOut("fast", function (e) {
-                self.jqRoot.remove();
+            this.jqRoot.fadeOut("fast", (e) => {
+                this.jqRoot.remove();
             })
         }
     }

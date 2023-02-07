@@ -32,6 +32,9 @@
         &.selected {
             background-color : var(--surface-color-active);
         }
+        &.mark {
+            opacity: 0.75;
+        }
 
         > span {
             min-width: 128px;
