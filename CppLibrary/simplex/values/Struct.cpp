@@ -22,7 +22,7 @@ Struct::Struct(long size, const StructInit *initList) {
             case VariableType::Array:
             case VariableType::Grid:
             case VariableType::Map:
-                throw simplex::ex_container_value(initList[x].value);
+                simplex::ex_container_value(initList[x].value);
         }
     }
     variables = new std::unordered_map<long, Pointer>();
@@ -69,7 +69,7 @@ Pointer& Struct::setField(long hashName, const Pointer& value) {
         case VariableType::Array:
         case VariableType::Grid:
         case VariableType::Map:
-            throw simplex::ex_container_value(value);
+            simplex::ex_container_value(value);
     }
 
     auto find = MAP.find(hashName);

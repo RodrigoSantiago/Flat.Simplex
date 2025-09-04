@@ -111,6 +111,8 @@ export class SpriteMenuBrush extends SpriteMenu {
     }
 
     updatePreview() {
+        this.configUpdate();
+
         let ctx = this.jqPreviewCanvas[0].getContext("2d");
         this.editor.selectedTool.updatePreview(ctx);
         ctx.resetTransform();

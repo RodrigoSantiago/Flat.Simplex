@@ -17,7 +17,7 @@ game_object.json
   sprite : 000001ID,
   create : [{nodes}],
   update : [{nodes}],
-  render : [{nodes}],
+  render : [{nodes}], 
 
 TODO :
 - Preciso implementar os testes
@@ -30,11 +30,12 @@ TODO :
 - Lang: nao pode criar variaveis em assets
 - TreeView vazia deve aparecer um icone de fundo
 - Os circulo de cor da sprite pode ser so um com um pequeno encostando
-- Algumas ferramentas flutuantes do sprite estão "vazando" itens. Coloque largura e alturas específicos minimos e máximo com %
 - Salvar ultima posição das Tools e reabrilas no mesmo lugar/estado - Não funciona se so alterar e nao mexer
 - Bucket quando apertar em uma area 100% transparente + alpha blend faz um calculo diferente que nao inclua preto
 - Lapiz não funciona a caixinha
 - Plano de fundo configurável no editor de sprites, não precisa ser canvas!
 - Modo de exibição tile set
 - Simetria
+- Shift para escalar transformbox
+- No editor de codigo, fazer o scroll ultrapassar o limite abaixo até 50% da area pra facilitar a leitura.A ultima linha ficar no meio
 - Quando terminar tudo, e a IDE for funcional. Atualizar o canvas do editor de sprite para webgl <> 2d compatível

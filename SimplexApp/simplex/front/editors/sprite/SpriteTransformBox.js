@@ -2,39 +2,40 @@ export class SpriteTransformBox {
 
     /** @type {SpriteEditor} */ editor;
 
-    cx = 0;
-    cy = 0;
-    width = 0;
-    height = 0;
-    angle = 0;
-    signX = 1;
-    signY = 1;
+    /** @type{number} */ cx = 0;
+    /** @type{number} */ cy = 0;
+    /** @type{number} */ width = 0;
+    /** @type{number} */ height = 0;
+    /** @type{number} */ angle = 0;
+    /** @type{number} */ signX = 1;
+    /** @type{number} */ signY = 1;
 
-    startWidth = 0;
-    startHeight = 0;
+    /** @type{number} */ startWidth = 0;
+    /** @type{number} */ startHeight = 0;
 
-    offX = 0;
-    offY = 0;
-    offWidth = 0;
-    offHeight = 0;
-    offAngle = 0;
+    /** @type{number} */ offX = 0;
+    /** @type{number} */ offY = 0;
+    /** @type{number} */ offWidth = 0;
+    /** @type{number} */ offHeight = 0;
+    /** @type{number} */ offAngle = 0;
 
-    mouseIn = {x:0, y:0};
-    mouseMv = {x:0, y:0};
+    /** @type{{x, y, nx, ny}} */ mouseIn = {x : 0, y : 0, nx : 0, ny : 0};
+    /** @type{{x, y, nx, ny}} */ mouseMv = {x : 0, y : 0, nx : 0, ny : 0};
 
-    handleA = {x: 0, y:0};
-    handleB = {x: 0, y:0};
+    /** @type{{x, y}} */ handleA = {x: 0, y:0};
+    /** @type{{x, y}} */ handleB = {x: 0, y:0};
 
-    handleOffA = {x: 0, y:0};
-    handleOffB = {x: 0, y:0};
+    /** @type{{x, y}} */ handleOffA = {x: 0, y:0};
+    /** @type{{x, y}} */ handleOffB = {x: 0, y:0};
 
-    isOpen = false;
-    isBezier = false;
-    onUpdate = null;
-    textMode = false;
+    /** @type{boolean} */ isOpen = false;
+    /** @type{boolean} */ isBezier = false;
+    /** @type{boolean} */ textMode = false;
 
-    size = 24;
-    font = "Arial";
+    /** @type{Function} */ onUpdate;
+
+    /** @type{number} */ size = 24;
+    /** @type{string} */ font = "Arial";
 
     constructor(editor) {
         this.editor = editor;
@@ -95,7 +96,7 @@ export class SpriteTransformBox {
         this.jqBox.append(this.jqTxt);
         this.jqBox.append(border);
         border.on('mousedown', (e) => {
-            if (e.button !== 0) return;
+            if (this.pivot || e.button !== 0) return;
             if ($(e.target).closest('.sprite-pivot').length) return;
 
             let off = this.editor.canvasScl.offset();
@@ -115,9 +116,7 @@ export class SpriteTransformBox {
             }
         });
         this.editor.addWindowListener('mouseup', (e) => {
-            if (e.button === 0) {
-                this.leave();
-            }
+            this.leave();
         });
         this.editor.canvasScl.append(this.jqBox);
         this.jqBox.css("display", "none");

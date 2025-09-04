@@ -105,10 +105,10 @@ export class Studio {
                 it2.open = true;
                 this.treeView.root.addChild(it2);
 
-                let it = new TreeItem(new AssetSprite("Sprite Asset " + i, 400, 200));
+                let it = new TreeItem(new AssetSprite("Sprite Asset " + i, 512, 256));
                 it2.addChild(it);
             } else {
-                let it = new TreeItem(new AssetSprite("Sprite Asset " + i, 400, 200));
+                let it = new TreeItem(new AssetSprite("Sprite Asset " + i, 512, 256));
                 this.treeView.root.addChild(it);
             }
         }

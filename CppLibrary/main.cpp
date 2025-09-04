@@ -9,11 +9,13 @@
 
 #include <iostream>
 #include "../test/Test.h"
+#include "simplex/engine/GameEngine.h"
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
 
 int main() {
+
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -39,26 +41,18 @@ int main() {
 
     Test::test();
 
+    GameEngine::init("C:/nova/vortex/build");
+    GameEngine::start();
     while (!glfwWindowShouldClose(window)) {
-        // input
-        // -----
         processInput(window);
 
-        // render
-        // ------
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        GameEngine::loop();
 
-        simplex::game_loop();
+        GameEngine::render();
 
-
-        // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-        // -------------------------------------------------------------------------------
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-    // glfw: terminate, clearing all previously allocated GLFW resources.
-    // ------------------------------------------------------------------
     glfwTerminate();
     return 0;
 }

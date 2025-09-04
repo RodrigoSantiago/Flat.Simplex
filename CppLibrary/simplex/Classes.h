@@ -10,7 +10,6 @@
 #include "display/Display.h"
 #include "draw/Draw.h"
 #include "exception/Exception.h"
-#include "game/Game.h"
 #include "input/Input.h"
 #include "instance/Instance.h"
 #include "values/Pointer.h"
@@ -23,7 +22,6 @@
 #include "values/Reference.h"
 #include "values/Arguments.h"
 #include "values/Function.h"
-#include "managed/Asset.h"
-#include "managed/Object.h"
+#include "managed/Managed.h"
 
 #endif //SIMPLEX_CLASSES_H

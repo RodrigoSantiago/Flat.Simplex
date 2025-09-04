@@ -65,7 +65,7 @@ void String::deference() {
     }
 }
 
-String::String(const String &a, const String &b) {
+String::String(const String &a, const String &b) : count(0) {
     long al = a.length;
     long bl = b.length;
     length = al + bl;
@@ -79,7 +79,7 @@ String::String(const String &a, const String &b) {
     }
 }
 
-String::String(const String &a, const Chars &b) {
+String::String(const String &a, const Chars &b) : count(0) {
     long al = a.length;
     long bl = strlen(b.chars);
     length = al + bl;
@@ -93,7 +93,7 @@ String::String(const String &a, const Chars &b) {
     }
 }
 
-String::String(const Chars &a, const String &b) {
+String::String(const Chars &a, const String &b) : count(0) {
     long al = strlen(a.chars);
     long bl = b.length;
     length = al + bl;
@@ -107,7 +107,7 @@ String::String(const Chars &a, const String &b) {
     }
 }
 
-String::String(const Chars &a, const Chars &b) {
+String::String(const Chars &a, const Chars &b) : count(0) {
     long al = strlen(a.chars);
     long bl = strlen(b.chars);
     length = al + bl;

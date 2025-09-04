@@ -12,13 +12,13 @@ Array::Array() : pointers(nullptr), count(0) {
 Array::Array(const Pointer& length) : count(0) {
     if (!length.isNumber()) {
 
-        throw simplex::ex_array_invalid_length(length);
+        simplex::ex_array_invalid_length(length);
     }
 
     this->size = simplex::round(length.getNumber().value);
     if (this->size < 0) {
 
-        throw simplex::ex_array_invalid_length(length);
+        simplex::ex_array_invalid_length(length);
     }
     pointers = new Pointer[this->size];
 }
@@ -36,7 +36,7 @@ Array::Array(long long size, Pointer *pointers) : size(size), pointers(pointers)
     if (invalid != nullptr) {
         delete[] pointers;
 
-        throw simplex::ex_container_value(*invalid);
+        simplex::ex_container_value(*invalid);
     }
 }
 
@@ -71,7 +71,7 @@ Pointer& Array::index(const Pointer &index) {
     if (index.isNumber()) {
         return indexNum(index.getNumber());
     } else {
-        throw simplex::ex_array_out_of_bounds(index);
+        simplex::ex_array_out_of_bounds(index);
     }
 }
 
@@ -80,6 +80,6 @@ Pointer& Array::indexNum(Double index) {
     if (i >= 0 && i < size) {
         return pointers[i];
     } else {
-        throw simplex::ex_array_out_of_bounds(index);
+        simplex::ex_array_out_of_bounds(index);
     }
 }

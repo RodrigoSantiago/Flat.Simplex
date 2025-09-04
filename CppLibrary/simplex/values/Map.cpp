@@ -5,6 +5,7 @@
 #include "Map.h"
 #include "../Simplex.h"
 #include <unordered_map>
+#include <string>
 
 #define MAPS (*static_cast<std::unordered_map<std::string, Pointer>*>(mapS))
 #define MAPD (*static_cast<std::unordered_map<long long, Pointer>*>(mapD))
@@ -17,13 +18,13 @@ Map::Map() : count(0) {
 Map::Map(long size, const MapInit *initList) : count(0) {
     for (long long i = 0; i < size; ++i) {
         if (!initList[i].index.isNumber() && !initList[i].index.isString()) {
-            throw simplex::ex_invalid_assessor(initList[i].index);
+            simplex::ex_invalid_assessor(initList[i].index);
         }
         switch (initList[i].value.getType()) {
             case VariableType::Array:
             case VariableType::Grid:
             case VariableType::Map:
-                throw simplex::ex_container_value(initList[i].value);
+                simplex::ex_container_value(initList[i].value);
         }
     }
 

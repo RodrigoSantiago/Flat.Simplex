@@ -11,14 +11,14 @@ Grid::Grid() : pointers(nullptr), count(0) {
 
 Grid::Grid(const Pointer &width, const Pointer &height) : count(0) {
     if (!width.isNumber() || !height.isNumber()) {
-        throw simplex::ex_grid_invalid_size(width, height);
+        simplex::ex_grid_invalid_size(width, height);
     }
 
     this->width = simplex::round(width.getNumber());
     this->height = simplex::round(height.getNumber());
     if (this->width < 0 || this->height < 0) {
 
-        throw simplex::ex_grid_invalid_size(width, height);
+        simplex::ex_grid_invalid_size(width, height);
     }
 
     pointers = new Pointer[this->width * this->height];
@@ -40,7 +40,7 @@ Grid::Grid(long width, long size, Pointer *pointers) : pointers(pointers), count
     if (invalid != nullptr) {
         delete[] pointers;
 
-        throw simplex::ex_container_value(*invalid);
+        simplex::ex_container_value(*invalid);
     }
 }
 
@@ -73,14 +73,14 @@ void Grid::deference() {
 
 Pointer& Grid::indexGrid(const Pointer &x, const Pointer &y) {
     if (!x.isNumber() || !y.isNumber()) {
-        throw simplex::ex_grid_out_of_bounds(x, y);
+        simplex::ex_grid_out_of_bounds(x, y);
     }
 
     long long w = simplex::round(x.getNumber());
     long long h = simplex::round(y.getNumber());
     if (w < 0 || w >= width || h < 0 || h >= height) {
 
-        throw simplex::ex_grid_out_of_bounds(x, y);
+        simplex::ex_grid_out_of_bounds(x, y);
     }
 
     return pointers[w + h * width];

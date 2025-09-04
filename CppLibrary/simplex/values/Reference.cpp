@@ -4,21 +4,18 @@
 
 #include "Reference.h"
 #include "../Simplex.h"
+#include <iostream>
 
 Reference::Reference() : asset(nullptr), count(0) {
 
 }
 
-Reference::Reference(Asset *asset) : asset(asset), count(0) {
-    if (asset != nullptr) {
-        asset->reference = this;
-    }
+Reference::Reference(Managed *asset) : asset(asset), count(0) {
+
 }
 
 Reference::~Reference() {
-    if (asset != nullptr) {
-        asset->reference = nullptr;
-    }
+
 }
 
 VariableType::VariableType Reference::getType() const {
@@ -26,11 +23,11 @@ VariableType::VariableType Reference::getType() const {
 }
 
 Pointer Reference::getTypeName() const {
-    return s("Object");
+    return asset == nullptr ? s("Undefined") : asset->getTypeName();
 }
 
 Pointer Reference::getString() const {
-    return s("Object");
+    return asset == nullptr ? s("undefined") : asset->getTypeName();
 }
 
 Double Reference::getNumber() const {
@@ -47,15 +44,15 @@ Value *Reference::reference() {
 }
 
 void Reference::deference() {
-    if (--count <= 0) {
+    --count;
+    if (count == 0 && asset == nullptr) {
         delete this;
     }
 }
 
 Pointer& Reference::getField(long hashName) {
     if (asset == nullptr) {
-
-        throw simplex::ex_invalid_object();
+        simplex::ex_invalid_object();
     } else {
         return asset->getField(hashName);
     }
@@ -63,8 +60,7 @@ Pointer& Reference::getField(long hashName) {
 
 Pointer& Reference::setField(long hashName, const Pointer& value) {
     if (asset == nullptr) {
-
-        throw simplex::ex_invalid_object();
+        simplex::ex_invalid_object();
     } else {
         return asset->setField(hashName, value);
     }
@@ -72,8 +68,7 @@ Pointer& Reference::setField(long hashName, const Pointer& value) {
 
 Pointer &Reference::refField(long hashName) {
     if (asset == nullptr) {
-
-        throw simplex::ex_invalid_object();
+        simplex::ex_invalid_object();
     } else {
         return asset->refField(hashName);
     }

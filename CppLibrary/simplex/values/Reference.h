@@ -11,13 +11,13 @@
 class Reference : public Value {
 public:
     long count;
-    Asset* asset;
+    Managed* asset;
 
     Reference();
 
     Reference(const Reference& copy) = delete;
 
-    Reference(Asset* asset);
+    Reference(Managed* asset);
 
     ~Reference() override;
 

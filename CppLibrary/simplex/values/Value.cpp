@@ -41,37 +41,37 @@ void Value::deference() {
 
 Pointer& Value::index(const Pointer &index) {
 
-    throw simplex::ex_invalid_assessor(index);
+    simplex::ex_invalid_assessor(index);
 }
 
 Pointer& Value::indexNum(Double index) {
 
-    throw simplex::ex_invalid_assessor(index);
+    simplex::ex_invalid_assessor(index);
 }
 
 Pointer& Value::indexStr(const String& index) {
 
-    throw simplex::ex_invalid_assessor(Pointer(new String(index)));
+    simplex::ex_invalid_assessor(Pointer(new String(index)));
 }
 
 Pointer& Value::indexGrid(const Pointer &x, const Pointer &y) {
 
-    throw simplex::ex_invalid_assessor(x + s(", ") + y);
+    simplex::ex_invalid_assessor(x + s(", ") + y);
 }
 
 Pointer& Value::getField(long hashName) {
 
-    throw simplex::ex_missing_field(HashName::getName(hashName), getTypeName());
+    simplex::ex_missing_field(HashName::getName(hashName), getTypeName());
 }
 
 Pointer& Value::setField(long hashName, const Pointer& value) {
 
-    throw simplex::ex_invalid_field(HashName::getName(hashName), getTypeName());
+    simplex::ex_invalid_field(HashName::getName(hashName), getTypeName());
 }
 
 Pointer &Value::refField(long hashName) {
 
-    throw simplex::ex_missing_field(HashName::getName(hashName), getTypeName());
+    simplex::ex_missing_field(HashName::getName(hashName), getTypeName());
 }
 
 Pointer& Value::setIndex(const Pointer &index, const Pointer &value) {
@@ -79,7 +79,7 @@ Pointer& Value::setIndex(const Pointer &index, const Pointer &value) {
         case VariableType::Array:
         case VariableType::Map:
         case VariableType::Grid:
-            throw simplex::ex_container_value(value);
+            simplex::ex_container_value(value);
     }
     return this->index(index) = value;
 }
@@ -89,7 +89,7 @@ Pointer &Value::setIndexNum(Double index, const Pointer &value) {
         case VariableType::Array:
         case VariableType::Map:
         case VariableType::Grid:
-            throw simplex::ex_container_value(value);
+            simplex::ex_container_value(value);
     }
     return this->indexNum(index) = value;
 }
@@ -99,7 +99,7 @@ Pointer &Value::setIndexStr(const String& index, const Pointer &value) {
         case VariableType::Array:
         case VariableType::Map:
         case VariableType::Grid:
-            throw simplex::ex_container_value(value);
+            simplex::ex_container_value(value);
     }
     return this->indexStr(index) = value;
 }
@@ -109,12 +109,12 @@ Pointer &Value::setIndexGrid(const Pointer &x, const Pointer &y, const Pointer &
         case VariableType::Array:
         case VariableType::Map:
         case VariableType::Grid:
-            throw simplex::ex_container_value(value);
+            simplex::ex_container_value(value);
     }
     return this->indexGrid(x, y) = value;
 }
 
 Pointer Value::execute(const Pointer& self, const Pointer&) {
 
-    throw simplex::ex_invalid_function();
+    simplex::ex_invalid_function();
 }

@@ -5,6 +5,7 @@ export class SpriteMenu {
 
     /** @type{JQuery} */ jqDragView;
     /** @type{SpriteEditor} */ editor;
+    /** @type{SpriteTool[]} */ onUpdateListeners = [];
     dragged = false;
     floating = false;
     type = null;
@@ -104,5 +105,15 @@ export class SpriteMenu {
 
     getConfig() {
 
+    }
+
+    addListener(spriteTool) {
+        this.onUpdateListeners.push(spriteTool);
+    }
+
+    configUpdate() {
+        for (let sprTool of this.onUpdateListeners) {
+            sprTool.configUpdate();
+        }
     }
 }

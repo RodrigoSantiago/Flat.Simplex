@@ -25,6 +25,7 @@ export class SpriteTool {
     constructor(editor, jqButton, configMenu) {
         this.editor = editor;
         this.configMenu = configMenu;
+        this.configMenu.addListener(this);
         this.jqButton = jqButton;
         this.jqButton.on("click", (e) => this.editor.selectTool(this));
         this.jqButton.on("dblclick", (e) => {
@@ -155,6 +156,10 @@ export class SpriteTool {
      */
     getConfig() {
         return this.configMenu.getConfig();
+    }
+
+    configUpdate() {
+
     }
 
     /**

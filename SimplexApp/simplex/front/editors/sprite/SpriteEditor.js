@@ -114,6 +114,8 @@ export class SpriteEditor extends Editor {
     constructor(asset) {
         super(asset);
         this.sprAsset = asset;
+        this.imageWidth = this.sprAsset.width;
+        this.imageHeight = this.sprAsset.height;
         this.jqRoot = $(SpriteEditor.pageModel);
         this.toolbar = new Toolbar(this.jqRoot.find(".toolbar"));
         this.jqSplitVer = this.jqRoot.find(".split-panel-ver");

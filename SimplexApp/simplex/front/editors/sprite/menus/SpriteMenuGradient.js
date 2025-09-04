@@ -19,6 +19,7 @@ export class SpriteMenuGradient extends SpriteMenu {
             let width = this.jqGradLine.width() - 8;
             let pos = Math.max(0, Math.min(1, (e.pageX - left) / width));
             this.addNode(pos, left + pos * width - 4);
+            this.configUpdate();
         });
 
         this.editor.addWindowListener("mousemove", (e) => {
@@ -31,6 +32,7 @@ export class SpriteMenuGradient extends SpriteMenu {
             this.draggedNode.jqNode.offset({left: Math.min(left + width, Math.max(left, e.pageX)) - 4});
             this.moveNode(this.draggedNode, pos, rpos > 1.25 || rpos < -0.25, false);
             this.pick = null;
+            this.configUpdate();
         });
         this.editor.addWindowListener("mouseup", (e) => {
             if (!this.draggedNode) return;
@@ -46,6 +48,7 @@ export class SpriteMenuGradient extends SpriteMenu {
             this.draggedNode.jqNode.offset({left: Math.min(left + width, Math.max(left, e.pageX)) - 4});
             this.moveNode(this.draggedNode, pos, false, rpos > 1.25 || rpos < -0.25);
             this.draggedNode = null;
+            this.configUpdate();
         });
 
         this.addNode(0, this.jqGradLine.offset().left);
@@ -65,6 +68,7 @@ export class SpriteMenuGradient extends SpriteMenu {
         this.jqTolerance.on("input", (e) => {
             this.tolerance = this.jqTolerance[0].value;
             this.jqToleranceText.val(this.tolerance);
+            this.configUpdate();
         });
         this.jqToleranceText.on("input", (e) => {
             let t = parseInt(this.jqToleranceText.val());
@@ -75,17 +79,20 @@ export class SpriteMenuGradient extends SpriteMenu {
             }
             this.tolerance = t;
             this.jqTolerance[0].value = t;
+            this.configUpdate();
         });
 
         this.jqContiguous = jqDragView.find(".gradient-contiguous");
         this.jqContiguous[0].checked = true;
         this.jqContiguous.change((e) => {
             this.contiguous = this.jqContiguous[0].checked;
+            this.configUpdate();
         });
 
         this.jqBlendAlpha = jqDragView.find(".gradient-alpha");
         this.jqBlendAlpha.change((e) => {
             this.blendAlpha = this.jqBlendAlpha[0].checked;
+            this.configUpdate();
         });
 
         this.jqUseGradient = jqDragView.find(".gradient-gradient");
@@ -104,16 +111,19 @@ export class SpriteMenuGradient extends SpriteMenu {
                 this.jqPalette.addClass("disabled");
                 this.jqPalette.attr("disabled", true);
             }
+            this.configUpdate();
         });
 
         this.jqRadial = jqDragView.find(".gradient-radial");
         this.jqRadial.change((e) => {
             this.radial = this.jqRadial[0].checked;
+            this.configUpdate();
         });
 
         this.jqPalette = jqDragView.find(".gradient-palette");
         this.jqPalette.change((e) => {
             this.palette = this.jqPalette[0].checked;
+            this.configUpdate();
         });
         this.jqGradLine.addClass("disabled");
         this.jqPalette.addClass("disabled");

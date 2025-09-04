@@ -67,6 +67,22 @@ export class SpriteToolText extends SpriteTool {
             this.editor.toolEnd();
         }
     }
+
+    configUpdate() {
+        let config = this.getConfig();
+        this.size = config.size;
+        this.font = config.font.name;
+        this.bold = config.bold;
+        this.italic = config.italic;
+        if (this.editor.tsBox.isOpen) {
+            this.editor.tsBox.font = this.font;
+            this.editor.tsBox.size = this.size;
+            this.editor.tsBox.bold = this.bold;
+            this.editor.tsBox.italic = this.italic;
+            this.editor.tsBox.update();
+        }
+    }
+
     drawTextBox() {
         if (!this.editor.tsBox.textEdited) return;
 
